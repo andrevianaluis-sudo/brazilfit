@@ -104,17 +104,25 @@ app.use(express.urlencoded({ extended: true }));
 getDb();
 
 // Serve frontend static files BEFORE API routes
+console.log('Current directory:', __dirname);
 const distPath = path.join(__dirname, '../../frontend/dist');
-console.log('Serving static from:', distPath);
+console.log('Dist path resolved to:', distPath);
+console.log('Files in dist:', fs.existsSync(path.join(__dirname, '../../frontend/dist')) ?
+  fs.readdirSync(path.join(__dirname, '../../frontend/dist')) : 'DIST NOT FOUND');
 
 if (fs.existsSync(distPath)) {
-  console.log('✓ Frontend dist directory found at:', distPath);
-  try {
-    const files = fs.readdirSync(distPath);
-    console.log('Frontend files:', files);
-  } catch (e) {
-    console.error('Error reading dist directory:', e.message);
+  console.log('✓ Frontend dist directory found');
+  const files = fs.readdirSync(distPath);
+  console.log('Files in dist:', files);
+
+  // Check assets directory
+  const assetsPath = path.join(distPath, 'assets');
+  if (fs.existsSync(assetsPath)) {
+    console.log('✓ Assets directory found:', fs.readdirSync(assetsPath));
+  } else {
+    console.error('✗ Assets directory NOT found at:', assetsPath);
   }
+
   app.use(express.static(distPath));
 } else {
   console.error('✗ Frontend dist directory NOT found at:', distPath);
