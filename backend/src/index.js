@@ -156,6 +156,9 @@ cron.schedule('0 20 * * 1-5', async () => {
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, '../frontend-dist/index.html'));
+  } else {
+    // API request that didn't match any route - return 404
+    res.status(404).json({ error: 'API endpoint not found' });
   }
 });
 
