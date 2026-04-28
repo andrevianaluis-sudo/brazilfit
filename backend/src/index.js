@@ -119,7 +119,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/achievements', achievementsRoutes);
 
-// Health check
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'BrazilFit API', version: '1.0.0' });
 });
