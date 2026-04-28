@@ -1,5 +1,6 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 const DB_PATH = process.env.DB_PATH || './brazilfit.db';
@@ -331,6 +332,40 @@ function initSchema() {
 
   seedWellnessContent();
   seedDailyQuotes();
+}
+
+function seedUsers() {
+  // Only seed if no users exist (idempotent)
+  const existingUsers = db.prepare('SELECT COUNT(*) as count FROM users').get();
+  if (existingUsers.count > 0) return;
+
+  try {
+    const ptPasswordHash = bcrypt.hashSync('PTadmin2026!', 10);
+    const clientPasswordHash = bcrypt.hashSync('BrazilFit2026!', 10);
+
+    // Create PT user
+    db.prepare(`
+      INSERT INTO users (email, username, password_hash, role, name)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('pt@brazilfit.co.uk', 'pt', ptPasswordHash, 'pt', 'BrazilFit PT');
+
+    // Create test client user
+    const clientResult = db.prepare(`
+      INSERT INTO users (email, username, password_hash, role, name)
+      VALUES (?, ?, ?, ?, ?)
+    `).run('vivien@example.com', 'vivien', clientPasswordHash, 'client', 'Vivien');
+    const clientUserId = clientResult.lastInsertRowid;
+
+    // Create client profile
+    db.prepare(`
+      INSERT INTO clients (user_id, client_type, block_price, block_start_date, sessions_used)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(clientUserId, 'F2F', 400, '2026-03-13', 6);
+
+    console.log('✅ Test users seeded (PT: pt/PTadmin2026!, Client: vivien/BrazilFit2026!)');
+  } catch (e) {
+    console.log('ℹ️  Users already exist, skipping seed');
+  }
 }
 
 function runMigrations() {
@@ -1093,6 +1128,7 @@ function runMigrations() {
   if (!mediaCols.includes('has_1080p_version'))
     db.exec('ALTER TABLE pt_media ADD COLUMN has_1080p_version INTEGER DEFAULT 0');
 
+  seedUsers();
   seedAchievementBadges();
 }
 
