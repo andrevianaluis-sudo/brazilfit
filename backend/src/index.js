@@ -114,16 +114,7 @@ app.use(express.urlencoded({ extended: true }));
 getDb();
 
 // Serve frontend static files BEFORE API routes
-const distPath = path.join(__dirname, '../frontend-dist');
-console.log('Serving static files from:', distPath);
-
-if (fs.existsSync(distPath)) {
-  console.log('✓ Frontend dist directory found');
-  app.use(express.static(distPath));
-} else {
-  console.error('✗ Frontend dist directory NOT found at:', distPath);
-  console.log('__dirname:', __dirname);
-}
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -186,19 +177,11 @@ cron.schedule('0 20 * * 1-5', async () => {
 });
 
 // SPA fallback - route all non-API requests to index.html
-if (fs.existsSync(distPath)) {
-  app.get('*', (req, res) => {
-    // Don't serve index.html for API routes
-    if (req.path.startsWith('/api')) {
-      return res.status(404).json({ error: 'API route not found' });
-    }
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
-} else {
-  app.get('*', (req, res) => {
-    res.status(500).json({ error: 'Frontend not available' });
-  });
-}
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  }
+});
 
 // Error handler
 app.use((err, req, res, next) => {
