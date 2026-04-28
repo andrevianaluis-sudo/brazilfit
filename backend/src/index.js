@@ -89,10 +89,7 @@ app.use(express.urlencoded({ extended: true }));
 // Initialize DB
 getDb();
 
-// Serve frontend static files BEFORE API routes
-app.use(express.static(path.join(__dirname, '../frontend-dist')));
-
-// Routes
+// Routes (must come before static files)
 app.use('/api/auth', authRoutes);
 app.use('/api/pt', ptRoutes);
 app.use('/api/sessions', sessionsRoutes);
@@ -126,6 +123,9 @@ app.use('/api/achievements', achievementsRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'BrazilFit API', version: '1.0.0' });
 });
+
+// Serve frontend static files (after API routes so they take priority)
+app.use(express.static(path.join(__dirname, '../frontend-dist')));
 
 // Auto-mark sessions at 20:00 Mon-Fri
 cron.schedule('0 20 * * 1-5', async () => {
