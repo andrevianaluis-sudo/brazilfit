@@ -162,6 +162,19 @@ cron.schedule('0 20 * * 1-5', async () => {
   }
 });
 
+// Serve frontend static files (built by Docker)
+const frontendPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendPath));
+
+// SPA fallback - route all non-API requests to index.html
+app.get('*', (req, res) => {
+  // Don't serve index.html for API routes
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
