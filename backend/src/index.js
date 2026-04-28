@@ -104,45 +104,15 @@ app.use(express.urlencoded({ extended: true }));
 getDb();
 
 // Serve frontend static files BEFORE API routes
-// Try multiple possible paths for the dist folder
-const possiblePaths = [
-  path.join(__dirname, '../../frontend/dist'),
-  path.join(__dirname, '../../../frontend/dist'),
-  path.join(process.cwd(), 'frontend/dist'),
-  path.join(process.cwd(), '../frontend/dist'),
-];
+const distPath = path.join(__dirname, '../frontend-dist');
+console.log('Serving static files from:', distPath);
 
-let distPath = null;
-for (const p of possiblePaths) {
-  if (fs.existsSync(p)) {
-    distPath = p;
-    console.log('✓ Found dist at:', p);
-    break;
-  }
-}
-
-if (distPath) {
+if (fs.existsSync(distPath)) {
   console.log('✓ Frontend dist directory found');
-  const files = fs.readdirSync(distPath);
-  console.log('Files in dist:', files);
-
-  // Check assets directory
-  const assetsPath = path.join(distPath, 'assets');
-  if (fs.existsSync(assetsPath)) {
-    console.log('✓ Assets directory found:', fs.readdirSync(assetsPath));
-  } else {
-    console.error('✗ Assets directory NOT found at:', assetsPath);
-  }
-
   app.use(express.static(distPath));
 } else {
-  console.error('✗ Could not find frontend dist folder!');
-  console.log('CWD:', process.cwd());
+  console.error('✗ Frontend dist directory NOT found at:', distPath);
   console.log('__dirname:', __dirname);
-  console.log('Attempted paths:');
-  possiblePaths.forEach(p => {
-    console.log('  -', p, 'exists:', fs.existsSync(p));
-  });
 }
 
 // Routes
@@ -206,7 +176,7 @@ cron.schedule('0 20 * * 1-5', async () => {
 });
 
 // SPA fallback - route all non-API requests to index.html
-if (distPath) {
+if (fs.existsSync(distPath)) {
   app.get('*', (req, res) => {
     // Don't serve index.html for API routes
     if (req.path.startsWith('/api')) {
