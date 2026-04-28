@@ -103,6 +103,23 @@ app.use(express.urlencoded({ extended: true }));
 // Initialize DB
 getDb();
 
+// Serve frontend static files BEFORE API routes
+const distPath = path.join(__dirname, '../../frontend/dist');
+console.log('Serving static from:', distPath);
+
+if (fs.existsSync(distPath)) {
+  console.log('✓ Frontend dist directory found at:', distPath);
+  try {
+    const files = fs.readdirSync(distPath);
+    console.log('Frontend files:', files);
+  } catch (e) {
+    console.error('Error reading dist directory:', e.message);
+  }
+  app.use(express.static(distPath));
+} else {
+  console.error('✗ Frontend dist directory NOT found at:', distPath);
+}
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/pt', ptRoutes);
@@ -163,28 +180,13 @@ cron.schedule('0 20 * * 1-5', async () => {
   }
 });
 
-// Serve frontend static files (built by Docker)
-const frontendPath = path.join(__dirname, '../../frontend/dist');
-console.log('Frontend path:', frontendPath);
-
-// Check if dist directory exists
-if (fs.existsSync(frontendPath)) {
-  console.log('✓ Frontend dist directory found');
-  const files = fs.readdirSync(frontendPath);
-  console.log('Frontend files:', files);
-} else {
-  console.warn('⚠ Frontend dist directory not found at:', frontendPath);
-}
-
-app.use(express.static(frontendPath));
-
 // SPA fallback - route all non-API requests to index.html
 app.get('*', (req, res) => {
   // Don't serve index.html for API routes
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'API route not found' });
   }
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // Error handler
