@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const { getDb } = require('./db/database');
@@ -164,6 +165,17 @@ cron.schedule('0 20 * * 1-5', async () => {
 
 // Serve frontend static files (built by Docker)
 const frontendPath = path.join(__dirname, '../../frontend/dist');
+console.log('Frontend path:', frontendPath);
+
+// Check if dist directory exists
+if (fs.existsSync(frontendPath)) {
+  console.log('✓ Frontend dist directory found');
+  const files = fs.readdirSync(frontendPath);
+  console.log('Frontend files:', files);
+} else {
+  console.warn('⚠ Frontend dist directory not found at:', frontendPath);
+}
+
 app.use(express.static(frontendPath));
 
 // SPA fallback - route all non-API requests to index.html
