@@ -1,23 +1,18 @@
 FROM node:22-alpine
 WORKDIR /app
 
-# Install and build frontend
-COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm install
+# Copy and build frontend
 COPY frontend/ ./frontend/
-RUN cd frontend && npm run build
+RUN cd frontend && npm install && npm run build
 
-# Install backend
-COPY backend/package*.json ./backend/
-RUN cd backend && npm install
+# Copy and setup backend
 COPY backend/ ./backend/
+RUN cd backend && npm install
 
-# Expose port
+# Set port
+ENV PORT=3001
 EXPOSE 3001
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
-
 # Start backend server
-CMD ["node", "backend/src/index.js"]
+WORKDIR /app/backend
+CMD ["node", "src/index.js"]
