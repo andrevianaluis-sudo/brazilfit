@@ -1,0 +1,444 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './styles/pages.css';
+
+/* === LUXURY FITNESS DESIGN SYSTEM === */
+:root {
+  /* PRIMARY COLORS - Deep forest with electric mint accents */
+  --color-forest: #1a4a3a;
+  --color-forest-light: #2d7a5c;
+  --color-mint: #7dd4a8;
+  --color-mint-dark: #5ec699;
+
+  /* BACKGROUNDS & SURFACES */
+  --color-background: #f8faf9;
+  --color-card: #ffffff;
+  --color-charcoal: #1a1a1a;
+  --color-grey: #6b7280;
+  --color-grey-light: #e5e7eb;
+
+  /* SHADOWS - Premium depth */
+  --shadow-sm: 0 2px 4px rgba(26, 74, 58, 0.04);
+  --shadow-md: 0 4px 12px rgba(26, 74, 58, 0.08);
+  --shadow-lg: 0 12px 32px rgba(26, 74, 58, 0.12);
+  --shadow-xl: 0 20px 48px rgba(26, 74, 58, 0.15);
+
+  /* SPACING & RADIUS */
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* MOTION */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-charcoal);
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === PREMIUM TYPOGRAPHY === */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Clash Display', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--color-forest);
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+/* Large stat numbers - luxury treatment */
+.stat-number {
+  font-family: 'Clash Display', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: var(--color-forest);
+  line-height: 1;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-mint);
+  border-radius: 3px;
+  border: 2px solid var(--color-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-mint-dark);
+}
+
+/* === LABELS AND SECTIONS === */
+.section-label {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  color: var(--color-grey);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+p {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* Form inputs - dark theme */
+input,
+select,
+textarea {
+  color: white !important;
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-mint) !important;
+  box-shadow: 0 0 0 3px rgba(125, 212, 168, 0.1);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: #7dd4a8;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideUpModal {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === LUXURY ANIMATIONS === */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: var(--shadow-md);
+  }
+  50% {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* Staggered reveals for card animations */
+.animate-fade-in-up {
+  animation: fadeInUp var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-fade-in-up:nth-child(1) { animation-delay: 0ms; }
+.animate-fade-in-up:nth-child(2) { animation-delay: 100ms; }
+.animate-fade-in-up:nth-child(3) { animation-delay: 200ms; }
+.animate-fade-in-up:nth-child(4) { animation-delay: 300ms; }
+
+.animate-fade-in-scale {
+  animation: fadeInScale var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-slide-left {
+  animation: slideInFromLeft var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Utility animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.25s ease-out;
+}
+
+.animate-slide-out-right {
+  animation: slideOutRight 0.25s ease-out;
+}
+
+.animate-slide-up-modal {
+  animation: slideUpModal 0.25s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Button animations */
+button {
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Progress bar */
+.progress-bar {
+  transition: width 0.5s ease-out;
+}
+
+/* Transitions */
+.transition-fast {
+  transition: all 0.15s ease-in-out;
+}
+
+.transition-normal {
+  transition: all 0.25s ease-in-out;
+}
+
+.transition-slow {
+  transition: all 0.35s ease-in-out;
+}
+
+/* === MOBILE & IPHONE OPTIMIZATIONS === */
+@media (max-width: 640px) {
+  h1 { font-size: 1.875rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.125rem; }
+
+  /* Ensure touch targets are minimum 44x44px on mobile */
+  button, a, input[type="button"], input[type="submit"], [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Better spacing for mobile modals */
+  .modal, .fixed {
+    padding: 1rem 1rem !important;
+  }
+
+  /* Optimize text input height */
+  input, textarea, select {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Better spacing for stacked layouts */
+  .space-y-2 { --tw-space-y-reverse: 0; margin-bottom: calc(0.5rem * calc(1 - var(--tw-space-y-reverse))); margin-top: calc(0.5rem * var(--tw-space-y-reverse)); }
+  .space-y-3 { --tw-space-y-reverse: 0; margin-bottom: calc(0.75rem * calc(1 - var(--tw-space-y-reverse))); margin-top: calc(0.75rem * var(--tw-space-y-reverse)); }
+
+  /* Safe area for notch phones */
+  body { padding-top: max(0px, env(safe-area-inset-top)); }
+
+  /* Fix for iOS keyboard covering input - use visual viewport */
+  @supports (height: 100dvh) {
+    html, body {
+      height: 100dvh;
+    }
+  }
+
+  /* Improved tap feedback */
+  input, button, textarea, select {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0.5rem;
+  }
+
+  /* Disable double-tap zoom */
+  a, button {
+    touch-action: manipulation;
+  }
+}
+
+/* iPhone X/11/12/13/14/15 specific safe areas */
+@media (max-width: 390px) {
+  body {
+    font-size: 14px;
+  }
+
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+
+  /* Tighter padding on small phones */
+  [class*="px-4"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Better modal spacing */
+  .fixed.inset-0 {
+    padding: 0.5rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  h1, h2 { margin: 0; }
+  .space-y-4 { gap: 0.5rem; }
+}

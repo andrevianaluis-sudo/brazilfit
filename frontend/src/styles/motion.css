@@ -1,0 +1,686 @@
+/* === BRAZILFIT PREMIUM MOTION & INTERACTION SYSTEM ===
+
+   Design Philosophy:
+   - Minimal and functional (Whoop) + Energetic (Hevy) + Confident (Nike)
+   - Motion serves purpose: feedback, guidance, delight
+   - Fast enough to feel responsive, slow enough to feel premium
+   - Respects prefers-reduced-motion for accessibility
+
+   Motion Hierarchy:
+   - Fast (micro-interactions): 100-150ms
+   - Standard (transitions): 250-300ms
+   - Slow (complex animations): 400-500ms
+   - Easing: ease-out (entries), ease-in (exits), cubic-bezier (natural)
+*/
+
+/* === MOTION VARIABLES === */
+:root {
+  /* Durations */
+  --duration-instant: 0ms;
+  --duration-micro: 100ms;      /* Icon reveals, hover states */
+  --duration-fast: 150ms;        /* Button press, form feedback */
+  --duration-normal: 250ms;      /* Standard transitions */
+  --duration-standard: 300ms;    /* Navigation, state changes */
+  --duration-slow: 400ms;        /* Complex animations */
+  --duration-slower: 500ms;      /* Page transitions, elaborate */
+
+  /* Easing curves (cubic-bezier) */
+  /* Entry/reveal animations (starts slow, accelerates) */
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Exit/dismiss animations (accelerates) */
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+
+  /* Smooth, natural motion */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+
+  /* Energetic, responsive */
+  --ease-energetic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-back-out: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    --duration-instant: 0ms !important;
+    --duration-micro: 0ms !important;
+    --duration-fast: 0ms !important;
+    --duration-normal: 0ms !important;
+    --duration-standard: 0ms !important;
+    --duration-slow: 0ms !important;
+    --duration-slower: 0ms !important;
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
+
+/* === TRANSITION UTILITIES === */
+
+/* Fade transitions */
+.transition-fade {
+  transition: opacity var(--duration-normal) var(--ease-smooth);
+}
+
+.transition-fade-fast {
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+.transition-fade-slow {
+  transition: opacity var(--duration-slow) var(--ease-out-cubic);
+}
+
+/* Smooth all property transitions */
+.transition-smooth {
+  transition: all var(--duration-standard) var(--ease-smooth);
+}
+
+.transition-smooth-fast {
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+.transition-smooth-slow {
+  transition: all var(--duration-slow) var(--ease-smooth);
+}
+
+/* Color transitions */
+.transition-colors {
+  transition: color var(--duration-fast) var(--ease-smooth),
+              background-color var(--duration-fast) var(--ease-smooth),
+              border-color var(--duration-fast) var(--ease-smooth);
+}
+
+/* Transform transitions */
+.transition-transform {
+  transition: transform var(--duration-normal) var(--ease-smooth);
+}
+
+.transition-transform-fast {
+  transition: transform var(--duration-fast) var(--ease-smooth);
+}
+
+/* Shadow elevation */
+.transition-shadow {
+  transition: box-shadow var(--duration-fast) var(--ease-smooth),
+              filter var(--duration-fast) var(--ease-smooth);
+}
+
+/* === ENTRY ANIMATIONS === */
+
+/* Fade in (opacity only) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out-cubic) forwards;
+}
+
+/* Slide in from bottom (for modals, toasts) */
+@keyframes slideInUp {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Slide in from top */
+@keyframes slideInDown {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-down {
+  animation: slideInDown var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Slide in from left (for sidebars, drawers) */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Scale in (for cards, images) */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Staggered reveal (for lists, grids) */
+@keyframes staggerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stagger {
+  animation: staggerFadeIn var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* Apply stagger delay to children */
+.stagger-children > * {
+  animation: staggerFadeIn var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(n+7) { animation-delay: 300ms; }
+
+/* === EXIT ANIMATIONS === */
+
+/* Fade out */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fadeOut var(--duration-normal) var(--ease-in-cubic) forwards;
+}
+
+/* Slide out down */
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+}
+
+.animate-slide-out-down {
+  animation: slideOutDown var(--duration-standard) var(--ease-in-cubic) forwards;
+}
+
+/* === MICRO-INTERACTIONS === */
+
+/* Button press feedback (brief scale) */
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-button-press {
+  animation: buttonPress var(--duration-micro) var(--ease-smooth);
+}
+
+/* Pulse for attention (subtle breathing) */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse 2s var(--ease-smooth) infinite;
+}
+
+/* Shimmer for loading (skeleton screen) */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #1f2937 0%,
+    #374151 20%,
+    #1f2937 40%,
+    #1f2937 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Badge unlock celebration */
+@keyframes badgeUnlock {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+.animate-badge-unlock {
+  animation: badgeUnlock 0.6s var(--ease-back-out) forwards;
+}
+
+/* Achievement celebration (upward drift + fade) */
+@keyframes achievementPop {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(1);
+    opacity: 0;
+  }
+}
+
+.animate-achievement-pop {
+  animation: achievementPop 2s var(--ease-smooth) forwards;
+}
+
+/* Progress bar fill animation */
+@keyframes progressFill {
+  from {
+    width: 0%;
+    opacity: 0.5;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+.animate-progress-fill {
+  animation: progressFill var(--duration-slow) var(--ease-out-cubic) forwards;
+}
+
+/* Chart line drawing (for data visualization) */
+@keyframes chartDraw {
+  from {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.animate-chart-draw {
+  animation: chartDraw var(--duration-slow) var(--ease-out-cubic) forwards;
+}
+
+/* === INTERACTION STATES === */
+
+/* Base button transitions */
+button,
+.btn,
+[role="button"] {
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+/* Hover state (slight elevation) */
+button:hover,
+.btn:hover,
+[role="button"]:hover {
+  transform: translateY(-2px);
+}
+
+/* Active/pressed state (compress slightly) */
+button:active,
+.btn:active,
+[role="button"]:active {
+  transform: translateY(0);
+}
+
+/* Focus state (ring) */
+button:focus-visible,
+.btn:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #7dd4a8;
+  outline-offset: 2px;
+}
+
+/* Disabled state (reduced opacity, no interaction) */
+button:disabled,
+.btn:disabled,
+[role="button"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loading state */
+button.is-loading,
+.btn.is-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+button.is-loading::after,
+.btn.is-loading::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === FORM INTERACTIONS === */
+
+/* Input focus state (border glow) */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #7dd4a8;
+  box-shadow: 0 0 0 3px rgba(125, 212, 168, 0.15);
+  transition: all var(--duration-fast) var(--ease-smooth);
+}
+
+/* Input error state */
+input.error,
+textarea.error,
+select.error {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+input.error:focus,
+textarea.error:focus,
+select.error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+/* Input success state */
+input.success,
+textarea.success,
+select.success {
+  border-color: #7dd4a8;
+  box-shadow: 0 0 0 3px rgba(125, 212, 168, 0.1);
+}
+
+/* Placeholder fade on focus */
+input::placeholder,
+textarea::placeholder {
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-smooth);
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  opacity: 0.3;
+}
+
+/* === LOADING STATES === */
+
+/* Skeleton loading shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #1f2937 25%,
+    #374151 50%,
+    #1f2937 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Spinner (for async operations) */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #7dd4a8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.spinner-lg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Progress ring (circular progress) */
+.progress-ring {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset var(--duration-standard) var(--ease-out-cubic);
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+}
+
+/* === MODAL INTERACTIONS === */
+
+/* Modal overlay fade in */
+.modal-overlay {
+  animation: fadeIn var(--duration-standard) var(--ease-out-cubic);
+}
+
+/* Modal content slide in */
+.modal-content {
+  animation: slideInUp var(--duration-standard) var(--ease-out-cubic);
+}
+
+/* Modal backdrop blur (subtle depth) */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  animation: fadeIn var(--duration-standard) var(--ease-out-cubic);
+}
+
+/* === TOAST & NOTIFICATION ANIMATIONS === */
+
+/* Toast slide in from top-right */
+.toast {
+  animation: slideInRight var(--duration-standard) var(--ease-out-cubic);
+}
+
+.toast.exit {
+  animation: slideOutDown var(--duration-fast) var(--ease-in-cubic);
+}
+
+/* === RESPONSIVE MOTION === */
+
+/* Reduce motion on smaller screens for performance */
+@media (max-width: 640px) {
+  :root {
+    --duration-standard: 200ms;
+    --duration-slow: 350ms;
+  }
+}
+
+/* Respect prefers-reduced-motion globally */
+@media (prefers-reduced-motion: prefer-reduced) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === ADVANCED: INTERSECTION OBSERVER ANIMATIONS === */
+
+/* Elements that animate on scroll/intersection */
+.animate-on-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animate-on-enter.in-view {
+  animation: slideInUp var(--duration-standard) var(--ease-out-cubic) forwards;
+}
+
+/* === PARALLAX EFFECT (subtle depth) === */
+
+.parallax {
+  will-change: transform;
+  transition: transform var(--duration-standard) var(--ease-smooth);
+}
+
+/* === ACCESSIBILITY: FOCUS MANAGEMENT === */
+
+/* Visible focus indicator for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #7dd4a8;
+  outline-offset: 2px;
+}
+
+/* Don't show outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Improve focus ring visibility on dark backgrounds */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #7dd4a8;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(125, 212, 168, 0.15);
+}
+
+/* === TOUCH INTERACTIONS (for mobile) === */
+
+/* Increase touch target size to 44x44px minimum */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  .btn,
+  [role="button"],
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-width: 44px;
+    min-height: 44px;
+    padding: max(12px, (100% - var(--target-size)) / 2);
+    --target-size: 44px;
+  }
+
+  /* Larger active state feedback on touch */
+  button:active,
+  .btn:active,
+  [role="button"]:active {
+    transform: scale(0.98);
+  }
+}
+
+/* === PERFORMANCE OPTIMIZATION === */
+
+/* Use will-change for animated elements */
+.animate-fade-in,
+.animate-slide-in-up,
+.animate-scale-in,
+.animate-badge-unlock {
+  will-change: opacity, transform;
+}
+
+/* GPU acceleration for smooth animations */
+.animate-smooth {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
