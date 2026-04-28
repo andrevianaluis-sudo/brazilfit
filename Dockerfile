@@ -1,16 +1,13 @@
-FROM node:22-alpine AS frontend-builder
-WORKDIR /frontend
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/ ./
-RUN NODE_ENV=production npm run build
-
 FROM node:22-alpine
 WORKDIR /app
+
+# Copy backend
 COPY backend/package*.json ./
 RUN npm install
 COPY backend/ ./
-COPY --from=frontend-builder /frontend/dist ./frontend-dist
+
+# Copy pre-built frontend dist
+COPY frontend/dist ./frontend-dist
 
 ENV PORT=3001
 EXPOSE 3001

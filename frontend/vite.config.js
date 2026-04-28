@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// Force rebuild - API URL fix
 export default defineConfig({
   plugins: [react()],
   server: {
