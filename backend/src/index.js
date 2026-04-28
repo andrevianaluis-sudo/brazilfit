@@ -104,13 +104,24 @@ app.use(express.urlencoded({ extended: true }));
 getDb();
 
 // Serve frontend static files BEFORE API routes
-console.log('Current directory:', __dirname);
-const distPath = path.join(__dirname, '../../frontend/dist');
-console.log('Dist path resolved to:', distPath);
-console.log('Files in dist:', fs.existsSync(path.join(__dirname, '../../frontend/dist')) ?
-  fs.readdirSync(path.join(__dirname, '../../frontend/dist')) : 'DIST NOT FOUND');
+// Try multiple possible paths for the dist folder
+const possiblePaths = [
+  path.join(__dirname, '../../frontend/dist'),
+  path.join(__dirname, '../../../frontend/dist'),
+  path.join(process.cwd(), 'frontend/dist'),
+  path.join(process.cwd(), '../frontend/dist'),
+];
 
-if (fs.existsSync(distPath)) {
+let distPath = null;
+for (const p of possiblePaths) {
+  if (fs.existsSync(p)) {
+    distPath = p;
+    console.log('✓ Found dist at:', p);
+    break;
+  }
+}
+
+if (distPath) {
   console.log('✓ Frontend dist directory found');
   const files = fs.readdirSync(distPath);
   console.log('Files in dist:', files);
@@ -125,7 +136,13 @@ if (fs.existsSync(distPath)) {
 
   app.use(express.static(distPath));
 } else {
-  console.error('✗ Frontend dist directory NOT found at:', distPath);
+  console.error('✗ Could not find frontend dist folder!');
+  console.log('CWD:', process.cwd());
+  console.log('__dirname:', __dirname);
+  console.log('Attempted paths:');
+  possiblePaths.forEach(p => {
+    console.log('  -', p, 'exists:', fs.existsSync(p));
+  });
 }
 
 // Routes
@@ -189,13 +206,19 @@ cron.schedule('0 20 * * 1-5', async () => {
 });
 
 // SPA fallback - route all non-API requests to index.html
-app.get('*', (req, res) => {
-  // Don't serve index.html for API routes
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({ error: 'API route not found' });
-  }
-  res.sendFile(path.join(distPath, 'index.html'));
-});
+if (distPath) {
+  app.get('*', (req, res) => {
+    // Don't serve index.html for API routes
+    if (req.path.startsWith('/api')) {
+      return res.status(404).json({ error: 'API route not found' });
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  app.get('*', (req, res) => {
+    res.status(500).json({ error: 'Frontend not available' });
+  });
+}
 
 // Error handler
 app.use((err, req, res, next) => {
