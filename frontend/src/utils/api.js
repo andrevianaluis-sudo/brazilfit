@@ -1,7 +1,13 @@
 import axios from 'axios';
 
-// Use environment variable if available, otherwise use relative URL
-const baseURL = import.meta.env.VITE_API_URL || '/api';
+// Determine API base URL
+// In production (served from backend), use relative /api
+// In development, use the VITE_API_URL environment variable
+let baseURL = '/api';
+if (import.meta.env.DEV && import.meta.env.VITE_API_URL) {
+  baseURL = import.meta.env.VITE_API_URL;
+}
+console.log('API baseURL:', baseURL);
 
 const api = axios.create({
   baseURL,
