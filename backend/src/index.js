@@ -38,38 +38,14 @@ const achievementsRoutes = require('./routes/achievements');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// CORS - Allow localhost, Railway, and configured URLs
+// CORS - Allow Railway domain and localhost for development
 const corsOptions = {
-  origin: function(origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5173',
-      'http://localhost:3001',
-      'https://brazilfit-production.up.railway.app',
-      'http://192.168.1.129:5173'
-    ];
-
-    // Allow any railway.app domain
-    if (origin && origin.includes('railway.app')) {
-      return callback(null, true);
-    }
-
-    // Allow configured FRONTEND_URL
-    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
-      return callback(null, true);
-    }
-
-    // Allow no origin (mobile apps, curl, etc)
-    if (!origin) {
-      return callback(null, true);
-    }
-
-    // Check whitelist
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    callback(new Error('Not allowed by CORS'));
-  },
+  origin: [
+    'https://brazilfit-production.up.railway.app',
+    'http://localhost:5173',
+    'http://localhost:3001',
+    'http://192.168.1.129:5173'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
