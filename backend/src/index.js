@@ -114,7 +114,7 @@ app.use(express.urlencoded({ extended: true }));
 getDb();
 
 // Serve frontend static files BEFORE API routes
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../frontend-dist')));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -179,7 +179,7 @@ cron.schedule('0 20 * * 1-5', async () => {
 // SPA fallback - route all non-API requests to index.html
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend-dist/index.html'));
   }
 });
 

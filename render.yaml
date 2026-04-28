@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: brazilfit-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+
+  - type: web
+    name: brazilfit-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://brazilfit-backend.onrender.com
