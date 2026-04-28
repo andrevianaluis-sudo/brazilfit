@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseURL = `http://${window.location.hostname}:3001/api`;
+// Use environment variable if available, otherwise use relative URL
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
   baseURL,
