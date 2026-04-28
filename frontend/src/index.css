@@ -1,8 +1,8 @@
+@import './styles/pages.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/pages.css';
 
 /* === LUXURY FITNESS DESIGN SYSTEM === */
 :root {
