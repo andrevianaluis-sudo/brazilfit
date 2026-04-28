@@ -31,7 +31,7 @@ import ClientFoodDiary from './pages/client/ClientFoodDiary';
 import ClientWorkoutLog from './pages/client/ClientWorkoutLog';
 import ClientProgramme from './pages/client/ClientProgramme';
 import ClientProgrammes from './pages/client/ClientProgrammes';
-import ClientCheckIn from './pages/client/ClientCheckIn';
+import ClientCheckIn from './pages/client/ClientCheckin';
 import ClientMessages from './pages/client/ClientMessages';
 import ClientWearable from './pages/client/ClientWearable';
 import ClientWorkouts from './pages/client/ClientWorkouts';
