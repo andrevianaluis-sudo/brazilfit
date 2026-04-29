@@ -92,7 +92,7 @@ export default function ClientHome() {
   ];
 
   return (
-    <div style={{ width: '100%', backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ width: '100%', backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', width: '100%' }}>
 
       {/* GREETING */}
       <div style={{ padding: '2.5rem 2rem 2rem' }}>

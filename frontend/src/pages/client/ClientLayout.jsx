@@ -209,8 +209,10 @@ export default function ClientLayout() {
         </header>
 
         {/* Content Area */}
-        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#0f0f0f' }}>
-          <Outlet />
+        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#0a0a0a' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+            <Outlet />
+          </div>
         </main>
       </div>
 

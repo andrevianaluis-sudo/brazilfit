@@ -193,7 +193,7 @@ export default function ClientSessions() {
   const limitedHistory = user?.isPro ? history : history.slice(0, 5);
 
   return (
-    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', width: '100%' }}>
 
       {/* Header */}
       <div style={{ padding: '2rem 2rem 1.5rem' }}>
