@@ -1,9 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Trophy } from 'lucide-react';
+import { Trophy, ArrowRight } from 'lucide-react';
 import api from '../../utils/api';
 import BackButton from '../../components/BackButton';
+
+const BG = '#141414';
+const SURFACE = '#1e1e1e';
+const SURFACE2 = '#272727';
+const BORDER = 'rgba(255,255,255,0.1)';
+const TEXT = '#ffffff';
+const MUTED = '#707070';
+const ORANGE = '#FF6B2B';
+const YELLOW = '#FFD600';
+const GREEN = '#4CAF50';
+
+const MEDAL = { 1: '🥇', 2: '🥈', 3: '🥉' };
+const MEDAL_COLOR = { 1: '#FFD600', 2: '#c0c0c0', 3: '#cd7f32' };
 
 export default function ClientLeaderboard() {
   const { user } = useAuth();
@@ -13,9 +26,7 @@ export default function ClientLeaderboard() {
   const [userStats, setUserStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchLeaderboardData();
-  }, [leaderboardType]);
+  useEffect(() => { fetchLeaderboardData(); }, [leaderboardType]);
 
   const fetchLeaderboardData = async () => {
     try {
@@ -24,399 +35,169 @@ export default function ClientLeaderboard() {
       const res = await api.get(`/leaderboard?type=${type}`);
       setLeaderboardData(res.data.leaderboard || []);
       setUserStats(res.data.userStats || {});
-    } catch (err) {
-      console.error('Failed to fetch leaderboard:', err);
+    } catch {
       setLeaderboardData([
-        { rank: 1, name: 'Alex', initials: 'A', sessions: 12, sessions_this_week: 5 },
+        { rank: 1, name: 'Alex',   initials: 'A', sessions: 12, sessions_this_week: 5 },
         { rank: 2, name: 'Jordan', initials: 'J', sessions: 11, sessions_this_week: 4 },
-        { rank: 3, name: 'Casey', initials: 'C', sessions: 10, sessions_this_week: 4 },
-        { rank: 4, name: 'Morgan', initials: 'M', sessions: 9, sessions_this_week: 3 },
-        { rank: 5, name: 'Taylor', initials: 'T', sessions: 8, sessions_this_week: 3 },
+        { rank: 3, name: 'Casey',  initials: 'C', sessions: 10, sessions_this_week: 4 },
+        { rank: 4, name: 'Morgan', initials: 'M', sessions: 9,  sessions_this_week: 3 },
+        { rank: 5, name: 'Taylor', initials: 'T', sessions: 8,  sessions_this_week: 3 },
       ]);
-      setUserStats({ total_sessions: 45, sessions_this_week: 3, current_rank: 7 });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getTopAccentColor = (rank) => {
-    if (rank === 1) return '#f9c041'; // Gold
-    if (rank === 2) return '#c0c0c0'; // Silver
-    if (rank === 3) return '#cd7f32'; // Bronze
-    return '#2d7a5c'; // Green for others
+      setUserStats({ total_sessions: 45, sessions_this_week: 3, current_rank: 7, streak: 4, checkins: 12 });
+    } finally { setLoading(false); }
   };
 
   return (
-    <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingBottom: '100px' }}>
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+    <div style={{ backgroundColor: BG, minHeight: '100vh', paddingBottom: '6rem' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 1.25rem' }}>
+        <BackButton to="/client" />
 
-      {/* Hero Banner */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #1a4a3a 0%, #7dd4a8 100%)',
-          padding: '40px 20px',
-          color: 'white',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <Trophy size={24} />
-            <span style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.9 }}>
-              Leaderboard
-            </span>
+        {/* Header */}
+        <div style={{ margin: '1.25rem 0 1.5rem' }}>
+          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Community</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Trophy size={20} color={YELLOW} />
+            <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Leaderboard</h1>
           </div>
-          <h1 style={{ fontSize: '36px', fontWeight: 800, color: 'white', margin: '0 0 4px 0', lineHeight: 1.1 }}>
-            See How You Rank
-          </h1>
-          <p style={{ fontSize: '13px', opacity: 0.9, margin: 0 }}>
-            Train harder and climb the rankings
-          </p>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 20px' }}>
-        {/* My Stats Card */}
+        {/* My stats card */}
         <div style={{
-          background: 'linear-gradient(135deg, #1a4a3a 0%, #2d7a5c 100%)',
-          borderRadius: '16px',
-          padding: '28px',
-          marginBottom: '32px',
-          color: 'white',
-          position: 'relative',
-          overflow: 'hidden',
+          background: `linear-gradient(135deg, ${ORANGE}22, ${YELLOW}11)`,
+          border: `1px solid ${ORANGE}33`,
+          borderRadius: '16px', padding: '1.5rem', marginBottom: '1.5rem',
+          position: 'relative', overflow: 'hidden',
         }}>
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, rgba(125, 212, 168, 0.6), transparent)',
-          }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, transparent, ${ORANGE}, transparent)` }} />
 
-          <div style={{ textAlign: 'center', marginBottom: '24px', position: 'relative', zIndex: 1 }}>
-            <p style={{ fontSize: '48px', fontWeight: 800, margin: 0, lineHeight: 1 }}>
+          <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '3.5rem', fontWeight: 800, color: ORANGE, letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>
               {userStats?.total_sessions || 0}
             </p>
-            <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.8, margin: '8px 0 0 0' }}>
-              Sessions Completed
-            </p>
+            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '6px 0 0' }}>Sessions Completed</p>
           </div>
 
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            borderTop: '1px solid rgba(125, 212, 168, 0.3)',
-            paddingTop: '16px',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 4px 0' }}>
-                {userStats?.streak || 0}
-              </p>
-              <p style={{ fontSize: '11px', opacity: 0.8, margin: 0 }}>Week Streak</p>
-            </div>
-            <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(125, 212, 168, 0.3)' }} />
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 4px 0' }}>
-                {userStats?.checkins || 0}
-              </p>
-              <p style={{ fontSize: '11px', opacity: 0.8, margin: 0 }}>Check-ins</p>
-            </div>
-            <div style={{ width: '1px', height: '30px', backgroundColor: 'rgba(125, 212, 168, 0.3)' }} />
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 4px 0' }}>
-                #{userStats?.current_rank || '?'}
-              </p>
-              <p style={{ fontSize: '11px', opacity: 0.8, margin: 0 }}>Your Rank</p>
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderTop: `1px solid ${BORDER}`, paddingTop: '1rem' }}>
+            {[
+              { value: userStats?.streak || 0, label: 'Week Streak' },
+              { value: userStats?.checkins || 0, label: 'Check-ins' },
+              { value: `#${userStats?.current_rank || '?'}`, label: 'Your Rank', highlight: true },
+            ].map((s, i) => (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.4rem', fontWeight: 800, color: s.highlight ? ORANGE : TEXT, letterSpacing: '-0.03em', margin: '0 0 4px' }}>{s.value}</p>
+                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Toggle Buttons */}
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '28px' }}>
-          <button
-            onClick={() => setLeaderboardType('weekly')}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              backgroundColor: leaderboardType === 'weekly' ? '#1a4a3a' : '#f3f4f6',
-              color: leaderboardType === 'weekly' ? 'white' : '#6b7280',
-              border: 'none',
-              borderRadius: '24px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontSize: '14px',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              if (leaderboardType !== 'weekly') {
-                e.target.style.backgroundColor = '#e5e7eb';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (leaderboardType !== 'weekly') {
-                e.target.style.backgroundColor = '#f3f4f6';
-              }
-            }}
-          >
-            This Week
-          </button>
-          <button
-            onClick={() => setLeaderboardType('alltime')}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              backgroundColor: leaderboardType === 'alltime' ? '#1a4a3a' : '#f3f4f6',
-              color: leaderboardType === 'alltime' ? 'white' : '#6b7280',
-              border: 'none',
-              borderRadius: '24px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontSize: '14px',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => {
-              if (leaderboardType !== 'alltime') {
-                e.target.style.backgroundColor = '#e5e7eb';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (leaderboardType !== 'alltime') {
-                e.target.style.backgroundColor = '#f3f4f6';
-              }
-            }}
-          >
-            All Time
-          </button>
+        {/* Toggle */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '1.5rem', backgroundColor: SURFACE, borderRadius: '10px', padding: '4px' }}>
+          {[['weekly', 'This Week'], ['alltime', 'All Time']].map(([key, label]) => (
+            <button key={key} onClick={() => setLeaderboardType(key)} style={{
+              flex: 1, padding: '0.7rem', borderRadius: '8px', border: 'none',
+              backgroundColor: leaderboardType === key ? ORANGE : 'transparent',
+              color: leaderboardType === key ? '#000' : MUTED,
+              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 700,
+              cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto',
+            }}>{label}</button>
+          ))}
         </div>
 
-        {/* Leaderboard List */}
-        <div>
-          <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#1a1a1a', margin: '0 0 16px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            {leaderboardType === 'weekly' ? 'Weekly Leaders' : 'All Time Leaders'}
-          </h2>
+        {/* List header */}
+        <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>
+          {leaderboardType === 'weekly' ? 'Weekly Leaders' : 'All Time Leaders'}
+        </p>
 
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              <div style={{ display: 'inline-block', width: '32px', height: '32px', border: '4px solid #1a4a3a', borderTop: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-            </div>
-          ) : (
-            <>
-              {leaderboardData.map((entry, index) => {
-                const isCurrentUser = user?.clientId === entry.client_id;
-                const sessions = leaderboardType === 'weekly' ? entry.sessions_this_week : entry.attended_sessions || entry.sessions;
-                const accentColor = getTopAccentColor(entry.rank);
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
+            <div style={{ width: '20px', height: '20px', border: `2px solid ${ORANGE}`, borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {leaderboardData.map((entry, index) => {
+              const isCurrentUser = user?.clientId === entry.client_id;
+              const sessions = leaderboardType === 'weekly' ? entry.sessions_this_week : (entry.attended_sessions || entry.sessions);
+              const medalColor = MEDAL_COLOR[entry.rank] || ORANGE;
+              const initials = entry.initials || entry.name?.substring(0, 1) || '?';
 
-                return (
-                  <div
-                    key={entry.client_id || index}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '16px 16px',
-                      backgroundColor: isCurrentUser ? '#1a4a3a' : 'white',
-                      borderRadius: '12px',
-                      marginBottom: '12px',
-                      border: isCurrentUser ? '1px solid #2d7a5c' : '1px solid #f0f0f0',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    {/* Rank */}
-                    <div style={{
-                      minWidth: '40px',
-                      textAlign: 'center',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                      <span style={{
-                        fontSize: '16px',
-                        fontWeight: 700,
-                        color: isCurrentUser ? 'white' : accentColor,
-                      }}>
-                        {entry.rank <= 3 ? (
-                          entry.rank === 1 ? '🥇' : entry.rank === 2 ? '🥈' : '🥉'
-                        ) : (
-                          `#${entry.rank}`
-                        )}
-                      </span>
-                    </div>
-
-                    {/* Avatar */}
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      backgroundColor: accentColor,
-                      border: `2px solid ${isCurrentUser ? '#7dd4a8' : 'transparent'}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      marginLeft: '12px',
-                      marginRight: '12px',
-                      flexShrink: 0,
-                    }}>
-                      {entry.initials || entry.name?.substring(0, 1) || '?'}
-                    </div>
-
-                    {/* Name */}
-                    <div style={{ flex: 1 }}>
-                      <p style={{
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        color: isCurrentUser ? 'white' : '#1a1a1a',
-                        margin: 0,
-                      }}>
-                        {isCurrentUser ? 'You' : (entry.is_anonymous ? 'Member' : (entry.name || 'Anonymous'))}
-                      </p>
-                    </div>
-
-                    {/* Sessions */}
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{
-                        fontSize: '15px',
-                        fontWeight: 700,
-                        color: isCurrentUser ? '#7dd4a8' : '#1a4a3a',
-                        margin: 0,
-                      }}>
-                        {sessions}
-                      </p>
-                      <p style={{
-                        fontSize: '11px',
-                        color: isCurrentUser ? 'rgba(255, 255, 255, 0.7)' : '#6b7280',
-                        margin: '2px 0 0 0',
-                      }}>
-                        sessions
-                      </p>
-                    </div>
+              return (
+                <div key={entry.client_id || index} style={{
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  padding: '0.875rem 1rem', borderRadius: '10px',
+                  backgroundColor: isCurrentUser ? `${ORANGE}18` : SURFACE,
+                  border: `1px solid ${isCurrentUser ? `${ORANGE}44` : BORDER}`,
+                  transition: 'all 0.15s ease',
+                }}>
+                  {/* Rank */}
+                  <div style={{ width: '32px', textAlign: 'center', flexShrink: 0 }}>
+                    {entry.rank <= 3 ? (
+                      <span style={{ fontSize: '1.25rem' }}>{MEDAL[entry.rank]}</span>
+                    ) : (
+                      <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: MUTED }}>#{entry.rank}</span>
+                    )}
                   </div>
-                );
-              })}
 
-              {/* Current User Position if outside top 10 */}
-              {leaderboardData.length > 0 && userStats?.current_rank > 10 && (
-                <>
-                  <div style={{ textAlign: 'center', color: '#d1d5db', fontSize: '14px', margin: '20px 0 20px 0' }}>
-                    • • •
+                  {/* Avatar */}
+                  <div style={{
+                    width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
+                    backgroundColor: isCurrentUser ? ORANGE : `${medalColor}22`,
+                    border: `1px solid ${isCurrentUser ? ORANGE : medalColor}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: "'Clash Display', system-ui", fontSize: '0.8rem', fontWeight: 800,
+                    color: isCurrentUser ? '#000' : medalColor,
+                  }}>{initials}</div>
+
+                  {/* Name */}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: isCurrentUser ? ORANGE : TEXT, margin: 0 }}>
+                      {isCurrentUser ? 'You' : (entry.is_anonymous ? 'Member' : (entry.name || 'Anonymous'))}
+                    </p>
                   </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '16px 16px',
-                      backgroundColor: '#1a4a3a',
-                      borderRadius: '12px',
-                      border: '1px solid #2d7a5c',
-                    }}
-                  >
-                    <div style={{
-                      minWidth: '40px',
-                      textAlign: 'center',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                      <span style={{
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        color: 'white',
-                      }}>
-                        #{userStats?.current_rank}
-                      </span>
-                    </div>
 
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      backgroundColor: '#2d7a5c',
-                      border: '2px solid #7dd4a8',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      marginLeft: '12px',
-                      marginRight: '12px',
-                      flexShrink: 0,
-                    }}>
-                      {user?.name?.substring(0, 1) || '?'}
-                    </div>
-
-                    <div style={{ flex: 1 }}>
-                      <p style={{
-                        fontSize: '15px',
-                        fontWeight: 600,
-                        color: 'white',
-                        margin: 0,
-                      }}>
-                        You
-                      </p>
-                    </div>
-
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{
-                        fontSize: '15px',
-                        fontWeight: 700,
-                        color: '#7dd4a8',
-                        margin: 0,
-                      }}>
-                        {leaderboardType === 'weekly' ? userStats?.sessions_this_week : userStats?.total_sessions}
-                      </p>
-                      <p style={{
-                        fontSize: '11px',
-                        color: 'rgba(255, 255, 255, 0.7)',
-                        margin: '2px 0 0 0',
-                      }}>
-                        sessions
-                      </p>
-                    </div>
+                  {/* Sessions */}
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: isCurrentUser ? ORANGE : TEXT, margin: 0, letterSpacing: '-0.02em' }}>{sessions}</p>
+                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
                   </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
+                </div>
+              );
+            })}
 
-        {/* View Achievements Button */}
-        <button
-          onClick={() => navigate('/client/achievements')}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: '#1a4a3a',
-            color: 'white',
-            fontWeight: 600,
-            border: 'none',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            fontSize: '15px',
-            marginTop: '32px',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = '#0f3a2a';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = '#1a4a3a';
-          }}
-        >
-          View Achievements
+            {/* User outside top 10 */}
+            {leaderboardData.length > 0 && userStats?.current_rank > 10 && (
+              <>
+                <div style={{ textAlign: 'center', color: MUTED, fontSize: '1rem', padding: '0.5rem 0' }}>• • •</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.875rem 1rem', borderRadius: '10px', backgroundColor: `${ORANGE}18`, border: `1px solid ${ORANGE}44` }}>
+                  <div style={{ width: '32px', textAlign: 'center', flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>#{userStats?.current_rank}</span>
+                  </div>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: ORANGE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Clash Display', system-ui", fontSize: '0.8rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+                    {user?.name?.substring(0, 1) || '?'}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: ORANGE, margin: 0 }}>You</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: ORANGE, margin: 0 }}>{leaderboardType === 'weekly' ? userStats?.sessions_this_week : userStats?.total_sessions}</p>
+                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Achievements button */}
+        <button onClick={() => navigate('/client/achievements')} style={{
+          width: '100%', padding: '1rem', marginTop: '1.5rem',
+          background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+          border: 'none', borderRadius: '10px', color: '#000',
+          fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 800,
+          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: '8px', minHeight: 'auto', transition: 'all 0.15s',
+        }}>
+          <Trophy size={16} /> View Achievements <ArrowRight size={15} />
         </button>
       </div>
     </div>

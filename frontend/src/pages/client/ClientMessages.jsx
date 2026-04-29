@@ -4,6 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
+const BG = '#141414';
+const SURFACE = '#1e1e1e';
+const SURFACE2 = '#272727';
+const BORDER = 'rgba(255,255,255,0.08)';
+const TEXT = '#ffffff';
+const MUTED = '#707070';
+const ORANGE = '#FF6B2B';
+const GREEN = '#4CAF50';
+
 export default function ClientMessages() {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -20,12 +29,8 @@ export default function ClientMessages() {
   }, []);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, [messages]);
 
   const fetchMessages = async () => {
     try {
@@ -33,10 +38,7 @@ export default function ClientMessages() {
       setMessages(res.data.messages || []);
       setPt(res.data.pt);
       setLoading(false);
-    } catch (err) {
-      console.error('Failed to load messages:', err);
-      setLoading(false);
-    }
+    } catch { setLoading(false); }
   };
 
   const handleSend = async () => {
@@ -46,73 +48,143 @@ export default function ClientMessages() {
       await api.post('/messages', { message_text: newMessage });
       setNewMessage('');
       await fetchMessages();
-      toast.success('Message sent');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to send message');
-    } finally {
-      setSending(false);
-    }
+    } finally { setSending(false); }
   };
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div style={{ width: '2rem', height: '2rem', border: '3px solid #1a4a3a', borderTop: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-      </div>
-    );
-  }
+  if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: BG }}>
+      <div style={{ width: '20px', height: '20px', border: `2px solid ${ORANGE}`, borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+    </div>
+  );
 
-  if (!pt) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <button onClick={() => navigate('/client')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', background: 'none', border: 'none', color: '#1a4a3a', cursor: 'pointer', fontSize: '0.875rem', fontWeight: '500' }}>
-          <ArrowLeft style={{ width: '1rem', height: '1rem' }} />
-          Back
-        </button>
-        <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👤</div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>No PT Assigned</h2>
-          <p style={{ color: '#6b7280', marginBottom: '2rem' }}>You don't have a PT assigned yet. Contact your gym to get started.</p>
-        </div>
+  if (!pt) return (
+    <div style={{ backgroundColor: BG, minHeight: '100vh', padding: '2rem 1.5rem' }}>
+      <button onClick={() => navigate('/client')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 500, marginBottom: '3rem', padding: 0, minHeight: 'auto' }}>
+        <ArrowLeft size={16} /> Back
+      </button>
+      <div style={{ textAlign: 'center', maxWidth: '360px', margin: '0 auto' }}>
+        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👤</div>
+        <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>No PT Assigned</h2>
+        <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.85rem', color: MUTED, margin: 0, lineHeight: 1.6 }}>You don't have a PT assigned yet. Contact your gym to get started.</p>
       </div>
-    );
-  }
+    </div>
+  );
+
+  const ptInitials = pt.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'PT';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#f8faf9' }}>
-      <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <button onClick={() => navigate('/client')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem', display: 'flex', alignItems: 'center', color: '#1a4a3a' }}>
-          <ArrowLeft style={{ width: '1.25rem', height: '1.25rem' }} />
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: BG }}>
+
+      {/* Header */}
+      <div style={{ padding: '0 1.5rem', height: '64px', backgroundColor: '#111111', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
+        <button onClick={() => navigate('/client')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '6px', display: 'flex', alignItems: 'center', color: MUTED, minHeight: 'auto', minWidth: 'auto', transition: 'color 0.15s' }}
+          onMouseEnter={e => e.currentTarget.style.color = TEXT}
+          onMouseLeave={e => e.currentTarget.style.color = MUTED}>
+          <ArrowLeft size={18} />
         </button>
+
+        {/* PT Avatar */}
+        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: `linear-gradient(135deg, ${ORANGE}, #FF8C55)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+          {ptInitials}
+        </div>
+
         <div>
-          <h1 style={{ fontSize: '1rem', fontWeight: '600', color: '#1a1a1a', margin: 0 }}>{pt.name}</h1>
-          <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0 0 0' }}>{pt.email}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT, margin: 0, letterSpacing: '-0.01em' }}>{pt.name}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: GREEN, margin: 0, fontWeight: 600 }}>Your Personal Trainer</p>
+        </div>
+
+        {/* Online dot */}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: GREEN, boxShadow: `0 0 6px ${GREEN}` }} />
+          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: GREEN, fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>Online</p>
         </div>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {/* Messages */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {messages.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
-            <p>No messages yet. Send one to get started!</p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: SURFACE, border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', fontSize: '1.5rem' }}>💬</div>
+            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>No messages yet</p>
+            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0, opacity: 0.7 }}>Send a message to get started!</p>
           </div>
         ) : (
-          messages.map((msg) => (
-            <div key={msg.id} style={{ display: 'flex', justifyContent: msg.sender_type === 'client' ? 'flex-end' : 'flex-start' }}>
-              <div style={{ maxWidth: '70%', padding: '0.75rem 1rem', borderRadius: '0.75rem', backgroundColor: msg.sender_type === 'client' ? '#1a4a3a' : '#e5e7eb', color: msg.sender_type === 'client' ? '#ffffff' : '#1a1a1a', wordBreak: 'break-word' }}>
-                <p style={{ margin: 0, fontSize: '0.875rem' }}>{msg.message_text}</p>
-                <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.7rem', opacity: 0.7 }}>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-              </div>
+          <>
+            {/* Date separator */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '0.5rem 0' }}>
+              <div style={{ flex: 1, height: '1px', backgroundColor: BORDER }} />
+              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 600, color: MUTED, margin: 0, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Today</p>
+              <div style={{ flex: 1, height: '1px', backgroundColor: BORDER }} />
             </div>
-          ))
+
+            {messages.map((msg) => {
+              const isClient = msg.sender_type === 'client';
+              return (
+                <div key={msg.id} style={{ display: 'flex', justifyContent: isClient ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '8px' }}>
+                  {/* PT avatar */}
+                  {!isClient && (
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: `linear-gradient(135deg, ${ORANGE}, #FF8C55)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+                      {ptInitials}
+                    </div>
+                  )}
+
+                  <div style={{ maxWidth: '70%' }}>
+                    <div style={{
+                      padding: '0.7rem 1rem',
+                      borderRadius: isClient ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                      backgroundColor: isClient ? ORANGE : SURFACE2,
+                      border: isClient ? 'none' : `1px solid ${BORDER}`,
+                      wordBreak: 'break-word',
+                    }}>
+                      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: isClient ? '#000' : TEXT, margin: 0, lineHeight: 1.5, fontWeight: isClient ? 500 : 400 }}>{msg.message_text}</p>
+                    </div>
+                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: '4px 0 0', textAlign: isClient ? 'right' : 'left' }}>
+                      {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
-      <div style={{ padding: '1rem', backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <textarea value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Type your message..." onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }} style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid #e5e7eb', borderRadius: '0.5rem', fontFamily: 'Satoshi, system-ui, sans-serif', fontSize: '0.875rem', resize: 'none', height: '3rem', color: '#1a1a1a' }} />
-          <button onClick={handleSend} disabled={!newMessage.trim() || sending} style={{ padding: '0.75rem 1rem', backgroundColor: newMessage.trim() && !sending ? '#1a4a3a' : '#d1d5db', color: '#ffffff', border: 'none', borderRadius: '0.5rem', cursor: newMessage.trim() && !sending ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'Satoshi, system-ui, sans-serif', fontSize: '0.875rem', fontWeight: '500', transition: 'background-color 0.2s' }}>
-            <Send style={{ width: '1rem', height: '1rem' }} />
+      {/* Input */}
+      <div style={{ padding: '1rem 1.5rem', backgroundColor: '#111111', borderTop: `1px solid ${BORDER}`, flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+          <textarea
+            value={newMessage}
+            onChange={e => setNewMessage(e.target.value)}
+            placeholder="Message your PT..."
+            onKeyPress={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+            rows={1}
+            style={{
+              flex: 1, padding: '0.75rem 1rem',
+              border: `1px solid ${BORDER}`, borderRadius: '10px',
+              backgroundColor: SURFACE2, color: TEXT,
+              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem',
+              resize: 'none', outline: 'none', lineHeight: 1.5,
+              transition: 'border-color 0.15s',
+            }}
+            onFocus={e => e.target.style.borderColor = ORANGE}
+            onBlur={e => e.target.style.borderColor = BORDER}
+          />
+          <button
+            onClick={handleSend}
+            disabled={!newMessage.trim() || sending}
+            style={{
+              width: '42px', height: '42px', borderRadius: '10px', border: 'none',
+              backgroundColor: newMessage.trim() && !sending ? ORANGE : SURFACE2,
+              color: newMessage.trim() && !sending ? '#000' : MUTED,
+              cursor: newMessage.trim() && !sending ? 'pointer' : 'not-allowed',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, transition: 'all 0.15s ease', minHeight: 'auto', minWidth: 'auto',
+            }}
+          >
+            <Send size={16} />
           </button>
         </div>
       </div>
