@@ -8,12 +8,12 @@ import { useState, useEffect, useRef } from 'react';
 import api from '../../utils/api';
 
 const navigationItems = [
-  { icon: Calendar, label: 'Schedule', to: '/pt', exact: true },
-  { icon: Users, label: 'Clients', to: '/pt/clients' },
-  { icon: Dumbbell, label: 'Workouts', to: '/pt/workouts' },
-  { icon: DollarSign, label: 'Income', to: '/pt/income' },
-  { icon: BarChart3, label: 'Analytics', to: '/pt/analytics' },
-  { icon: BookOpen, label: 'Exercise Library', to: '/pt/exercises' },
+  { icon: Calendar, label: 'Schedule',        to: '/pt',           exact: true },
+  { icon: Users,    label: 'Clients',          to: '/pt/clients'                },
+  { icon: Dumbbell, label: 'Workouts',         to: '/pt/workouts'               },
+  { icon: DollarSign, label: 'Income',         to: '/pt/income'                 },
+  { icon: BarChart3,  label: 'Analytics',      to: '/pt/analytics'              },
+  { icon: BookOpen,   label: 'Exercise Library', to: '/pt/exercises'            },
 ];
 
 export default function PTLayout() {
@@ -29,9 +29,7 @@ export default function PTLayout() {
       try {
         const res = await api.get('/pt/notifications');
         setUnreadCount(res.data.unreadCount || 0);
-      } catch {
-        // silent
-      }
+      } catch {}
     };
     fetchNotifications();
     pollRef.current = setInterval(fetchNotifications, 30000);
@@ -43,127 +41,146 @@ export default function PTLayout() {
     return location.pathname.startsWith(to);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const handleLogout = () => { logout(); navigate('/login'); };
+  const currentLabel = navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Schedule';
+  const initials = user?.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'PT';
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div style={{ minHeight: '100vh', backgroundColor: '#141414', display: 'flex' }}>
+
       {/* Sidebar */}
-      <aside className={`fixed md:relative z-30 left-0 top-0 h-screen w-64 text-white flex flex-col transition-transform ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-      }`}
-      style={{ backgroundColor: '#1A1A2E' }}>
-        {/* Header */}
-        <div className="px-6 py-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="bg-brazil-green p-2 rounded-lg">
-              <Zap className="w-6 h-6 text-white fill-white" />
+      <aside
+        className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+        style={{
+          position: 'fixed', left: 0, top: 0, height: '100vh', width: '240px',
+          backgroundColor: '#111111', borderRight: '1px solid rgba(255,255,255,0.06)',
+          display: 'flex', flexDirection: 'column', zIndex: 30,
+          transition: 'transform 0.25s ease',
+        }}
+      >
+        {/* Logo */}
+        <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', padding: '7px', borderRadius: '8px', display: 'flex', boxShadow: '0 4px 12px rgba(255,107,43,0.3)' }}>
+              <Zap style={{ width: '16px', height: '16px', color: '#000', fill: '#000' }} />
             </div>
             <div>
-              <h1 className="text-xl font-black leading-none">BrazilFit</h1>
-              <p className="text-grey-200 text-[10px] mt-0.5">PT Dashboard</p>
+              <h1 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.03em', fontFamily: "'Clash Display', system-ui" }}>BrazilFit</h1>
+              <p style={{ fontSize: '0.6rem', color: '#FF6B2B', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700 }}>PT Dashboard</p>
             </div>
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        {/* Nav */}
+        <nav style={{ flex: 1, padding: '1rem 0.75rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.to, item.exact);
             return (
-              <button
-                key={item.to}
-                onClick={() => {
-                  navigate(item.to);
-                  setSidebarOpen(false);
+              <button key={item.to} onClick={() => { navigate(item.to); setSidebarOpen(false); }}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+                  backgroundColor: active ? '#FF6B2B' : 'transparent',
+                  color: active ? '#000' : '#707070',
+                  fontWeight: active ? 700 : 500, fontSize: '0.85rem', textAlign: 'left',
+                  minHeight: 'auto', transition: 'all 0.15s ease',
+                  fontFamily: "'Satoshi', system-ui",
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  active
-                    ? 'bg-brazil-green text-black font-bold'
-                    : 'text-grey-200 hover:text-white hover:bg-white/5'
-                }`}
+                onMouseEnter={e => { if (!active) { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; } }}
+                onMouseLeave={e => { if (!active) { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; } }}
               >
-                <Icon className="w-5 h-5" />
-                <span className="text-sm font-medium">{item.label}</span>
+                <Icon style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+                <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-white/10 px-4 py-6 space-y-2">
-          <button
-            onClick={() => {
-              navigate('/pt/settings');
-              setSidebarOpen(false);
-            }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-grey-200 hover:text-white hover:bg-white/5 transition-all"
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <button onClick={() => { navigate('/pt/settings'); setSidebarOpen(false); }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'Satoshi', system-ui" }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
-            <Settings className="w-5 h-5" />
-            <span className="text-sm font-medium">Settings</span>
+            <Settings style={{ width: '16px', height: '16px' }} />
+            <span>Settings</span>
           </button>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-grey-200 hover:text-white hover:bg-white/5 transition-all"
+          <button onClick={handleLogout}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'Satoshi', system-ui" }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,67,67,0.1)'; e.currentTarget.style.color = '#ef4444'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-sm font-medium">Sign Out</span>
+            <LogOut style={{ width: '16px', height: '16px' }} />
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Header */}
-        <header className="bg-white border-b border-grey-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 hover:bg-grey-300 rounded-lg transition"
-            >
-              {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      {/* Main */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', transition: 'margin 0.25s ease' }} className="md:ml-60">
+
+        {/* Header */}
+        <header style={{
+          backgroundColor: '#111111', borderBottom: '1px solid rgba(255,255,255,0.06)',
+          padding: '0 1.25rem', height: '60px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          position: 'sticky', top: 0, zIndex: 20,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden"
+              style={{ padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
+              {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <h2 className="text-xl font-black text-black hidden md:block">
-              {navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Schedule'}
+            <h2 className="hidden md:block" style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.01em' }}>
+              {currentLabel}
             </h2>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Notifications */}
-            <button className="relative p-2 hover:bg-grey-300 rounded-lg transition">
-              <Bell className="w-5 h-5 text-grey-200" />
+            <button style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
+              <Bell size={18} />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-5 h-5 bg-brazil-green text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span style={{
+                  position: 'absolute', top: '4px', right: '4px',
+                  minWidth: '16px', height: '16px', padding: '0 3px',
+                  background: 'linear-gradient(135deg, #FF6B2B, #FFD600)',
+                  color: '#000', fontSize: '0.55rem', fontWeight: 800,
+                  borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
             </button>
 
             {/* PT Avatar */}
-            <div className="flex items-center gap-2 px-3 py-2 bg-grey-300 rounded-lg">
-              <div className="w-8 h-8 rounded-full bg-brazil-green flex items-center justify-center text-white text-sm font-bold">
-                PT
-              </div>
-              <span className="text-sm font-bold text-black hidden sm:inline">{user?.name || 'PT'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 10px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+              <div style={{
+                width: '30px', height: '30px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #FF6B2B, #FFD600)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '0.7rem', fontWeight: 800, color: '#000',
+              }}>{initials}</div>
+              <span className="hidden sm:inline" style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', fontWeight: 700, color: '#fff' }}>{user?.name || 'PT'}</span>
             </div>
           </div>
         </header>
 
-        {/* Content Area */}
-        <main className="flex-1 overflow-auto">
-          <Outlet />
+        {/* Content */}
+        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#141414' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+            <Outlet />
+          </div>
         </main>
       </div>
 
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 md:hidden z-20"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <div className="md:hidden" style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 20 }}
+          onClick={() => setSidebarOpen(false)} />
       )}
     </div>
   );
