@@ -569,3 +569,53 @@ button:active { transform: scale(0.96); }
 @media (max-height: 500px) and (orientation: landscape) {
   h1, h2 { margin: 0; }
 }
+
+/* === NUCLEAR DARK MODE OVERRIDES === */
+/* Force dark backgrounds everywhere */
+.min-h-screen,
+.flex-1,
+main,
+.overflow-auto,
+[class*="bg-white"],
+[class*="bg-gray-50"],
+[class*="bg-gray-100"] {
+  background-color: #0f0f0f !important;
+}
+
+/* White cards become dark surfaces */
+.bg-white {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.bg-gray-50 { background-color: #111111 !important; }
+.bg-gray-100 { background-color: #1a1a1a !important; }
+.bg-gray-200 { background-color: #242424 !important; }
+
+/* Text overrides */
+.text-black { color: #ffffff !important; }
+.text-gray-900 { color: #ffffff !important; }
+.text-gray-800 { color: #e0e0e0 !important; }
+.text-gray-700 { color: #c0c0c0 !important; }
+.text-gray-600 { color: #a0a0a0 !important; }
+.text-gray-500 { color: #606060 !important; }
+
+/* Border overrides */
+.border-gray-100,
+.border-gray-200,
+.border-grey-100 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Header specifically */
+header.bg-white,
+header.sticky {
+  background-color: #111111 !important;
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+
+/* hover states */
+.hover\:bg-grey-300:hover,
+.hover\:bg-gray-100:hover {
+  background-color: rgba(255,255,255,0.05) !important;
+}
