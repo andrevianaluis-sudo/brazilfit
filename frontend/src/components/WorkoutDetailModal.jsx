@@ -156,7 +156,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
 
                 {/* Expanded content */}
                 {isExpanded && (
-                  <div style={{ backgroundColor: '#0a0a0a', borderTop: '1px solid #141414', borderBottom: '1px solid #141414' }}>
+                  <div style={{ backgroundColor: '#141414', borderTop: '1px solid #141414', borderBottom: '1px solid #141414' }}>
 
                     {/* Visual */}
                     {imageInfo.type === 'gif' ? (
@@ -164,7 +164,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                         <img src={`/exercise-gifs/${imageInfo.filename}`} alt={ex.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} loading="lazy" />
                       </div>
                     ) : (muscles.primary.length > 0 || muscles.secondary.length > 0) ? (
-                      <div style={{ display: 'flex', height: '180px', backgroundColor: '#0a0a0a' }}>
+                      <div style={{ display: 'flex', height: '180px', backgroundColor: '#141414' }}>
                         <div style={{ flex: 1 }}>
                           <MuscleDiagram primaryMuscles={muscles.primary} secondaryMuscles={muscles.secondary} view="front" size="medium" />
                         </div>

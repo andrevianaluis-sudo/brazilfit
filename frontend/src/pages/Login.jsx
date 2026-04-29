@@ -48,7 +48,7 @@ export default function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#0a0a0a',
+      backgroundColor: '#141414',
       display: 'flex',
       position: 'relative',
       overflow: 'hidden',
