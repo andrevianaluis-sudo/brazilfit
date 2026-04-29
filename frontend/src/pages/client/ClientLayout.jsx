@@ -42,113 +42,174 @@ export default function ClientLayout() {
     navigate('/login');
   };
 
+  const currentLabel = navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Dashboard';
+
   return (
-    <div className="min-h-screen bg-white flex">
+    <div style={{ minHeight: '100vh', backgroundColor: '#0f0f0f', display: 'flex' }}>
+
       {/* Sidebar */}
-      <aside className={`fixed md:relative z-30 left-0 top-0 h-screen w-64 text-white flex flex-col transition-transform ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-      }`}
-      style={{ backgroundColor: '#1A1A2E' }}>
-        {/* Header */}
-        <div className="px-6 py-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="bg-brazil-green p-2 rounded-lg">
-              <Zap className="w-6 h-6 text-white fill-white" />
+      <aside
+        style={{
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          height: '100vh',
+          width: '240px',
+          backgroundColor: '#111111',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: 30,
+          transform: sidebarOpen ? 'translateX(0)' : undefined,
+          transition: 'transform 0.25s ease',
+        }}
+        className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+      >
+        {/* Logo */}
+        <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              background: 'linear-gradient(135deg, #4CAF50, #66BB6A)',
+              padding: '8px',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(76,175,80,0.3)'
+            }}>
+              <Zap style={{ width: '18px', height: '18px', color: '#000', fill: '#000' }} />
             </div>
             <div>
-              <h1 className="text-xl font-black leading-none">BrazilFit</h1>
-              <p className="text-grey-200 text-[10px] mt-0.5">PT Dashboard</p>
+              <h1 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.03em' }}>BrazilFit</h1>
+              <p style={{ fontSize: '0.65rem', color: '#4CAF50', margin: 0, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600 }}>Client Portal</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+        <nav style={{ flex: 1, padding: '1rem 0.75rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.to, item.exact);
             return (
               <button
                 key={item.to}
-                onClick={() => {
-                  navigate(item.to);
-                  setSidebarOpen(false);
+                onClick={() => { navigate(item.to); setSidebarOpen(false); }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  backgroundColor: active ? '#4CAF50' : 'transparent',
+                  color: active ? '#000' : '#707070',
+                  fontWeight: active ? 700 : 500,
+                  fontSize: '0.85rem',
+                  textAlign: 'left',
+                  minHeight: 'auto',
                 }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  active
-                    ? 'bg-brazil-green text-black font-bold'
-                    : 'text-grey-200 hover:text-white hover:bg-white/5'
-                }`}
+                onMouseEnter={e => { if (!active) { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; } }}
+                onMouseLeave={e => { if (!active) { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; } }}
               >
-                <Icon className="w-5 h-5" />
-                <span className="text-sm font-medium">{item.label}</span>
+                <Icon style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+                <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-white/10 px-4 py-6 space-y-2">
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <button
-            onClick={() => {
-              navigate('/client/settings');
-              setSidebarOpen(false);
-            }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-grey-200 hover:text-white hover:bg-white/5 transition-all"
+            onClick={() => { navigate('/client/settings'); setSidebarOpen(false); }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
-            <Settings className="w-5 h-5" />
-            <span className="text-sm font-medium">Settings</span>
+            <Settings style={{ width: '16px', height: '16px' }} />
+            <span>Settings</span>
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-grey-200 hover:text-white hover:bg-white/5 transition-all"
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,67,67,0.1)'; e.currentTarget.style.color = '#FF4444'; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-sm font-medium">Sign Out</span>
+            <LogOut style={{ width: '16px', height: '16px' }} />
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginLeft: '0', transition: 'margin 0.25s ease' }} className="md:ml-60">
+
         {/* Top Header */}
-        <header className="bg-white border-b border-grey-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-          <div className="flex items-center gap-4">
+        <header style={{
+          backgroundColor: '#111111',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          padding: '0 1.25rem',
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'sticky',
+          top: 0,
+          zIndex: 20,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden p-2 hover:bg-grey-300 rounded-lg transition"
+              style={{ padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'auto', minWidth: 'auto' }}
+              className="md:hidden"
             >
-              {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {sidebarOpen ? <X style={{ width: '20px', height: '20px' }} /> : <Menu style={{ width: '20px', height: '20px' }} />}
             </button>
-            <h2 className="text-xl font-black text-black hidden md:block">
-              {navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Dashboard'}
+            <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.01em' }} className="hidden md:block">
+              {currentLabel}
             </h2>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Notifications */}
-            <button className="relative p-2 hover:bg-grey-300 rounded-lg transition">
-              <Bell className="w-5 h-5 text-grey-200" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-brazil-green rounded-full" />
+            <button style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'auto', minWidth: 'auto' }}>
+              <Bell style={{ width: '18px', height: '18px' }} />
+              <span style={{ position: 'absolute', top: '6px', right: '6px', width: '7px', height: '7px', backgroundColor: '#4CAF50', borderRadius: '50%' }} />
             </button>
 
             {/* Profile */}
             <button
               onClick={() => setShowProfileModal(true)}
-              className="flex items-center gap-2 p-2 hover:bg-grey-300 rounded-lg transition"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 10px', borderRadius: '8px', border: 'none', backgroundColor: 'rgba(255,255,255,0.05)', cursor: 'pointer', minHeight: 'auto', minWidth: 'auto', transition: 'background 0.15s ease' }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
             >
-              <div className={`w-9 h-9 rounded-full bg-grey-300 flex items-center justify-center font-bold text-sm ${
-                user?.isPro ? 'ring-2 ring-brazil-green' : ''
-              }`}>
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #4CAF50, #66BB6A)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.7rem',
+                fontWeight: 800,
+                color: '#000',
+                ...(user?.isPro ? { boxShadow: '0 0 0 2px #FF6B2B' } : {})
+              }}>
                 {initials}
               </div>
-              <ChevronRight className="w-4 h-4 text-grey-200" />
+              <ChevronRight style={{ width: '14px', height: '14px', color: '#505050' }} />
             </button>
           </div>
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-auto">
+        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#0f0f0f' }}>
           <Outlet />
         </main>
       </div>
@@ -156,12 +217,12 @@ export default function ClientLayout() {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 md:hidden z-20"
+          style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 20 }}
+          className="md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Profile Modal */}
       <ProfileModal
         isOpen={showProfileModal}
         onClose={() => setShowProfileModal(false)}
