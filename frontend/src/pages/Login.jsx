@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Zap, Eye, EyeOff } from 'lucide-react';
+import { Zap, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 export default function Login() {
   const { login } = useAuth();
@@ -21,11 +21,8 @@ export default function Login() {
     setLoading(true);
     try {
       const user = await login(username, password);
-      if (user.role === 'pt') {
-        navigate('/pt');
-      } else {
-        navigate('/client');
-      }
+      if (user.role === 'pt') navigate('/pt');
+      else navigate('/client');
       toast.success(`Welcome back, ${user.name.split(' ')[0]}!`);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Login failed. Check your credentials.');
@@ -34,288 +31,237 @@ export default function Login() {
     }
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '0.875rem 1rem',
+    backgroundColor: '#111111',
+    border: '1px solid #1e1e1e',
+    borderRadius: '6px',
+    fontFamily: "'Satoshi', system-ui, sans-serif",
+    fontSize: '0.9rem',
+    color: '#ffffff',
+    outline: 'none',
+    transition: 'border-color 0.15s ease',
+    boxSizing: 'border-box',
+  };
+
   return (
-    <div className="login-container" style={{
-      backgroundImage: 'url(/images/newcastle-113.jpg)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed'
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#0a0a0a',
+      display: 'flex',
+      position: 'relative',
+      overflow: 'hidden',
     }}>
-      {/* Dark overlay */}
+      {/* Background subtle glow */}
       <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.6)'
+        position: 'absolute', top: '-200px', left: '-200px',
+        width: '600px', height: '600px',
+        background: 'radial-gradient(circle, rgba(76,175,80,0.04) 0%, transparent 70%)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-200px', right: '-200px',
+        width: '500px', height: '500px',
+        background: 'radial-gradient(circle, rgba(255,107,43,0.03) 0%, transparent 70%)',
+        pointerEvents: 'none',
       }} />
 
+      {/* Left panel — branding */}
       <div style={{
-        position: 'relative',
-        zIndex: 10,
+        display: 'none',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '3rem',
+        borderRight: '1px solid #141414',
+      }} className="md-flex">
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '8px', borderRadius: '8px', display: 'flex' }}>
+            <Zap style={{ width: '18px', height: '18px', color: '#000', fill: '#000' }} />
+          </div>
+          <span style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.3rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
+        </div>
+
+        <div>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 1rem' }}>Premium Training</p>
+          <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 1.5rem' }}>Train smarter.<br />Live better.</h2>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#3a3a3a', margin: 0, lineHeight: 1.7, maxWidth: '320px' }}>Your personal training hub. Track sessions, monitor progress and stay connected with your PT.</p>
+        </div>
+
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0, letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
+      </div>
+
+      {/* Right panel — form */}
+      <div style={{
         width: '100%',
-        maxWidth: '28rem',
-        padding: '0 1.5rem'
-      }} className="animate-fade-in">
-        {/* Logo Section */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginBottom: '2.5rem'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            marginBottom: '0.75rem'
-          }}>
-            <div style={{
-              backgroundColor: '#1a4a3a',
-              padding: '0.625rem',
-              borderRadius: '0.5rem'
-            }}>
-              <Zap className="w-7 h-7" style={{ color: 'white', fill: 'white' }} />
-            </div>
-            <h1 className="login-logo">
-              <span style={{ color: '#1a4a3a' }}>Brazil</span>
-              <span style={{ color: '#f9a661' }}>Fit</span>
-            </h1>
+        maxWidth: '480px',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '2rem 2rem',
+      }}>
+
+        {/* Mobile logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3rem' }}>
+          <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '7px', borderRadius: '7px', display: 'flex' }}>
+            <Zap style={{ width: '16px', height: '16px', color: '#000', fill: '#000' }} />
           </div>
-          <p style={{
-            color: 'rgba(255, 255, 255, 0.9)',
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            letterSpacing: '0.05em'
-          }}>Train smarter. Live better.</p>
+          <span style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
         </div>
 
-        {/* Login Card */}
-        <div className="login-card">
-          <h2 style={{
-            fontFamily: "'Clash Display', system-ui, sans-serif",
-            fontWeight: 700,
-            fontSize: '1.25rem',
-            color: '#1a4a3a',
-            marginBottom: '1.5rem',
-            textAlign: 'center'
-          }}>Sign in to your account</h2>
+        {/* Heading */}
+        <div style={{ marginBottom: '2.5rem' }}>
+          <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.4rem', lineHeight: 1.1 }}>Welcome back</h1>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Sign in to your account to continue</p>
+        </div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <label className="login-form-label">Username or Email</label>
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+          {/* Username */}
+          <div>
+            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Username</p>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              autoCapitalize="none"
+              autoComplete="username"
+              style={inputStyle}
+              onFocus={e => { e.target.style.borderColor = '#4CAF50'; e.target.style.boxShadow = '0 0 0 3px rgba(76,175,80,0.08)'; }}
+              onBlur={e => { e.target.style.borderColor = '#1e1e1e'; e.target.style.boxShadow = 'none'; }}
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Password</p>
+            <div style={{ position: 'relative' }}>
               <input
-                type="text"
-                placeholder="pt or vivien"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                autoCapitalize="none"
-                autoComplete="username"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  marginTop: '0.5rem',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.5rem',
-                  fontFamily: "'Satoshi', system-ui, sans-serif",
-                  fontSize: '0.875rem',
-                  color: '#1a1a1a',
-                  transition: 'var(--transition-fast)'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#7dd4a8';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(125, 212, 168, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5e7eb';
-                  e.target.style.boxShadow = 'none';
-                }}
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+                style={{ ...inputStyle, paddingRight: '3rem' }}
+                onFocus={e => { e.target.style.borderColor = '#4CAF50'; e.target.style.boxShadow = '0 0 0 3px rgba(76,175,80,0.08)'; }}
+                onBlur={e => { e.target.style.borderColor = '#1e1e1e'; e.target.style.boxShadow = 'none'; }}
               />
-            </div>
-
-            <div>
-              <label className="login-form-label">Password</label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Your password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem 1rem',
-                    paddingRight: '3rem',
-                    marginTop: '0.5rem',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '0.5rem',
-                    fontFamily: "'Satoshi', system-ui, sans-serif",
-                    fontSize: '0.875rem',
-                    color: '#1a1a1a',
-                    transition: 'var(--transition-fast)'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#7dd4a8';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(125, 212, 168, 0.1)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#e5e7eb';
-                    e.target.style.boxShadow = 'none';
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: '0.75rem',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    padding: '0.5rem',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: '#6b7280',
-                    transition: 'color var(--transition-fast)'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#1a1a1a'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary"
-              style={{
-                marginTop: '0.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.5rem',
-                opacity: loading ? '0.5' : '1',
-                cursor: loading ? 'not-allowed' : 'pointer'
-              }}
-            >
-              {loading ? (
-                <>
-                  <div style={{
-                    width: '1.25rem',
-                    height: '1.25rem',
-                    border: '2px solid rgba(255, 255, 255, 0.3)',
-                    borderTop: '2px solid white',
-                    borderRadius: '50%',
-                    animation: 'spin 0.8s linear infinite'
-                  }} />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  <Zap className="w-5 h-5" />
-                  Sign In
-                </>
-              )}
-            </button>
-          </form>
-
-          <div style={{
-            marginTop: '1.5rem',
-            paddingTop: '1.25rem',
-            borderTop: '1px solid #e5e7eb'
-          }}>
-            <p style={{
-              textAlign: 'center',
-              color: '#6b7280',
-              fontSize: '0.75rem',
-              marginBottom: '0.75rem',
-              fontFamily: "'Satoshi', system-ui, sans-serif",
-              fontWeight: 500
-            }}>Demo credentials</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <button
-                onClick={() => { setUsername('pt'); setPassword('PTadmin2026!'); }}
-                style={{
-                  fontSize: '0.75rem',
-                  backgroundColor: '#f8faf9',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.5rem',
-                  padding: '0.75rem',
-                  color: '#1a1a1a',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontFamily: "'Satoshi', system-ui, sans-serif",
-                  transition: 'var(--transition-fast)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  e.currentTarget.style.borderColor = '#7dd4a8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f8faf9';
-                  e.currentTarget.style.borderColor = '#e5e7eb';
-                }}
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#3a3a3a', padding: '4px', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = '#3a3a3a'}
               >
-                <span style={{
-                  display: 'inline-block',
-                  backgroundColor: '#1a4a3a',
-                  color: 'white',
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '0.25rem',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  marginRight: '0.5rem'
-                }}>PT</span>
-                username: <strong>pt</strong> — password: <strong>PTadmin2026!</strong>
-              </button>
-              <button
-                onClick={() => { setUsername('vivien'); setPassword('BrazilFit2026!'); }}
-                style={{
-                  fontSize: '0.75rem',
-                  backgroundColor: '#f8faf9',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.5rem',
-                  padding: '0.75rem',
-                  color: '#1a1a1a',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontFamily: "'Satoshi', system-ui, sans-serif",
-                  transition: 'var(--transition-fast)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  e.currentTarget.style.borderColor = '#7dd4a8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f8faf9';
-                  e.currentTarget.style.borderColor = '#e5e7eb';
-                }}
-              >
-                <span style={{
-                  display: 'inline-block',
-                  backgroundColor: '#f9a661',
-                  color: 'white',
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '0.25rem',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  marginRight: '0.5rem'
-                }}>Client</span>
-                username: <strong>vivien</strong> — password: <strong>BrazilFit2026!</strong>
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              marginTop: '0.5rem',
+              width: '100%',
+              padding: '0.9rem 1.5rem',
+              backgroundColor: loading ? '#2a2a2a' : '#4CAF50',
+              color: loading ? '#606060' : '#000',
+              border: 'none',
+              borderRadius: '6px',
+              fontFamily: "'Satoshi', system-ui, sans-serif",
+              fontSize: '0.875rem',
+              fontWeight: 700,
+              letterSpacing: '0.02em',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.15s ease',
+              minHeight: 'auto',
+            }}
+            onMouseEnter={e => { if (!loading) e.currentTarget.style.backgroundColor = '#66BB6A'; }}
+            onMouseLeave={e => { if (!loading) e.currentTarget.style.backgroundColor = '#4CAF50'; }}
+          >
+            {loading ? (
+              <>
+                <div style={{ width: '16px', height: '16px', border: '2px solid #444', borderTop: '2px solid #fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                Signing in...
+              </>
+            ) : (
+              <>Sign In <ArrowRight size={15} /></>
+            )}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '2rem 0' }}>
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#2a2a2a', textTransform: 'uppercase', margin: 0 }}>Quick access</p>
+          <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
         </div>
 
-        <p style={{
-          textAlign: 'center',
-          color: 'rgba(255, 255, 255, 0.7)',
-          fontSize: '0.75rem',
-          marginTop: '2rem',
-          fontFamily: "'Satoshi', system-ui, sans-serif"
-        }}>
-          © 2026 BrazilFit · London · All rights reserved
-        </p>
+        {/* Demo credentials */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <button
+            onClick={() => { setUsername('pt'); setPassword('PTadmin2026!'); }}
+            style={{
+              width: '100%',
+              padding: '0.85rem 1rem',
+              backgroundColor: '#0e0e0e',
+              border: '1px solid #1a1a1a',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              minHeight: 'auto',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#4CAF50'; e.currentTarget.style.backgroundColor = '#111'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.backgroundColor = '#0e0e0e'; }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ backgroundColor: '#4CAF50', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>PT</span>
+              <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Personal Trainer login</span>
+            </div>
+            <ArrowRight size={13} color="#2a2a2a" />
+          </button>
+
+          <button
+            onClick={() => { setUsername('vivien'); setPassword('BrazilFit2026!'); }}
+            style={{
+              width: '100%',
+              padding: '0.85rem 1rem',
+              backgroundColor: '#0e0e0e',
+              border: '1px solid #1a1a1a',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              minHeight: 'auto',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#FF6B2B'; e.currentTarget.style.backgroundColor = '#111'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.backgroundColor = '#0e0e0e'; }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ backgroundColor: '#FF6B2B', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Client</span>
+              <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Client login</span>
+            </div>
+            <ArrowRight size={13} color="#2a2a2a" />
+          </button>
+        </div>
+
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', color: '#2a2a2a', margin: '2rem 0 0', textAlign: 'center', letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
       </div>
     </div>
   );

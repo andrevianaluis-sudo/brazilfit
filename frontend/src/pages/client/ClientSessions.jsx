@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, Check } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, Check, ArrowRight } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import BackButton from '../../components/BackButton';
+import { fmtDate, fmtDateTimeFull, fmtDateTime, fmtDateShort, sortOldestFirst, sortNewestFirst } from '../../utils/dateUtils';
+
+function hoursUntil(date, time) {
+  const dt = new Date(`${date}T${time}:00`);
+  return (dt - new Date()) / (1000 * 60 * 60);
+}
+
+function fmt(date) { return fmtDateShort(date); }
+
+const Label = ({ children }) => (
+  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.4rem 0' }}>{children}</p>
+);
+
+const Line = () => <div style={{ height: '1px', backgroundColor: '#141414' }} />;
 
 // ── Session Notes Modal ───────────────────────────────────────────────────────
-
 function SessionNoteModal({ session, onClose }) {
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,227 +32,118 @@ function SessionNoteModal({ session, onClose }) {
   }, [session.id]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 px-4 pb-4 sm:pb-0" onClick={onClose}>
-      <div className="w-full max-w-sm bg-white rounded-[12px] border-t-4 border-t-brazil-green shadow-lg shadow-black/10 overflow-hidden" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between px-5 py-4" style={{ backgroundColor: '#27AE60' }}>
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-white" />
-            <p className="font-black text-white text-base">Session Notes</p>
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)', padding: '1rem' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '480px', backgroundColor: '#111111', borderRadius: '16px', border: '1px solid #1e1e1e', overflow: 'hidden', marginBottom: '1rem' }}>
+        
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <Label>Session Notes</Label>
+            <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', margin: 0 }}>{fmt(session.scheduled_date)} · {session.scheduled_time}</p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-green-600 transition-all">
-            <X className="w-5 h-5 text-white" />
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3a3a3a', padding: '4px', display: 'flex', minHeight: 'auto', minWidth: 'auto' }}
+            onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+            onMouseLeave={e => e.currentTarget.style.color = '#3a3a3a'}>
+            <X size={18} />
           </button>
         </div>
-        <div className="px-5 py-4">
-          <div className="flex items-center gap-2 mb-4">
-            <svg className="w-4 h-4 text-brazil-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <p className="text-sm font-black text-black">{fmt(session.scheduled_date)} at {session.scheduled_time}</p>
-          </div>
+
+        <div style={{ padding: '1.25rem 1.5rem', maxHeight: '60vh', overflowY: 'auto' }}>
           {loading ? (
-            <div className="flex justify-center py-6"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+              <div style={{ width: '20px', height: '20px', border: '2px solid #4CAF50', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+            </div>
           ) : !note ? (
-            <div className="text-center py-8">
-              <FileText className="w-12 h-12 text-brazil-green mx-auto mb-3" />
-              <p className="text-black font-black text-base">No notes for this session yet.</p>
-              <p className="text-sm mt-1" style={{ color: '#666666' }}>Your PT will add notes after the session.</p>
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <FileText size={32} color="#2a2a2a" style={{ marginBottom: '0.75rem' }} />
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.9rem', color: '#3a3a3a', margin: 0 }}>No notes yet — your PT will add them after the session.</p>
             </div>
           ) : (
-            <div className="space-y-3">
-              {note.what_we_worked_on && (
-                <div className="bg-white border-l-4 border-l-brazil-green rounded-[8px] px-4 py-3">
-                  <p className="text-[10px] font-bold text-brazil-green uppercase tracking-wide mb-2">What we worked on</p>
-                  <p className="text-sm text-grey-200">{note.what_we_worked_on}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {[
+                { key: 'what_we_worked_on', label: 'What we worked on' },
+                { key: 'what_went_well', label: 'What went well' },
+                { key: 'what_to_improve', label: 'Focus areas' },
+                { key: 'focus_next_session', label: 'Next session focus' },
+              ].filter(f => note[f.key]).map(f => (
+                <div key={f.key} style={{ backgroundColor: '#0e0e0e', borderLeft: '2px solid #4CAF50', borderRadius: '6px', padding: '1rem' }}>
+                  <Label>{f.label}</Label>
+                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#a0a0a0', margin: 0, lineHeight: 1.6 }}>{note[f.key]}</p>
                 </div>
-              )}
-              {note.what_went_well && (
-                <div className="bg-white border-l-4 border-l-brazil-green rounded-[8px] px-4 py-3">
-                  <p className="text-[10px] font-bold text-brazil-green uppercase tracking-wide mb-2">What went well</p>
-                  <p className="text-sm text-grey-200">{note.what_went_well}</p>
-                </div>
-              )}
-              {note.what_to_improve && (
-                <div className="bg-white border-l-4 border-l-brazil-green rounded-[8px] px-4 py-3">
-                  <p className="text-[10px] font-bold text-brazil-green uppercase tracking-wide mb-2">Focus areas</p>
-                  <p className="text-sm text-grey-200">{note.what_to_improve}</p>
-                </div>
-              )}
-              {note.focus_next_session && (
-                <div className="bg-white border-l-4 border-l-brazil-green rounded-[8px] px-4 py-3">
-                  <p className="text-[10px] font-bold text-brazil-green uppercase tracking-wide mb-2">Next session focus</p>
-                  <p className="text-sm text-grey-200">{note.focus_next_session}</p>
-                </div>
-              )}
+              ))}
               {note.injuries_concerns && (
-                <div className="bg-red-50 border-l-4 border-l-red-400 rounded-[8px] px-4 py-3">
-                  <p className="text-[10px] font-bold text-red-600 uppercase tracking-wide mb-2">Injuries / Concerns</p>
-                  <p className="text-sm text-red-600">{note.injuries_concerns}</p>
+                <div style={{ backgroundColor: '#1a0a0a', borderLeft: '2px solid #ef4444', borderRadius: '6px', padding: '1rem' }}>
+                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#ef4444', textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Injuries / Concerns</p>
+                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#ef4444', margin: 0, lineHeight: 1.6 }}>{note.injuries_concerns}</p>
                 </div>
               )}
-              <p className="text-xs text-brazil-green text-right mt-4">Written by your PT</p>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', color: '#4CAF50', textAlign: 'right', letterSpacing: '0.08em', margin: '0.5rem 0 0' }}>Written by your PT</p>
             </div>
           )}
         </div>
-        <div className="border-t border-grey-100 p-4">
-          <button onClick={onClose} className="w-full h-11 flex items-center justify-center text-base font-bold text-white rounded-lg transition-all" style={{ backgroundColor: '#27AE60' }}>
-            Close
-          </button>
+
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid #1a1a1a' }}>
+          <button onClick={onClose} style={{ width: '100%', padding: '0.8rem', backgroundColor: '#1a1a1a', border: '1px solid #242424', borderRadius: '6px', color: '#fff', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', minHeight: 'auto' }}>Close</button>
         </div>
       </div>
     </div>
   );
 }
 
-import { fmtDate, fmtDateTimeFull, fmtDateTime, fmtDateShort, sortOldestFirst, sortNewestFirst } from '../../utils/dateUtils';
-
-// Returns hours until a session (negative = in the past)
-function hoursUntil(date, time) {
-  const dt = new Date(`${date}T${time}:00`);
-  return (dt - new Date()) / (1000 * 60 * 60);
-}
-
-function fmt(date) {
-  return fmtDateShort(date);
-}
-
 // ── Cancel Modal ──────────────────────────────────────────────────────────────
-
 function CancelModal({ session, onConfirm, onClose, loading }) {
   const hours = hoursUntil(session.scheduled_date, session.scheduled_time);
   const canCancel = hours >= 24;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }} onClick={onClose}>
-      <div className="w-full max-w-sm bg-white rounded-2xl overflow-hidden" style={{ maxWidth: '380px', boxShadow: '0 2px 20px rgba(0,0,0,0.08)' }} onClick={(e) => e.stopPropagation()}>
-        {canCancel ? (
-          <>
-            <div style={{ padding: '24px' }}>
-              <div className="mb-6">
-                <p className="text-xl font-black text-black" style={{ fontSize: '20px', lineHeight: 1.2 }}>Cancel Session?</p>
-                <p className="text-sm mt-1" style={{ color: '#888888', fontWeight: 400, fontSize: '14px' }}>
-                  {fmtDateTime(session.scheduled_date, session.scheduled_time)}
-                </p>
-              </div>
-              <div className="rounded-lg p-3.5 mb-4" style={{ backgroundColor: '#F8F8F8', borderLeft: '3px solid #27AE60', padding: '14px' }}>
-                <p className="font-black text-black mb-2" style={{ fontSize: '15px' }}>Session will be carried over</p>
-                <p style={{ color: '#666666', fontWeight: 400, fontSize: '13px', lineHeight: 1.5 }}>
-                  This session will be returned to your block and will <u className="font-black text-black">not</u> count as used.
-                </p>
-              </div>
-              <div className="flex items-center gap-2" style={{ color: '#444444', fontSize: '13px', fontWeight: 400 }}>
-                <Check className="w-4 h-4 flex-shrink-0" style={{ color: '#27AE60' }} />
-                {Math.floor(hours)} hours notice — within policy
-              </div>
-            </div>
-            <div style={{ borderTop: '1px solid #e8e8e8' }}>
-              <div className="flex">
-                <button
-                  onClick={onClose}
-                  className="flex-1 transition-all"
-                  style={{
-                    backgroundColor: 'white',
-                    color: 'black',
-                    height: '52px',
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    border: 'none',
-                    borderRight: '1px solid #e8e8e8',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#f5f5f5';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'white';
-                  }}
-                >
-                  Keep Session
-                </button>
-                <button
-                  onClick={onConfirm}
-                  disabled={loading}
-                  className="flex-1 transition-all disabled:opacity-50"
-                  style={{
-                    backgroundColor: 'white',
-                    color: '#E74C3C',
-                    height: '52px',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    border: 'none',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!loading) e.target.style.backgroundColor = '#f5f5f5';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'white';
-                  }}
-                >
-                  {loading ? 'Cancelling…' : 'Yes, Cancel'}
-                </button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div style={{ padding: '24px' }}>
-              <div className="mb-6">
-                <p className="text-xl font-black text-black" style={{ fontSize: '20px', lineHeight: 1.2 }}>Cannot Cancel</p>
-                <p className="text-sm mt-1" style={{ color: '#888888', fontWeight: 400, fontSize: '14px' }}>
-                  {fmtDateTime(session.scheduled_date, session.scheduled_time)}
-                </p>
-              </div>
-              <div className="rounded-lg p-3.5 mb-4" style={{ backgroundColor: '#FFF5F5', borderLeft: '3px solid #E74C3C', padding: '14px' }}>
-                <p className="font-black text-red-600 mb-2" style={{ fontSize: '15px' }}>24-Hour Cancellation Policy</p>
-                <p style={{ color: '#666666', fontWeight: 400, fontSize: '13px', lineHeight: 1.5 }}>
-                  Sorry — cancellations must be made at least 24 hours before your session.
-                  This session is in <strong className="text-black font-bold">{Math.max(0, hours).toFixed(1)} hours</strong> and cannot be cancelled.
-                  It will count toward your block regardless.
-                </p>
-              </div>
-              <p style={{ color: '#888888', fontSize: '13px', fontWeight: 400 }}>
-                If you have a genuine emergency, please contact your PT directly.
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.8)', padding: '1rem' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: '380px', backgroundColor: '#111111', borderRadius: '16px', border: '1px solid #1e1e1e', overflow: 'hidden' }}>
+        
+        <div style={{ padding: '1.5rem' }}>
+          <Label>{canCancel ? 'Cancel Session' : 'Cannot Cancel'}</Label>
+          <h3 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.3rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', margin: '0 0 0.3rem' }}>
+            {canCancel ? 'Are you sure?' : '24-Hour Policy'}
+          </h3>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#3a3a3a', margin: '0 0 1.25rem' }}>
+            {fmtDateTime(session.scheduled_date, session.scheduled_time)}
+          </p>
+
+          {canCancel ? (
+            <div style={{ backgroundColor: '#0e0e0e', borderLeft: '2px solid #4CAF50', borderRadius: '6px', padding: '1rem' }}>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#a0a0a0', margin: 0, lineHeight: 1.6 }}>
+                This session will be <strong style={{ color: '#fff' }}>returned to your block</strong> and will not count as used. You have {Math.floor(hours)}h notice — within policy.
               </p>
             </div>
-            <div style={{ borderTop: '1px solid #e8e8e8' }}>
-              <button
-                onClick={onClose}
-                className="w-full transition-all"
-                style={{
-                  backgroundColor: 'white',
-                  color: '#E74C3C',
-                  height: '52px',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#f5f5f5';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'white';
-                }}
-              >
-                OK, Got It
-              </button>
+          ) : (
+            <div style={{ backgroundColor: '#1a0a0a', borderLeft: '2px solid #ef4444', borderRadius: '6px', padding: '1rem' }}>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#a0a0a0', margin: 0, lineHeight: 1.6 }}>
+                This session is in <strong style={{ color: '#fff' }}>{Math.max(0, hours).toFixed(1)} hours</strong>. Cancellations require at least 24 hours notice. Contact your PT directly for emergencies.
+              </p>
             </div>
-          </>
-        )}
+          )}
+        </div>
+
+        <div style={{ borderTop: '1px solid #1a1a1a', display: 'flex' }}>
+          <button onClick={onClose} style={{ flex: 1, padding: '1rem', backgroundColor: 'transparent', border: 'none', borderRight: '1px solid #1a1a1a', color: '#a0a0a0', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', minHeight: 'auto' }}>
+            {canCancel ? 'Keep Session' : 'Got It'}
+          </button>
+          {canCancel && (
+            <button onClick={onConfirm} disabled={loading} style={{ flex: 1, padding: '1rem', backgroundColor: 'transparent', border: 'none', color: '#ef4444', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.5 : 1, minHeight: 'auto' }}>
+              {loading ? 'Cancelling…' : 'Yes, Cancel'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
+// ── Main Component ────────────────────────────────────────────────────────────
 export default function ClientSessions() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [cancelTarget, setCancelTarget] = useState(null); // session being cancelled
+  const [cancelTarget, setCancelTarget] = useState(null);
   const [cancelLoading, setCancelLoading] = useState(false);
   const [noteTarget, setNoteTarget] = useState(null);
 
@@ -250,22 +154,21 @@ export default function ClientSessions() {
       .catch(() => setLoading(false));
   };
 
-  useEffect(() => { loadData(); }, [user]); // eslint-disable-line
+  useEffect(() => { loadData(); }, [user]);
 
   const handleCancelConfirm = async () => {
     if (!cancelTarget) return;
     setCancelLoading(true);
     try {
       await api.post(`/sessions/${cancelTarget.id}/cancel`);
-      toast.success('Session cancelled — it has been returned to your block.');
+      toast.success('Session cancelled — returned to your block.');
       setCancelTarget(null);
       loadData();
     } catch (err) {
-      const msg = err.response?.data?.message;
       if (err.response?.status === 403 && err.response?.data?.error === 'cancellation_blocked') {
         toast.error('Cancellation blocked — less than 24 hours notice.');
       } else {
-        toast.error(msg || 'Failed to cancel session');
+        toast.error(err.response?.data?.message || 'Failed to cancel session');
       }
     } finally {
       setCancelLoading(false);
@@ -273,256 +176,206 @@ export default function ClientSessions() {
   };
 
   if (loading) return (
-    <div className="flex justify-center py-12">
-      <div className="w-8 h-8 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', backgroundColor: '#0a0a0a' }}>
+      <div style={{ width: '20px', height: '20px', border: '2px solid #4CAF50', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
     </div>
   );
 
-  const rawUpcoming = data?.upcoming || [];
-  const rawHistory = data?.history || [];
-  // upcoming: chronological (nearest first), history: reverse-chronological (most recent first)
-  const upcoming = sortOldestFirst(rawUpcoming, 'scheduled_date', 'scheduled_time');
-  const history = sortNewestFirst(rawHistory, 'scheduled_date', 'scheduled_time');
+  const upcoming = sortOldestFirst(data?.upcoming || [], 'scheduled_date', 'scheduled_time');
+  const history = sortNewestFirst(data?.history || [], 'scheduled_date', 'scheduled_time');
   const sessionsUsed = data?.sessionsUsed || 0;
   const sessionsRemaining = data?.sessionsRemaining || 0;
   const attended = history.filter(s => s.status === 'attended').length;
   const missed = history.filter(s => s.status === 'missed').length;
   const cancelled = history.filter(s => s.status === 'cancelled').length;
-  const pct = Math.min(100, (sessionsUsed / 10) * 100);
+  const totalSessions = sessionsUsed + sessionsRemaining;
+  const pct = totalSessions > 0 ? (sessionsUsed / totalSessions) * 100 : 0;
   const limitedHistory = user?.isPro ? history : history.slice(0, 5);
 
   return (
-    <div className="px-4 py-4 animate-fade-in space-y-5">
-      <BackButton to="/client/home" />
-      <h1 className="text-4xl font-black text-black">My Sessions</h1>
+    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', maxWidth: '900px', margin: '0 auto' }}>
 
-      {/* Block summary - Premium white card */}
-      <div className="bg-white border-t-4 border-t-brazil-green rounded-lg p-5 shadow-sm shadow-grey-200/50">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <p className="font-black text-black text-xl">Block {user?.blockNumber || 1}</p>
-            <p className="text-sm text-grey-300">Started {user?.blockStartDate || '—'}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-5xl font-black text-brazil-green">{sessionsUsed}</p>
-            <p className="text-grey-200 text-xs font-medium">Sessions Used</p>
-          </div>
+      {/* Header */}
+      <div style={{ padding: '2rem 2rem 1.5rem' }}>
+        <BackButton to="/client" />
+        <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '1rem 0 0' }}>My Sessions</h1>
+      </div>
+
+      <Line />
+
+      {/* Block Summary */}
+      <div style={{ padding: '1.5rem 2rem' }}>
+        <Label>Block {user?.blockNumber || 1}</Label>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '1rem' }}>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
+            {sessionsUsed} of {totalSessions} sessions completed
+          </p>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.4rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em', margin: 0 }}>{Math.round(pct)}%</p>
         </div>
-        {/* Enhanced progress bar */}
-        <div className="bg-gray-100 rounded-full h-2 mb-5" style={{ backgroundColor: '#F0F0F0' }}>
-          <div className="h-full rounded-full bg-brazil-green transition-all" style={{ width: `${pct}%` }} />
+        <div style={{ width: '100%', height: '2px', backgroundColor: '#1a1a1a', borderRadius: '1px', marginBottom: '1.5rem' }}>
+          <div style={{ height: '100%', width: `${pct}%`, backgroundColor: '#4CAF50', borderRadius: '1px', transition: 'width 0.8s ease' }} />
         </div>
-        {/* Premium stat cards */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#27AE60' }}>
-            <p className="text-3xl font-black text-white">{attended}</p>
-            <p className="text-xs font-bold text-white mt-1">Attended</p>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#E74C3C' }}>
-            <p className="text-3xl font-black text-white">{missed}</p>
-            <p className="text-xs font-bold text-white mt-1">Missed</p>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#1A1A2E' }}>
-            <p className="text-3xl font-black text-white">{sessionsRemaining}</p>
-            <p className="text-xs font-bold text-white mt-1">Sessions Left</p>
-          </div>
-        </div>
-        {/* Renewal reminder */}
-        {sessionsRemaining <= 3 && sessionsRemaining > 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="font-bold text-black text-sm">Your block is almost complete</p>
-              <p className="text-xs text-yellow-700 mt-1">{sessionsRemaining} session{sessionsRemaining !== 1 ? 's' : ''} remaining</p>
+
+        {/* Stats row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0' }}>
+          {[
+            { value: attended, label: 'Attended', color: '#4CAF50' },
+            { value: missed, label: 'Missed', color: '#ef4444' },
+            { value: sessionsRemaining, label: 'Remaining', color: '#FFD600' },
+          ].map((s, i) => (
+            <div key={i} style={{ padding: '1rem 0.75rem', borderRight: i < 2 ? '1px solid #141414' : 'none', textAlign: i === 0 ? 'left' : i === 1 ? 'center' : 'right' }}>
+              <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.8rem', fontWeight: 800, color: s.color, letterSpacing: '-0.03em', lineHeight: 1, margin: '0 0 0.3rem' }}>{s.value}</p>
+              <Label>{s.label}</Label>
             </div>
-            <button className="bg-brazil-green text-white font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-green-700 transition-all flex-shrink-0">
-              Contact PT
-            </button>
-          </div>
-        )}
-        {sessionsRemaining <= 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-            <p className="font-bold text-black text-sm">✓ Block Complete</p>
-            <p className="text-xs text-yellow-700 mt-1">Your PT will arrange your next renewal</p>
+          ))}
+        </div>
+
+        {/* Low sessions warning */}
+        {sessionsRemaining <= 3 && sessionsRemaining > 0 && (
+          <div style={{ marginTop: '1rem', backgroundColor: '#0e0e0e', borderLeft: '2px solid #FFD600', borderRadius: '6px', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', fontWeight: 600, color: '#fff', margin: '0 0 2px' }}>Block almost complete</p>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0 }}>{sessionsRemaining} session{sessionsRemaining !== 1 ? 's' : ''} remaining</p>
+            </div>
+            <ArrowRight size={14} color="#FFD600" />
           </div>
         )}
       </div>
 
-      {/* Upcoming */}
+      <Line />
+
+      {/* Upcoming Sessions */}
       {upcoming.length > 0 && (
-        <div>
-          <p className="section-header">Upcoming Sessions</p>
-          <div className="space-y-2">
-            {upcoming.map((s, i) => {
-              const hrs = hoursUntil(s.scheduled_date, s.scheduled_time);
-              const isWithin24Hours = hrs >= 0 && hrs < 24;
-              const sessionsLeftAfter = Math.max(0, sessionsRemaining - i - 1);
-              const sessionLabel = sessionsLeftAfter === 1 ? 'session' : 'sessions';
-              return (
-                <div key={s.id} className="bg-white border border-grey-200 rounded-lg px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: isWithin24Hours ? '#E74C3C' : '#27AE60', minWidth: '20px' }} />
-                    <div className="flex-1">
-                      <p style={{ color: isWithin24Hours ? '#333333' : '#1A1A1A', fontSize: '15px', fontWeight: '600', margin: '0', lineHeight: '1.2' }}>
+        <>
+          <div style={{ padding: '1.5rem 2rem 0.75rem' }}>
+            <Label>Upcoming Sessions</Label>
+          </div>
+          {upcoming.map((s, i) => {
+            const hrs = hoursUntil(s.scheduled_date, s.scheduled_time);
+            const locked = hrs >= 0 && hrs < 24;
+            const sessionsLeftAfter = Math.max(0, sessionsRemaining - i - 1);
+            return (
+              <div key={s.id}>
+                <div style={{ padding: '1.1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: locked ? '#ef4444' : '#4CAF50', flexShrink: 0 }} />
+                    <div>
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', letterSpacing: '-0.01em' }}>
                         {fmtDateTimeFull(s.scheduled_date, s.scheduled_time)}
                       </p>
-                      <p style={{ color: '#666666', fontSize: '13px', fontWeight: '400', margin: '4px 0 0 0' }}>{sessionsLeftAfter} {sessionLabel} left after this</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => setCancelTarget(s)}
-                        style={{
-                          backgroundColor: isWithin24Hours ? '#FFF5F5' : 'white',
-                          border: isWithin24Hours ? '1px solid #E74C3C' : '1px solid #CCCCCC',
-                          borderRadius: '6px',
-                          padding: '6px 14px',
-                          fontSize: '13px',
-                          fontWeight: isWithin24Hours ? '600' : '500',
-                          color: isWithin24Hours ? '#E74C3C' : '#333333',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          cursor: isWithin24Hours ? 'not-allowed' : 'pointer',
-                          transition: 'all 0.2s ease',
-                        }}
-                      >
-                        {isWithin24Hours ? (
-                          <>
-                            <Ban className="w-4 h-4" style={{ color: '#E74C3C', flexShrink: 0 }} />
-                            <span style={{ color: '#E74C3C' }}>Locked</span>
-                          </>
-                        ) : (
-                          <>
-                            <X className="w-4 h-4" style={{ color: '#333333', flexShrink: 0 }} />
-                            <span style={{ color: '#333333' }}>Cancel</span>
-                          </>
-                        )}
-                      </button>
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
+                        {sessionsLeftAfter} session{sessionsLeftAfter !== 1 ? 's' : ''} left after this
+                        {locked && <span style={{ color: '#ef4444', marginLeft: '8px' }}>· Within 24h policy</span>}
+                      </p>
                     </div>
                   </div>
-                  {isWithin24Hours && (
-                    <p style={{ color: '#E74C3C', fontSize: '12px', fontWeight: '600', margin: '8px 0 0 32px' }}>
-                      Within 24-hour policy — cannot be cancelled
-                    </p>
-                  )}
+                  <button
+                    onClick={() => setCancelTarget(s)}
+                    style={{
+                      padding: '6px 14px',
+                      backgroundColor: 'transparent',
+                      border: `1px solid ${locked ? '#2a2a2a' : '#1e1e1e'}`,
+                      borderRadius: '6px',
+                      color: locked ? '#2a2a2a' : '#3a3a3a',
+                      fontFamily: "'Satoshi', system-ui, sans-serif",
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: locked ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      flexShrink: 0,
+                      minHeight: 'auto',
+                      transition: 'all 0.15s ease',
+                    }}
+                    onMouseEnter={e => { if (!locked) { e.currentTarget.style.borderColor = '#ef4444'; e.currentTarget.style.color = '#ef4444'; } }}
+                    onMouseLeave={e => { if (!locked) { e.currentTarget.style.borderColor = '#1e1e1e'; e.currentTarget.style.color = '#3a3a3a'; } }}
+                  >
+                    {locked ? <Ban size={12} /> : <X size={12} />}
+                    {locked ? 'Locked' : 'Cancel'}
+                  </button>
                 </div>
-              );
-            })}
-          </div>
-        </div>
+                {i < upcoming.length - 1 && <Line />}
+              </div>
+            );
+          })}
+          <Line />
+        </>
       )}
 
-      {/* History */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-1 h-7 bg-brazil-green rounded-full" />
-            <p className="text-xl font-black text-black">Session History</p>
-          </div>
-          {!user?.isPro && history.length > 5 && (
-            <button onClick={() => navigate('/client/upgrade')} className="text-xs text-brazil-yellow flex items-center gap-1">
-              <Crown className="w-3 h-3" /> See all {history.length}
-            </button>
-          )}
+      {/* Session History */}
+      <div style={{ padding: '1.5rem 2rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Label>Session History</Label>
+        {!user?.isPro && history.length > 5 && (
+          <button onClick={() => navigate('/client/upgrade')} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, color: '#FFD600', letterSpacing: '0.08em', textTransform: 'uppercase', minHeight: 'auto', padding: 0 }}>
+            <Crown size={11} /> See all {history.length}
+          </button>
+        )}
+      </div>
+
+      {limitedHistory.length === 0 ? (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#2a2a2a' }}>No session history yet</p>
         </div>
-        <div className="space-y-2">
-          {limitedHistory.map(s => {
-            const isCancelled = s.status === 'cancelled';
-            const isAttended = s.status === 'attended';
-            return (
-              <div key={s.id} className={`flex items-center gap-3 rounded-lg px-4 py-3 ${
-                isAttended
-                  ? 'border border-green-200'
-                  : isCancelled
-                  ? 'border border-red-200'
-                  : 'border border-red-300'
-              }`} style={{
-                backgroundColor: isAttended ? '#F0FFF4' : isCancelled ? '#FFF0F0' : '#FFE5E5'
-              }}>
-                {isAttended
-                  ? <CheckCircle className="w-6 h-6 text-brazil-green flex-shrink-0" />
-                  : isCancelled
-                  ? <XCircle className="w-5 h-5 flex-shrink-0" style={{ color: '#E74C3C' }} />
-                  : <XCircle className="w-5 h-5 flex-shrink-0" style={{ color: '#E74C3C' }} />}
-                <div className="flex-1">
-                  <p className={`text-sm ${
-                    isAttended
-                      ? 'font-black text-black'
-                      : isCancelled
-                      ? 'font-black text-grey-400'
-                      : 'font-black text-black'
-                  }`} style={{
-                    color: isAttended ? '#1A1A1A' : isCancelled ? '#333333' : '#1A1A1A'
-                  }}>
-                    {fmtDateTime(s.scheduled_date, s.scheduled_time)}
-                  </p>
-                  {s.status === 'missed' && (
-                    <p className="text-xs font-bold" style={{ color: '#E74C3C' }}>Missed — carried over, block preserved</p>
-                  )}
-                  {isCancelled && s.session_carried_over === 1 && (
-                    <p className="text-xs font-semibold" style={{ color: '#E74C3C' }}>
-                      Cancelled — session returned to your block
-                      {s.cancellation_notice_hours != null && (
-                        <span style={{ color: '#E57373' }}> · {Math.floor(s.cancellation_notice_hours)}h notice</span>
-                      )}
+      ) : (
+        limitedHistory.map((s, i) => {
+          const isAttended = s.status === 'attended';
+          const isCancelled = s.status === 'cancelled';
+          const statusColor = isAttended ? '#4CAF50' : isCancelled ? '#3a3a3a' : '#ef4444';
+          return (
+            <div key={s.id}>
+              <div style={{ padding: '1.1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusColor, flexShrink: 0 }} />
+                  <div>
+                    <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: isAttended ? '#fff' : '#3a3a3a', margin: '0 0 2px', letterSpacing: '-0.01em' }}>
+                      {fmtDateTime(s.scheduled_date, s.scheduled_time)}
                     </p>
-                  )}
+                    {s.status === 'missed' && (
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#ef4444', margin: 0, fontWeight: 500 }}>Missed · block preserved</p>
+                    )}
+                    {isCancelled && s.session_carried_over === 1 && (
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
+                        Cancelled · session returned to block
+                        {s.cancellation_notice_hours != null && ` · ${Math.floor(s.cancellation_notice_hours)}h notice`}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                   {isAttended && (
-                    <button
-                      onClick={() => setNoteTarget(s)}
-                      className="p-1.5 rounded-lg transition-all"
-                      style={{ backgroundColor: '#F0FFF4', color: '#27AE60' }}
-                      title="View session notes"
-                    >
-                      <FileText className="w-3.5 h-3.5" />
+                    <button onClick={() => setNoteTarget(s)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3a3a3a', padding: '4px', display: 'flex', minHeight: 'auto', minWidth: 'auto', transition: 'color 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#4CAF50'}
+                      onMouseLeave={e => e.currentTarget.style.color = '#3a3a3a'}>
+                      <FileText size={14} />
                     </button>
                   )}
-                  <span className={`text-xs px-3 py-1 rounded-full font-bold ${
-                    isAttended ? 'bg-brazil-green text-white' :
-                    isCancelled ? 'text-grey-400 border border-grey-300' :
-                    'badge-red'
-                  }`} style={{
-                    backgroundColor: isAttended ? '#27AE60' : isCancelled ? '#F0F0F0' : '#FFE5E5',
-                    color: isAttended ? 'white' : isCancelled ? '#666666' : '#E74C3C'
-                  }}>
+                  <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: statusColor }}>
                     {s.status}
                   </span>
                 </div>
               </div>
-            );
-          })}
-          {!user?.isPro && history.length > 5 && (
-            <div className="card-dark text-center py-3 border border-dashed border-grey-100">
-              <Crown className="w-5 h-5 text-brazil-yellow mx-auto mb-1" />
-              <p className="text-xs text-grey-200">{history.length - 5} more sessions in full history</p>
-              <button onClick={() => navigate('/client/upgrade')} className="text-xs text-brazil-yellow mt-1 hover:underline">Upgrade to Pro to see all</button>
+              {i < limitedHistory.length - 1 && <Line />}
             </div>
-          )}
-          {history.length === 0 && (
-            <p className="text-center text-grey-100 text-sm py-6">No session history yet</p>
-          )}
-        </div>
-      </div>
-
-      {/* Cancel modal */}
-      {cancelTarget && (
-        <CancelModal
-          session={cancelTarget}
-          onConfirm={handleCancelConfirm}
-          onClose={() => setCancelTarget(null)}
-          loading={cancelLoading}
-        />
+          );
+        })
       )}
 
-      {/* Notes modal */}
-      {noteTarget && (
-        <SessionNoteModal
-          session={noteTarget}
-          onClose={() => setNoteTarget(null)}
-        />
+      {!user?.isPro && history.length > 5 && (
+        <>
+          <Line />
+          <div style={{ padding: '1.25rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }} onClick={() => navigate('/client/upgrade')}>
+            <div>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', fontWeight: 600, color: '#3a3a3a', margin: '0 0 2px' }}>{history.length - 5} more sessions</p>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0 }}>Upgrade to Pro to see full history</p>
+            </div>
+            <Crown size={14} color="#FFD600" />
+          </div>
+        </>
       )}
+
+      {cancelTarget && <CancelModal session={cancelTarget} onConfirm={handleCancelConfirm} onClose={() => setCancelTarget(null)} loading={cancelLoading} />}
+      {noteTarget && <SessionNoteModal session={noteTarget} onClose={() => setNoteTarget(null)} />}
     </div>
   );
 }

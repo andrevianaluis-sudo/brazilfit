@@ -4,6 +4,13 @@ import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import PhotoGallery from '../../components/PhotoGallery';
 import { useAuth } from '../../context/AuthContext';
+import { TrendingDown, TrendingUp } from 'lucide-react';
+
+const Label = ({ children }) => (
+  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.4rem 0' }}>{children}</p>
+);
+
+const Line = () => <div style={{ height: '1px', backgroundColor: '#141414' }} />;
 
 export default function ClientProgress() {
   const { user } = useAuth();
@@ -17,126 +24,114 @@ export default function ClientProgress() {
   const latest = measurements[0];
   const previous = measurements[measurements.length - 1];
   const weightChange = latest.weight - previous.weight;
+  const waistChange = latest.waist - previous.waist;
 
   return (
-    <div className="w-full bg-white min-h-screen pb-24 animate-fade-in">
-      {/* Hero Section */}
-      <div className="relative w-full h-80 overflow-hidden">
-        <img
-          src="/images/newcastle-113.jpg"
-          alt="Transformation journey"
-          className="w-full h-full object-cover object-center"
-        />
-        {/* Subtle dark gradient overlay at bottom 30% */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 30%, transparent 70%)',
-          }}
-        />
-        {/* Overlay text */}
-        <div className="absolute bottom-6 left-5 text-white">
-          <h1 className="font-light uppercase mb-2" style={{ fontSize: '32px' }}>YOUR PROGRESS</h1>
-          <p className="text-xs uppercase" style={{ letterSpacing: '3px' }}>
-            10 WEEKS OF TRANSFORMATION
-          </p>
+    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', maxWidth: '900px', margin: '0 auto' }}>
+
+      {/* Header */}
+      <div style={{ padding: '2rem 2rem 1.5rem' }}>
+        <BackButton to="/client" />
+        <div style={{ marginTop: '1rem' }}>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Your journey</p>
+          <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: 0 }}>Progress</h1>
         </div>
       </div>
 
-      <div className="px-5 py-8 space-y-8">
-        <BackButton to="/client/home" />
-        {/* Stats Grid - Premium minimalist design */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Current Weight */}
-          <div className="bg-white border border-grey-300 rounded-lg p-6">
-            <p className="text-grey-200 text-xs uppercase tracking-wider font-medium mb-3">Current Weight</p>
-            <p className="font-black text-black mb-2" style={{ fontSize: '36px' }}>{latest.weight}</p>
-            <p className={`text-sm font-medium ${weightChange < 0 ? 'text-brazil-green' : 'text-orange-400'}`}>
-              {weightChange < 0 ? '↓' : '↑'} {Math.abs(weightChange).toFixed(1)} kg
+      <Line />
+
+      {/* Key Stats */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+        {/* Weight */}
+        <div style={{ padding: '1.5rem 2rem', borderRight: '1px solid #141414', borderBottom: '1px solid #141414' }}>
+          <Label>Current weight</Label>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 0.4rem' }}>{latest.weight}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: '0 0 0.5rem', fontWeight: 500 }}>kg</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {weightChange < 0
+              ? <TrendingDown size={12} color="#4CAF50" />
+              : <TrendingUp size={12} color="#FF6B2B" />}
+            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', fontWeight: 700, color: weightChange < 0 ? '#4CAF50' : '#FF6B2B', margin: 0 }}>
+              {weightChange < 0 ? '' : '+'}{Math.abs(weightChange).toFixed(1)} kg overall
             </p>
           </div>
-
-          {/* Entries */}
-          <div className="bg-white border border-grey-300 rounded-lg p-6">
-            <p className="text-grey-200 text-xs uppercase tracking-wider font-medium mb-3">Entries</p>
-            <p className="text-5xl font-black text-brazil-green">{measurements.length}</p>
-          </div>
-
-          {/* Waist */}
-          <div className="bg-white border border-grey-300 rounded-lg p-6">
-            <p className="text-grey-200 text-xs uppercase tracking-wider font-medium mb-3">Waist</p>
-            <p className="text-5xl font-black text-black mb-1">{latest.waist}</p>
-            <p className="text-xs text-grey-200">cm</p>
-          </div>
-
-          {/* Hips */}
-          <div className="bg-white border border-grey-300 rounded-lg p-6">
-            <p className="text-grey-200 text-xs uppercase tracking-wider font-medium mb-3">Hips</p>
-            <p className="text-5xl font-black text-black mb-1">{latest.hips}</p>
-            <p className="text-xs text-grey-200">cm</p>
-          </div>
         </div>
 
-        {/* Progress Photos Section */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-grey-200 text-xs uppercase tracking-wider font-medium">Progress Photos</p>
-            {user?.clientId && <PhotoUploadButton clientId={user.clientId} onUploadSuccess={() => setRefreshKey(k => k + 1)} />}
-          </div>
-
-          {user?.clientId && (
-            <>
-              {/* Before & After Sliders */}
-              <div className="space-y-6 mb-6">
-                <div>
-                  <h3 className="text-black font-semibold text-xs uppercase tracking-wider mb-3">Front View</h3>
-                  <BeforeAfterSlider key={`front-${refreshKey}`} clientId={user.clientId} angle="front" />
-                </div>
-                <div>
-                  <h3 className="text-black font-semibold text-xs uppercase tracking-wider mb-3">Side View</h3>
-                  <BeforeAfterSlider key={`side-${refreshKey}`} clientId={user.clientId} angle="side" />
-                </div>
-                <div>
-                  <h3 className="text-black font-semibold text-xs uppercase tracking-wider mb-3">Back View</h3>
-                  <BeforeAfterSlider key={`back-${refreshKey}`} clientId={user.clientId} angle="back" />
-                </div>
-              </div>
-
-              {/* Photo Gallery */}
-              <PhotoGallery key={`gallery-${refreshKey}`} clientId={user.clientId} />
-            </>
-          )}
+        {/* Entries */}
+        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #141414' }}>
+          <Label>Check-ins</Label>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2.5rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 0.4rem' }}>{measurements.length}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>measurements logged</p>
         </div>
 
-        {/* Measurement History */}
-        <div>
-          <h2 className="text-black text-sm font-bold uppercase tracking-widest mb-4">History</h2>
-          <div className="space-y-2">
-            {measurements.map((m, i) => (
-              <div key={i} className="bg-white border border-grey-300 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-black font-bold text-sm">{m.date}</p>
-                  <p className="text-brazil-green font-bold">{m.weight} kg</p>
-                </div>
-                <div className="flex gap-4 text-xs">
-                  <div>
-                    <p className="text-grey-200">Waist</p>
-                    <p className="text-black font-bold">{m.waist} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-grey-200">Hips</p>
-                    <p className="text-black font-bold">{m.hips} cm</p>
-                  </div>
-                  <div>
-                    <p className="text-grey-200">Chest</p>
-                    <p className="text-black font-bold">{m.chest} cm</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Waist */}
+        <div style={{ padding: '1.5rem 2rem', borderRight: '1px solid #141414' }}>
+          <Label>Waist</Label>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2.5rem', fontWeight: 800, color: '#FF6B2B', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 0.4rem' }}>{latest.waist}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: '0 0 0.5rem', fontWeight: 500 }}>cm</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', fontWeight: 700, color: waistChange < 0 ? '#4CAF50' : '#FF6B2B', margin: 0 }}>
+            {waistChange < 0 ? '' : '+'}{Math.abs(waistChange)} cm overall
+          </p>
+        </div>
+
+        {/* Hips */}
+        <div style={{ padding: '1.5rem 2rem' }}>
+          <Label>Hips</Label>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2.5rem', fontWeight: 800, color: '#FFD600', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 0.4rem' }}>{latest.hips}</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>cm</p>
         </div>
       </div>
+
+      <Line />
+
+      {/* Progress Photos */}
+      <div style={{ padding: '1.5rem 2rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Label>Progress Photos</Label>
+        {user?.clientId && (
+          <PhotoUploadButton clientId={user.clientId} onUploadSuccess={() => setRefreshKey(k => k + 1)} />
+        )}
+      </div>
+
+      {user?.clientId && (
+        <div style={{ padding: '0 2rem' }}>
+          {/* Before/After Sliders */}
+          {['front', 'side', 'back'].map(angle => (
+            <div key={angle} style={{ marginBottom: '1.5rem' }}>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.75rem' }}>{angle} view</p>
+              <BeforeAfterSlider key={`${angle}-${refreshKey}`} clientId={user.clientId} angle={angle} />
+            </div>
+          ))}
+
+          {/* Gallery */}
+          <PhotoGallery key={`gallery-${refreshKey}`} clientId={user.clientId} />
+        </div>
+      )}
+
+      <Line />
+
+      {/* Measurement History */}
+      <div style={{ padding: '1.5rem 2rem 0.75rem' }}>
+        <Label>Measurement History</Label>
+      </div>
+
+      {measurements.map((m, i) => (
+        <div key={i}>
+          <div style={{ padding: '1.1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: i === 0 ? '#fff' : '#3a3a3a', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{m.date}</p>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0, fontWeight: 500 }}>
+                Waist {m.waist} · Hips {m.hips} · Chest {m.chest} cm
+              </p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em', margin: 0 }}>{m.weight}</p>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', color: '#3a3a3a', margin: 0, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>kg</p>
+            </div>
+          </div>
+          {i < measurements.length - 1 && <Line />}
+        </div>
+      ))}
+
     </div>
   );
 }
