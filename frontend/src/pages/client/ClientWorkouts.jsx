@@ -1,9 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Dumbbell, Calendar, Clock } from 'lucide-react';
+import { Dumbbell, Calendar, Clock, ArrowRight, Check, ChevronDown, ChevronUp, Play, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import WorkoutDetailModal from '../../components/WorkoutDetailModal';
+
+const Label = ({ children }) => (
+  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.4rem 0' }}>{children}</p>
+);
+
+const Line = () => <div style={{ height: '1px', backgroundColor: '#141414' }} />;
+
+const statusConfig = {
+  assigned:    { label: 'Assigned',    color: '#4CAF50' },
+  in_progress: { label: 'In Progress', color: '#FFD600' },
+  completed:   { label: 'Completed',   color: '#3a3a3a' },
+  missed:      { label: 'Missed',      color: '#ef4444' },
+};
+
+const difficultyConfig = {
+  beginner:     { label: 'Beginner',     color: '#4CAF50' },
+  intermediate: { label: 'Intermediate', color: '#FFD600' },
+  advanced:     { label: 'Advanced',     color: '#FF6B2B' },
+};
 
 export default function ClientWorkouts() {
   const { user } = useAuth();
@@ -12,9 +31,7 @@ export default function ClientWorkouts() {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
 
   useEffect(() => {
-    if (user?.clientId) {
-      fetchWorkouts();
-    }
+    if (user?.clientId) fetchWorkouts();
   }, [user]);
 
   async function fetchWorkouts() {
@@ -23,7 +40,6 @@ export default function ClientWorkouts() {
       const res = await api.get(`/assigned-workouts/client/${user.clientId}`);
       setWorkouts(res.data || []);
     } catch (err) {
-      console.error('Failed to fetch workouts:', err);
       toast.error('Failed to load workouts');
     } finally {
       setLoading(false);
@@ -36,139 +52,144 @@ export default function ClientWorkouts() {
       toast.success('Workout marked as complete!');
       fetchWorkouts();
       setSelectedWorkout(null);
-    } catch (err) {
-      console.error('Failed to mark complete:', err);
+    } catch {
       toast.error('Failed to mark workout as complete');
     }
   }
 
-  const getStatusBadge = (status) => {
-    const styles = {
-      assigned: 'bg-blue-100 text-blue-700',
-      in_progress: 'bg-yellow-100 text-yellow-700',
-      completed: 'bg-green-100 text-green-700',
-      missed: 'bg-red-100 text-red-700'
-    };
-    return styles[status] || styles.assigned;
-  };
-
-  const getDifficultyColor = (difficulty) => {
-    const colors = {
-      beginner: 'bg-green-100 text-green-700',
-      intermediate: 'bg-yellow-100 text-yellow-700',
-      advanced: 'bg-red-100 text-red-700'
-    };
-    return colors[difficulty] || colors.beginner;
-  };
+  // Group workouts by status
+  const active = workouts.filter(w => w.status !== 'completed');
+  const completed = workouts.filter(w => w.status === 'completed');
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8faf9', padding: '1rem' }}>
+    <div style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '100px', maxWidth: '900px', margin: '0 auto' }}>
+
       {/* Header */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1 className="page-header-title">My Workouts</h1>
-        <p className="page-header-subtitle">Workouts assigned by your PT</p>
+      <div style={{ padding: '2rem 2rem 1.5rem' }}>
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Training</p>
+        <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '0 0 0.3rem' }}>My Workouts</h1>
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Assigned by your PT</p>
       </div>
 
-      {/* Content */}
+      <Line />
+
+      {/* Loading */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-          <p style={{ color: '#6b7280', fontFamily: "'Satoshi', system-ui, sans-serif" }}>Loading workouts...</p>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '4rem' }}>
+          <div style={{ width: '20px', height: '20px', border: '2px solid #4CAF50', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
         </div>
+
+      /* Empty state */
       ) : workouts.length === 0 ? (
-        <div className="empty-state-container">
-          <Dumbbell className="empty-state-icon" />
-          <p className="empty-state-title">No workouts assigned yet</p>
-          <p className="empty-state-message">Check back soon! Your PT will assign workouts to you.</p>
+        <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
+          <Dumbbell size={32} color="#2a2a2a" style={{ marginBottom: '1rem' }} />
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 700, color: '#2a2a2a', letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>No workouts yet</p>
+          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', color: '#2a2a2a', margin: 0 }}>Your PT will assign workouts soon.</p>
         </div>
+
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '700px', margin: '0 auto' }}>
-          {workouts.map(workout => (
-            <div
-              key={workout.id}
-              className="my-workout-card"
-              onClick={() => setSelectedWorkout(workout)}
-              style={{
-                backgroundColor: 'var(--color-card)',
-                borderRadius: 'var(--radius-md)',
-                overflow: 'hidden',
-                boxShadow: 'var(--shadow-md)',
-                border: '1px solid var(--color-grey-light)',
-                cursor: 'pointer',
-                transition: 'var(--transition-normal)'
-              }}
-            >
-              {/* Gradient Header Strip */}
-              <div className="my-workout-header">
-                <h3 className="my-workout-header-title">{workout.name}</h3>
-                {workout.description && (
-                  <p className="my-workout-header-meta">{workout.description}</p>
-                )}
+        <>
+          {/* Summary bar */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {[
+              { value: workouts.length, label: 'Total', color: '#fff' },
+              { value: active.length, label: 'Active', color: '#4CAF50' },
+              { value: completed.length, label: 'Done', color: '#3a3a3a' },
+            ].map((s, i) => (
+              <div key={i} style={{ padding: '1.25rem 1.5rem', borderRight: i < 2 ? '1px solid #141414' : 'none' }}>
+                <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.8rem', fontWeight: 800, color: s.color, letterSpacing: '-0.03em', lineHeight: 1, margin: '0 0 0.3rem' }}>{s.value}</p>
+                <Label>{s.label}</Label>
               </div>
+            ))}
+          </div>
 
-              {/* Card Content */}
-              <div className="my-workout-body">
-                {/* Metadata */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem', fontSize: '0.875rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280' }}>
-                    <Calendar className="w-4 h-4" />
-                    {new Date(workout.scheduled_date).toLocaleDateString()}
+          <Line />
+
+          {/* Active workouts */}
+          {active.length > 0 && (
+            <>
+              <div style={{ padding: '1.5rem 2rem 0.75rem' }}>
+                <Label>Active</Label>
+              </div>
+              {active.map((workout, i) => {
+                const status = statusConfig[workout.status] || statusConfig.assigned;
+                const diff = difficultyConfig[workout.difficulty] || difficultyConfig.beginner;
+                return (
+                  <div key={workout.id}>
+                    <div
+                      onClick={() => setSelectedWorkout(workout)}
+                      style={{ padding: '1.25rem 2rem', cursor: 'pointer', transition: 'background 0.15s' }}
+                      onMouseEnter={e => e.currentTarget.style.background = '#0d0d0d'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      {/* Top row */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
+                        <div style={{ flex: 1, marginRight: '1rem' }}>
+                          <h3 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.15rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', margin: '0 0 0.25rem', lineHeight: 1.2 }}>{workout.name}</h3>
+                          {workout.description && (
+                            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.78rem', color: '#3a3a3a', margin: 0, fontWeight: 500, lineHeight: 1.5 }}>{workout.description}</p>
+                          )}
+                        </div>
+                        <ArrowRight size={16} color="#2a2a2a" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      </div>
+
+                      {/* Meta row */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <Calendar size={11} color="#2a2a2a" />
+                          <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', fontWeight: 500 }}>{new Date(workout.scheduled_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <Clock size={11} color="#2a2a2a" />
+                          <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', fontWeight: 500 }}>{workout.estimated_duration_minutes} min</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <Dumbbell size={11} color="#2a2a2a" />
+                          <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', fontWeight: 500 }}>{workout.exercises?.length || 0} exercises</span>
+                        </div>
+                        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: diff.color }}>{diff.label}</span>
+                          <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: status.color }}>{status.label}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {i < active.length - 1 && <Line />}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6b7280' }}>
-                    <Clock className="w-4 h-4" />
-                    {workout.estimated_duration_minutes} min
-                  </div>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '9999px',
-                    fontWeight: 700,
-                    backgroundColor: 'rgba(125, 212, 168, 0.15)',
-                    color: '#1a4a3a',
-                    textTransform: 'capitalize'
-                  }}>
-                    {workout.difficulty}
-                  </span>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '9999px',
-                    fontWeight: 700,
-                    backgroundColor: '#f0f7f4',
-                    color: '#1a4a3a',
-                    marginLeft: 'auto'
-                  }}>
-                    {workout.status === 'in_progress' ? 'In Progress' : workout.status}
-                  </span>
-                </div>
+                );
+              })}
+            </>
+          )}
 
-                {/* Exercise Count */}
-                <div style={{
-                  fontFamily: "'Satoshi', system-ui, sans-serif",
-                  fontSize: '0.875rem',
-                  fontWeight: 600,
-                  color: '#1a4a3a',
-                  marginBottom: '1rem'
-                }}>
-                  {workout.exercises?.length || 0} exercises
-                </div>
-
-                {/* Action Button */}
-                {workout.status !== 'completed' && (
-                  <button
-                    onClick={e => {
-                      e.stopPropagation();
-                      handleMarkComplete(workout.id);
-                    }}
-                    className="btn btn-primary"
-                    style={{ width: '100%' }}
+          {/* Completed workouts */}
+          {completed.length > 0 && (
+            <>
+              <Line />
+              <div style={{ padding: '1.5rem 2rem 0.75rem' }}>
+                <Label>Completed</Label>
+              </div>
+              {completed.map((workout, i) => (
+                <div key={workout.id}>
+                  <div
+                    onClick={() => setSelectedWorkout(workout)}
+                    style={{ padding: '1.1rem 2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', transition: 'background 0.15s' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#0d0d0d'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
-                    Mark as Complete
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.88rem', fontWeight: 600, color: '#2a2a2a', margin: '0 0 2px', letterSpacing: '-0.01em', textDecoration: 'line-through' }}>{workout.name}</p>
+                      <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.7rem', color: '#2a2a2a', margin: 0, fontWeight: 500 }}>{new Date(workout.scheduled_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} · {workout.estimated_duration_minutes} min</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                      <Check size={12} color="#3a3a3a" />
+                      <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#3a3a3a' }}>Done</span>
+                    </div>
+                  </div>
+                  {i < completed.length - 1 && <Line />}
+                </div>
+              ))}
+            </>
+          )}
+        </>
       )}
 
       {/* Detail Modal */}
