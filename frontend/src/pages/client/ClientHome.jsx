@@ -39,8 +39,11 @@ export default function ClientHome() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '48px' }}>
-        <div style={{ width: '32px', height: '32px', border: '4px solid #2d7a5c', borderTop: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <div style={{ width: '36px', height: '36px', border: '3px solid #4CAF50', borderTop: '3px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+          <p style={{ color: '#606060', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>Loading</p>
+        </div>
       </div>
     );
   }
@@ -51,17 +54,10 @@ export default function ClientHome() {
   const blockProgress = (sessionsUsed / (sessionsUsed + sessionsRemaining)) * 100 || 0;
 
   const getSessionsColor = () => {
-    if (sessionsRemaining === 0) return '#E74C3C';
-    if (sessionsRemaining <= 2) return '#E67E22';
-    if (sessionsRemaining <= 5) return '#F39C12';
-    return '#1a1a1a';
-  };
-
-  const getSessionsMessage = () => {
-    if (sessionsRemaining === 0) return 'Contact your PT to renew';
-    if (sessionsRemaining <= 2) return 'Almost there — renew soon';
-    if (sessionsRemaining <= 5) return 'Going strong';
-    return 'Great progress';
+    if (sessionsRemaining === 0) return '#FF4444';
+    if (sessionsRemaining <= 2) return '#FF6B2B';
+    if (sessionsRemaining <= 5) return '#FFD600';
+    return '#4CAF50';
   };
 
   const hour = new Date().getHours();
@@ -70,49 +66,58 @@ export default function ClientHome() {
   else if (hour < 18) greeting = 'GOOD AFTERNOON';
 
   const today = new Date();
-  const dateStr = today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const dateStr = today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 
-  // Quick links data
   const quickLinks = [
-    { icon: Calendar, label: 'My Sessions', to: '/client/sessions' },
-    { icon: TrendingUp, label: 'Progress', to: '/client/progress' },
-    { icon: Heart, label: 'Wellness', to: '/client/wellness' },
-    { icon: Apple, label: 'Nutrition', to: '/client/nutrition' },
-    { icon: MessageSquare, label: 'Messages', to: '/client/messages' },
-    { icon: CheckSquare, label: 'Check-in', to: '/client/checkin' },
+    { icon: Calendar, label: 'My Sessions', to: '/client/sessions', accent: '#4CAF50' },
+    { icon: TrendingUp, label: 'Progress', to: '/client/progress', accent: '#FF6B2B' },
+    { icon: Heart, label: 'Wellness', to: '/client/wellness', accent: '#FF6B2B' },
+    { icon: Apple, label: 'Nutrition', to: '/client/nutrition', accent: '#FFD600' },
+    { icon: MessageSquare, label: 'Messages', to: '/client/messages', accent: '#4CAF50' },
+    { icon: CheckSquare, label: 'Check-in', to: '/client/checkin', accent: '#FFD600' },
   ];
 
+  const firstName = user?.name?.split(' ')[0] || 'Client';
+  const initials = firstName.charAt(0).toUpperCase();
+
   return (
-    <div style={{ width: '100%', backgroundColor: '#f8faf9', minHeight: '100vh', paddingBottom: '100px' }}>
+    <div style={{ width: '100%', backgroundColor: '#0f0f0f', minHeight: '100vh', paddingBottom: '100px' }}>
+
       {/* Hero Banner */}
       <div className="dashboard-hero">
         <div style={{ maxWidth: '700px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <p className="dashboard-hero-subtitle" style={{ marginBottom: '1rem' }}>
-            {greeting}
-          </p>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h1 className="dashboard-hero-title">
-              Welcome, {user?.name?.split(' ')[0] || 'Client'}
-            </h1>
-            <p className="dashboard-hero-subtitle">
-              {dateStr}
-            </p>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+            <div>
+              <p className="dashboard-hero-subtitle" style={{ marginBottom: '0.5rem' }}>
+                {greeting}
+              </p>
+              <h1 className="dashboard-hero-title">
+                {firstName}
+              </h1>
+              <p style={{ margin: '0.4rem 0 0', fontSize: '0.85rem', color: '#606060' }}>
+                {dateStr}
+              </p>
+            </div>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #4CAF50, #66BB6A)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.1rem',
+              fontWeight: 800,
+              color: '#000',
+              flexShrink: 0,
+              boxShadow: '0 4px 16px rgba(76,175,80,0.3)'
+            }}>
+              {initials}
+            </div>
           </div>
+
           {user?.isPro && (
-            <div
-              style={{
-                display: 'inline-block',
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                color: 'white',
-                padding: '0.5rem 1rem',
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)'
-              }}
-            >
+            <div className="pro-badge" style={{ marginTop: '1rem' }}>
               ✓ PRO MEMBER
             </div>
           )}
@@ -120,95 +125,83 @@ export default function ClientHome() {
       </div>
 
       {/* Main Content */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 1.25rem' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
+
+        {/* Next Session Banner */}
+        {nextSession && (
+          <div
+            className="next-session-card"
+            style={{ marginBottom: '1.5rem', cursor: 'pointer' }}
+            onClick={() => navigate('/client/sessions')}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <p className="next-session-label">Next Session</p>
+                <p className="next-session-title">{nextSession.title || 'Training Session'}</p>
+                <p className="next-session-time">
+                  {nextSession.scheduled_time} · {new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
+                </p>
+              </div>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                background: 'rgba(0,0,0,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.1rem',
+                flexShrink: 0
+              }}>
+                ▶
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Stat Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-          {/* Sessions Left */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
           <div className="stat-card">
-            <p className="stat-card-label">Sessions Left</p>
+            <p className="stat-card-label">Sessions</p>
             <p className="stat-card-value" style={{ color: getSessionsColor() }}>
               {sessionsRemaining}
             </p>
-            <p className="stat-card-subtitle">
-              of {sessionsRemaining + sessionsUsed}
-            </p>
+            <p className="stat-card-subtitle">remaining</p>
           </div>
-
-          {/* Streak */}
           <div className="stat-card">
             <p className="stat-card-label">Streak</p>
-            <p className="stat-card-value">5</p>
+            <p className="stat-card-value" style={{ color: '#FF6B2B' }}>5</p>
             <p className="stat-card-subtitle">weeks</p>
           </div>
-
-          {/* Next Session */}
           <div className="stat-card">
-            <p className="stat-card-label">Next Session</p>
-            <p className="stat-card-value" style={{ fontSize: 'clamp(1.25rem, 5vw, 1.75rem)' }}>
-              {nextSession ? nextSession.scheduled_time : '—'}
-            </p>
-            <p className="stat-card-subtitle">
-              {nextSession ? new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }) : 'None'}
-            </p>
+            <p className="stat-card-label">Done</p>
+            <p className="stat-card-value" style={{ color: '#FFD600' }}>{sessionsUsed}</p>
+            <p className="stat-card-subtitle">sessions</p>
           </div>
         </div>
 
-        {/* Session Block Progress */}
-        <div style={{
-          backgroundColor: 'var(--color-card)',
-          borderRadius: 'var(--radius-md)',
-          padding: '1.75rem',
-          marginBottom: '2rem',
-          boxShadow: 'var(--shadow-md)',
-          border: '1px solid var(--color-grey-light)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-            <p style={{
-              fontFamily: "'Satoshi', system-ui, sans-serif",
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#1a1a1a',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              margin: 0
-            }}>
+        {/* Block Progress */}
+        <div className="block-progress-card" style={{ marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', fontWeight: 700, color: '#606060', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
               Block Progress
             </p>
-            <p style={{
-              fontFamily: "'Clash Display', system-ui, sans-serif",
-              fontSize: '1rem',
-              fontWeight: 700,
-              color: '#1a4a3a',
-              margin: 0
-            }}>
+            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: '#4CAF50', margin: 0 }}>
               {Math.round(blockProgress)}%
             </p>
           </div>
           <div className="premium-progress-bar">
-            <div
-              className="premium-progress-fill"
-              style={{ width: `${blockProgress}%` }}
-            />
+            <div className="premium-progress-fill" style={{ width: `${blockProgress}%` }} />
           </div>
-          <p style={{
-            fontFamily: "'Satoshi', system-ui, sans-serif",
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            color: '#6b7280',
-            margin: '0.75rem 0 0 0'
-          }}>
-            {sessions?.blocks?.used || 0} of {sessions?.blocks?.total || 10} sessions completed
+          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: '#606060', margin: '0.75rem 0 0', fontWeight: 500 }}>
+            {sessionsUsed} of {sessionsUsed + sessionsRemaining} sessions completed
           </p>
         </div>
 
-        {/* Quick Links Grid */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h2 className="section-header">Quick Links</h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '1rem',
-          }}>
+        {/* Quick Links */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <h2 className="section-header">Quick Access</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
             {quickLinks.map((link, idx) => {
               const Icon = link.icon;
               return (
@@ -216,46 +209,31 @@ export default function ClientHome() {
                   key={idx}
                   onClick={() => navigate(link.to)}
                   className="quick-link-button"
-                  style={{
-                    backgroundColor: 'var(--color-card)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '1.25rem',
-                    border: '1px solid var(--color-grey-light)',
-                    cursor: 'pointer'
-                  }}
                 >
-                  <Icon size={24} className="quick-link-icon" />
-                  <p className="quick-link-label">
-                    {link.label}
-                  </p>
+                  <div style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '8px',
+                    background: `${link.accent}18`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Icon size={18} style={{ color: link.accent }} />
+                  </div>
+                  <p className="quick-link-label">{link.label}</p>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Motivational Quote Card */}
-        <div className="motivation-card" style={{ marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: '3px',
-                  height: '3px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--color-mint)',
-                }}
-              />
-            ))}
-          </div>
-          <p className="motivation-quote">
-            "{quote.text}"
-          </p>
-          <p className="motivation-author">
-            — {quote.author}
-          </p>
+        {/* Motivational Quote */}
+        <div className="motivation-card">
+          <p className="motivation-quote">"{quote.text}"</p>
+          <p className="motivation-author">— {quote.author}</p>
         </div>
+
       </div>
     </div>
   );
