@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, TrendingUp, Heart, Apple, MessageSquare, CheckSquare } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import api from '../../utils/api';
 
 const MOTIVATIONAL_QUOTES = [
@@ -10,12 +10,28 @@ const MOTIVATIONAL_QUOTES = [
   { text: 'Your body can stand almost anything. It is your mind you have to convince.', author: 'Unknown' },
   { text: 'Train hard, recover harder.', author: 'Unknown' },
   { text: 'The pain you feel today will be the strength you feel tomorrow.', author: 'Unknown' },
-  { text: 'Don\'t wish for it. Work for it.', author: 'Unknown' },
+  { text: "Don't wish for it. Work for it.", author: 'Unknown' },
   { text: 'It never gets easier. You just get better.', author: 'Unknown' },
   { text: 'Fall in love with taking care of yourself.', author: 'Unknown' },
   { text: 'Success is usually the culmination of controlling failure.', author: 'Sylvester Stallone' },
-  { text: 'Whether you think you can or you think you cannot — you\'re right.', author: 'Henry Ford' },
+  { text: "Whether you think you can or you think you cannot — you're right.", author: 'Henry Ford' },
 ];
+
+const Tag = ({ children }) => (
+  <p style={{
+    fontFamily: "'Satoshi', system-ui, sans-serif",
+    fontSize: '0.62rem',
+    fontWeight: 700,
+    letterSpacing: '0.16em',
+    color: '#484848',
+    textTransform: 'uppercase',
+    margin: '0 0 0.5rem 0',
+  }}>{children}</p>
+);
+
+const Divider = () => (
+  <div style={{ height: '1px', backgroundColor: '#161616', width: '100%' }} />
+);
 
 export default function ClientHome() {
   const { user } = useAuth();
@@ -39,11 +55,8 @@ export default function ClientHome() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '36px', height: '36px', border: '3px solid #4CAF50', borderTop: '3px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-          <p style={{ color: '#606060', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>Loading</p>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#0a0a0a' }}>
+        <div style={{ width: '24px', height: '24px', border: '2px solid #4CAF50', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       </div>
     );
   }
@@ -51,190 +64,129 @@ export default function ClientHome() {
   const nextSession = sessions?.upcoming?.[0];
   const sessionsRemaining = sessions?.sessionsRemaining || 0;
   const sessionsUsed = sessions?.sessionsUsed || 0;
-  const blockProgress = (sessionsUsed / (sessionsUsed + sessionsRemaining)) * 100 || 0;
+  const totalSessions = sessionsUsed + sessionsRemaining;
+  const blockProgress = totalSessions > 0 ? (sessionsUsed / totalSessions) * 100 : 0;
 
   const getSessionsColor = () => {
-    if (sessionsRemaining === 0) return '#FF4444';
+    if (sessionsRemaining === 0) return '#ef4444';
     if (sessionsRemaining <= 2) return '#FF6B2B';
     if (sessionsRemaining <= 5) return '#FFD600';
     return '#4CAF50';
   };
 
   const hour = new Date().getHours();
-  let greeting = 'GOOD EVENING';
-  if (hour < 12) greeting = 'GOOD MORNING';
-  else if (hour < 18) greeting = 'GOOD AFTERNOON';
+  let greeting = 'Good evening';
+  if (hour < 12) greeting = 'Good morning';
+  else if (hour < 18) greeting = 'Good afternoon';
 
-  const today = new Date();
-  const dateStr = today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  const firstName = user?.name?.split(' ')[0] || 'Athlete';
 
   const quickLinks = [
-    { icon: Calendar, label: 'My Sessions', to: '/client/sessions', accent: '#4CAF50' },
-    { icon: TrendingUp, label: 'Progress', to: '/client/progress', accent: '#FF6B2B' },
-    { icon: Heart, label: 'Wellness', to: '/client/wellness', accent: '#FF6B2B' },
-    { icon: Apple, label: 'Nutrition', to: '/client/nutrition', accent: '#FFD600' },
-    { icon: MessageSquare, label: 'Messages', to: '/client/messages', accent: '#4CAF50' },
-    { icon: CheckSquare, label: 'Check-in', to: '/client/checkin', accent: '#FFD600' },
+    { label: 'My Sessions', sub: 'Book & manage', to: '/client/sessions' },
+    { label: 'Progress', sub: 'Track results', to: '/client/progress' },
+    { label: 'Wellness', sub: 'Check in daily', to: '/client/wellness' },
+    { label: 'Nutrition', sub: 'Food diary', to: '/client/nutrition' },
+    { label: 'Messages', sub: 'Chat with PT', to: '/client/messages' },
+    { label: 'Check-in', sub: 'Weekly review', to: '/client/checkin' },
+    { label: 'Workouts', sub: 'Browse library', to: '/client/workouts' },
+    { label: 'Leaderboard', sub: 'See rankings', to: '/client/leaderboard' },
   ];
 
-  const firstName = user?.name?.split(' ')[0] || 'Client';
-  const initials = firstName.charAt(0).toUpperCase();
-
   return (
-    <div style={{ width: '100%', backgroundColor: '#0f0f0f', minHeight: '100vh', paddingBottom: '100px' }}>
+    <div style={{ width: '100%', backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '120px' }}>
 
-      {/* Hero Banner */}
-      <div className="dashboard-hero">
-        <div style={{ maxWidth: '700px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <div>
-              <p className="dashboard-hero-subtitle" style={{ marginBottom: '0.5rem' }}>
-                {greeting}
-              </p>
-              <h1 className="dashboard-hero-title">
-                {firstName}
-              </h1>
-              <p style={{ margin: '0.4rem 0 0', fontSize: '0.85rem', color: '#606060' }}>
-                {dateStr}
-              </p>
-            </div>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #4CAF50, #66BB6A)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.1rem',
-              fontWeight: 800,
-              color: '#000',
-              flexShrink: 0,
-              boxShadow: '0 4px 16px rgba(76,175,80,0.3)'
-            }}>
-              {initials}
-            </div>
-          </div>
-
-          {user?.isPro && (
-            <div className="pro-badge" style={{ marginTop: '1rem' }}>
-              ✓ PRO MEMBER
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '1.5rem 1.25rem' }}>
-
-        {/* Next Session Banner */}
-        {nextSession && (
-          <div
-            className="next-session-card"
-            style={{ marginBottom: '1.5rem', cursor: 'pointer' }}
-            onClick={() => navigate('/client/sessions')}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <p className="next-session-label">Next Session</p>
-                <p className="next-session-title">{nextSession.title || 'Training Session'}</p>
-                <p className="next-session-time">
-                  {nextSession.scheduled_time} · {new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
-                </p>
-              </div>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                background: 'rgba(0,0,0,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.1rem',
-                flexShrink: 0
-              }}>
-                ▶
-              </div>
-            </div>
-          </div>
+      <div style={{ padding: '3rem 2rem 2.5rem', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: '260px', height: '260px', background: 'radial-gradient(circle, rgba(76,175,80,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 0.75rem 0' }}>{greeting}</p>
+        <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(3.5rem, 12vw, 6rem)', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.05em', lineHeight: 0.9, margin: '0 0 2rem 0' }}>{firstName}</h1>
+        {user?.isPro && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', padding: '4px 10px', borderRadius: '2px', fontSize: '0.58rem', fontWeight: 800, letterSpacing: '0.14em', color: '#000', textTransform: 'uppercase' }}>PRO MEMBER</span>
         )}
-
-        {/* Stat Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
-          <div className="stat-card">
-            <p className="stat-card-label">Sessions</p>
-            <p className="stat-card-value" style={{ color: getSessionsColor() }}>
-              {sessionsRemaining}
-            </p>
-            <p className="stat-card-subtitle">remaining</p>
-          </div>
-          <div className="stat-card">
-            <p className="stat-card-label">Streak</p>
-            <p className="stat-card-value" style={{ color: '#FF6B2B' }}>5</p>
-            <p className="stat-card-subtitle">weeks</p>
-          </div>
-          <div className="stat-card">
-            <p className="stat-card-label">Done</p>
-            <p className="stat-card-value" style={{ color: '#FFD600' }}>{sessionsUsed}</p>
-            <p className="stat-card-subtitle">sessions</p>
-          </div>
-        </div>
-
-        {/* Block Progress */}
-        <div className="block-progress-card" style={{ marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', fontWeight: 700, color: '#606060', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
-              Block Progress
-            </p>
-            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: '#4CAF50', margin: 0 }}>
-              {Math.round(blockProgress)}%
-            </p>
-          </div>
-          <div className="premium-progress-bar">
-            <div className="premium-progress-fill" style={{ width: `${blockProgress}%` }} />
-          </div>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: '#606060', margin: '0.75rem 0 0', fontWeight: 500 }}>
-            {sessionsUsed} of {sessionsUsed + sessionsRemaining} sessions completed
-          </p>
-        </div>
-
-        {/* Quick Links */}
-        <div style={{ marginBottom: '1.5rem' }}>
-          <h2 className="section-header">Quick Access</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
-            {quickLinks.map((link, idx) => {
-              const Icon = link.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => navigate(link.to)}
-                  className="quick-link-button"
-                >
-                  <div style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '8px',
-                    background: `${link.accent}18`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    <Icon size={18} style={{ color: link.accent }} />
-                  </div>
-                  <p className="quick-link-label">{link.label}</p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Motivational Quote */}
-        <div className="motivation-card">
-          <p className="motivation-quote">"{quote.text}"</p>
-          <p className="motivation-author">— {quote.author}</p>
-        </div>
-
       </div>
+
+      <Divider />
+
+      {nextSession ? (
+        <>
+          <div onClick={() => navigate('/client/sessions')} style={{ padding: '1.75rem 2rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', transition: 'background 0.15s ease' }} onMouseEnter={e => e.currentTarget.style.background = '#0d0d0d'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+            <div style={{ flex: 1 }}>
+              <Tag>Next session</Tag>
+              <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '0.3rem 0 0.4rem', lineHeight: 1.1 }}>{nextSession.title || 'Training Session'}</h2>
+              <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', color: '#484848', margin: 0, fontWeight: 500 }}>{nextSession.scheduled_time} · {new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</p>
+            </div>
+            <div style={{ width: '38px', height: '38px', borderRadius: '50%', border: '1px solid #242424', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <ArrowRight size={15} color="#4CAF50" />
+            </div>
+          </div>
+          <Divider />
+        </>
+      ) : (
+        <>
+          <div style={{ padding: '1.75rem 2rem' }}>
+            <Tag>Next session</Tag>
+            <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.5rem', fontWeight: 700, color: '#2a2a2a', letterSpacing: '-0.03em', margin: '0.3rem 0 0' }}>None booked yet</p>
+          </div>
+          <Divider />
+        </>
+      )}
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+        {[
+          { value: sessionsRemaining, label: 'Sessions left', color: getSessionsColor() },
+          { value: 5, label: 'Week streak', color: '#FF6B2B' },
+          { value: sessionsUsed, label: 'Completed', color: '#FFD600' },
+        ].map((stat, i) => (
+          <div key={i} style={{ padding: '1.75rem 1.25rem', borderRight: i < 2 ? '1px solid #161616' : 'none' }}>
+            <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 8vw, 3.5rem)', fontWeight: 800, color: stat.color, letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 0.4rem 0' }}>{stat.value}</p>
+            <Tag>{stat.label}</Tag>
+          </div>
+        ))}
+      </div>
+
+      <Divider />
+
+      <div style={{ padding: '1.75rem 2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '1rem' }}>
+          <div>
+            <Tag>Block progress</Tag>
+            <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', margin: '0.3rem 0 0' }}>{sessionsUsed} of {totalSessions} sessions</p>
+          </div>
+          <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>{Math.round(blockProgress)}%</p>
+        </div>
+        <div style={{ width: '100%', height: '3px', backgroundColor: '#1a1a1a', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ height: '100%', width: `${blockProgress}%`, background: 'linear-gradient(90deg, #4CAF50, #66BB6A)', borderRadius: '2px', transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)' }} />
+        </div>
+      </div>
+
+      <Divider />
+
+      <div style={{ padding: '1.5rem 2rem 0.5rem' }}>
+        <Tag>Quick access</Tag>
+      </div>
+
+      <div>
+        {quickLinks.map((link, i) => (
+          <div key={i}>
+            <div onClick={() => navigate(link.to)} style={{ padding: '1.1rem 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', transition: 'background 0.15s ease' }} onMouseEnter={e => e.currentTarget.style.background = '#0d0d0d'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+              <div>
+                <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.95rem', fontWeight: 600, color: '#ffffff', margin: '0 0 2px 0', letterSpacing: '-0.01em' }}>{link.label}</p>
+                <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.75rem', color: '#484848', margin: 0, fontWeight: 500 }}>{link.sub}</p>
+              </div>
+              <ArrowRight size={14} color="#2a2a2a" />
+            </div>
+            {i < quickLinks.length - 1 && <Divider />}
+          </div>
+        ))}
+      </div>
+
+      <Divider />
+
+      <div style={{ padding: '2rem 2rem 1rem' }}>
+        <Tag>Today's motivation</Tag>
+        <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(1.1rem, 3.5vw, 1.4rem)', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', lineHeight: 1.3, margin: '0.75rem 0 0.75rem' }}>"{quote.text}"</p>
+        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', color: '#4CAF50', textTransform: 'uppercase', margin: 0 }}>— {quote.author}</p>
+      </div>
+
     </div>
   );
 }
