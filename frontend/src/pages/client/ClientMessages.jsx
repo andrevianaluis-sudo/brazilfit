@@ -5,9 +5,9 @@ import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
 const BG = '#141414';
-const SURFACE = '#1e1e1e';
-const SURFACE2 = '#272727';
-const BORDER = 'rgba(255,255,255,0.08)';
+const SURFACE = '#2a2a2a';
+const SURFACE2 = '#333333';
+const BORDER = 'rgba(255,255,255,0.15)';
 const TEXT = '#ffffff';
 const MUTED = '#707070';
 const ORANGE = '#FF6B2B';
