@@ -4,16 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Trophy, Activity } from 'lucide-react';
 import api from '../../utils/api';
 
-const BG = '#141414';
-const SURFACE = '#1e1e1e';
-const SURFACE2 = '#272727';
-const BORDER = 'rgba(255,255,255,0.08)';
-const TEXT = '#ffffff';
-const MUTED = '#707070';
-const ORANGE = '#FF6B2B';
-const YELLOW = '#FFD600';
-const GREEN = '#4CAF50';
-
 const QUOTES = [
   { text: 'Progress is progress no matter how small.', author: 'Unknown' },
   { text: 'The only bad workout is the one that did not happen.', author: 'Unknown' },
@@ -23,26 +13,18 @@ const QUOTES = [
   { text: "Don't wish for it. Work for it.", author: 'Unknown' },
   { text: 'It never gets easier. You just get better.', author: 'Unknown' },
   { text: 'Fall in love with taking care of yourself.', author: 'Unknown' },
-  { text: 'Success is usually the culmination of controlling failure.', author: 'Sylvester Stallone' },
-  { text: "Whether you think you can or you think you cannot — you're right.", author: 'Henry Ford' },
 ];
 
 const QUICK_LINKS = [
-  { label: 'My Sessions',  sub: 'Book & manage',  to: '/client/sessions',     icon: Calendar,       color: ORANGE },
-  { label: 'Progress',     sub: 'Track results',   to: '/client/progress',     icon: TrendingUp,     color: GREEN },
-  { label: 'Wellness',     sub: 'Daily check-in',  to: '/client/wellness',     icon: Heart,          color: '#a78bfa' },
-  { label: 'Nutrition',    sub: 'Food & shopping', to: '/client/nutrition',    icon: Activity,       color: '#60a5fa' },
-  { label: 'Messages',     sub: 'Chat with PT',    to: '/client/messages',     icon: MessageSquare,  color: GREEN },
-  { label: 'Check-in',     sub: 'Weekly review',   to: '/client/checkin',      icon: ClipboardList,  color: YELLOW },
-  { label: 'Workouts',     sub: 'Browse library',  to: '/client/workouts',     icon: Dumbbell,       color: ORANGE },
-  { label: 'Leaderboard',  sub: 'See rankings',    to: '/client/leaderboard',  icon: Trophy,         color: YELLOW },
+  { label: 'My Sessions',  sub: 'Book & manage',  to: '/client/sessions',    icon: Calendar,        color: '#FF6B2B' },
+  { label: 'Progress',     sub: 'Track results',   to: '/client/progress',    icon: TrendingUp,      color: '#4CAF50' },
+  { label: 'Wellness',     sub: 'Daily check-in',  to: '/client/wellness',    icon: Heart,           color: '#a78bfa' },
+  { label: 'Nutrition',    sub: 'Food & shopping', to: '/client/nutrition',   icon: Activity,        color: '#60a5fa' },
+  { label: 'Messages',     sub: 'Chat with PT',    to: '/client/messages',    icon: MessageSquare,   color: '#4CAF50' },
+  { label: 'Check-in',     sub: 'Weekly review',   to: '/client/checkin',     icon: ClipboardList,   color: '#FFD600' },
+  { label: 'Workouts',     sub: 'Browse library',  to: '/client/workouts',    icon: Dumbbell,        color: '#FF6B2B' },
+  { label: 'Leaderboard',  sub: 'See rankings',    to: '/client/leaderboard', icon: Trophy,          color: '#FFD600' },
 ];
-
-function SectionLabel({ children, color = ORANGE }) {
-  return (
-    <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>
-  );
-}
 
 export default function ClientHome() {
   const { user } = useAuth();
@@ -65,8 +47,8 @@ export default function ClientHome() {
   }, []);
 
   if (loading) return (
-    <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:'100vh', backgroundColor:BG }}>
-      <div style={{ width:'20px', height:'20px', border:`2px solid ${ORANGE}`, borderTop:'2px solid transparent', borderRadius:'50%', animation:'spin 1s linear infinite' }} />
+    <div style={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight:'100vh', background:'#141414' }}>
+      <div style={{ width:'20px', height:'20px', border:'2px solid #FF6B2B', borderTop:'2px solid transparent', borderRadius:'50%', animation:'spin 1s linear infinite' }} />
     </div>
   );
 
@@ -75,94 +57,98 @@ export default function ClientHome() {
   const sessionsUsed = sessions?.sessionsUsed || 0;
   const totalSessions = sessionsUsed + sessionsRemaining;
   const blockProgress = totalSessions > 0 ? (sessionsUsed / totalSessions) * 100 : 0;
-
-  const sessionsColor = sessionsRemaining === 0 ? '#ef4444' : sessionsRemaining <= 2 ? '#ef4444' : sessionsRemaining <= 5 ? ORANGE : GREEN;
+  const sessionsColor = sessionsRemaining === 0 ? '#ef4444' : sessionsRemaining <= 2 ? '#ef4444' : sessionsRemaining <= 5 ? '#FF6B2B' : '#4CAF50';
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   const firstName = user?.name?.split(' ')[0] || 'Athlete';
   const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
 
-  return (
-    <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem' }}>
-      <div style={{ maxWidth:'800px', margin:'0 auto', padding:'2rem 1.25rem' }}>
+  const card = {
+    backgroundColor: '#252525',
+    borderRadius: '14px',
+    border: '1px solid rgba(255,255,255,0.12)',
+    padding: '1.1rem 1.25rem',
+  };
 
-        {/* Hero greeting */}
-        <div style={{ marginBottom:'1.5rem' }}>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>{greeting}</p>
-          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.04em', lineHeight:1.1, margin:'0 0 0.3rem' }}>{firstName}</h1>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{today}</p>
+  return (
+    <div style={{ background: '#141414', minHeight: '100vh', paddingBottom: '6rem', fontFamily: "'Satoshi', system-ui, sans-serif" }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1.25rem' }}>
+
+        {/* Greeting */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#FF6B2B', textTransform: 'uppercase', margin: '0 0 0.4rem' }}>{greeting}</p>
+          <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.5rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1.1, margin: '0 0 0.3rem' }}>{firstName}</h1>
+          <p style={{ fontSize: '0.8rem', color: '#707070', margin: 0 }}>{today}</p>
         </div>
 
-        {/* Next session card */}
+        {/* Next session — orange gradient card */}
         <div onClick={() => navigate('/client/sessions')} style={{
-          background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
-          borderRadius:'14px', padding:'1.25rem 1.5rem', marginBottom:'1rem',
-          cursor:'pointer', transition:'all 0.15s',
+          background: 'linear-gradient(135deg, #FF6B2B, #FFD600)',
+          borderRadius: '14px', padding: '1.25rem 1.5rem', marginBottom: '1rem', cursor: 'pointer',
+          transition: 'transform 0.15s',
         }}
-          onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
-          onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
+          onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
         >
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.16em', color:'rgba(0,0,0,0.55)', textTransform:'uppercase', margin:'0 0 0.4rem' }}>Next Session</p>
+          <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: 'rgba(0,0,0,0.55)', textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Next Session</p>
           {nextSession ? (
             <>
-              <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.3rem', fontWeight:700, color:'#000', letterSpacing:'-0.02em', margin:'0 0 0.25rem', lineHeight:1.2 }}>{nextSession.title || 'Training Session'}</p>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.82rem', color:'rgba(0,0,0,0.6)', margin:0, fontWeight:500 }}>
-                {nextSession.scheduled_time} · {new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' })}
+              <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 700, color: '#000', letterSpacing: '-0.02em', margin: '0 0 0.25rem', lineHeight: 1.2 }}>{nextSession.title || 'Training Session'}</p>
+              <p style={{ fontSize: '0.82rem', color: 'rgba(0,0,0,0.6)', margin: 0, fontWeight: 500 }}>
+                {nextSession.scheduled_time} · {new Date(nextSession.scheduled_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
               </p>
             </>
           ) : (
-            <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'1rem', color:'rgba(0,0,0,0.5)', margin:0 }}>No session booked yet</p>
+            <p style={{ fontSize: '1rem', color: 'rgba(0,0,0,0.5)', margin: 0 }}>No session booked yet</p>
           )}
         </div>
 
-        {/* Stats grid */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'8px', marginBottom:'1rem' }}>
+        {/* Stats — 3 dark cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '1rem' }}>
           {[
-            { value: sessionsRemaining, label: 'Sessions Left',  color: sessionsColor },
-            { value: 5,                 label: 'Week Streak',    color: ORANGE },
-            { value: sessionsUsed,      label: 'Completed',      color: YELLOW },
+            { value: sessionsRemaining, label: 'Sessions Left', color: sessionsColor },
+            { value: 5,                 label: 'Week Streak',   color: '#FF6B2B' },
+            { value: sessionsUsed,      label: 'Completed',     color: '#FFD600' },
           ].map((stat, i) => (
-            <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-              <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:800, color:stat.color, letterSpacing:'-0.03em', lineHeight:1, margin:'0 0 0.35rem' }}>{stat.value}</p>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{stat.label}</p>
+            <div key={i} style={{ ...card, textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.2rem', fontWeight: 800, color: stat.color, letterSpacing: '-0.03em', lineHeight: 1, margin: '0 0 0.4rem' }}>{stat.value}</p>
+              <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', color: '#707070', textTransform: 'uppercase', margin: 0 }}>{stat.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Block progress */}
-        <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem 1.25rem', border:`1px solid ${BORDER}`, marginBottom:'1rem' }}>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.75rem' }}>
+        {/* Block progress card */}
+        <div style={{ ...card, marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
             <div>
-              <SectionLabel>Block Progress</SectionLabel>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.78rem', color:MUTED, margin:0 }}>{sessionsUsed} of {totalSessions} sessions done</p>
+              <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#FF6B2B', textTransform: 'uppercase', margin: '0 0 0.3rem' }}>Block Progress</p>
+              <p style={{ fontSize: '0.78rem', color: '#707070', margin: 0 }}>{sessionsUsed} of {totalSessions} sessions done</p>
             </div>
-            <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.5rem', fontWeight:800, color:GREEN, letterSpacing:'-0.03em', margin:0 }}>{Math.round(blockProgress)}%</p>
+            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.6rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em', margin: 0 }}>{Math.round(blockProgress)}%</p>
           </div>
-          <div style={{ width:'100%', height:'4px', backgroundColor:SURFACE2, borderRadius:'2px', overflow:'hidden' }}>
-            <div style={{ height:'100%', width:`${blockProgress}%`, background:`linear-gradient(90deg, ${ORANGE}, ${YELLOW})`, borderRadius:'2px', transition:'width 0.8s ease' }} />
+          <div style={{ width: '100%', height: '5px', backgroundColor: '#333', borderRadius: '3px', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${blockProgress}%`, background: 'linear-gradient(90deg, #FF6B2B, #FFD600)', borderRadius: '3px', transition: 'width 0.8s ease' }} />
           </div>
         </div>
 
-        {/* Quick access */}
-        <div style={{ marginBottom:'1rem' }}>
-          <SectionLabel>Quick Access</SectionLabel>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
+        {/* Quick access — 2 column grid */}
+        <div style={{ marginBottom: '1rem' }}>
+          <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#FF6B2B', textTransform: 'uppercase', margin: '0 0 0.75rem' }}>Quick Access</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             {QUICK_LINKS.map((link, i) => {
               const Icon = link.icon;
               return (
                 <div key={i} onClick={() => navigate(link.to)} style={{
-                  backgroundColor:SURFACE, borderRadius:'12px', padding:'1rem',
-                  border:`1px solid ${BORDER}`, cursor:'pointer', transition:'all 0.15s',
-                  display:'flex', flexDirection:'column', gap:'0.5rem',
+                  ...card, cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '0.6rem', transition: 'all 0.15s',
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor=`${link.color}44`; e.currentTarget.style.backgroundColor=SURFACE2; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor=BORDER; e.currentTarget.style.backgroundColor=SURFACE; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = `${link.color}66`; e.currentTarget.style.backgroundColor = '#2e2e2e'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.backgroundColor = '#252525'; }}
                 >
-                  <Icon size={16} color={link.color} />
+                  <Icon size={18} color={link.color} />
                   <div>
-                    <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:700, color:TEXT, margin:'0 0 2px', letterSpacing:'-0.01em' }}>{link.label}</p>
-                    <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.68rem', color:MUTED, margin:0 }}>{link.sub}</p>
+                    <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff', margin: '0 0 2px', letterSpacing: '-0.01em' }}>{link.label}</p>
+                    <p style={{ fontSize: '0.7rem', color: '#707070', margin: 0 }}>{link.sub}</p>
                   </div>
                 </div>
               );
@@ -171,10 +157,10 @@ export default function ClientHome() {
         </div>
 
         {/* Quote */}
-        <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.25rem', border:`1px solid ${BORDER}`, borderLeft:`3px solid ${ORANGE}` }}>
-          <SectionLabel>Today's Motivation</SectionLabel>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.9rem', fontWeight:500, color:'#b0b0b0', lineHeight:1.65, margin:'0 0 0.6rem', fontStyle:'italic' }}>"{quote.text}"</p>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:ORANGE, textTransform:'uppercase', margin:0 }}>— {quote.author}</p>
+        <div style={{ ...card, borderLeft: '3px solid #FF6B2B' }}>
+          <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: '#FF6B2B', textTransform: 'uppercase', margin: '0 0 0.75rem' }}>Today's Motivation</p>
+          <p style={{ fontSize: '0.9rem', fontWeight: 500, color: '#b0b0b0', lineHeight: 1.65, margin: '0 0 0.6rem', fontStyle: 'italic' }}>"{quote.text}"</p>
+          <p style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', color: '#FF6B2B', textTransform: 'uppercase', margin: 0 }}>— {quote.author}</p>
         </div>
 
       </div>
