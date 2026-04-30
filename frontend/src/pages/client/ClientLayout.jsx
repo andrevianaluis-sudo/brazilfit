@@ -154,7 +154,7 @@ export default function ClientLayout() {
         </header>
 
         {/* Content — KEY FIX: background is #141414 not #141414 */}
-        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#141414' }}>
+        <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#0f0f0f' }}>
           <Outlet />
         </main>
       </div>

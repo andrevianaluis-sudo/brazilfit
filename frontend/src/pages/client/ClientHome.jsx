@@ -75,7 +75,7 @@ export default function ClientHome() {
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   const firstName = user?.name?.split(' ')[0] || 'Athlete';
   const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
-  const card = { backgroundColor: '#252525', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.12)', padding: '1.1rem 1.25rem' };
+  const card = { backgroundColor: '#2a2a2a', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.12)', padding: '1.1rem 1.25rem' };
 
   const icons = { Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Trophy, Activity };
 
