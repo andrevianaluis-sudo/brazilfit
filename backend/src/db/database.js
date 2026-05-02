@@ -396,7 +396,9 @@ function runMigrations() {
     )
   `);
 
-  // Exercise Library
+  // Exercise Library - gif_url migration
+  try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
+
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercises (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -411,9 +413,9 @@ function runMigrations() {
       common_mistakes TEXT DEFAULT '[]',
       pro_tips TEXT DEFAULT '[]',
       created_by INTEGER REFERENCES users(id),
+      created_by INTEGER REFERENCES users(id),
+      gif_url TEXT,
       created_at TEXT DEFAULT (datetime('now'))
-    )
-  `);
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercise_favorites (
