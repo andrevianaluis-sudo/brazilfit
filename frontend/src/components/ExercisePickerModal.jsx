@@ -144,7 +144,7 @@ export default function ExercisePickerModal({ onSelect, onClose }) {
                   {exercise.filename && (
                     <div className="w-full h-24 bg-white rounded-lg mb-2 flex items-center justify-center overflow-hidden border border-grey-100">
                       <img
-                        src={`/exercise-gifs/${exercise.filename}`}
+                        src={`/exercise-gifs/exercise-gifs/${exercise.filename}`}
                         alt={exercise.name}
                         className="w-full h-full object-contain"
                         style={{ imageRendering: 'crisp-edges' }}
