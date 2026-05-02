@@ -411,10 +411,10 @@ function runMigrations() {
       instructions TEXT DEFAULT '[]',
       common_mistakes TEXT DEFAULT '[]',
       pro_tips TEXT DEFAULT '[]',
-      created_by INTEGER REFERENCES users(id),
-      created_by INTEGER REFERENCES users(id),
       gif_url TEXT,
       created_at TEXT DEFAULT (datetime('now'))
+    )
+  `;
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercise_favorites (
