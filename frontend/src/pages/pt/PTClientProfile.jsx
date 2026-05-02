@@ -168,7 +168,7 @@ export default function PTClientProfile() {
   const assignPlan = async (planId) => {
     setAssigningPlan(true);
     try {
-      await api.put(/workouts/plans/, { client_id: id });
+      await api.put(`/workouts/plans/${planId}`, { client_id: id });
       toast.success('Plan assigned!');
       loadClientPlans();
     } catch { toast.error('Failed to assign plan'); }
@@ -177,7 +177,7 @@ export default function PTClientProfile() {
 
   const unassignPlan = async (planId) => {
     try {
-      await api.put(/workouts/plans/, { client_id: null });
+      await api.put(`/workouts/plans/${planId}`, { client_id: id });
       toast.success('Plan unassigned');
       loadClientPlans();
     } catch { toast.error('Failed to unassign'); }
