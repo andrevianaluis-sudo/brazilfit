@@ -1,6 +1,6 @@
 // frontend/src/components/ExercisePickerModal.jsx
 import { useState, useEffect, useCallback } from 'react';
-import { X, Plus, Search } from 'lucide-react';
+import { X, Plus, Search, Check } from 'lucide-react';
 import api from '../utils/api';
 
 const CATEGORIES = [
@@ -10,7 +10,7 @@ const CATEGORIES = [
   { key: 'Legs', label: 'Legs' },
   { key: 'Core', label: 'Core' },
   { key: 'Cardio', label: 'Cardio' },
-  { key: 'Stretching', label: '🧘 Stretching' },
+  { key: 'Stretching', label: '🧘 Stretch' },
   { key: 'Neck', label: 'Neck' },
   { key: 'Shoulders', label: 'Shoulders' },
   { key: 'Back', label: 'Back' },
@@ -19,8 +19,7 @@ const CATEGORIES = [
   { key: 'Calves', label: 'Calves' },
 ];
 
-const STRETCHING_CATS = ['Stretching', 'Neck', 'Shoulders', 'Back', 'Hips', 'Thighs', 'Calves',
-  'Forearms', 'Waist', 'Chest', 'Upper Arms', 'Articulations'];
+const STRETCH_CATS = ['Stretching','Neck','Shoulders','Back','Hips','Thighs','Calves','Forearms','Waist','Upper Arms'];
 
 export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const [exercises, setExercises] = useState([]);
@@ -47,118 +46,163 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
   useEffect(() => { fetchExercises(); }, [fetchExercises]);
 
   const addedIds = new Set((alreadyAdded || []).map(e => e.exercise_id || e.id));
-
-  const getGifUrl = (ex) => {
-    if (ex.gif_url) return ex.gif_url;
-    return null;
-  };
-
-  const isStretching = (ex) => STRETCHING_CATS.includes(ex.category);
+  const isStretch = (ex) => STRETCH_CATS.includes(ex.category);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 px-4 pb-4 sm:pb-0">
-      <div className="w-full max-w-lg bg-dark-grey-100 rounded-[16px] border border-white/10 shadow-2xl max-h-[88vh] flex flex-col">
-
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 50,
+      display: 'flex', alignItems: 'flex-end',
+      justifyContent: 'center',
+      background: 'rgba(0,0,0,0.75)',
+      padding: '0 0 0 0'
+    }}>
+      <div style={{
+        width: '100%', maxWidth: 480,
+        background: '#1a1a1a',
+        borderRadius: '16px 16px 0 0',
+        border: '1px solid #2a2a2a',
+        maxHeight: '88vh',
+        display: 'flex', flexDirection: 'column',
+        boxShadow: '0 -8px 32px rgba(0,0,0,0.5)'
+      }}>
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 flex-shrink-0">
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '18px 20px 12px',
+          borderBottom: '1px solid #2a2a2a'
+        }}>
           <div>
-            <p className="font-bold text-base">Add Exercise</p>
-            <p className="text-xs text-grey-200 mt-0.5">Search from your full library</p>
+            <p style={{ fontWeight: 700, fontSize: 16, color: '#fff', margin: 0 }}>Add Exercise</p>
+            <p style={{ fontSize: 12, color: '#888', margin: '3px 0 0' }}>Search from your full library</p>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors">
-            <X className="w-5 h-5 text-grey-200" />
-          </button>
+          <button onClick={onClose} style={{
+            background: '#2a2a2a', border: 'none', color: '#aaa',
+            borderRadius: 8, width: 32, height: 32, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16
+          }}>✕</button>
         </div>
 
         {/* Search */}
-        <div className="px-4 pt-3 pb-2 flex-shrink-0">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-grey-200" />
+        <div style={{ padding: '12px 16px 8px' }}>
+          <div style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#666', fontSize: 16 }}>🔍</span>
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search exercises..."
-              className="w-full bg-grey-100 border border-white/10 rounded-[10px] pl-9 pr-4 py-2.5 text-sm text-white placeholder-grey-200 focus:outline-none focus:border-brazil-orange"
+              style={{
+                width: '100%', background: '#2a2a2a', border: '1px solid #333',
+                borderRadius: 10, paddingLeft: 38, paddingRight: 14, paddingTop: 10, paddingBottom: 10,
+                fontSize: 14, color: '#fff', outline: 'none', boxSizing: 'border-box'
+              }}
             />
           </div>
         </div>
 
         {/* Category tabs */}
-        <div className="flex gap-1.5 overflow-x-auto hide-scrollbar px-4 pb-3 flex-shrink-0">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.key}
-              onClick={() => setCategory(cat.key)}
-              className={`flex-shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full transition-all ${
-                category === cat.key
-                  ? ['Stretching','Neck','Shoulders','Back','Hips','Thighs','Calves'].includes(cat.key)
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-brazil-orange text-white'
-                  : 'bg-white/10 text-grey-200 hover:text-white'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div style={{
+          display: 'flex', gap: 6, overflowX: 'auto', padding: '4px 16px 12px',
+          scrollbarWidth: 'none'
+        }}>
+          {CATEGORIES.map(cat => {
+            const isActive = category === cat.key;
+            const isStretchTab = ['Stretching','Neck','Shoulders','Back','Hips','Thighs','Calves'].includes(cat.key);
+            return (
+              <button
+                key={cat.key}
+                onClick={() => setCategory(cat.key)}
+                style={{
+                  flexShrink: 0, fontSize: 12, fontWeight: 600,
+                  padding: '6px 12px', borderRadius: 20, border: 'none',
+                  cursor: 'pointer', transition: 'all 0.15s',
+                  background: isActive
+                    ? isStretchTab ? '#3B82F6' : '#FF6B2B'
+                    : '#2a2a2a',
+                  color: isActive ? '#fff' : '#888',
+                }}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Exercise list */}
-        <div className="overflow-y-auto flex-1 px-4 pb-4">
+        <div style={{ overflowY: 'auto', flex: 1, padding: '0 12px 16px' }}>
           {loading ? (
-            <div className="flex justify-center py-10">
-              <div className="w-6 h-6 border-4 border-brazil-orange border-t-transparent rounded-full animate-spin" />
+            <div style={{ textAlign: 'center', padding: 32 }}>
+              <div style={{
+                width: 28, height: 28, border: '3px solid #FF6B2B',
+                borderTopColor: 'transparent', borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite', margin: '0 auto'
+              }} />
             </div>
           ) : exercises.length === 0 ? (
-            <div className="text-center py-10 text-grey-200 text-sm">No exercises found</div>
+            <p style={{ textAlign: 'center', color: '#666', padding: 32, fontSize: 14 }}>No exercises found</p>
           ) : (
-            <div className="space-y-1.5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {exercises.map(ex => {
-                const gifUrl = getGifUrl(ex);
                 const added = addedIds.has(ex.id);
-                const stretching = isStretching(ex);
+                const stretch = isStretch(ex);
+                const accentColor = stretch ? '#3B82F6' : '#FF6B2B';
                 return (
                   <button
                     key={ex.id}
                     onClick={() => !added && onSelect(ex)}
                     disabled={added}
-                    className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all group ${
-                      added ? 'bg-brazil-green/10 cursor-default' : 'bg-white/5 hover:bg-white/10'
-                    }`}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 12,
+                      padding: '10px 12px', borderRadius: 12, border: 'none',
+                      background: added ? '#1a2a1a' : '#242424',
+                      cursor: added ? 'default' : 'pointer',
+                      textAlign: 'left', transition: 'background 0.15s',
+                      width: '100%'
+                    }}
+                    onMouseEnter={e => { if (!added) e.currentTarget.style.background = '#2e2e2e'; }}
+                    onMouseLeave={e => { if (!added) e.currentTarget.style.background = '#242424'; }}
                   >
                     {/* Thumbnail */}
-                    <div className={`w-12 h-12 rounded-[8px] overflow-hidden flex-shrink-0 flex items-center justify-center ${
-                      gifUrl ? 'bg-white' : 'bg-white/10'
-                    }`}>
-                      {gifUrl ? (
-                        <img
-                          src={gifUrl}
-                          alt={ex.name}
-                          className="w-full h-full object-contain"
-                          onError={e => { e.target.style.display = 'none'; }}
-                        />
+                    <div style={{
+                      width: 48, height: 48, borderRadius: 10, overflow: 'hidden',
+                      background: ex.gif_url ? '#fff' : '#2a2a2a',
+                      flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {ex.gif_url ? (
+                        <img src={ex.gif_url} alt={ex.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          onError={e => { e.target.style.display = 'none'; }} />
                       ) : (
-                        <span className="text-xl">{stretching ? '🧘' : '💪'}</span>
+                        <span style={{ fontSize: 22 }}>{stretch ? '🧘' : '💪'}</span>
                       )}
                     </div>
 
                     {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-white truncate">{ex.name}</p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span className={`text-[10px] font-bold ${stretching ? 'text-blue-400' : 'text-brazil-orange'}`}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontWeight: 600, fontSize: 14, color: '#fff', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {ex.name}
+                      </p>
+                      <div style={{ display: 'flex', gap: 6, marginTop: 3, alignItems: 'center' }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: accentColor }}>
                           {ex.category}
                         </span>
                         {ex.muscle_groups && (
-                          <span className="text-[10px] text-grey-200 truncate">{ex.muscle_groups}</span>
+                          <span style={{ fontSize: 11, color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {ex.muscle_groups}
+                          </span>
                         )}
                       </div>
                     </div>
 
                     {/* Action */}
                     {added ? (
-                      <span className="text-brazil-green text-xs font-bold flex-shrink-0">✓ Added</span>
+                      <span style={{ color: '#4CAF50', fontWeight: 700, fontSize: 13, flexShrink: 0 }}>✓</span>
                     ) : (
-                      <Plus className="w-4 h-4 text-grey-200 group-hover:text-white flex-shrink-0 transition-colors" />
+                      <div style={{
+                        width: 28, height: 28, borderRadius: 8, background: accentColor,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                      }}>
+                        <span style={{ color: '#fff', fontSize: 18, lineHeight: 1 }}>+</span>
+                      </div>
                     )}
                   </button>
                 );
@@ -167,6 +211,8 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
           )}
         </div>
       </div>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
