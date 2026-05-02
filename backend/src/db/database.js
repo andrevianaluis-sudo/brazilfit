@@ -414,7 +414,7 @@ function runMigrations() {
       gif_url TEXT,
       created_at TEXT DEFAULT (datetime('now'))
     )
-  `;
+  );
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercise_favorites (
