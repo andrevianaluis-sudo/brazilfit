@@ -96,6 +96,12 @@ export default function PTClientProfile() {
   const [showNewAssessment, setShowNewAssessment] = useState(false);
   const [assessmentForm, setAssessmentForm] = useState({});
   const [assessmentSaving, setAssessmentSaving] = useState(false);
+  // Workouts tab state
+  const [clientPlans, setClientPlans] = useState([]);
+  const [allPlans, setAllPlans] = useState([]);
+  const [plansLoading, setPlansLoading] = useState(false);
+  const [assigningPlan, setAssigningPlan] = useState(false);
+
   // Programme tab state
   const [programmeCards, setProgrammeCards] = useState([]);
   const [programmeLoading, setProgrammeLoading] = useState(false);
@@ -116,6 +122,7 @@ export default function PTClientProfile() {
     if (activeTab === 'onboarding' && !onboardingData) loadOnboarding();
     if (activeTab === 'assessment' && assessments.length === 0) loadAssessments();
     if (activeTab === 'programme' && programmeCards.length === 0) loadProgramme();
+    if (activeTab === 'workouts') loadClientPlans();
     if (activeTab === 'messages') {
       loadMessages();
       const interval = setInterval(loadMessages, 2000);
@@ -145,6 +152,36 @@ export default function PTClientProfile() {
     finally { setAssessmentLoading(false); }
   };
 
+  const loadClientPlans = async () => {
+    setPlansLoading(true);
+    try {
+      const [clientRes, allRes] = await Promise.all([
+        api.get(/workouts/plans?clientId=),
+        api.get('/workouts/plans')
+      ]);
+      setClientPlans(Array.isArray(clientRes.data) ? clientRes.data : []);
+      setAllPlans(Array.isArray(allRes.data) ? allRes.data : []);
+    } catch { toast.error('Failed to load workout plans'); }
+    finally { setPlansLoading(false); }
+  };
+
+  const assignPlan = async (planId) => {
+    setAssigningPlan(true);
+    try {
+      await api.put(/workouts/plans/, { client_id: id });
+      toast.success('Plan assigned!');
+      loadClientPlans();
+    } catch { toast.error('Failed to assign plan'); }
+    finally { setAssigningPlan(false); }
+  };
+
+  const unassignPlan = async (planId) => {
+    try {
+      await api.put(/workouts/plans/, { client_id: null });
+      toast.success('Plan unassigned');
+      loadClientPlans();
+    } catch { toast.error('Failed to unassign'); }
+  };
   const loadProgramme = async () => {
     setProgrammeLoading(true);
     try {
@@ -287,7 +324,7 @@ export default function PTClientProfile() {
   const upcomingSessions = client.sessions?.filter(s => s.status === 'upcoming') || [];
   const cancelledSessions = client.sessions?.filter(s => s.status === 'cancelled') || [];
 
-  const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'onboarding', 'assessment', 'programme'];
+  const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'onboarding', 'assessment', 'programme', 'workouts'];
 
   return (
     <div className="animate-fade-in">
@@ -1099,6 +1136,69 @@ export default function PTClientProfile() {
         )}
 
       </div>
+        {/* -- Workouts -- */}
+        {activeTab === 'workouts' && (
+          <div className="space-y-4">
+            {/* Assigned Plans */}
+            <div>
+              <p className="text-sm font-semibold text-grey-200 mb-3">Assigned Plans</p>
+              {plansLoading ? (
+                <div className="flex justify-center py-6"><div className="w-6 h-6 border-4 border-brazil-orange border-t-transparent rounded-full animate-spin" /></div>
+              ) : clientPlans.length === 0 ? (
+                <p className="text-center text-grey-100 py-6 text-sm">No workout plans assigned yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {clientPlans.map(plan => (
+                    <div key={plan.id} className="card-dark flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-[8px] bg-brazil-orange/20 flex items-center justify-center text-lg flex-shrink-0">??</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-sm">{plan.name}</p>
+                        {plan.description && <p className="text-xs text-grey-200 truncate">{plan.description}</p>}
+                      </div>
+                      <button onClick={() => unassignPlan(plan.id)}
+                        className="text-xs text-red-400 hover:text-red-300 px-2 py-1 rounded bg-red-500/10 flex-shrink-0">
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* All Plans - assign from here */}
+            <div>
+              <p className="text-sm font-semibold text-grey-200 mb-3">All Workout Plans</p>
+              {allPlans.length === 0 ? (
+                <p className="text-center text-grey-100 py-6 text-sm">No workout plans created yet. Go to Workouts to create one.</p>
+              ) : (
+                <div className="space-y-2">
+                  {allPlans.map(plan => {
+                    const isAssigned = clientPlans.some(p => p.id === plan.id);
+                    return (
+                      <div key={plan.id} className="card-dark flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-[8px] bg-grey-100 flex items-center justify-center text-lg flex-shrink-0">??</div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm">{plan.name}</p>
+                          {plan.description && <p className="text-xs text-grey-200 truncate">{plan.description}</p>}
+                          {plan.client_name && !isAssigned && <p className="text-xs text-grey-100">Currently: {plan.client_name}</p>}
+                        </div>
+                        {isAssigned ? (
+                          <span className="text-xs text-brazil-green font-bold px-2 py-1 rounded bg-brazil-green/10 flex-shrink-0">? Assigned</span>
+                        ) : (
+                          <button onClick={() => assignPlan(plan.id)} disabled={assigningPlan}
+                            className="text-xs text-white font-bold px-3 py-1.5 rounded-[6px] bg-brazil-orange flex-shrink-0 disabled:opacity-50">
+                            Assign
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
 
       {/* Override modal */}
       {overrideTarget && (
