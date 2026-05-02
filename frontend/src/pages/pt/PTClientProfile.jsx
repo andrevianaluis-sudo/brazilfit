@@ -156,7 +156,7 @@ export default function PTClientProfile() {
     setPlansLoading(true);
     try {
       const [clientRes, allRes] = await Promise.all([
-        api.get(/workouts/plans?clientId=),
+        api.get(\\/workouts/plans?clientId=\\\),
         api.get('/workouts/plans')
       ]);
       setClientPlans(Array.isArray(clientRes.data) ? clientRes.data : []);
