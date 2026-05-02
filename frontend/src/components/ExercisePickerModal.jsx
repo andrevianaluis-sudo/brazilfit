@@ -35,23 +35,23 @@ export default function ExercisePickerModal({ onSelect, onClose }) {
     try {
       setLoading(true);
 
-      // Load stretching exercises from database with GIF filenames
-      const stretchRes = await api.get('/exercises/stretching/all');
-      const gifRes = await fetch('/exercise-gifs/mapping.json');
-      const gifMapping = await gifRes.json();
+      // Load stretching exercises from database
+      const stretchRes = await api.get('/exercises?category=Stretching&limit=500');
 
-      // Create a map of exercise names to filenames
-      const nameToFilename = {};
-      gifMapping.forEach(item => {
-        nameToFilename[item.exerciseName] = item.filename;
-      });
 
-      const stretchingExercises = (stretchRes.data || []).map(ex => ({
+
+
+
+
+
+
+
+
+      const stretchingExercises = (stretchRes.data?.exercises || stretchRes.data || []).map(ex => ({
         ...ex,
         type: 'stretching',
-        filename: nameToFilename[ex.name] || null
+        filename: ex.gif_url ? ex.gif_url.replace('/exercise-gifs/exercise-gifs/', '') : null
       }));
-
       setStretchingExercises(stretchingExercises);
     } catch (err) {
       console.error('Failed to fetch exercises:', err);
