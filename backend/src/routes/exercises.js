@@ -31,7 +31,7 @@ router.get('/', authenticateToken, (req, res) => {
     const countParams = [...queryParams];
     const exerciseParams = [...queryParams, limitNum, offsetNum];
     const total = db.prepare('SELECT COUNT(*) as total FROM exercises e ' + whereClause).get(...countParams);
-    const exercises = db.prepare('SELECT e.* FROM exercises e ' + whereClause + ' ORDER BY CASE WHEN e.gif_url IS NOT NULL AND e.gif_url != \'\'\' THEN 0 ELSE 1 END, e.name ASC LIMIT ? OFFSET ?').all(...exerciseParams);
+    const exercises = db.prepare('SELECT e.* FROM exercises e ' + whereClause + ' ORDER BY e.name ASC LIMIT ? OFFSET ?').all(...exerciseParams);
     res.json({ exercises, total: total.total });
   } catch (err) {
     console.error('GET /exercises error:', err);
