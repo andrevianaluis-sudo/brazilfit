@@ -369,9 +369,9 @@ function seedUsers() {
 }
 
 function runMigrations() {
-  // Add cancellation columns to sessions table (idempotent)
-  const cols = db.prepare('PRAGMA table_info(sessions)').all().map(c => c.name);
-  if (!cols.includes('cancelled_at'))
+  // Add gif_url to exercises if missing
+  try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
+
     db.exec('ALTER TABLE sessions ADD COLUMN cancelled_at TEXT');
   if (!cols.includes('cancellation_notice_hours'))
     db.exec('ALTER TABLE sessions ADD COLUMN cancellation_notice_hours REAL');
@@ -396,8 +396,7 @@ function runMigrations() {
     )
   `);
 
-  // Exercise Library - gif_url migration
-  try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
+  // Exercise Library
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS exercises (
