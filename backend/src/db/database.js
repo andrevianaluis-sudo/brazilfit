@@ -377,11 +377,11 @@ function runMigrations() {
 
   const cols = db.prepare('PRAGMA table_info(sessions)').all().map(c => c.name);
   if (!cols.includes('cancelled_at'))
-    db.exec('ALTER TABLE sessions ADD COLUMN cancellation_notice_hours REAL');
-  if (!cols.includes('cancelled_by'))
-    db.exec('ALTER TABLE sessions ADD COLUMN cancelled_by TEXT');
-  if (!cols.includes('pt_override_note'))
-    db.exec('ALTER TABLE sessions ADD COLUMN pt_override_note TEXT');
+  try { db.exec('ALTER TABLE sessions ADD COLUMN cancelled_at TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE sessions ADD COLUMN cancellation_notice_hours REAL'); } catch(e) {}
+  try { db.exec('ALTER TABLE sessions ADD COLUMN cancelled_by TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE sessions ADD COLUMN pt_override_note TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE sessions ADD COLUMN session_carried_over INTEGER DEFAULT 0'); } catch(e) {}
 
   // Notifications table for PT in-app alerts
   db.exec(`
