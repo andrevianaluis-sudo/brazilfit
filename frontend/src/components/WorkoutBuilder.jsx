@@ -244,12 +244,12 @@ export default function WorkoutBuilder({ template, onClose, onSuccess }) {
                     }`}
                   >
                     {/* Exercise Header */}
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        {ex.gif_url && <div className="w-14 h-14 rounded-lg overflow-hidden bg-white flex-shrink-0 border border-grey-100"><img src={ex.gif_url} alt={ex.name} className="w-full h-full object-contain" onError={e => { e.target.style.display = "none"; }} /></div>}
-                        <div className="flex-1 min-w-0"><h4 className="font-bold text-black truncate">{ex.name}</h4>
-                        <p className="text-xs text-grey-200">{ex.category}</p></div>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="font-bold text-black">{ex.name}</h4>
+                        <p className="text-xs text-grey-200">{ex.category}</p>
                       </div>
+                      <div className="flex gap-1">
                         <button
                           onClick={() => handleMoveExercise(idx, -1)}
                           disabled={idx === 0}
