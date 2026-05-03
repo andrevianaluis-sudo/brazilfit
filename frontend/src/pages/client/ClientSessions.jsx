@@ -238,7 +238,7 @@ export default function ClientSessions() {
                         </p>
                       </div>
                     </div>
-                    <button onClick={() => setCancelTarget(s)} style={{
+                    {hrs >= 24 && <button onClick={() => setCancelTarget(s)} style={{
                       padding:'5px 12px', backgroundColor:'transparent',
                       border:`1px solid ${locked?SURFACE2:BORDER}`,
                       borderRadius:'6px', color:locked?SURFACE2:MUTED,
@@ -250,7 +250,7 @@ export default function ClientSessions() {
                       onMouseLeave={e => { if(!locked) { e.currentTarget.style.borderColor=BORDER; e.currentTarget.style.color=MUTED; }}}>
                       {locked ? <Ban size={11}/> : <X size={11}/>}
                       {locked ? 'Locked' : 'Cancel'}
-                    </button>
+                    </button>}
                   </div>
                 );
               })}
