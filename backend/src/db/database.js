@@ -1861,4 +1861,4 @@ function seedNutritionData() {
   } catch(e) { console.log('Nutrition seed skipped:', e.message); }
 }
 
-module.exports = { getDb };
+// auto-seed enabled
