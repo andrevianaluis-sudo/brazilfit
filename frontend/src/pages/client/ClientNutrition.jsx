@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Crown, Heart, ChevronDown, ChevronUp } from 'lucide-react';
@@ -289,7 +289,7 @@ export default function ClientNutrition() {
               display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'capitalize',
             }}>
               {tabName === 'tips' && `Tips (${tips.length})`}
-              {tabName === 'meals' && <>{`Meals`}{!user?.isPro && <Crown size={12} color={YELLOW} />}</>}
+              {tabName === 'meals' && <>{`Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW} />}</>}
               {tabName === 'shopping' && 'Shopping'}
             </button>
           ))}
