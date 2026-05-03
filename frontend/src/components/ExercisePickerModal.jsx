@@ -101,7 +101,7 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
 
         {/* Category tabs */}
         <div style={{
-          display: 'flex', gap: 6, overflowX: 'auto', padding: '4px 16px 12px', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch', overflowX: 'auto'
+          display: 'flex', flexWrap: 'wrap', gap: 6, padding: '4px 16px 10px'
         }}>
           {CATEGORIES.map(cat => {
             const isActive = category === cat.key;
