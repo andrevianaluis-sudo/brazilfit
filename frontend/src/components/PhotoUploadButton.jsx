@@ -67,7 +67,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={e => e.stopPropagation()}>
           <div className="w-full max-w-md rounded-2xl p-6 max-h-[90vh] overflow-y-auto" style={{ backgroundColor: "#1e1e1e", border: "1px solid rgba(255,255,255,0.1)" }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold" style={{ color: "#ffffff" }}>Upload Progress Photo</h2>
