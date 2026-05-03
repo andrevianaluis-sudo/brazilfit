@@ -284,7 +284,7 @@ export default function ClientNutrition() {
               fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600,
               color: tab === tabName ? ORANGE : MUTED,
               borderBottom: `2px solid ${tab === tabName ? ORANGE : 'transparent'}`,
-              background: 'none', border: 'none', borderBottom: `2px solid ${tab === tabName ? ORANGE : 'transparent'}`,
+                background: 'none', border: 'none',
               cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto',
               display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'capitalize',
             }}>

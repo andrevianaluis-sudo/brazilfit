@@ -1,4 +1,4 @@
-ï»¿import { useState } from 'react';
+import { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
@@ -77,7 +77,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                 {quote.text}
               </p>
               <p className="text-xs" style={{ color: '#888888' }}>
-                â€” {quote.author}
+                — {quote.author}
               </p>
             </div>
 
@@ -100,9 +100,9 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                       <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#888888' }}>
                         Protein
                       </p>
-                      <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}">{meal.protein}g</p>
+                        <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}>{meal.protein}g</p>
                     </div>
-                    <div className="w-px h-12 mx-2" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}" />
+                    <div className="w-px h-12 mx-2" style={{ backgroundColor: "rgba(255,255,255,0.15)" }} />
                   </>
                 )}
                 {meal.carbs > 0 && (
@@ -146,7 +146,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                   {ingredients.map((ingredient, idx) => (
                     <li key={idx} className="flex items-start">
                       <span className="mr-3 mt-1.5 flex-shrink-0" style={{ color: '#27AE60' }}>
-                        â€”
+                        —
                       </span>
                       <span className="text-sm" style={{ color: '#cccccc', fontSize: '14px' }}>
                         {ingredient}
