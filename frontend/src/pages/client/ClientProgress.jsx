@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import BackButton from '../../components/BackButton';
 import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
@@ -29,7 +29,7 @@ function StatCard({ label, value, unit, change }) {
     <div style={{ backgroundColor:SURFACE, borderRadius:14, padding:'1rem', border:`1px solid ${BORDER}` }}>
       <SectionLabel>{label}</SectionLabel>
       <div style={{ display:'flex', alignItems:'baseline', gap:4 }}>
-        <p style={{ fontSize:'2rem', fontWeight:800, color:TEXT, letterSpacing:'-0.04em', lineHeight:1, margin:0 }}>{value ?? '?'}</p>
+        <p style={{ fontSize:'2rem', fontWeight:800, color:value?TEXT:MUTED, letterSpacing:'-0.04em', lineHeight:1, margin:0 }}>{value ?? '--'}</p>
         {value && <span style={{ color:MUTED, fontSize:'0.75rem', fontWeight:600 }}>{unit}</span>}
       </div>
       {change !== null && change !== undefined && (
@@ -60,7 +60,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
       <div style={{ width:'100%', maxWidth:480, background:SURFACE, borderRadius:'20px 20px 0 0', border:`1px solid ${BORDER}`, borderBottom:'none', maxHeight:'90vh', overflowY:'auto', paddingBottom:32 }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 20px 16px', borderBottom:`1px solid ${BORDER}` }}>
           <div><h3 style={{ color:TEXT, fontWeight:700, fontSize:18, margin:0 }}>Add Measurements</h3><p style={{ color:MUTED, fontSize:13, margin:'4px 0 0' }}>Track your body changes over time</p></div>
-          <button onClick={onClose} style={{ background:SURFACE2, border:'none', color:MUTED, borderRadius:8, width:32, height:32, cursor:'pointer', fontSize:16 }}>?</button>
+          <button onClick={onClose} style={{ background:SURFACE2, border:'none', color:MUTED, borderRadius:8, width:32, height:32, cursor:'pointer', fontSize:14, lineHeight:1 }}>X</button>
         </div>
         <div style={{ padding:'20px 20px 0' }}>
           <div style={{ marginBottom:16 }}>
@@ -79,7 +79,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
             <label style={{ color:MUTED, fontSize:11, display:'block', marginBottom:5, fontWeight:600 }}>NOTES (optional)</label>
             <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes:e.target.value}))} placeholder="How are you feeling?" style={{ width:'100%', background:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:10, color:TEXT, padding:'11px 14px', fontSize:14, boxSizing:'border-box', outline:'none' }}/>
           </div>
-          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:ORANGE, border:'none', borderRadius:14, color:saving?MUTED:'#fff', padding:'16px', fontSize:16, fontWeight:800, cursor:saving?'default':'pointer' }}>{saving ? 'Saving...' : '? Save Measurements'}</button>
+          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:ORANGE, border:'none', borderRadius:14, color:saving?MUTED:'#fff', padding:'16px', fontSize:16, fontWeight:800, cursor:saving?'default':'pointer' }}>{saving ? 'Saving...' : 'Save Measurements'}</button>
         </div>
       </div>
     </div>
