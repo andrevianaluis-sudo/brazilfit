@@ -373,10 +373,10 @@ function runMigrations() {
   try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE messages ADD COLUMN pt_id INTEGER'); } catch(e) {}
   try { db.exec('ALTER TABLE subscriptions ADD COLUMN active INTEGER DEFAULT 1'); } catch(e) {}
+  try { db.exec('ALTER TABLE subscriptions ADD COLUMN active INTEGER DEFAULT 1'); } catch(e) {}
 
+  const cols = db.prepare('PRAGMA table_info(sessions)').all().map(c => c.name);
   if (!cols.includes('cancelled_at'))
-    db.exec('ALTER TABLE sessions ADD COLUMN cancelled_at TEXT');
-  if (!cols.includes('cancellation_notice_hours'))
     db.exec('ALTER TABLE sessions ADD COLUMN cancellation_notice_hours REAL');
   if (!cols.includes('cancelled_by'))
     db.exec('ALTER TABLE sessions ADD COLUMN cancelled_by TEXT');
