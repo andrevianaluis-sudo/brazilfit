@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import BackButton from '../../components/BackButton';
 import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
@@ -25,6 +25,7 @@ export default function ClientProgress() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeTab, setActiveTab] = useState('progress');
   const [measurements] = useState([
+    { date:'2024-04-15', weight:78.5, waist:82, hips:95, chest:100 },
     { date:'2024-03-15', weight:80.2, waist:85, hips:98, chest:103 },
     { date:'2024-02-15', weight:82.0, waist:88, hips:101, chest:105 },
   ]);
@@ -37,29 +38,29 @@ export default function ClientProgress() {
   return (
     <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem' }}>
       <div style={{ maxWidth:'800px', margin:'0 auto', padding:'2rem 1.25rem' }}>
-        <BackButton to='/client' />
+        <BackButton to="/client" />
 
         {/* Header */}
-        <div style={{ margin:'1.25rem 0 1rem' }}>
-          <p style={{ fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Your Journey</p>
-          <h1 style={{ fontSize:'2rem', fontWeight:700, color:TEXT, margin:0 }}>Progress</h1>
+        <div style={{ margin:'1.25rem 0 1.5rem' }}>
+          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Your Journey</p>
+          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:0 }}>Progress</h1>
         </div>
 
-        {/* Tabs */}
-        {/* Tabs */}
-        <div style={{ display:'flex', gap:8, marginBottom:'1.5rem', borderBottom:`1px solid ${BORDER}` }}>
-          {[{key:'progress',label:'Stats'},{key:'photos',label:'Photos'}].map(t => (
-            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color: activeTab===t.key ? ORANGE : MUTED, fontWeight:700, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom: activeTab===t.key ? `2px solid ${ORANGE}` : '2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
-          ))}
-        </div>
-        {activeTab === 'progress' && <div><div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'8px', marginBottom:'1rem' }}>
+        {/* Key stats grid */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'8px', marginBottom:'1rem' }}>
+          {/* Weight */}
+          <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}` }}>
+            <SectionLabel>Current Weight</SectionLabel>
+            <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2.2rem', fontWeight:800, color:TEXT, letterSpacing:'-0.04em', lineHeight:1, margin:'0 0 2px' }}>{latest.weight}</p>
+            <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', color:MUTED, margin:'0 0 0.5rem', fontWeight:600, letterSpacing:'0.1em', textTransform:'uppercase' }}>kg</p>
+            <div style={{ display:'flex', alignItems:'center', gap:'4px' }}>
               {weightChange < 0 ? <TrendingDown size={11} color={GREEN}/> : <TrendingUp size={11} color={ORANGE}/>}
               <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', fontWeight:700, color:weightChange<0?GREEN:ORANGE, margin:0 }}>
                 {weightChange<0?'':'+' }{Math.abs(weightChange).toFixed(1)} kg overall
               </p>
             </div>
           </div>
-</div>
+
           {/* Check-ins */}
           <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}` }}>
             <SectionLabel>Check-ins</SectionLabel>
@@ -119,7 +120,7 @@ export default function ClientProgress() {
                 <div>
                   <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:600, color:i===0?TEXT:MUTED, margin:'0 0 2px' }}>{m.date}</p>
                   <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>
-                    Waist {m.waist} · Hips {m.hips} · Chest {m.chest} cm
+                    Waist {m.waist} ┬À Hips {m.hips} ┬À Chest {m.chest} cm
                   </p>
                 </div>
                 <div style={{ textAlign:'right' }}>
@@ -129,8 +130,8 @@ export default function ClientProgress() {
               </div>
             ))}
           </div>
-          </div>
-        </div>}
-
-        {activeTab === 'photos' && <div>
-          <div style={{ marginBottom:'1rem', display:'flex', justifyContent:'flex-end' }}>
+        </div>
+      </div>
+    </div>
+  );
+}
