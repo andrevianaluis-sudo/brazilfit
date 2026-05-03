@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
@@ -76,7 +76,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
               >
                 {quote.text}
               </p>
-              <p className="text-xs" style={{ color: '#999999' }}>
+              <p className="text-xs" style={{ color: '#888888' }}>
                 — {quote.author}
               </p>
             </div>
@@ -85,7 +85,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
             <div>
               <h2 className="text-2xl font-black text-black mb-1">{meal.name}</h2>
               {meal.description && (
-                <p className="text-sm" style={{ color: '#666666' }}>
+                <p className="text-sm" style={{ color: '#cccccc' }}>
                   {meal.description}
                 </p>
               )}
@@ -97,41 +97,41 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                 {meal.protein > 0 && (
                   <>
                     <div className="text-center flex-1">
-                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#999999' }}>
+                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#888888' }}>
                         Protein
                       </p>
-                      <p className="text-2xl font-black text-black mt-1">{meal.protein}g</p>
+                      <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}">{meal.protein}g</p>
                     </div>
-                    <div className="w-px h-12 bg-grey-100 mx-2" />
+                    <div className="w-px h-12 mx-2" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}" />
                   </>
                 )}
                 {meal.carbs > 0 && (
                   <>
                     <div className="text-center flex-1">
-                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#999999' }}>
+                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#888888' }}>
                         Carbs
                       </p>
-                      <p className="text-2xl font-black text-black mt-1">{meal.carbs}g</p>
+                      <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}">{meal.carbs}g</p>
                     </div>
-                    <div className="w-px h-12 bg-grey-100 mx-2" />
+                    <div className="w-px h-12 mx-2" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}" />
                   </>
                 )}
                 {meal.fat > 0 && (
                   <>
                     <div className="text-center flex-1">
-                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#999999' }}>
+                      <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#888888' }}>
                         Fat
                       </p>
-                      <p className="text-2xl font-black text-black mt-1">{meal.fat}g</p>
+                      <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}">{meal.fat}g</p>
                     </div>
-                    <div className="w-px h-12 bg-grey-100 mx-2" />
+                    <div className="w-px h-12 mx-2" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}" />
                   </>
                 )}
                 <div className="text-center flex-1">
-                  <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#999999' }}>
+                  <p className="text-xs uppercase tracking-widest font-medium" style={{ color: '#888888' }}>
                     Calories
                   </p>
-                  <p className="text-2xl font-black text-black mt-1">{meal.calories}</p>
+                  <p className="text-2xl font-black mt-1" style={{ color: "#ffffff" }}">{meal.calories}</p>
                 </div>
               </div>
             )}
@@ -139,7 +139,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
             {/* Ingredients */}
             {ingredients.length > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: '#999999' }}>
+                <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: '#888888' }}>
                   Ingredients
                 </p>
                 <ul className="space-y-2.5">
@@ -148,7 +148,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                       <span className="mr-3 mt-1.5 flex-shrink-0" style={{ color: '#27AE60' }}>
                         —
                       </span>
-                      <span className="text-sm" style={{ color: '#444444', fontSize: '14px' }}>
+                      <span className="text-sm" style={{ color: '#cccccc', fontSize: '14px' }}>
                         {ingredient}
                       </span>
                     </li>
@@ -160,7 +160,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
             {/* Method */}
             {method.length > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: '#999999' }}>
+                <p className="text-xs uppercase tracking-widest font-medium mb-3" style={{ color: '#888888' }}>
                   Method
                 </p>
                 <ol className="space-y-3">
@@ -168,11 +168,11 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
                     <li key={idx} className="flex gap-3">
                       <span
                         className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-black text-white mt-0.5"
-                        style={{ backgroundColor: '#1A1A2E', minWidth: '24px' }}
+                        style={{ backgroundColor: '#FF6B2B', minWidth: '24px' }}
                       >
                         {idx + 1}
                       </span>
-                      <span className="text-sm pt-0.5" style={{ color: '#444444', lineHeight: '1.7' }}>
+                      <span className="text-sm pt-0.5" style={{ color: '#cccccc', lineHeight: '1.7' }}>
                         {step}
                       </span>
                     </li>
@@ -187,7 +187,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
               disabled={buttonState === 'loading'}
               className="w-full font-bold text-white transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
               style={{
-                backgroundColor: '#27AE60',
+                backgroundColor: '#FF6B2B',
                 height: '52px',
                 borderRadius: '8px',
               }}
