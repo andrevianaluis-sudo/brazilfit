@@ -1,4 +1,4 @@
-// frontend/src/components/ExercisePickerModal.jsx
+﻿// frontend/src/components/ExercisePickerModal.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { X, Plus, Search, Check } from 'lucide-react';
 import api from '../utils/api';

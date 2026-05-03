@@ -12,7 +12,7 @@ const navigationItems = [
   { icon: Calendar,     label: 'My Sessions',      to: '/client/sessions'                   },
   { icon: Dumbbell,     label: 'My Workouts',      to: '/client/workouts'                   },
   { icon: TrendingUp,   label: 'Progress',         to: '/client/progress'                   },
-  { icon: Image,        label: 'Progress Photos',  to: '/client/progress-photos'            },
+
   { icon: Heart,        label: 'Wellness',         to: '/client/wellness'                   },
   { icon: Apple,        label: 'Nutrition',        to: '/client/nutrition'                  },
   { icon: MessageSquare,label: 'Messages',         to: '/client/messages'                   },
