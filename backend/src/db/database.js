@@ -1851,8 +1851,8 @@ function seedStretchingGifs() {
 function seedNutritionData() {
   try {
     const tipCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
-    const tipCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
-    if (tipCount.n > 0) return;
+    const nutTipCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
+    if (nutTipCount.n > 0) return;
     const seed = require('./seedNutrition');
     seed(db);
     console.log('Nutrition seed skipped:', e.message);
