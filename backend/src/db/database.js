@@ -1862,3 +1862,4 @@ function seedNutritionData() {
 }
 
 // auto-seed enabled
+module.exports = { getDb };
