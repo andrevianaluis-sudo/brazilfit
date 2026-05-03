@@ -258,7 +258,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
         </div>
       </div>
 
-      {timerExercise && (
+      {timerExercise && (<div onClick={e => e.stopPropagation()} style={{position:'fixed',inset:0,zIndex:100}}>
         <ExerciseTimer
           exerciseName={timerExercise.name}
           gifUrl={gifMapping[timerExercise.name] ? `/exercise-gifs/exercise-gifs/${gifMapping[timerExercise.name]}` : null}
@@ -267,7 +267,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
           restSeconds={timerExercise.rest_seconds}
           onDone={() => {}}
           onClose={() => setTimerExercise(null)}
-        />
+        /></div>
       )}
     </div>
   );
