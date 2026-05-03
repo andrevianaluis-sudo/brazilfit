@@ -1,5 +1,5 @@
-﻿// backend/src/db/seedNutrition.js
-
+// backend/src/db/seedNutrition.js
+const { getDb } = require('./database');
 
 const TIPS = [
   // Pre-workout
@@ -126,8 +126,8 @@ const MEALS = [
   { name: 'Grilled Chicken Burrito Bowl', calories: 540, goal: 'muscle-gain', emoji: '🌯', description: 'Mexican-inspired rice bowl with grilled chicken, black beans, corn and fresh salsa. Meal prep champion.', ingredients: JSON.stringify(['200g chicken breast', '150g brown rice', '400g black beans', 'Frozen corn', '2 avocados', '4 tomatoes', '½ red onion', '1 lime', 'Fresh coriander', 'Cumin', 'Smoked paprika']), method: JSON.stringify(['Season chicken with cumin, paprika, salt and pepper. Grill for 12–14 minutes.', 'Cook rice according to package instructions.', 'Heat black beans with a pinch of cumin and salt.', 'Make salsa with diced tomato, red onion, coriander and lime juice.', 'Slice chicken and assemble bowl with rice, beans, corn, guacamole and salsa.']), protein: 52, carbs: 62, fat: 14, photo_url: 'https://images.unsplash.com/photo-1512058454905-6b841e7ad132?w=800&q=80' },
 ];
 
-function seed(db) {
-
+function seed() {
+  const db = getDb();
   
   console.log('Seeding nutrition tips...');
   const insertTip = db.prepare('INSERT OR IGNORE INTO nutrition_tips (category, title, content, is_featured) VALUES (?, ?, ?, ?)');
@@ -145,5 +145,3 @@ function seed(db) {
 }
 
 seed();
-
-module.exports = seed;

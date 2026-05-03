@@ -15,8 +15,8 @@ function getDb() {
     db.exec('PRAGMA foreign_keys = ON');
     initSchema();
     runMigrations();
-  seedStretchingGifs();
-  seedNutritionData();
+seedStretchingGifs();
+  }
   return db;
 }
 
@@ -1843,23 +1843,9 @@ function seedStretchingGifs() {
     for (const entry of mapping) {
       insert.run(entry.exerciseName, entry.muscleGroup || 'Full Body', '/exercise-gifs/exercise-gifs/' + entry.filename);
     }
-    console.log('? Stretching GIFs seeded');
+    console.log('✅ Stretching GIFs seeded');
   } catch(e) {
     console.log('Stretching seed skipped:', e.message);
   }
 }
-
-
-
-function seedNutritionData() {
-  try {
-    const nutCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
-    if (nutCount.n > 0) return;
-    const seed = require('./seedNutrition');
-    seed(db);
-    console.log('Nutrition data seeded!');
-  } catch(e) { console.log('Nutrition seed skipped:', e.message); }
-}
-
-// auto-seed enabled
 module.exports = { getDb };
