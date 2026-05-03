@@ -52,14 +52,14 @@ export default function ClientProgress() {
             <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color: activeTab===t.key ? ORANGE : MUTED, fontWeight:700, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom: activeTab===t.key ? `2px solid ${ORANGE}` : '2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
           ))}
         </div>
-        {activeTab === 'progress' && <div>
+        {activeTab === 'progress' && <div><div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'8px', marginBottom:'1rem' }}>
               {weightChange < 0 ? <TrendingDown size={11} color={GREEN}/> : <TrendingUp size={11} color={ORANGE}/>}
               <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', fontWeight:700, color:weightChange<0?GREEN:ORANGE, margin:0 }}>
                 {weightChange<0?'':'+' }{Math.abs(weightChange).toFixed(1)} kg overall
               </p>
             </div>
           </div>
-
+</div>
           {/* Check-ins */}
           <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}` }}>
             <SectionLabel>Check-ins</SectionLabel>
