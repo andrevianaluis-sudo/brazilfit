@@ -41,16 +41,16 @@ export default function PTWorkouts() {
           <h1 className="text-3xl font-black text-black mb-1">Workouts</h1>
           <p className="text-grey-200 text-sm">Build, manage, and assign workouts to clients</p>
         </div>
-        <button
-          onClick={() => {
-            setShowBuilder(true);
-            setSelectedTemplate(null);
-          }}
-          className="flex items-center gap-2 bg-brazil-green text-white px-4 py-2 rounded-lg font-semibold hover:bg-brazil-green-dark transition-all"
-        >
-          <Plus className="w-5 h-5" />
-          New Workout
-        </button>
+
+
+
+
+
+
+
+
+
+
       </div>
 
       {/* Tab Navigation */}
