@@ -1,81 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Crown, Check, Gift, Star } from 'lucide-react';
+import { Zap, Check, Gift, ChevronLeft, Lock } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const PRO_FEATURES = {
-  TRAINING: [
-    'Full unlimited session history',
-    'Complete exercise library (1000+ exercises)',
-    'Custom workout plans from your PT',
-    'Video exercise demonstrations',
-  ],
-  WELLNESS: [
-    'Complete nutrition tips library (all 6 categories)',
-    'All meal ideas — save & filter by goal',
-    'Weight & measurements tracker with progress charts',
-    'Daily readiness score & recovery recommendations',
-  ],
-  TRACKING: [
-    'Full habit tracker: water, sleep, steps, veg, mood',
-    '7-day streak tracker & weekly averages',
-    'Wearable sync: Apple Watch, Garmin, Oura Ring',
-    'PDF progress report export',
-  ],
-  COMMUNITY: [
-    'Community leaderboard & weekly challenges',
-    'Access to success stories & transformations',
-    'Priority support from your PT',
-    'Exclusive member community chat',
-  ],
-};
+const BG = '#141414';
+const SURFACE = '#1e1e1e';
+const SURFACE2 = '#2a2a2a';
+const BORDER = 'rgba(255,255,255,0.08)';
+const ORANGE = '#FF6B2B';
+const GREEN = '#4CAF50';
+const YELLOW = '#FFD600';
+const TEXT = '#ffffff';
+const MUTED = '#888888';
 
-const FREE_FEATURES = [
-  'View session schedule & next session',
-  'Block progress (sessions used & remaining)',
-  'Last 5 sessions history',
-  'One nutrition tip per week (featured tip only)',
-  'Basic habit tracker (water & steps only)',
-  'View PT messages & notes',
+const PRO_BENEFITS = [
+  { emoji: '🏋️', text: 'Unlimited workout plans & exercise library' },
+  { emoji: '🥗', text: '85+ healthy meals with recipes & shopping lists' },
+  { emoji: '💡', text: '200+ expert nutrition tips across all categories' },
+  { emoji: '📊', text: 'Full progress tracking with charts & measurements' },
+  { emoji: '🔥', text: 'Complete habit tracker — water, sleep, steps & mood' },
+  { emoji: '⌚', text: 'Wearable sync — Apple Watch, Garmin & Oura Ring' },
+  { emoji: '🏆', text: 'Leaderboard, challenges & PT priority support' },
+  { emoji: '📄', text: 'PDF progress reports & transformation tracking' },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: 'Sarah M.',
-    initials: 'SM',
-    quote: 'BrazilFit Pro transformed how I track my fitness. The wearable integration is game-changing.',
-    stars: 5,
-  },
-  {
-    name: 'James L.',
-    initials: 'JL',
-    quote: 'My PT can now see all my data in real-time. The custom plans make every session count.',
-    stars: 5,
-  },
-  {
-    name: 'Emma T.',
-    initials: 'ET',
-    quote: 'The nutrition library and meal ideas kept me consistent. Best investment in my fitness.',
-    stars: 5,
-  },
-];
-
-export default function ProUpgradePage({ success }) {
+export default function ProUpgradePage() {
   const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
+  const [selectedPlan, setSelectedPlan] = useState('annual');
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null);
-  const [selectedPlan, setSelectedPlan] = useState('monthly');
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    api.get('/subscriptions/status').then(r => setStatus(r.data));
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') setSuccess(true);
   }, []);
 
   useEffect(() => {
     if (success && user?.isPro) {
       toast.success('Welcome to BrazilFit Pro! 🎉');
+      setTimeout(() => navigate('/client'), 2000);
     }
   }, [success, user]);
 
@@ -102,7 +68,7 @@ export default function ProUpgradePage({ success }) {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await api.post('/subscriptions/trial');
+      await api.post('/subscriptions/trial');
       toast.success('7-day free trial activated! 🎉');
       await refreshUser();
       navigate('/client');
@@ -115,196 +81,179 @@ export default function ProUpgradePage({ success }) {
 
   if (user?.isPro && !success) {
     return (
-      <div className="px-4 py-8 animate-fade-in text-center">
-        <Crown className="w-16 h-16 text-brazil-yellow mx-auto mb-4" />
-        <h1 className="text-2xl font-black mb-2">You're a Pro Member!</h1>
-        <p className="text-grey-200 mb-2">You have full access to all BrazilFit Pro features.</p>
-        {user?.proExpiresAt && (
-          <p className="text-sm text-grey-100 mb-6">Your access is active until {user.proExpiresAt}</p>
-        )}
-        <button onClick={() => navigate('/client')} className="btn-primary px-8">Back to Dashboard</button>
+      <div style={{ backgroundColor: BG, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+        <div style={{ fontSize: 64, marginBottom: 16 }}>⚡</div>
+        <h1 style={{ color: YELLOW, fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px' }}>You're Pro!</h1>
+        <p style={{ color: MUTED, marginBottom: 24 }}>You already have full access to all features.</p>
+        <button onClick={() => navigate('/client')} style={{ background: ORANGE, color: '#fff', border: 'none', borderRadius: 12, padding: '14px 32px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
+          Go to Dashboard
+        </button>
       </div>
     );
   }
 
+  const annualMonthly = (29.99 / 12).toFixed(2);
+
   return (
-    <div className="animate-fade-in bg-white">
-      {/* Hero Section with Background Image */}
-      <div className="relative h-80 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: 'url(/images/newcastle-62.jpg)',
-          }}
-        />
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
-        {/* Hero text overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 px-4 text-center">
-          <p className="text-xs font-black text-brazil-green uppercase tracking-widest mb-2">Unlock Your Potential</p>
-          <h1 className="text-4xl font-black text-white mb-2">BrazilFit Pro</h1>
-          <p className="text-grey-300 text-base">Everything you need to reach your goals</p>
+    <div style={{ backgroundColor: BG, minHeight: '100vh', color: TEXT, fontFamily: 'system-ui, sans-serif', paddingBottom: 60 }}>
+
+      {/* Back button */}
+      <div style={{ padding: '16px 20px 0' }}>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', color: MUTED, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontSize: 14 }}>
+          <ChevronLeft size={18} /> Back
+        </button>
+      </div>
+
+      {/* Hero */}
+      <div style={{ textAlign: 'center', padding: '24px 24px 0' }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          width: 64, height: 64, borderRadius: 20,
+          background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+          marginBottom: 16,
+        }}>
+          <Zap size={32} color="#000" fill="#000" />
+        </div>
+
+        <h1 style={{
+          fontFamily: "'Clash Display', system-ui",
+          fontSize: '2rem', fontWeight: 800, margin: '0 0 10px',
+          letterSpacing: '-0.03em',
+        }}>
+          BrazilFit <span style={{ color: ORANGE }}>Pro</span>
+        </h1>
+
+        {/* Single punchy benefit line */}
+        <p style={{
+          fontSize: '1.1rem', fontWeight: 600, color: YELLOW,
+          margin: '0 0 6px', letterSpacing: '-0.01em',
+        }}>
+          Train smarter. Eat better. Track everything.
+        </p>
+        <p style={{ fontSize: '14px', color: MUTED, margin: 0 }}>
+          Everything you need to reach your goals — all in one place.
+        </p>
+      </div>
+
+      {/* Trial button */}
+      {!user?.pro_trial_used && (
+        <div style={{ padding: '24px 20px 0' }}>
+          <button
+            onClick={handleStartTrial}
+            disabled={loading}
+            style={{
+              width: '100%', border: 'none', cursor: 'pointer',
+              background: `linear-gradient(135deg, ${GREEN}, #2E7D32)`,
+              borderRadius: 16, padding: '18px 24px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+              fontSize: '16px', fontWeight: 800, color: '#fff',
+              boxShadow: `0 4px 24px ${GREEN}44`,
+            }}
+          >
+            <Gift size={20} />
+            Start 7-Day Free Trial
+          </button>
+          <p style={{ textAlign: 'center', fontSize: 12, color: MUTED, marginTop: 8 }}>
+            No credit card required · Cancel anytime
+          </p>
+        </div>
+      )}
+
+      {/* Benefits list */}
+      <div style={{ padding: '24px 20px 0' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: ORANGE, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+          Everything included
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {PRO_BENEFITS.map((b, i) => (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 14,
+              background: SURFACE, borderRadius: 12, padding: '12px 16px',
+              border: `1px solid ${BORDER}`,
+            }}>
+              <span style={{ fontSize: 22, flexShrink: 0 }}>{b.emoji}</span>
+              <span style={{ fontSize: 14, fontWeight: 500, color: TEXT }}>{b.text}</span>
+              <Check size={16} color={GREEN} style={{ marginLeft: 'auto', flexShrink: 0 }} />
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="px-4 space-y-6 pb-8">
-        {/* Free Trial Card */}
-        {!status?.proTrialUsed && !user?.isPro && (
-          <div className="rounded-lg p-6 text-center mt-6" style={{ backgroundColor: '#1A1A2E' }}>
-            <Gift className="w-8 h-8 mx-auto mb-3" style={{ color: '#FFD700' }} />
-            <p className="text-2xl font-black text-white mb-1">7 Days Free</p>
-            <p className="text-grey-300 text-sm mb-4">Try all Pro features free — no payment needed</p>
-            <button
-              onClick={handleStartTrial}
-              disabled={loading}
-              className="w-full py-3 bg-brazil-green text-white font-bold rounded-full transition-all disabled:opacity-50 hover:bg-green-700"
-            >
-              {loading ? 'Starting trial...' : 'Start Free Trial'}
-            </button>
-          </div>
-        )}
+      {/* Plan selector */}
+      <div style={{ padding: '24px 20px 0' }}>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: ORANGE, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+          Choose your plan
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
 
-        {/* Pricing Cards Section */}
-        <div>
-          <p className="text-center text-grey-200 text-sm font-bold mb-4">Choose Your Plan</p>
-          <div className="grid grid-cols-2 gap-4">
-            {/* Monthly Card */}
-            <button
-              onClick={() => setSelectedPlan('monthly')}
-              className={`rounded-lg p-5 text-center transition-all border-2 ${
-                selectedPlan === 'monthly'
-                  ? 'border-brazil-green bg-white'
-                  : 'border-grey-200 bg-white hover:border-brazil-green'
-              }`}
-            >
-              <p className="text-xs font-bold text-grey-200 uppercase mb-2">Monthly</p>
-              <p className="text-3xl font-black text-black mb-1">£9.99</p>
-              <p className="text-xs text-grey-200">per month</p>
-            </button>
+          {/* Monthly */}
+          <button
+            onClick={() => setSelectedPlan('monthly')}
+            style={{
+              background: selectedPlan === 'monthly' ? SURFACE2 : SURFACE,
+              border: `2px solid ${selectedPlan === 'monthly' ? ORANGE : BORDER}`,
+              borderRadius: 16, padding: '18px 14px', cursor: 'pointer',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+              transition: 'all 0.2s',
+            }}
+          >
+            <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Monthly</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>£9.99</span>
+            <span style={{ fontSize: 12, color: MUTED }}>per month</span>
+          </button>
 
-            {/* Annual Card */}
-            <button
-              onClick={() => setSelectedPlan('annual')}
-              className={`rounded-lg p-5 text-center transition-all border-2 relative ${
-                selectedPlan === 'annual'
-                  ? 'border-brazil-green'
-                  : 'border-grey-200 hover:border-brazil-green'
-              }`}
-              style={{ backgroundColor: selectedPlan === 'annual' ? '#1A1A2E' : '#1A1A2E' }}
-            >
-              <div
-                className="absolute -top-3 right-4 px-2 py-0.5 rounded text-xs font-black text-black"
-                style={{ backgroundColor: '#FFD700' }}
-              >
-                BEST VALUE
-              </div>
-              <p className="text-xs font-bold text-white uppercase mb-2">Annual</p>
-              <p className="text-3xl font-black text-white mb-1">£29.99</p>
-              <p className="text-xs text-grey-300">per year</p>
-              <p className="text-xs font-bold text-brazil-green mt-2">Save 67%</p>
-            </button>
-          </div>
+          {/* Annual */}
+          <button
+            onClick={() => setSelectedPlan('annual')}
+            style={{
+              background: selectedPlan === 'annual' ? SURFACE2 : SURFACE,
+              border: `2px solid ${selectedPlan === 'annual' ? ORANGE : BORDER}`,
+              borderRadius: 16, padding: '18px 14px', cursor: 'pointer',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+              position: 'relative', overflow: 'hidden',
+              transition: 'all 0.2s',
+            }}
+          >
+            {/* Best value badge */}
+            <div style={{
+              position: 'absolute', top: 0, right: 0,
+              background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+              padding: '3px 10px', borderBottomLeftRadius: 10,
+              fontSize: 10, fontWeight: 800, color: '#000', letterSpacing: '0.05em',
+            }}>
+              BEST VALUE
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Annual</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>£29.99</span>
+            <span style={{ fontSize: 12, color: GREEN, fontWeight: 700 }}>Save 75% · £{annualMonthly}/mo</span>
+          </button>
         </div>
+      </div>
 
-        {/* Main CTA Button */}
+      {/* CTA button */}
+      <div style={{ padding: '20px 20px 0' }}>
         <button
           onClick={handleUpgrade}
           disabled={loading}
-          className="w-full text-white font-bold text-base transition-all disabled:opacity-50 rounded-lg"
           style={{
-            backgroundColor: '#27AE60',
-            height: '52px',
-            boxShadow: '0 0 30px rgba(39, 174, 96, 0.4)',
+            width: '100%', border: 'none', cursor: loading ? 'default' : 'pointer',
+            background: loading ? SURFACE2 : `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+            borderRadius: 16, padding: '18px 24px',
+            fontSize: '16px', fontWeight: 800,
+            color: loading ? MUTED : '#000',
+            transition: 'all 0.2s',
+            boxShadow: loading ? 'none' : `0 4px 24px ${ORANGE}44`,
           }}
         >
           {loading ? 'Processing...' : selectedPlan === 'annual' ? 'Get Pro — £29.99/year' : 'Get Pro — £9.99/month'}
         </button>
 
-        <p className="text-center text-xs text-grey-100">Secure payment via Stripe · Cancel anytime</p>
-
-        {/* Pro Features Section */}
-        <div className="mt-8">
-          <div className="flex items-center gap-2 mb-6">
-            <Crown className="w-5 h-5" style={{ color: '#FFD700' }} />
-            <h2 className="text-2xl font-black text-black">Pro Features</h2>
-          </div>
-
-          {Object.entries(PRO_FEATURES).map(([category, features]) => (
-            <div key={category} className="mb-8">
-              <p className="text-xs font-bold text-grey-200 uppercase tracking-wider mb-4">{category}</p>
-              <div className="space-y-3">
-                {features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-brazil-green flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-black">{feature}</p>
-                  </div>
-                ))}
-              </div>
-              {category !== 'COMMUNITY' && <div className="border-b border-grey-200 my-6" />}
-            </div>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10 }}>
+          <Lock size={12} color={MUTED} />
+          <span style={{ fontSize: 12, color: MUTED }}>Secure payment via Stripe · Cancel anytime</span>
         </div>
-
-        {/* Social Proof Section */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-black text-black text-center mb-6">What Our Clients Say</h2>
-          <div className="space-y-4">
-            {TESTIMONIALS.map((testimonial, i) => (
-              <div key={i} className="rounded-lg p-5" style={{ backgroundColor: '#1A1A2E' }}>
-                <p className="text-white text-sm italic mb-4">"{testimonial.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                    style={{ backgroundColor: '#27AE60' }}
-                  >
-                    {testimonial.initials}
-                  </div>
-                  <div>
-                    <p className="text-white text-sm font-bold">{testimonial.name}</p>
-                    <div className="flex gap-1">
-                      {Array(testimonial.stars)
-                        .fill(0)
-                        .map((_, j) => (
-                          <Star key={j} className="w-3 h-3" fill="#FFD700" style={{ color: '#FFD700' }} />
-                        ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Free Tier Comparison */}
-        <div className="mt-8 bg-grey-100 rounded-lg p-5">
-          <p className="font-bold text-grey-200 mb-4 text-sm">Free Tier Includes</p>
-          <div className="space-y-3">
-            {FREE_FEATURES.map((f, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-grey-200 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-grey-200">{f}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Final CTA Banner */}
-        <div className="mt-8 rounded-lg p-8 text-center text-white" style={{ backgroundColor: '#1A1A2E' }}>
-          <h3 className="text-3xl font-black mb-2">Join BrazilFit Pro Today</h3>
-          <p className="text-grey-300 text-sm mb-6">Start your 7 day free trial — no payment needed</p>
-          <button
-            onClick={handleStartTrial}
-            disabled={loading}
-            className="mx-auto block px-8 py-3 bg-brazil-green text-white font-bold rounded-full transition-all disabled:opacity-50 hover:bg-green-700"
-          >
-            {loading ? 'Starting trial...' : 'Start Free Trial'}
-          </button>
-        </div>
-
-        <button onClick={() => navigate('/client')} className="w-full text-grey-200 text-sm py-4 hover:text-black transition-all">
-          Maybe later →
-        </button>
       </div>
+
     </div>
   );
 }
