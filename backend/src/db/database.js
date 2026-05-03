@@ -1,4 +1,4 @@
-const { DatabaseSync } = require('node:sqlite');
+﻿const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
@@ -1848,7 +1848,9 @@ function seedStretchingGifs() {
     console.log('Stretching seed skipped:', e.message);
   }
 }
-function seedNutritionData() {
+ catch(e) { console.log('Nutrition seed skipped:', e.message); }
+}
+
 function seedNutritionData() {
   try {
     const nutCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
