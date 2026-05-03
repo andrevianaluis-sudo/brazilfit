@@ -57,7 +57,7 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
       padding: '0 0 0 0'
     }}>
       <div style={{
-        width: '100%', maxWidth: 480,
+        width: '100%', maxWidth: 560,
         background: '#1a1a1a',
         borderRadius: '16px 16px 0 0',
         border: '1px solid #2a2a2a',
