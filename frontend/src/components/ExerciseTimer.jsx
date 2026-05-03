@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Pause, Play, RotateCcw, Check, X } from 'lucide-react';
 
 export default function ExerciseTimer({
@@ -187,14 +187,14 @@ export default function ExerciseTimer({
       {/* Control buttons */}
       <div className="flex gap-3 justify-center mb-6">
         {isRunning ? (
-          <button
+          <button type="button"
             onClick={() => setIsRunning(false)}
             className="p-3 bg-grey-100 rounded-full hover:bg-grey-200 transition-all"
           >
             <Pause className="w-6 h-6 text-black" />
           </button>
         ) : (
-          <button
+          <button type="button"
             onClick={() => setIsRunning(true)}
             className="p-3 bg-brazil-green rounded-full hover:bg-brazil-green-dark transition-all"
           >
