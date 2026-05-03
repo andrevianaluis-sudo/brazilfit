@@ -1849,14 +1849,14 @@ function seedStretchingGifs() {
   }
 }
 function seedNutritionData() {
+function seedNutritionData() {
   try {
-    const tipCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
-    const nutTipCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
-    if (nutTipCount.n > 0) return;
+    const nutCount = db.prepare('SELECT COUNT(*) as n FROM nutrition_tips').get();
+    if (nutCount.n > 0) return;
     const seed = require('./seedNutrition');
     seed(db);
-    console.log('Nutrition seed skipped:', e.message);
-  }
+    console.log('Nutrition data seeded!');
+  } catch(e) { console.log('Nutrition seed skipped:', e.message); }
 }
 
 module.exports = { getDb };
