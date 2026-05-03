@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { X, CheckCircle, Calendar, Dumbbell, Play, Clock, ChevronDown } from 'lucide-react';
 import ExerciseImageDisplay from './ExerciseImageDisplay';
 import MuscleDiagram from './MuscleDiagram';
@@ -161,7 +161,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                     {/* Visual */}
                     {imageInfo.type === 'gif' ? (
                       <div style={{ width: '100%', height: '200px', backgroundColor: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                        <img src={`/exercise-gifs/${imageInfo.filename}`} alt={ex.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} loading="lazy" />
+                        <img src={`/exercise-gifs/exercise-gifs/${imageInfo.filename}`} alt={ex.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} loading="lazy" />
                       </div>
                     ) : (muscles.primary.length > 0 || muscles.secondary.length > 0) ? (
                       <div style={{ display: 'flex', height: '180px', backgroundColor: '#141414' }}>
@@ -261,7 +261,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
       {timerExercise && (
         <ExerciseTimer
           exerciseName={timerExercise.name}
-          gifUrl={gifMapping[timerExercise.name] ? `/exercise-gifs/${gifMapping[timerExercise.name]}` : null}
+          gifUrl={gifMapping[timerExercise.name] ? `/exercise-gifs/exercise-gifs/${gifMapping[timerExercise.name]}` : null}
           sets={timerExercise.sets}
           reps={timerExercise.reps}
           restSeconds={timerExercise.rest_seconds}
