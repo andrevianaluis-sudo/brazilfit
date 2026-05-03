@@ -24,7 +24,7 @@ export default function ClientProgress() {
   const { user } = useAuth();
   const [refreshKey, setRefreshKey] = useState(0);
   const [activeTab, setActiveTab] = useState('progress');
-    { date:'2024-04-15', weight:78.5, waist:82, hips:95, chest:100 },
+  const [measurements] = useState([
     { date:'2024-03-15', weight:80.2, waist:85, hips:98, chest:103 },
     { date:'2024-02-15', weight:82.0, waist:88, hips:101, chest:105 },
   ]);
@@ -46,12 +46,12 @@ export default function ClientProgress() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display:'flex', gap:8, marginBottom:'1.5rem', borderBottom:1px solid  }}>
-          {[{key:'progress',label:'?? Stats'},{key:'photos',label:'?? Photos'}].map(t => (
-            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color: activeTab===t.key ? ORANGE : MUTED, fontWeight:700, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom: activeTab===t.key ? 2px solid  : '2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
+        {/* Tabs */}
+        <div style={{ display:'flex', gap:8, marginBottom:'1.5rem', borderBottom:`1px solid ${BORDER}` }}>
+          {[{key:'progress',label:'Stats'},{key:'photos',label:'Photos'}].map(t => (
+            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color: activeTab===t.key ? ORANGE : MUTED, fontWeight:700, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom: activeTab===t.key ? `2px solid ${ORANGE}` : '2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
           ))}
         </div>
-
         {activeTab === 'progress' && <div>
               {weightChange < 0 ? <TrendingDown size={11} color={GREEN}/> : <TrendingUp size={11} color={ORANGE}/>}
               <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', fontWeight:700, color:weightChange<0?GREEN:ORANGE, margin:0 }}>
