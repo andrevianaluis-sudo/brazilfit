@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+ï»¿import { useState, useEffect } from 'react';
 import BackButton from '../../components/BackButton';
 import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
@@ -29,7 +29,7 @@ function StatCard({ label, value, unit, change }) {
     <div style={{ backgroundColor:SURFACE, borderRadius:14, padding:'1rem', border:`1px solid ${BORDER}` }}>
       <SectionLabel>{label}</SectionLabel>
       <div style={{ display:'flex', alignItems:'baseline', gap:4 }}>
-        <p style={{ fontSize:'2rem', fontWeight:800, color:TEXT, letterSpacing:'-0.04em', lineHeight:1, margin:0 }}>{value ?? '—'}</p>
+        <p style={{ fontSize:'2rem', fontWeight:800, color:TEXT, letterSpacing:'-0.04em', lineHeight:1, margin:0 }}>{value ?? '?'}</p>
         {value && <span style={{ color:MUTED, fontSize:'0.75rem', fontWeight:600 }}>{unit}</span>}
       </div>
       {change !== null && change !== undefined && (
@@ -151,7 +151,7 @@ export default function ClientProgress() {
                 {entries.length > 1 && (
                   <div style={{ background:`linear-gradient(135deg, ${ORANGE}15, #FFD60010)`, border:`1px solid ${ORANGE}33`, borderRadius:14, padding:'1rem 1.25rem', marginBottom:'1rem' }}>
                     <p style={{ color:TEXT, fontSize:14, margin:0, lineHeight:1.6 }}>
-                      {weightChange !== null && weightChange < 0 ? `?? You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? `?? You have gained ${weightChange}kg — muscle building in progress!` : `?? Tracking ${entries.length} check-ins over time.`}
+                      {weightChange !== null && weightChange < 0 ? `?? You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? `?? You have gained ${weightChange}kg ? muscle building in progress!` : `?? Tracking ${entries.length} check-ins over time.`}
                     </p>
                   </div>
                 )}
@@ -162,10 +162,10 @@ export default function ClientProgress() {
                       <div key={i} style={{ background:SURFACE, borderRadius:12, padding:'12px 16px', border:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                         <div>
                           <p style={{ color:TEXT, fontWeight:600, fontSize:14, margin:'0 0 3px' }}>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</p>
-                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' · ')}</p>
+                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' ? ')}</p>
                         </div>
                         <div style={{ textAlign:'right' }}>
-                          <p style={{ fontSize:'1.4rem', fontWeight:800, color:GREEN, letterSpacing:'-0.03em', margin:0 }}>{entry.weight_kg || '—'}</p>
+                          <p style={{ fontSize:'1.4rem', fontWeight:800, color:GREEN, letterSpacing:'-0.03em', margin:0 }}>{entry.weight_kg || '?'}</p>
                           <p style={{ color:MUTED, fontSize:11, margin:0 }}>kg</p>
                         </div>
                       </div>
@@ -183,7 +183,7 @@ export default function ClientProgress() {
         )}
         {activeTab === 'photos' && (
           <div>
-            <div style={{ marginBottom:'1rem', display:'flex', justifyContent:'flex-end' }}><PhotoUploadButton onUpload={() => setRefreshKey(k => k+1)}/></div>
+            <div style={{ marginBottom:'1rem', display:'flex', justifyContent:'flex-end' }}><PhotoUploadButton onUploadSuccess={() => setRefreshKey(k => k+1)}/></div>
             <BeforeAfterSlider key={refreshKey}/>
             <div style={{ marginTop:'1.5rem' }}><PhotoGallery key={refreshKey}/></div>
           </div>

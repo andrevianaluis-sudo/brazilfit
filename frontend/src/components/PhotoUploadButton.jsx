@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Camera, X } from 'lucide-react';
 import api from '../utils/api';
 
@@ -68,9 +68,9 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="w-full max-w-md bg-white rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-md rounded-2xl p-6 max-h-[90vh] overflow-y-auto" style={{ backgroundColor: "#1e1e1e", border: "1px solid rgba(255,255,255,0.1)" }}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-black">Upload Progress Photo</h2>
+              <h2 className="text-xl font-bold" style={{ color: "#ffffff" }}>Upload Progress Photo</h2>
               <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-grey-100 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
@@ -87,7 +87,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
             <label className="block mb-4">
               <div className="border-2 border-dashed border-brazil-green/30 rounded-lg p-6 text-center cursor-pointer hover:border-brazil-green/60 transition-all">
                 <Camera className="w-8 h-8 text-brazil-green mx-auto mb-2" />
-                <p className="text-sm font-semibold text-black">Click to select a photo</p>
+                <p className="text-sm font-semibold" style={{ color: "#ffffff" }}>Click to select a photo</p>
                 <p className="text-xs text-grey-200 mt-1">or drag and drop</p>
               </div>
               <input
@@ -100,7 +100,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
 
             {/* Angle Selection */}
             <div className="mb-4">
-              <p className="text-sm font-semibold text-black mb-2">Photo Angle</p>
+              <p className="text-sm font-semibold mb-2" style={{ color: "#ffffff" }}>Photo Angle</p>
               <div className="grid grid-cols-3 gap-2">
                 {angles.map(angle => (
                   <button
@@ -120,12 +120,12 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
 
             {/* Notes */}
             <div className="mb-4">
-              <p className="text-sm font-semibold text-black mb-2">Notes (Optional)</p>
+              <p className="text-sm font-semibold mb-2" style={{ color: "#ffffff" }}>Notes (Optional)</p>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Add notes about this photo..."
-                className="w-full px-3 py-2 border border-grey-100 rounded-lg text-sm focus:outline-none focus:border-brazil-green"
+                className="w-full px-3 py-2 rounded-lg text-sm focus:outline-none" style={{ backgroundColor: "#2a2a2a", border: "1px solid rgba(255,255,255,0.1)", color: "#ffffff" }}
                 rows="3"
               />
             </div>
@@ -134,7 +134,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
             <div className="flex gap-2">
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex-1 px-4 py-2 bg-grey-100 text-black rounded-lg font-semibold hover:bg-grey-200 transition-all"
+                className="flex-1 px-4 py-2 rounded-lg font-semibold transition-all" style={{ backgroundColor: "#2a2a2a", color: "#888888" }}
               >
                 Cancel
               </button>
