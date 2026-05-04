@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import api from '../utils/api';
 
 export default function BeforeAfterSlider({ clientId, angle = 'front' }) {
@@ -22,7 +22,7 @@ export default function BeforeAfterSlider({ clientId, angle = 'front' }) {
   const fetchPhotos = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/progress/photos/${clientId}`);
+      const res = await api.get(clientId ? `/progress/photos/client/${clientId}` : '/progress/photos');
       const anglePhotos = (res.data || []).filter(p => p.angle === angle).sort((a, b) =>
         new Date(a.upload_date) - new Date(b.upload_date)
       );

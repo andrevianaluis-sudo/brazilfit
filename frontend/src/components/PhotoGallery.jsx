@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 import api from '../utils/api';
 
@@ -16,7 +16,7 @@ export default function PhotoGallery({ clientId }) {
   const fetchPhotos = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/progress/photos/client/${clientId}`);
+      const res = await api.get(clientId ? `/progress/photos/client/${clientId}` : '/progress/photos');
       const photoList = res.data || [];
       setPhotos(photoList);
 
