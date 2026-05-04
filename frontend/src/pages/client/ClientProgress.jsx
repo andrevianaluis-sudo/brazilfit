@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import BackButton from '../../components/BackButton';
 import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
@@ -183,9 +183,9 @@ export default function ClientProgress() {
         )}
         {activeTab === 'photos' && (
           <div>
-            <div style={{ marginBottom:'1rem', display:'flex', justifyContent:'flex-end' }}><PhotoUploadButton onUploadSuccess={() => setRefreshKey(k => k+1)}/></div>
-            <BeforeAfterSlider key={refreshKey}/>
-            <div style={{ marginTop:'1.5rem' }}><PhotoGallery key={refreshKey}/></div>
+            <div style={{ marginBottom:'1rem', display:'flex', justifyContent:'flex-end' }}><PhotoUploadButton clientId={user.clientId} onUploadSuccess={() => setRefreshKey(k => k+1)}/></div>
+            <BeforeAfterSlider key={refreshKey} clientId={user.clientId}/>
+            <div style={{ marginTop:'1.5rem' }}><PhotoGallery key={refreshKey} clientId={user.clientId}/></div>
           </div>
         )}
       </div>
