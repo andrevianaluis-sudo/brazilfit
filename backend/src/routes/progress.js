@@ -253,8 +253,9 @@ router.get('/photos/:photoId/data', (req, res) => {
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    res.set('Content-Type', 'image/jpeg');
-    res.send(photo.photo_data);
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.setHeader('Content-Disposition', 'inline');
+    res.end(photo.photo_data, 'binary');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch photo' });
