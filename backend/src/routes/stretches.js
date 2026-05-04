@@ -104,8 +104,7 @@ router.post("/seed", authenticateToken, (req, res) => {
   const db = getDb();
   const { exercises } = req.body;
   if (!exercises || !Array.isArray(exercises)) return res.status(400).json({ error: "exercises array required" });
-  const count = db.prepare("SELECT COUNT(*) as n FROM stretching_exercises").get();
-  if (count.n > 0) return res.json({ message: "Already seeded", count: count.n });
+  
   const ins = db.prepare("INSERT INTO stretching_exercises (name, muscle_group, gif_file, difficulty) VALUES (?, ?, ?, ?)");
   let inserted = 0;
   for (const ex of exercises) {
