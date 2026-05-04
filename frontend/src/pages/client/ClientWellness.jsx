@@ -359,6 +359,11 @@ export default function ClientWellness() {
   const [expanded,setExpanded]=useState(null);
   const [activeSession,setActiveSession]=useState(null);
   const [breathingSession,setBreathingSession]=useState(null);
+  const [stretches,setStretches]=useState([]);
+  const [stretchGroup,setStretchGroup]=useState("All");
+  const [stretchSearch,setStretchSearch]=useState("");
+  const [stretchGroups,setStretchGroups]=useState(["All"]);
+  const [selectedStretch,setSelectedStretch]=useState(null);
 
   useEffect(()=>{
     api.get('/wellness/mind').then(res=>{
@@ -367,6 +372,15 @@ export default function ClientWellness() {
     }).catch(()=>toast.error('Failed to load wellness content')).finally(()=>setLoading(false));
   },[]);
 
+  useEffect(()=>{
+    if(tab==="rest_day"){
+      api.get("/stretches").then(r=>{
+        setStretches(r.data);
+        const groups=["All",...new Set(r.data.map(s=>s.muscle_group))];
+        setStretchGroups(groups);
+      }).catch(()=>{});
+    }
+  },[tab]);
   const tabContent=content.filter(c=>c.type===tab);
   const sectionInfo=SECTION_INFO[tab];
 
@@ -427,7 +441,43 @@ export default function ClientWellness() {
         )}
 
         {/* Content */}
-        {tabContent.length===0?(
+        {tab==="rest_day"?(
+          <div>
+            <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:8,marginBottom:12}}>
+              {stretchGroups.map(g=>(
+                <button key={g} onClick={()=>setStretchGroup(g)} style={{flexShrink:0,padding:"6px 14px",borderRadius:8,border:`1px solid ${stretchGroup===g?GREEN:BORDER}`,background:stretchGroup===g?`${GREEN}22`:"transparent",color:stretchGroup===g?GREEN:MUTED,fontSize:"0.75rem",fontWeight:700,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap"}}>{g}</button>
+              ))}
+            </div>
+            <div style={{marginBottom:12}}>
+              <input value={stretchSearch} onChange={e=>setStretchSearch(e.target.value)} placeholder="Search stretches..." style={{width:"100%",background:SURFACE,border:`1px solid ${BORDER}`,borderRadius:10,color:TEXT,padding:"10px 14px",fontSize:14,boxSizing:"border-box",outline:"none"}}/>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
+              {stretches.filter(s=>(stretchGroup==="All"||s.muscle_group===stretchGroup)&&(stretchSearch===""||s.name.toLowerCase().includes(stretchSearch.toLowerCase()))).map(s=>(
+                <div key={s.id} onClick={()=>setSelectedStretch(selectedStretch?.id===s.id?null:s)} style={{background:SURFACE,borderRadius:12,overflow:"hidden",border:`1px solid ${selectedStretch?.id===s.id?GREEN:BORDER}`,cursor:"pointer",transition:"all 0.2s"}}>
+                  <div style={{background:"#1a1a1a",aspectRatio:"1",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+                    <img src={`/exercise-gifs/${s.gif_file}`} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy"/>
+                  </div>
+                  <div style={{padding:"8px 10px"}}>
+                    <p style={{fontSize:"0.72rem",fontWeight:700,color:TEXT,margin:"0 0 2px",lineHeight:1.3}}>{s.name}</p>
+                    <p style={{fontSize:"0.62rem",color:GREEN,fontWeight:600,margin:0}}>{s.muscle_group}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {selectedStretch&&(
+              <div style={{position:"fixed",inset:0,zIndex:50,background:"rgba(0,0,0,0.9)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1.5rem"}} onClick={()=>setSelectedStretch(null)}>
+                <div style={{background:SURFACE,borderRadius:16,overflow:"hidden",maxWidth:380,width:"100%",border:`1px solid ${BORDER}`}} onClick={e=>e.stopPropagation()}>
+                  <img src={`/exercise-gifs/${selectedStretch.gif_file}`} alt={selectedStretch.name} style={{width:"100%",aspectRatio:"1",objectFit:"cover"}}/>
+                  <div style={{padding:"1rem"}}>
+                    <p style={{fontSize:"1rem",fontWeight:800,color:TEXT,margin:"0 0 4px"}}>{selectedStretch.name}</p>
+                    <p style={{fontSize:"0.78rem",color:GREEN,fontWeight:600,margin:"0 0 12px"}}>{selectedStretch.muscle_group}</p>
+                    <button onClick={()=>setSelectedStretch(null)} style={{width:"100%",padding:"12px",background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:"none",borderRadius:10,color:"#fff",fontWeight:800,fontSize:"0.875rem",cursor:"pointer"}}>Got it</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ):tabContent.length===0?(
           <div style={{textAlign:'center',padding:'3rem 0'}}>
             <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',color:MUTED}}>No content available yet</p>
           </div>
@@ -448,7 +498,7 @@ export default function ClientWellness() {
               </div>
             )}
           </div>
-        )}
+        ):null}
       </div>
 
       {activeSession&&<MindfulnessPlayer session={activeSession} onClose={()=>setActiveSession(null)}/>}
