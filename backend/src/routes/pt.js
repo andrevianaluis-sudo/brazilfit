@@ -784,12 +784,4 @@ function getMonday(date) {
 }
 
 
-// TEMP: Delete orphaned users
-router.delete("/cleanup/orphaned-users", (req, res) => {
-  if (req.user.role !== "pt") return res.status(403).json({ error: "PT only" });
-  const db = getDb();
-  const result = db.prepare("DELETE FROM users WHERE role = ? AND id NOT IN (SELECT user_id FROM clients)").run("client");
-  res.json({ deleted: result.changes });
-});
-
 module.exports = router;
