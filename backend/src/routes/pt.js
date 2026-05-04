@@ -820,15 +820,4 @@ router.post("/clients/:id/schedule", (req, res) => {
 });
 
 
-// TEMP: Set pt_id for all clients
-router.post("/clients/set-pt", (req, res) => {
-  if (req.user.role !== "pt") return res.status(403).json({ error: "PT only" });
-  const db = getDb();
-  try {
-    db.exec("ALTER TABLE clients ADD COLUMN pt_id INTEGER");
-  } catch(e) {}
-  const result = db.prepare("UPDATE clients SET pt_id = ?").run(req.user.id);
-  res.json({ updated: result.changes });
-});
-
 module.exports = router;
