@@ -148,9 +148,9 @@ router.post('/clients/create', (req, res) => {
 
     // Create client profile
     const clientRes = db.prepare(`
-      INSERT INTO clients (user_id, client_type, block_price, current_block_number, block_start_date, sessions_used, pt_id, joined_date)
-      VALUES (?, ?, ?, 1, ?, 0, ?, datetime('now'))
-    `).run(userId, client_type, block_price, block_start_date, req.user.id);
+      INSERT INTO clients (user_id, client_type, block_price, current_block_number, block_start_date, sessions_used, joined_date)
+      VALUES (?, ?, ?, 1, ?, 0, datetime('now'))
+    `).run(userId, client_type || 'block', block_price || 0, block_start_date);
 
     const clientId = clientRes.lastInsertRowid;
 
@@ -782,5 +782,14 @@ function getMonday(date) {
   d.setDate(diff);
   return d;
 }
+
+
+// TEMP: Delete orphaned users
+router.delete("/cleanup/orphaned-users", (req, res) => {
+  if (req.user.role !== "pt") return res.status(403).json({ error: "PT only" });
+  const db = getDb();
+  const result = db.prepare("DELETE FROM users WHERE role = ? AND id NOT IN (SELECT user_id FROM clients)").run("client");
+  res.json({ deleted: result.changes });
+});
 
 module.exports = router;
