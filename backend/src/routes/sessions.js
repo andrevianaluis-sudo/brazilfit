@@ -54,7 +54,7 @@ router.get('/client/:clientId', (req, res) => {
     FROM sessions s
     LEFT JOIN blocks b ON s.block_id = b.id
     WHERE s.client_id = ?
-    ORDER BY s.scheduled_date DESC, s.scheduled_time DESC
+    ORDER BY s.scheduled_date ASC, s.scheduled_time ASC
   `).all(clientId);
 
   const upcoming = sessions.filter(s => s.status === 'upcoming');
