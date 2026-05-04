@@ -197,17 +197,17 @@ router.post('/clients/:id/notes', (req, res) => {
 
 // Update client info
 router.put('/clients/:id', (req, res) => {
+router.put('/clients/:id', (req, res) => {
   const db = getDb();
-  const { phone, email } = req.body;
+  const { phone, email, sessions_used } = req.body;
   if (phone) db.prepare('UPDATE clients SET phone = ? WHERE id = ?').run(phone, req.params.id);
   if (email) {
     const client = db.prepare('SELECT user_id FROM clients WHERE id = ?').get(req.params.id);
     db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, client.user_id);
   }
+  if (sessions_used !== undefined) db.prepare('UPDATE clients SET sessions_used = ? WHERE id = ?').run(sessions_used, req.params.id);
   res.json({ message: 'Client updated' });
 });
-
-// Block tracker - all clients
 router.get('/blocks', (req, res) => {
   const db = getDb();
   const clients = db.prepare(`
