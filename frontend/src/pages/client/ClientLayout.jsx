@@ -3,7 +3,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, BarChart3, Calendar, TrendingUp, Apple, Heart, MessageSquare,
-  CheckSquare, Settings, LogOut, Bell, Home, ChevronRight, Trophy, Dumbbell, Image
+  CheckSquare, Settings, LogOut, Bell, Home, ChevronRight, Dumbbell, Image
 } from 'lucide-react';
 import ProfileModal from '../../components/ProfileModal';
 
@@ -18,7 +18,6 @@ const navigationItems = [
   { icon: MessageSquare,label: 'Messages',         to: '/client/messages'                   },
   { icon: CheckSquare,  label: 'Check-in',         to: '/client/checkin'                    },
   { icon: BarChart3,    label: 'Habits',           to: '/client/habits'                     },
-  { icon: Trophy,       label: 'Leaderboard',      to: '/client/leaderboard'                },
 ];
 
 export default function ClientLayout() {
