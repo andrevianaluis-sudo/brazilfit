@@ -22,20 +22,22 @@ function SectionLabel({ children, color = MUTED }) {
   return <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
 }
 
-function StatCard({ label, value, unit, change }) {
+function StatCard({ label, value, unit, change, accent }) {
   const isGood = change < 0;
   const changeColor = change === null ? MUTED : isGood ? GREEN : RED;
+  const accentColor = accent || ORANGE;
   return (
-    <div style={{ backgroundColor:SURFACE, borderRadius:14, padding:'1rem', border:`1px solid ${BORDER}` }}>
-      <SectionLabel>{label}</SectionLabel>
+    <div style={{ background:`linear-gradient(145deg, #1e1e1e, #252525)`, borderRadius:16, padding:'1.1rem', border:`1px solid rgba(255,255,255,0.07)`, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:value ? `linear-gradient(90deg, ${accentColor}, ${accentColor}88)` : 'transparent', borderRadius:'16px 16px 0 0' }}/>
+      <SectionLabel color={value ? accentColor : MUTED}>{label}</SectionLabel>
       <div style={{ display:'flex', alignItems:'baseline', gap:4 }}>
-        <p style={{ fontSize:'2rem', fontWeight:800, color:value?TEXT:MUTED, letterSpacing:'-0.04em', lineHeight:1, margin:0 }}>{value ?? '--'}</p>
-        {value && <span style={{ color:MUTED, fontSize:'0.75rem', fontWeight:600 }}>{unit}</span>}
+        <p style={{ fontSize:'2rem', fontWeight:900, color:value?TEXT:MUTED, letterSpacing:'-0.05em', lineHeight:1, margin:0, fontVariantNumeric:'tabular-nums' }}>{value ?? '--'}</p>
+        {value && <span style={{ color:accentColor, fontSize:'0.7rem', fontWeight:700, letterSpacing:'0.05em' }}>{unit}</span>}
       </div>
       {change !== null && change !== undefined && (
-        <div style={{ display:'flex', alignItems:'center', gap:4, marginTop:4 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:4, marginTop:6 }}>
           {isGood ? <TrendingDown size={11} color={GREEN}/> : <TrendingUp size={11} color={RED}/>}
-          <p style={{ fontSize:'0.7rem', fontWeight:700, color:changeColor, margin:0 }}>{change > 0 ? '+' : ''}{change} {unit} overall</p>
+          <p style={{ fontSize:'0.68rem', fontWeight:700, color:changeColor, margin:0 }}>{change > 0 ? '+' : ''}{change} {unit}</p>
         </div>
       )}
     </div>
@@ -159,7 +161,7 @@ export default function ClientProgress() {
                   <SectionLabel>History</SectionLabel>
                   <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                     {shown.map((entry, i) => (
-                      <div key={i} style={{ background:SURFACE, borderRadius:12, padding:'12px 16px', border:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                      <div key={i} style={{ background:`linear-gradient(135deg, #1e1e1e, #222)`, borderRadius:12, padding:'14px 16px', border:`1px solid rgba(255,255,255,0.07)`, display:'flex', alignItems:'center', justifyContent:'space-between', borderLeft:`3px solid ${ORANGE}` }}>
                         <div>
                           <p style={{ color:TEXT, fontWeight:600, fontSize:14, margin:'0 0 3px' }}>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</p>
                           <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' ? ')}</p>
