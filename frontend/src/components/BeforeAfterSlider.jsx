@@ -23,6 +23,8 @@ export default function BeforeAfterSlider({ clientId, angle = 'front' }) {
     try {
       setLoading(true);
       const res = await api.get(clientId ? `/progress/photos/client/${clientId}` : '/progress/photos');
+      console.log('ALL PHOTOS from API:', JSON.stringify(res.data));
+      console.log('Filtering for angle:', angle);
       const anglePhotos = (res.data || []).filter(p => p.angle === angle).sort((a, b) =>
         new Date(a.upload_date) - new Date(b.upload_date)
       );
