@@ -258,19 +258,40 @@ function BreathingPlayer({ exercise, onClose }) {
   );
 }
 
+function ExerciseWithGif({ name, duration, instruction, index }) {
+  const [gif, setGif] = useState(null);
+  useEffect(() => {
+    api.get("/stretches?search=" + encodeURIComponent(name)).then(r => {
+      if (r.data && r.data.length > 0) setGif(r.data[0].gif_file);
+    }).catch(() => {});
+  }, [name]);
+  return (
+    <div style={{display:"flex"}}>
+      <div style={{width:90,height:90,flexShrink:0,background:"#111",overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        {gif ? <img src={"/exercise-gifs/" + gif} alt={name} style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(76,175,80,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.8rem",fontWeight:800,color:"#4CAF50"}}>{index+1}</div>}
+      </div>
+      <div style={{padding:"10px 12px",flex:1}}>
+        <p style={{fontSize:"0.82rem",fontWeight:700,color:"#fff",margin:"0 0 2px"}}>{name}</p>
+        {duration&&<p style={{fontSize:"0.68rem",color:"#4CAF50",fontWeight:600,margin:"0 0 4px"}}>{duration}</p>}
+        {instruction&&<p style={{fontSize:"0.68rem",color:"#b0b0b0",margin:0,lineHeight:1.5}}>{instruction}</p>}
+      </div>
+    </div>
+  );
+}
+
 function ExpandedDetail({ item }) {
   let parsed;try{parsed=JSON.parse(item.content);}catch{parsed=null;}
   if(item.type==='rest_day'){const exercises=parsed?.exercises||(Array.isArray(parsed)?parsed:[]);return(
     <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:`1px solid ${BORDER}`,display:'flex',flexDirection:'column',gap:'12px'}}>
       {exercises.map((ex,i)=>(
-        <div key={i} style={{display:'flex',gap:'12px'}}>
-          <div style={{width:'24px',height:'24px',borderRadius:'50%',backgroundColor:`${GREEN}22`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'0.7rem',fontWeight:800,color:GREEN}}>{i+1}</div>
-          <div>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:700,color:TEXT,margin:'0 0 2px'}}>{ex.name}</p>
-            {ex.duration&&<p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.72rem',color:MUTED,margin:'0 0 2px'}}>{ex.duration}</p>}
-            {ex.instruction&&<p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.72rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{ex.instruction}</p>}
-          </div>
+        <div key={i} style={{background:'#1a1a1a',borderRadius:12,overflow:'hidden',border:`1px solid ${BORDER}`,marginBottom:4}}>
+          <ExerciseWithGif name={ex.name} duration={ex.duration} instruction={ex.instruction} index={i}/>
         </div>
+
+
+
+
+
       ))}
     </div>
   );}

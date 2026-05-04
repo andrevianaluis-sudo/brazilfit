@@ -1,0 +1,9 @@
+﻿const fs = require("fs");
+const file = "C:/Users/viana/BRAZILFIT/frontend/src/pages/client/ClientWellness.jsx";
+let c = fs.readFileSync(file, "utf8");
+const comp = ["function ExerciseWithGif({ name, duration, instruction, index }) {","  const [gif, setGif] = useState(null);","  useEffect(() => {","    api.get(\"/stretches?search=\" + encodeURIComponent(name)).then(r => {","      if (r.data && r.data.length > 0) setGif(r.data[0].gif_file);","    }).catch(() => {});","  }, [name]);","  return (","    <div style={{display:\"flex\"}}>","      <div style={{width:90,height:90,flexShrink:0,background:\"#111\",overflow:\"hidden\",display:\"flex\",alignItems:\"center\",justifyContent:\"center\"}}>","        {gif ? <img src={\"/exercise-gifs/\" + gif} alt={name} style={{width:\"100%\",height:\"100%\",objectFit:\"cover\"}}/> : <div style={{width:40,height:40,borderRadius:\"50%\",background:\"rgba(76,175,80,0.2)\",display:\"flex\",alignItems:\"center\",justifyContent:\"center\",fontSize:\"0.8rem\",fontWeight:800,color:\"#4CAF50\"}}>{index+1}</div>}","      </div>","      <div style={{padding:\"10px 12px\",flex:1}}>","        <p style={{fontSize:\"0.82rem\",fontWeight:700,color:\"#fff\",margin:\"0 0 2px\"}}>{name}</p>","        {duration&&<p style={{fontSize:\"0.68rem\",color:\"#4CAF50\",fontWeight:600,margin:\"0 0 4px\"}}>{duration}</p>}","        {instruction&&<p style={{fontSize:\"0.68rem\",color:\"#b0b0b0\",margin:0,lineHeight:1.5}}>{instruction}</p>}","      </div>","    </div>","  );","}",""].join("\n");
+c = c.replace("function ExpandedDetail({ item }) {", comp + "\nfunction ExpandedDetail({ item }) {");
+const oldEx = c.match(/exercises\.map\(\(ex,i\)=>\([^)]+\)\)\)/s);
+if(oldEx) { console.log("Found exercises map, length:", oldEx[0].length); } else { console.log("Not found"); }
+fs.writeFileSync(file, c, "utf8");
+console.log("ExerciseWithGif added:", c.includes("ExerciseWithGif"));
