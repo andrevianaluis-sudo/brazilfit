@@ -153,7 +153,7 @@ export default function ClientProgress() {
                 {entries.length > 1 && (
                   <div style={{ background:`linear-gradient(135deg, ${ORANGE}15, #FFD60010)`, border:`1px solid ${ORANGE}33`, borderRadius:14, padding:'1rem 1.25rem', marginBottom:'1rem' }}>
                     <p style={{ color:TEXT, fontSize:14, margin:0, lineHeight:1.6 }}>
-                      {weightChange !== null && weightChange < 0 ? `?? You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? `?? You have gained ${weightChange}kg ? muscle building in progress!` : `?? Tracking ${entries.length} check-ins over time.`}
+                      {weightChange !== null && weightChange < 0 ? `🔥 You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? `💪 You have gained ${weightChange}kg — muscle building in progress!` : `📊 Tracking ${entries.length} check-ins over time.`}
                     </p>
                   </div>
                 )}

@@ -1,0 +1,10 @@
+﻿const fs = require('fs');
+const file = 'C:/Users/viana/BRAZILFIT/frontend/src/pages/client/ClientProgress.jsx';
+let c = fs.readFileSync(file, 'utf8');
+const before = c.includes('?? You have lost');
+c = c.replace('?? You have lost', '\uD83D\uDD25 You have lost');
+c = c.replace('?? You have gained', '\uD83D\uDCAA You have gained');
+c = c.replace('kg ? muscle', 'kg \u2014 muscle');
+c = c.replace('?? Tracking', '\uD83D\uDCCA Tracking');
+fs.writeFileSync(file, c, 'utf8');
+console.log('Had old text:', before, '| Now fixed:', c.includes('\uD83D\uDD25'));
