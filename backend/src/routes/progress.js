@@ -283,3 +283,11 @@ router.delete('/photos/:photoId', (req, res) => {
 });
 
 module.exports = router;
+
+// TEMP: Delete old uncompressed photos - REMOVE AFTER USE
+router.delete('/photos/cleanup/old', (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const result = db.prepare('DELETE FROM progress_photos WHERE id <= 12').run();
+  res.json({ deleted: result.changes });
+});
