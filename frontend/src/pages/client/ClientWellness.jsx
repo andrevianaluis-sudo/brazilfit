@@ -498,7 +498,7 @@ export default function ClientWellness() {
               </div>
             )}
           </div>
-        ):null}
+        )}
       </div>
 
       {activeSession&&<MindfulnessPlayer session={activeSession} onClose={()=>setActiveSession(null)}/>}
