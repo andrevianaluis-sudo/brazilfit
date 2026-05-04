@@ -443,6 +443,16 @@ export default function ClientWellness() {
         {/* Content */}
         {tab==="rest_day"?(
           <div>
+            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:"1.5rem"}}>
+              {tabContent.map(item=>(
+                <ContentCard key={item.id} item={item} tab={tab}
+                  expanded={expanded===item.id}
+                  onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
+                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}/>
+              ))}
+            </div>
+            <div style={{borderTop:`1px solid ${BORDER}`,paddingTop:"1.25rem",marginBottom:"1rem"}}>
+            <p style={{fontSize:"0.6rem",fontWeight:700,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 0.75rem"}}>Browse All Stretches</p>
             <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:8,marginBottom:12}}>
               {stretchGroups.map(g=>(
                 <button key={g} onClick={()=>setStretchGroup(g)} style={{flexShrink:0,padding:"6px 14px",borderRadius:8,border:`1px solid ${stretchGroup===g?GREEN:BORDER}`,background:stretchGroup===g?`${GREEN}22`:"transparent",color:stretchGroup===g?GREEN:MUTED,fontSize:"0.75rem",fontWeight:700,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap"}}>{g}</button>
@@ -463,6 +473,7 @@ export default function ClientWellness() {
                   </div>
                 </div>
               ))}
+            </div>
             </div>
             {selectedStretch&&(
               <div style={{position:"fixed",inset:0,zIndex:50,background:"rgba(0,0,0,0.9)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1.5rem"}} onClick={()=>setSelectedStretch(null)}>
