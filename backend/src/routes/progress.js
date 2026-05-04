@@ -1,3 +1,4 @@
+﻿const sharp = require('sharp');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -147,7 +148,7 @@ router.post('/wearable/connect', (req, res) => {
 });
 
 // POST /api/progress/photos — upload progress photo
-router.post('/photos', upload.single('photo'), (req, res) => {
+router.post('/photos', upload.single('photo'), async (req, res) => {
   const db = getDb();
   const clientId = req.user.clientId;
   if (!clientId) return res.status(403).json({ error: 'Clients only' });
@@ -155,7 +156,11 @@ router.post('/photos', upload.single('photo'), (req, res) => {
   const { angle, notes } = req.body;
   if (!angle || !req.file) return res.status(400).json({ error: 'Photo and angle required' });
 
-  const photoData = req.file.buffer;
+  const photoData = await sharp(req.file.buffer)
+    .rotate()
+    .resize({ width: 800, withoutEnlargement: true })
+    .jpeg({ quality: 80 })
+    .toBuffer();
   const uploadDate = new Date().toISOString().split('T')[0];
 
   try {
