@@ -148,9 +148,9 @@ router.post('/clients/create', (req, res) => {
 
     // Create client profile
     const clientRes = db.prepare(`
-      INSERT INTO clients (user_id, client_type, block_price, current_block_number, block_start_date, sessions_used, joined_date)
-      VALUES (?, ?, ?, 1, ?, 0, datetime('now'))
-    `).run(userId, client_type || 'block', block_price || 0, block_start_date);
+      INSERT INTO clients (user_id, client_type, block_price, current_block_number, block_start_date, sessions_used, pt_id, joined_date)
+      VALUES (?, ?, ?, 1, ?, 0, ?, datetime('now'))
+    `).run(userId, client_type, block_price, block_start_date, req.user.id);
 
     const clientId = clientRes.lastInsertRowid;
 
@@ -197,7 +197,6 @@ router.post('/clients/:id/notes', (req, res) => {
 
 // Update client info
 router.put('/clients/:id', (req, res) => {
-router.put('/clients/:id', (req, res) => {
   const db = getDb();
   const { phone, email, sessions_used } = req.body;
   if (phone) db.prepare('UPDATE clients SET phone = ? WHERE id = ?').run(phone, req.params.id);
@@ -208,6 +207,8 @@ router.put('/clients/:id', (req, res) => {
   if (sessions_used !== undefined) db.prepare('UPDATE clients SET sessions_used = ? WHERE id = ?').run(sessions_used, req.params.id);
   res.json({ message: 'Client updated' });
 });
+
+// Block tracker - all clients
 router.get('/blocks', (req, res) => {
   const db = getDb();
   const clients = db.prepare(`
@@ -782,6 +783,5 @@ function getMonday(date) {
   d.setDate(diff);
   return d;
 }
-
 
 module.exports = router;
