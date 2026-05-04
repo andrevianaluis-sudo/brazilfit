@@ -170,4 +170,14 @@ router.post('/challenges/:id/join', (req, res) => {
   }
 });
 
+
+// TEMP: Update wellness content
+router.patch("/content/:id", (req, res) => {
+  if (req.user.role !== "pt") return res.status(403).json({ error: "PT only" });
+  const db = getDb();
+  const { content } = req.body;
+  db.prepare("UPDATE wellness_content SET content = ? WHERE id = ?").run(content, req.params.id);
+  res.json({ ok: true });
+});
+
 module.exports = router;
