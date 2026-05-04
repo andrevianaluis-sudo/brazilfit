@@ -258,6 +258,30 @@ function BreathingPlayer({ exercise, onClose }) {
   );
 }
 
+function StretchIdList({ ids }) {
+  const [stretches, setStretches] = useState([]);
+  useEffect(() => {
+    Promise.all(ids.map(id => api.get("/stretches/" + id).then(r => r.data).catch(() => null)))
+      .then(results => setStretches(results.filter(Boolean)));
+  }, [ids.join(",")]);
+  return (
+    <div style={{marginTop:"1rem",paddingTop:"1rem",borderTop:"1px solid rgba(255,255,255,0.1)",display:"flex",flexDirection:"column",gap:8}}>
+      {stretches.map((s,i) => (
+        <div key={s.id} style={{background:"#1a1a1a",borderRadius:12,overflow:"hidden",border:"1px solid rgba(255,255,255,0.08)",display:"flex"}}>
+          <div style={{width:90,height:90,flexShrink:0,background:"#111",overflow:"hidden"}}>
+            <img src={"/exercise-gifs/" + s.gif_file} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy"/>
+          </div>
+          <div style={{padding:"10px 12px",flex:1}}>
+            <p style={{fontSize:"0.82rem",fontWeight:700,color:"#fff",margin:"0 0 2px"}}>{s.name}</p>
+            <p style={{fontSize:"0.68rem",color:"#4CAF50",fontWeight:600,margin:"0 0 4px"}}>{s.muscle_group}</p>
+            <p style={{fontSize:"0.65rem",color:"#707070",margin:0}}>Hold for 30-60 seconds</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ExerciseWithGif({ name, duration, instruction, index }) {
   const [gif, setGif] = useState(null);
   useEffect(() => {
@@ -281,7 +305,7 @@ function ExerciseWithGif({ name, duration, instruction, index }) {
 
 function ExpandedDetail({ item }) {
   let parsed;try{parsed=JSON.parse(item.content);}catch{parsed=null;}
-  if(item.type==='rest_day'){const exercises=parsed?.exercises||(Array.isArray(parsed)?parsed:[]);return(
+  if(item.type==='rest_day'){const stretchIds=parsed?.stretch_ids||[];const exercises=parsed?.exercises||(Array.isArray(parsed)?parsed:[]);if(stretchIds.length>0)return(<StretchIdList ids={stretchIds}/>);return(
     <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:`1px solid ${BORDER}`,display:'flex',flexDirection:'column',gap:'12px'}}>
       {exercises.map((ex,i)=>(
         <div key={i} style={{background:'#1a1a1a',borderRadius:12,overflow:'hidden',border:`1px solid ${BORDER}`,marginBottom:4}}>
