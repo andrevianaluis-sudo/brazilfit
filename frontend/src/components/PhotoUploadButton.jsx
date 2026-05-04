@@ -84,7 +84,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
             )}
 
             {/* File Input */}
-            <label className="block mb-4">
+            <div className="block mb-4" onClick={() => document.getElementById('photo-file-input').click()}>
               <div className="border-2 border-dashed border-brazil-green/30 rounded-lg p-6 text-center cursor-pointer hover:border-brazil-green/60 transition-all">
                 <Camera className="w-8 h-8 text-brazil-green mx-auto mb-2" />
                 <p className="text-sm font-semibold" style={{ color: "#ffffff" }}>Click to select a photo</p>
@@ -96,7 +96,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
                 onChange={handleFileSelect}
                 className="hidden"
               />
-            </label>
+            </div>
 
             {/* Angle Selection */}
             <div className="mb-4">

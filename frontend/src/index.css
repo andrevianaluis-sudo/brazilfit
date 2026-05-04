@@ -1,4 +1,4 @@
-@import './styles/pages.css';
+﻿@import './styles/pages.css';
 
 @tailwind base;
 @tailwind components;
@@ -540,3 +540,6 @@ button:active { transform: scale(0.96); }
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.25rem; }
 }
+
+* { box-sizing: border-box; } body { overflow-x: hidden; max-width: 100vw; } .app-container { overflow-x: hidden; }
+* { box-sizing: border-box; max-width: 100%; } body { overflow-x: hidden; } input, textarea, select { max-width: 100%; }
