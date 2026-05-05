@@ -137,7 +137,7 @@ export default function ClientProgress() {
           <div>
             {loading ? <div style={{ textAlign:'center', padding:'3rem 0', color:MUTED }}>Loading...</div> : entries.length === 0 ? (
               <div style={{ background:SURFACE, borderRadius:16, padding:'2.5rem 1.5rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-                <div style={{ fontSize:48, marginBottom:16 }}>??</div>
+                <div style={{ fontSize:48, marginBottom:16 }}>💪</div>
                 <h3 style={{ color:TEXT, fontWeight:700, fontSize:'1.1rem', margin:'0 0 8px' }}>Start tracking your progress</h3>
                 <p style={{ color:MUTED, fontSize:14, margin:'0 0 20px', lineHeight:1.6 }}>Add your first measurements to see how your body changes over time.</p>
                 <button onClick={() => setShowAddModal(true)} style={{ background:ORANGE, border:'none', borderRadius:12, color:'#fff', padding:'14px 28px', fontSize:15, fontWeight:700, cursor:'pointer' }}>+ Add First Measurement</button>
