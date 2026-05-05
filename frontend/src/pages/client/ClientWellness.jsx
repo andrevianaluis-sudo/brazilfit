@@ -392,7 +392,6 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRout
             {expanded&&<ExpandedDetail item={item}/>}
           </>
         )}
-        )}
       </div>
     </div>
   );
