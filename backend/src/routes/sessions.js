@@ -297,4 +297,12 @@ router.post('/auto-mark', requirePT, (req, res) => {
   res.json({ message: 'Auto-mark complete', marked: result.changes });
 });
 
+
+// TEMP: Delete upcoming sessions for a client
+router.delete("/client/:clientId/upcoming", requirePT, (req, res) => {
+  const db = getDb();
+  const result = db.prepare("DELETE FROM sessions WHERE client_id = ? AND status = 'upcoming'").run(req.params.clientId);
+  res.json({ deleted: result.changes });
+});
+
 module.exports = router;
