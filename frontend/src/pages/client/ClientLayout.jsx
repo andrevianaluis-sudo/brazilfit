@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, BarChart3, Calendar, TrendingUp, Apple, Heart, MessageSquare,
