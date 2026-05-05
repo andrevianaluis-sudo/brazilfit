@@ -344,10 +344,12 @@ function ExpandedDetail({ item }) {
   );
 }
 
-function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
+function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRoutine }) {
   const typeInfo=TYPES.find(t=>t.key===tab)||TYPES[0];
   const Icon=typeInfo.icon;
   const isInteractive=tab==='mindfulness'||tab==='breathing';
+  const isStretchRoutine=tab==='rest_day'&&onStartRoutine;
+
   return (
     <div style={{backgroundColor:SURFACE,borderRadius:'12px',padding:'1.1rem',border:`1px solid ${BORDER}`,borderLeft:`3px solid ${typeInfo.color}`}}>
       <div style={{display:'flex',alignItems:'flex-start',gap:'12px'}}>
@@ -404,6 +406,7 @@ export default function ClientWellness() {
   const [expanded,setExpanded]=useState(null);
   const [activeSession,setActiveSession]=useState(null);
   const [breathingSession,setBreathingSession]=useState(null);
+  const [stretchRoutineSession,setStretchRoutineSession]=useState(null);
   const [stretches,setStretches]=useState([]);
   const [stretchGroup,setStretchGroup]=useState("All");
   const [stretchSearch,setStretchSearch]=useState("");
@@ -558,7 +561,8 @@ export default function ClientWellness() {
       </div>
 
       {activeSession&&<MindfulnessPlayer session={activeSession} onClose={()=>setActiveSession(null)}/>}
-      {breathingSession&&<BreathingPlayer exercise={breathingSession} onClose={()=>setBreathingSession(null)}/>}
+      {breathingSession&&<BreathingPlayer exercise={breathingSession} onClose={()=>setBreathingSession(null)}/> }
+      {stretchRoutineSession&&<StretchRoutinePlayer item={stretchRoutineSession} onClose={()=>setStretchRoutineSession(null)}/>}
     </div>
   );
 }
