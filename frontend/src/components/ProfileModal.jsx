@@ -243,31 +243,31 @@ export default function ProfileModal({ isOpen, onClose }) {
           )}
 
           {/* Stats row */}
-          <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px', background: BORDER,
-            margin: '20px 20px 0',
-            borderRadius: '14px', overflow: 'hidden',
-            border: `1px solid ${BORDER}`,
-          }}>
-            {[
-              { label: 'Sessions', value: user?.sessionsUsed || 0 },
-              { label: 'Block', value: `${user?.sessionsUsed || 0}/10` },
-              { label: 'Days Active', value: Math.floor((Date.now() - new Date(user?.created_at || Date.now())) / 86400000) || 1 },
-            ].map((stat, i) => (
-              <div key={i} style={{
-                background: SURFACE, padding: '14px 8px',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-              }}>
-                <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.4rem', fontWeight: 800, color: ORANGE }}>
-                  {stat.value}
-                </span>
-                <span style={{ fontSize: '11px', color: MUTED, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+          <div style={{margin:'20px 20px 0',padding:'16px 20px',background:'rgba(255,107,43,0.08)',border:'1px solid rgba(255,107,43,0.2)',borderRadius:14,textAlign:'center'}}>
+            <p style={{fontSize:'0.85rem',fontWeight:300,color:'#fff',lineHeight:1.7,margin:0,fontStyle:'italic'}}>"Every session counts. Keep showing up."</p>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           {/* Sign out */}
           <div style={{ padding: '20px 20px 0' }}>
