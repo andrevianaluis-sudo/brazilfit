@@ -25,7 +25,7 @@ function StatusBadge({ status, sessionsRemaining }) {
   const color = getStatusColor(status);
   const label = status === 'renew' ? 'Renew Now' : `${sessionsRemaining} Left`;
   return (
-    <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color, backgroundColor:`${color}18`, padding:'3px 8px', borderRadius:'4px' }}>
+    <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color, backgroundColor:`${color}18`, padding:'3px 8px', borderRadius:'4px' }}>
       {label}
     </span>
   );
@@ -121,15 +121,15 @@ export default function PTClients() {
       {/* Header */}
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'1.5rem' }}>
         <div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
-          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.75rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 0.25rem' }}>Clients</h1>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
+          <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.75rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.25rem' }}>Clients</h1>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{clients.length} active · {alerts.length} need attention</p>
         </div>
         <button onClick={() => setShowAddModal(true)} style={{
           display:'flex', alignItems:'center', gap:'6px', padding:'0.7rem 1.25rem',
           background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
           border:'none', borderRadius:'8px', color:'#000',
-          fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:800,
+          fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:300,
           cursor:'pointer', minHeight:'auto', transition:'all 0.15s',
         }}>
           <Plus size={15} /> Add Client
@@ -144,8 +144,8 @@ export default function PTClients() {
           { value: alerts.length, label: 'Alerts', color: alerts.length > 0 ? '#ef4444' : MUTED },
         ].map((s,i) => (
           <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'10px', padding:'0.875rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-            <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.4rem', fontWeight:800, color:s.color, letterSpacing:'-0.03em', margin:'0 0 2px' }}>{s.value}</p>
-            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.62rem', color:MUTED, margin:0, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase' }}>{s.label}</p>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.4rem', fontWeight:300, color:s.color, letterSpacing:'-0.04em', margin:'0 0 2px' }}>{s.value}</p>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.62rem', color:MUTED, margin:0, fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase' }}>{s.label}</p>
           </div>
         ))}
       </div>
@@ -172,7 +172,7 @@ export default function PTClients() {
             border:`1px solid ${filter===f.key ? ORANGE : BORDER}`,
             backgroundColor: filter===f.key ? `${ORANGE}20` : 'transparent',
             color: filter===f.key ? ORANGE : MUTED,
-            fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', fontWeight:700,
+            fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', fontWeight:400,
             cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', transition:'all 0.15s',
           }}>{f.label}</button>
         ))}
@@ -195,16 +195,16 @@ export default function PTClients() {
               onMouseLeave={e => { e.currentTarget.style.borderColor=c.status==='renew'?'rgba(239,68,68,0.25)':c.status==='critical'?`${ORANGE}25`:BORDER; e.currentTarget.style.backgroundColor=SURFACE; }}
             >
               {/* Avatar */}
-              <div style={{ width:'38px', height:'38px', borderRadius:'50%', backgroundColor:`${avatarColor}18`, border:`1px solid ${avatarColor}44`, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Clash Display', system-ui", fontSize:'0.9rem', fontWeight:800, color:avatarColor, flexShrink:0 }}>
+              <div style={{ width:'38px', height:'38px', borderRadius:'50%', backgroundColor:`${avatarColor}18`, border:`1px solid ${avatarColor}44`, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'DM Sans', system-ui", fontSize:'0.9rem', fontWeight:300, color:avatarColor, flexShrink:0 }}>
                 {initials}
               </div>
 
               {/* Info */}
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:'6px', marginBottom:'3px' }}>
-                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.9rem', fontWeight:700, color:TEXT, margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{c.name}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.9rem', fontWeight:400, color:TEXT, margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{c.name}</p>
                   {c.is_pro === 1 && <Crown size={12} color={YELLOW} />}
-                  <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, color: c.client_type==='Online' ? '#60a5fa' : MUTED, backgroundColor: c.client_type==='Online' ? 'rgba(96,165,250,0.1)' : SURFACE2, padding:'2px 6px', borderRadius:'3px', flexShrink:0 }}>
+                  <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color: c.client_type==='Online' ? '#60a5fa' : MUTED, backgroundColor: c.client_type==='Online' ? 'rgba(96,165,250,0.1)' : SURFACE2, padding:'2px 6px', borderRadius:'3px', flexShrink:0 }}>
                     {c.client_type} · £{c.block_price}
                   </span>
                 </div>
@@ -225,7 +225,7 @@ export default function PTClients() {
       {filtered.length === 0 && (
         <div style={{ textAlign:'center', padding:'3rem 1rem' }}>
           <Users size={32} color={MUTED} style={{ marginBottom:'1rem', opacity:0.4 }} />
-          <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.1rem', fontWeight:700, color:MUTED, letterSpacing:'-0.02em', margin:'0 0 0.4rem' }}>No clients found</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.1rem', fontWeight:400, color:MUTED, letterSpacing:'-0.04em', margin:'0 0 0.4rem' }}>No clients found</p>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.82rem', color:MUTED, margin:0, opacity:0.7 }}>Try adjusting your search or filters</p>
         </div>
       )}
@@ -237,8 +237,8 @@ export default function PTClients() {
 
             <div style={{ padding:'1.25rem 1.5rem', borderBottom:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, backgroundColor:'#111', zIndex:1 }}>
               <div>
-                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 2px' }}>PT Dashboard</p>
-                <h2 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.2rem', fontWeight:700, color:TEXT, letterSpacing:'-0.02em', margin:0 }}>Add New Client</h2>
+                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 2px' }}>PT Dashboard</p>
+                <h2 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.2rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:0 }}>Add New Client</h2>
               </div>
               <button onClick={() => setShowAddModal(false)} style={{ background:'none', border:'none', cursor:'pointer', color:MUTED, padding:'4px', minHeight:'auto', minWidth:'auto' }}><X size={18} /></button>
             </div>
@@ -251,7 +251,7 @@ export default function PTClients() {
                 { label:'Username *', key:'username', type:'text', placeholder:'john.smith' },
               ].map(field => (
                 <div key={field.key}>
-                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>{field.label}</label>
+                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>{field.label}</label>
                   <input type={field.type} value={newClientForm[field.key]} placeholder={field.placeholder}
                     onChange={e => setNewClientForm(f => ({...f, [field.key]: e.target.value, ...(field.key==='fullName' ? {username: e.target.value.toLowerCase().split(' ')[0]||''} : {})}))}
                     style={inputStyle}
@@ -262,19 +262,19 @@ export default function PTClients() {
 
               {/* Password */}
               <div>
-                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Password *</label>
+                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Password *</label>
                 <div style={{ display:'flex', gap:'6px' }}>
                   <input type="text" value={newClientForm.password} onChange={e => setNewClientForm(f=>({...f,password:e.target.value}))} placeholder="Auto-generated"
                     style={{ ...inputStyle, flex:1 }}
                     onFocus={e => e.target.style.borderColor = ORANGE}
                     onBlur={e => e.target.style.borderColor = BORDER} />
-                  <button onClick={generatePassword} style={{ padding:'0 1rem', backgroundColor:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:'8px', color:ORANGE, fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap' }}>Generate</button>
+                  <button onClick={generatePassword} style={{ padding:'0 1rem', backgroundColor:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:'8px', color:ORANGE, fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', fontWeight:400, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap' }}>Generate</button>
                 </div>
               </div>
 
               {/* Package type */}
               <div>
-                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Package Type</label>
+                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Package Type</label>
                 <select value={newClientForm.clientType} onChange={e => setNewClientForm(f=>({...f,clientType:e.target.value}))} style={inputStyle}>
                   <option value="F2F">F2F £400</option>
                   <option value="Online">Online £350</option>
@@ -285,12 +285,12 @@ export default function PTClients() {
               {/* Sessions + Date */}
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
                 <div>
-                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Sessions</label>
+                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Sessions</label>
                   <input type="number" value={newClientForm.sessionsInBlock} min="1" onChange={e => setNewClientForm(f=>({...f,sessionsInBlock:e.target.value}))}
                     style={inputStyle} onFocus={e => e.target.style.borderColor = ORANGE} onBlur={e => e.target.style.borderColor = BORDER} />
                 </div>
                 <div>
-                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Start Date</label>
+                  <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Start Date</label>
                   <input type="date" value={newClientForm.startDate} onChange={e => setNewClientForm(f=>({...f,startDate:e.target.value}))}
                     style={inputStyle} onFocus={e => e.target.style.borderColor = ORANGE} onBlur={e => e.target.style.borderColor = BORDER} />
                 </div>
@@ -298,7 +298,7 @@ export default function PTClients() {
 
               {/* Notes */}
               <div>
-                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Notes</label>
+                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>Notes</label>
                 <textarea value={newClientForm.notes} onChange={e => setNewClientForm(f=>({...f,notes:e.target.value}))} placeholder="Optional notes..." rows={3}
                   style={{ ...inputStyle, resize:'vertical' }}
                   onFocus={e => e.target.style.borderColor = ORANGE}
@@ -308,7 +308,7 @@ export default function PTClients() {
               {/* Buttons */}
               <div style={{ display:'flex', gap:'8px', paddingTop:'0.25rem' }}>
                 <button onClick={() => setShowAddModal(false)} style={{ flex:1, padding:'0.875rem', backgroundColor:'transparent', border:`1px solid ${BORDER}`, borderRadius:'8px', color:MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:600, cursor:'pointer', minHeight:'auto' }}>Cancel</button>
-                <button onClick={handleAddClient} disabled={creatingClient} style={{ flex:2, padding:'0.875rem', background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, border:'none', borderRadius:'8px', color:'#000', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:800, cursor:creatingClient?'not-allowed':'pointer', opacity:creatingClient?0.7:1, minHeight:'auto' }}>
+                <button onClick={handleAddClient} disabled={creatingClient} style={{ flex:2, padding:'0.875rem', background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, border:'none', borderRadius:'8px', color:'#000', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:300, cursor:creatingClient?'not-allowed':'pointer', opacity:creatingClient?0.7:1, minHeight:'auto' }}>
                   {creatingClient ? 'Creating...' : 'Create Client Account'}
                 </button>
               </div>

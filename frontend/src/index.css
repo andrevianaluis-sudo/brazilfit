@@ -78,8 +78,8 @@ body {
 
 /* === TYPOGRAPHY === */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Clash Display', system-ui, sans-serif;
-  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.03em;
   color: var(--color-text-primary);
@@ -143,7 +143,7 @@ input[type='checkbox'], input[type='radio'] {
 .btn-primary {
   background: linear-gradient(135deg, var(--color-orange), var(--color-yellow));
   color: #000;
-  font-weight: 700;
+  font-weight: 400;
   border-radius: var(--radius-sm);
   padding: 0.75rem 1.5rem;
   border: none;
@@ -182,7 +182,7 @@ input[type='checkbox'], input[type='radio'] {
 .btn-green {
   background: var(--color-green);
   color: #000;
-  font-weight: 700;
+  font-weight: 400;
   border-radius: var(--radius-sm);
   padding: 0.75rem 1.5rem;
   border: none;
@@ -268,7 +268,7 @@ header.bg-white, header.sticky {
 /* === SECTION LABELS === */
 .section-label {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   color: var(--color-text-muted);
@@ -305,9 +305,9 @@ header.bg-white, header.sticky {
 }
 
 .dashboard-hero-title {
-  font-family: 'Clash Display', system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(2rem, 6vw, 3rem);
-  font-weight: 800;
+  font-weight: 300;
   color: #ffffff;
   line-height: 1.1;
   letter-spacing: -0.04em;
@@ -317,7 +317,7 @@ header.bg-white, header.sticky {
 .dashboard-hero-subtitle {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--color-orange);
   text-transform: uppercase;
@@ -343,7 +343,7 @@ header.bg-white, header.sticky {
 .stat-card-label {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.1em;
   color: var(--color-text-muted);
   text-transform: uppercase;
@@ -351,9 +351,9 @@ header.bg-white, header.sticky {
 }
 
 .stat-card-value {
-  font-family: 'Clash Display', system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(1.75rem, 5vw, 2.5rem);
-  font-weight: 800;
+  font-weight: 300;
   color: var(--color-orange);
   line-height: 1;
   margin: 0 0 0.25rem 0;
@@ -370,7 +370,7 @@ header.bg-white, header.sticky {
 .section-header {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
   color: var(--color-text-muted);
   text-transform: uppercase;
@@ -435,7 +435,7 @@ header.bg-white, header.sticky {
 
 .motivation-author {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.05em;
   color: var(--color-orange);
   margin: 0;
@@ -458,7 +458,7 @@ header.bg-white, header.sticky {
 
 .next-session-label {
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(0,0,0,0.6);
@@ -466,9 +466,9 @@ header.bg-white, header.sticky {
 }
 
 .next-session-title {
-  font-family: 'Clash Display', system-ui, sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 400;
   color: #000;
   margin: 0 0 0.25rem 0;
 }

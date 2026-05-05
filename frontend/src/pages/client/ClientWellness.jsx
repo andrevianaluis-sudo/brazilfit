@@ -93,7 +93,7 @@ function MusicSelector({ music }) {
       <div style={{display:'flex',alignItems:'center',gap:'10px',background:'rgba(255,255,255,0.05)',borderRadius:14,padding:'12px 14px',border:'1px solid rgba(255,255,255,0.08)'}}>
         <div style={{width:40,height:40,borderRadius:10,background:`linear-gradient(135deg,${ORANGE},#FFD600)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.2rem',flexShrink:0}}>{track?.emoji||'🎵'}</div>
         <div style={{flex:1,minWidth:0}}>
-          <p style={{fontSize:'0.85rem',fontWeight:700,color:TEXT,margin:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{track?.name||'Select track'}</p>
+          <p style={{fontSize:'0.85rem',fontWeight:400,color:TEXT,margin:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{track?.name||'Select track'}</p>
           <p style={{fontSize:'0.7rem',color:MUTED,margin:'2px 0 0'}}>{track?.artist||''}</p>
         </div>
         <button onClick={music.isPlaying?music.stop:music.play} style={{width:44,height:44,borderRadius:22,border:'none',background:music.isPlaying?`${ORANGE}33`:ORANGE,color:music.isPlaying?ORANGE:'#000',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'1rem'}}>
@@ -108,8 +108,8 @@ function MusicSelector({ music }) {
       <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:6}}>
         {music.tracks.slice(0,10).map(t=>{const sel=music.selectedId===t.id;return(
           <button key={t.id} onClick={()=>music.setTrack(t.id)} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4,padding:'8px 4px',borderRadius:10,border:`1px solid ${sel?ORANGE:'rgba(255,255,255,0.08)'}`,background:sel?`${ORANGE}22`:'rgba(255,255,255,0.03)',cursor:'pointer',minHeight:'auto',transition:'all 0.2s'}}>
-            <span style={{fontSize:'1.3rem'}}>{t.emoji||'🎵'}</span>
-            <span style={{fontSize:'0.52rem',color:sel?ORANGE:MUTED,fontWeight:600,textAlign:'center',lineHeight:1.2,width:'100%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.name.split(' ')[0]}</span>
+            <span style={{fontSize:'1.5rem'}}>{t.emoji||'🎵'}</span>
+            <span style={{fontSize:'0.52rem',color:sel?ORANGE:MUTED,fontWeight:600,textAlign:'center',lineHeight:1.6,width:'100%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.name.split(' ')[0]}</span>
           </button>
         );})}
       </div>
@@ -144,10 +144,10 @@ function MindfulnessPlayer({ session, onClose }) {
   return (
     <div style={{position:'fixed',inset:0,zIndex:50,background:'linear-gradient(180deg,#0d0d0d 0%,#1a1008 100%)',display:'flex',flexDirection:'column',alignItems:'center',padding:'env(safe-area-inset-top,2rem) 1.5rem 2rem',overflowY:'auto',minHeight:'100dvh'}}>
       <button onClick={handleClose} style={{position:'absolute',top:'1rem',right:'1rem',background:'none',border:'none',cursor:'pointer',color:MUTED,padding:'8px',minHeight:'auto',minWidth:'auto'}}><X size={20}/></button>
-      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Mindfulness Session</p>
-      <h2 style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 1.5rem',textAlign:'center'}}>{session.title}</h2>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:400,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Mindfulness Session</p>
+      <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 1.5rem',textAlign:'center'}}>{session.title}</h2>
       <div style={{width:'100%',maxWidth:'320px',marginBottom:'1.5rem'}}>
-        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
+        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:400,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
         <MusicSelector music={music}/>
       </div>
       <div style={{position:'relative',width:'200px',height:'200px',marginBottom:'1.5rem',flexShrink:0}}>
@@ -164,12 +164,12 @@ function MindfulnessPlayer({ session, onClose }) {
         {isDone?(
           <div style={{opacity:1}}>
             <CheckCircle size={36} color={GREEN} style={{marginBottom:'0.75rem'}}/>
-            <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:GREEN,margin:'0 0 0.4rem'}}>Session Complete</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:400,color:GREEN,margin:'0 0 0.4rem'}}>Session Complete</p>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>Take a moment to notice how you feel.</p>
           </div>
         ):steps.length>0?(
           <div style={{opacity:fadeIn?1:0,transform:fadeIn?'scale(1)':'scale(0.95)',transition:'all 0.8s ease'}}>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.12em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.75rem'}}>Step {currentStepIdx+1} of {steps.length}</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:400,letterSpacing:'0.12em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.75rem'}}>Step {currentStepIdx+1} of {steps.length}</p>
             <p style={{fontSize:'1.4rem',fontWeight:300,color:TEXT,lineHeight:1.5,margin:'0 0 0.75rem',letterSpacing:'-0.01em',maxWidth:340}}>{steps[currentStepIdx]}</p>
             <div style={{display:'flex',gap:'6px',justifyContent:'center'}}>
               {[...Array(steps.length)].map((_,i)=>(
@@ -221,23 +221,23 @@ function BreathingPlayer({ exercise, onClose }) {
   return (
     <div style={{position:'fixed',inset:0,zIndex:50,backgroundColor:'#111',display:'flex',flexDirection:'column',alignItems:'center',padding:'2rem 1.25rem',overflowY:'auto'}}>
       <button onClick={handleClose} style={{position:'absolute',top:'1rem',right:'1rem',background:'none',border:'none',cursor:'pointer',color:MUTED,padding:'8px',minHeight:'auto',minWidth:'auto'}}><X size={20}/></button>
-      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Breathing Exercise</p>
-      <h2 style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 0.25rem',textAlign:'center'}}>{exercise.title}</h2>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:400,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Breathing Exercise</p>
+      <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 0.25rem',textAlign:'center'}}>{exercise.title}</h2>
       <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1.25rem'}}>{isDone?'Complete!': `Round ${round} of ${totalRounds}`}</p>
       <div style={{width:'100%',maxWidth:'320px',marginBottom:'1.25rem'}}>
-        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
+        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:400,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
         <MusicSelector music={music}/>
       </div>
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',margin:'0.5rem 0 1rem'}}>
         <div style={{width:`${circleSize}px`,height:`${circleSize}px`,borderRadius:'50%',backgroundColor:typeInfo.bg,border:`2px solid ${typeInfo.color}44`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',transition:'all 1s ease-in-out'}}>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:typeInfo.color,margin:0}}>{phase.label}</p>
-          {isActive&&!isDone&&phase.rem>0&&<p style={{fontFamily:"'Clash Display',system-ui",fontSize:'2.5rem',fontWeight:800,color:TEXT,margin:'4px 0 0',lineHeight:1}}>{phase.rem}</p>}
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:400,color:typeInfo.color,margin:0}}>{phase.label}</p>
+          {isActive&&!isDone&&phase.rem>0&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'2.5rem',fontWeight:300,color:TEXT,margin:'4px 0 0',lineHeight:1}}>{phase.rem}</p>}
         </div>
       </div>
       {isDone?(
         <div style={{textAlign:'center',marginBottom:'1.25rem'}}>
           <CheckCircle size={32} color={GREEN} style={{marginBottom:'0.5rem'}}/>
-          <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.1rem',fontWeight:700,color:GREEN,margin:'0 0 0.25rem'}}>Session Complete!</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:400,color:GREEN,margin:'0 0 0.25rem'}}>Session Complete!</p>
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Notice how you feel right now.</p>
         </div>
       ):(
@@ -247,7 +247,7 @@ function BreathingPlayer({ exercise, onClose }) {
       )}
       <div style={{display:'flex',gap:'10px',width:'100%',maxWidth:'300px'}}>
         {!isDone&&(
-          <button onClick={toggle} style={{flex:1,padding:'0.875rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'10px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
+          <button onClick={toggle} style={{flex:1,padding:'0.875rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'10px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             {isActive?<Pause size={16}/>:<Play size={16}/>}
             {isActive?'Pause':elapsed===0?'Start':'Resume'}
           </button>
@@ -272,7 +272,7 @@ function StretchIdList({ ids }) {
             <img src={"/exercise-gifs/" + s.gif_file} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy"/>
           </div>
           <div style={{padding:"10px 12px",flex:1}}>
-            <p style={{fontSize:"0.82rem",fontWeight:700,color:"#fff",margin:"0 0 2px"}}>{s.name}</p>
+            <p style={{fontSize:"0.82rem",fontWeight:400,color:"#fff",margin:"0 0 2px"}}>{s.name}</p>
             <p style={{fontSize:"0.68rem",color:"#4CAF50",fontWeight:600,margin:"0 0 4px"}}>{s.muscle_group}</p>
             <p style={{fontSize:"0.65rem",color:"#707070",margin:0}}>Hold for 30-60 seconds</p>
           </div>
@@ -292,10 +292,10 @@ function ExerciseWithGif({ name, duration, instruction, index }) {
   return (
     <div style={{display:"flex"}}>
       <div style={{width:90,height:90,flexShrink:0,background:"#111",overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        {gif ? <img src={"/exercise-gifs/" + gif} alt={name} style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(76,175,80,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.8rem",fontWeight:800,color:"#4CAF50"}}>{index+1}</div>}
+        {gif ? <img src={"/exercise-gifs/" + gif} alt={name} style={{width:"100%",height:"100%",objectFit:"cover"}}/> : <div style={{width:40,height:40,borderRadius:"50%",background:"rgba(76,175,80,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.8rem",fontWeight:300,color:"#4CAF50"}}>{index+1}</div>}
       </div>
       <div style={{padding:"10px 12px",flex:1}}>
-        <p style={{fontSize:"0.82rem",fontWeight:700,color:"#fff",margin:"0 0 2px"}}>{name}</p>
+        <p style={{fontSize:"0.82rem",fontWeight:400,color:"#fff",margin:"0 0 2px"}}>{name}</p>
         {duration&&<p style={{fontSize:"0.68rem",color:"#4CAF50",fontWeight:600,margin:"0 0 4px"}}>{duration}</p>}
         {instruction&&<p style={{fontSize:"0.68rem",color:"#b0b0b0",margin:0,lineHeight:1.5}}>{instruction}</p>}
       </div>
@@ -324,14 +324,14 @@ function ExpandedDetail({ item }) {
     <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:`1px solid ${BORDER}`,display:'flex',flexDirection:'column',gap:'12px'}}>
       {sections.map((s,i)=>(
         <div key={i}>
-          {s.heading&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,color:TEXT,margin:'0 0 4px'}}>{s.heading}</p>}
+          {s.heading&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:400,color:TEXT,margin:'0 0 4px'}}>{s.heading}</p>}
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{s.body}</p>
         </div>
       ))}
       {body.map((para,i)=><p key={i} style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{para}</p>)}
       {keyPoints.length>0&&(
         <div style={{backgroundColor:'#1a1a1a',borderRadius:'8px',padding:'0.875rem'}}>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,color:TEXT,margin:'0 0 0.5rem'}}>Key Takeaways</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,color:TEXT,margin:'0 0 0.5rem'}}>Key Takeaways</p>
           {keyPoints.map((kp,i)=>(
             <div key={i} style={{display:'flex',alignItems:'flex-start',gap:'8px',marginBottom:'6px'}}>
               <span style={{color:ORANGE,flexShrink:0,marginTop:'2px'}}>›</span>
@@ -356,9 +356,9 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
         </div>
         <div style={{flex:1,minWidth:0}}>
           <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'8px',marginBottom:'6px'}}>
-            <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.01em',margin:0,lineHeight:1.2}}>{item.title}</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:400,color:TEXT,letterSpacing:'-0.01em',margin:0,lineHeight:1.6}}>{item.title}</p>
             {item.duration_minutes>0&&(
-              <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,color:typeInfo.color,flexShrink:0}}>
+              <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,color:typeInfo.color,flexShrink:0}}>
                 <Clock size={12}/>{item.duration_minutes}m
               </span>
             )}
@@ -366,7 +366,7 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
           {item.description&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
           <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
             {item.difficulty&&(
-              <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',padding:'2px 8px',borderRadius:'4px',backgroundColor:`${item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}18`,color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}}>
+              <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:400,letterSpacing:'0.08em',textTransform:'uppercase',padding:'2px 8px',borderRadius:'4px',backgroundColor:`${item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}18`,color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}}>
                 {item.difficulty}
               </span>
             )}
@@ -375,7 +375,7 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
       </div>
       <div style={{marginTop:'0.875rem'}}>
         {isInteractive?(
-          <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
+          <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             <Play size={14}/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
           </button>
         ):(
@@ -443,16 +443,16 @@ export default function ClientWellness() {
         {/* Header */}
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',margin:'1.25rem 0 1.5rem'}}>
           <div>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Recovery</p>
-            <h1 style={{fontFamily:"'Clash Display',system-ui",fontSize:'2rem',fontWeight:700,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 0.25rem'}}>Mind & Wellness</h1>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:400,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Recovery</p>
+            <h1 style={{fontFamily:"'DM Sans',system-ui",fontSize:'2rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 0.25rem'}}>Mind & Wellness</h1>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Mental performance & recovery</p>
           </div>
           {isPro?(
-            <span style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:700,padding:'4px 12px',borderRadius:'20px',background:`linear-gradient(135deg,${YELLOW},${ORANGE})`,color:'#000'}}>
+            <span style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:400,padding:'4px 12px',borderRadius:'20px',background:`linear-gradient(135deg,${YELLOW},${ORANGE})`,color:'#000'}}>
               <Crown size={12}/> Pro
             </span>
           ):(
-            <button onClick={()=>navigate('/client/upgrade')} style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:700,color:YELLOW,border:`1px solid ${YELLOW}44`,borderRadius:'20px',padding:'4px 12px',background:'none',cursor:'pointer',minHeight:'auto'}}>
+            <button onClick={()=>navigate('/client/upgrade')} style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:400,color:YELLOW,border:`1px solid ${YELLOW}44`,borderRadius:'20px',padding:'4px 12px',background:'none',cursor:'pointer',minHeight:'auto'}}>
               <Crown size={12}/> Upgrade
             </button>
           )}
@@ -461,7 +461,7 @@ export default function ClientWellness() {
         {/* Type tabs */}
         <div style={{display:'flex',gap:'6px',overflowX:'auto',paddingBottom:'4px',marginBottom:'1rem'}}>
           {TYPES.map(({key,label,icon:Icon})=>{const active=tab===key;const ti=TYPES.find(t=>t.key===key);return(
-            <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'8px',border:`1px solid ${active?ti.color:BORDER}`,backgroundColor:active?`${ti.color}20`:'transparent',color:active?ti.color:MUTED,fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',transition:'all 0.15s'}}>
+            <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'8px',border:`1px solid ${active?ti.color:BORDER}`,backgroundColor:active?`${ti.color}20`:'transparent',color:active?ti.color:MUTED,fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',transition:'all 0.15s'}}>
               <Icon size={13}/>{label}
             </button>
           );})}
@@ -480,7 +480,7 @@ export default function ClientWellness() {
           <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'0.75rem 1rem',backgroundColor:`${YELLOW}10`,border:`1px solid ${YELLOW}22`,borderRadius:'8px',marginBottom:'1rem'}}>
             <Crown size={14} color={YELLOW}/>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,margin:0}}>
-              Showing 1 preview. <button onClick={()=>navigate('/client/upgrade')} style={{background:'none',border:'none',color:YELLOW,fontWeight:700,cursor:'pointer',textDecoration:'underline',padding:0,minHeight:'auto'}}>Upgrade to Pro</button> for the full library.
+              Showing 1 preview. <button onClick={()=>navigate('/client/upgrade')} style={{background:'none',border:'none',color:YELLOW,fontWeight:400,cursor:'pointer',textDecoration:'underline',padding:0,minHeight:'auto'}}>Upgrade to Pro</button> for the full library.
             </p>
           </div>
         )}
@@ -497,10 +497,10 @@ export default function ClientWellness() {
               ))}
             </div>
             <div style={{borderTop:`1px solid ${BORDER}`,paddingTop:"1.25rem",marginBottom:"1rem"}}>
-            <p style={{fontSize:"0.6rem",fontWeight:700,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 0.75rem"}}>Browse All Stretches</p>
+            <p style={{fontSize:"0.6rem",fontWeight:400,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 0.75rem"}}>Browse All Stretches</p>
             <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:8,marginBottom:12}}>
               {stretchGroups.map(g=>(
-                <button key={g} onClick={()=>setStretchGroup(g)} style={{flexShrink:0,padding:"6px 14px",borderRadius:8,border:`1px solid ${stretchGroup===g?GREEN:BORDER}`,background:stretchGroup===g?`${GREEN}22`:"transparent",color:stretchGroup===g?GREEN:MUTED,fontSize:"0.75rem",fontWeight:700,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap"}}>{g}</button>
+                <button key={g} onClick={()=>setStretchGroup(g)} style={{flexShrink:0,padding:"6px 14px",borderRadius:8,border:`1px solid ${stretchGroup===g?GREEN:BORDER}`,background:stretchGroup===g?`${GREEN}22`:"transparent",color:stretchGroup===g?GREEN:MUTED,fontSize:"0.75rem",fontWeight:400,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap"}}>{g}</button>
               ))}
             </div>
             <div style={{marginBottom:12}}>
@@ -513,7 +513,7 @@ export default function ClientWellness() {
                     <img src={`/exercise-gifs/${s.gif_file}`} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy"/>
                   </div>
                   <div style={{padding:"8px 10px"}}>
-                    <p style={{fontSize:"0.72rem",fontWeight:700,color:TEXT,margin:"0 0 2px",lineHeight:1.3}}>{s.name}</p>
+                    <p style={{fontSize:"0.72rem",fontWeight:400,color:TEXT,margin:"0 0 2px",lineHeight:1.3}}>{s.name}</p>
                     <p style={{fontSize:"0.62rem",color:GREEN,fontWeight:600,margin:0}}>{s.muscle_group}</p>
                   </div>
                 </div>
@@ -525,9 +525,9 @@ export default function ClientWellness() {
                 <div style={{background:SURFACE,borderRadius:16,overflow:"hidden",maxWidth:380,width:"100%",border:`1px solid ${BORDER}`}} onClick={e=>e.stopPropagation()}>
                   <img src={`/exercise-gifs/${selectedStretch.gif_file}`} alt={selectedStretch.name} style={{width:"100%",aspectRatio:"1",objectFit:"cover"}}/>
                   <div style={{padding:"1rem"}}>
-                    <p style={{fontSize:"1rem",fontWeight:800,color:TEXT,margin:"0 0 4px"}}>{selectedStretch.name}</p>
+                    <p style={{fontSize:"1rem",fontWeight:300,color:TEXT,margin:"0 0 4px"}}>{selectedStretch.name}</p>
                     <p style={{fontSize:"0.78rem",color:GREEN,fontWeight:600,margin:"0 0 12px"}}>{selectedStretch.muscle_group}</p>
-                    <button onClick={()=>setSelectedStretch(null)} style={{width:"100%",padding:"12px",background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:"none",borderRadius:10,color:"#fff",fontWeight:800,fontSize:"0.875rem",cursor:"pointer"}}>Got it</button>
+                    <button onClick={()=>setSelectedStretch(null)} style={{width:"100%",padding:"12px",background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:"none",borderRadius:10,color:"#fff",fontWeight:300,fontSize:"0.875rem",cursor:"pointer"}}>Got it</button>
                   </div>
                 </div>
               </div>
@@ -548,9 +548,9 @@ export default function ClientWellness() {
             {isLimited&&(
               <div style={{backgroundColor:SURFACE,border:`1px solid ${YELLOW}22`,borderRadius:'12px',padding:'2rem',textAlign:'center'}}>
                 <Crown size={24} color={YELLOW} style={{marginBottom:'0.75rem'}}/>
-                <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 0.4rem'}}>Unlock Full Library</p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 0.4rem'}}>Unlock Full Library</p>
                 <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1rem',lineHeight:1.6}}>Get unlimited access to all sessions with BrazilFit Pro.</p>
-                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.8rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',minHeight:'auto'}}>Upgrade to Pro</button>
+                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.8rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',minHeight:'auto'}}>Upgrade to Pro</button>
               </div>
             )}
           </div>

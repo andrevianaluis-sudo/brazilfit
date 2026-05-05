@@ -66,7 +66,7 @@ export default function ClientMessages() {
       </button>
       <div style={{ textAlign: 'center', maxWidth: '360px', margin: '0 auto' }}>
         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👤</div>
-        <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>No PT Assigned</h2>
+        <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.3rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>No PT Assigned</h2>
         <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', color: MUTED, margin: 0, lineHeight: 1.6 }}>You don't have a PT assigned yet. Contact your gym to get started.</p>
       </div>
     </div>
@@ -107,7 +107,7 @@ export default function ClientMessages() {
         {messages.length === 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
             <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: SURFACE, border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', fontSize: '1.5rem' }}>💬</div>
-            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>No messages yet</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>No messages yet</p>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0, opacity: 0.7 }}>Send a message to get started!</p>
           </div>
         ) : (

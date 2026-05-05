@@ -19,7 +19,7 @@ const GREEN = '#4CAF50';
 const RED = '#ef4444';
 
 function SectionLabel({ children, color = MUTED }) {
-  return <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
+  return <p style={{ fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
 }
 
 function StatCard({ label, value, unit, change, accent }) {
@@ -32,12 +32,12 @@ function StatCard({ label, value, unit, change, accent }) {
       <SectionLabel color={value ? accentColor : MUTED}>{label}</SectionLabel>
       <div style={{ display:'flex', alignItems:'baseline', gap:4 }}>
         <p style={{ fontSize:'2rem', fontWeight:900, color:value?TEXT:MUTED, letterSpacing:'-0.05em', lineHeight:1, margin:0, fontVariantNumeric:'tabular-nums' }}>{value ?? '--'}</p>
-        {value && <span style={{ color:accentColor, fontSize:'0.7rem', fontWeight:700, letterSpacing:'0.05em' }}>{unit}</span>}
+        {value && <span style={{ color:accentColor, fontSize:'0.7rem', fontWeight:400, letterSpacing:'0.05em' }}>{unit}</span>}
       </div>
       {change !== null && change !== undefined && (
         <div style={{ display:'flex', alignItems:'center', gap:4, marginTop:6 }}>
           {isGood ? <TrendingDown size={11} color={GREEN}/> : <TrendingUp size={11} color={RED}/>}
-          <p style={{ fontSize:'0.68rem', fontWeight:700, color:changeColor, margin:0 }}>{change > 0 ? '+' : ''}{change} {unit}</p>
+          <p style={{ fontSize:'0.68rem', fontWeight:400, color:changeColor, margin:0 }}>{change > 0 ? '+' : ''}{change} {unit}</p>
         </div>
       )}
     </div>
@@ -61,7 +61,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
     <div style={{ position:'fixed', inset:0, zIndex:100, background:'rgba(0,0,0,0.85)', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
       <div style={{ width:'100%', maxWidth:480, background:SURFACE, borderRadius:'20px 20px 0 0', border:`1px solid ${BORDER}`, borderBottom:'none', maxHeight:'90vh', overflowY:'auto', paddingBottom:32 }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 20px 16px', borderBottom:`1px solid ${BORDER}` }}>
-          <div><h3 style={{ color:TEXT, fontWeight:700, fontSize:18, margin:0 }}>Add Measurements</h3><p style={{ color:MUTED, fontSize:13, margin:'4px 0 0' }}>Track your body changes over time</p></div>
+          <div><h3 style={{ color:TEXT, fontWeight:400, fontSize:18, margin:0 }}>Add Measurements</h3><p style={{ color:MUTED, fontSize:13, margin:'4px 0 0' }}>Track your body changes over time</p></div>
           <button onClick={onClose} style={{ background:SURFACE2, border:'none', color:MUTED, borderRadius:8, width:32, height:32, cursor:'pointer', fontSize:14, lineHeight:1 }}>X</button>
         </div>
         <div style={{ padding:'20px 20px 0' }}>
@@ -81,7 +81,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
             <label style={{ color:MUTED, fontSize:11, display:'block', marginBottom:5, fontWeight:600 }}>NOTES (optional)</label>
             <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes:e.target.value}))} placeholder="How are you feeling?" style={{ width:'100%', background:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:10, color:TEXT, padding:'11px 14px', fontSize:14, boxSizing:'border-box', outline:'none' }}/>
           </div>
-          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:ORANGE, border:'none', borderRadius:14, color:saving?MUTED:'#fff', padding:'16px', fontSize:16, fontWeight:800, cursor:saving?'default':'pointer' }}>{saving ? 'Saving...' : 'Save Measurements'}</button>
+          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:ORANGE, border:'none', borderRadius:14, color:saving?MUTED:'#fff', padding:'16px', fontSize:16, fontWeight:300, cursor:saving?'default':'pointer' }}>{saving ? 'Saving...' : 'Save Measurements'}</button>
         </div>
       </div>
     </div>
@@ -121,16 +121,16 @@ export default function ClientProgress() {
         <BackButton to="/client" />
         <div style={{ margin:'1.25rem 0 1rem', display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
           <div>
-            <p style={{ fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Your Journey</p>
-            <h1 style={{ fontSize:'2rem', fontWeight:700, color:TEXT, margin:0 }}>Progress</h1>
+            <p style={{ fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Your Journey</p>
+            <h1 style={{ fontSize:'2rem', fontWeight:400, color:TEXT, margin:0 }}>Progress</h1>
           </div>
-          <button onClick={() => setShowAddModal(true)} style={{ display:'flex', alignItems:'center', gap:6, background:ORANGE, border:'none', borderRadius:10, color:'#fff', padding:'10px 16px', fontSize:13, fontWeight:700, cursor:'pointer' }}>
+          <button onClick={() => setShowAddModal(true)} style={{ display:'flex', alignItems:'center', gap:6, background:ORANGE, border:'none', borderRadius:10, color:'#fff', padding:'10px 16px', fontSize:13, fontWeight:400, cursor:'pointer' }}>
             <Plus size={14}/> Add
           </button>
         </div>
         <div style={{ display:'flex', gap:8, marginBottom:'1.5rem', borderBottom:`1px solid ${BORDER}` }}>
           {[{key:'progress',label:'Stats'},{key:'photos',label:'Photos'}].map(t => (
-            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color:activeTab===t.key?ORANGE:MUTED, fontWeight:700, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom:activeTab===t.key?`2px solid ${ORANGE}`:'2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
+            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color:activeTab===t.key?ORANGE:MUTED, fontWeight:400, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom:activeTab===t.key?`2px solid ${ORANGE}`:'2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
           ))}
         </div>
         {activeTab === 'progress' && (
@@ -138,9 +138,9 @@ export default function ClientProgress() {
             {loading ? <div style={{ textAlign:'center', padding:'3rem 0', color:MUTED }}>Loading...</div> : entries.length === 0 ? (
               <div style={{ background:SURFACE, borderRadius:16, padding:'2.5rem 1.5rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
                 <div style={{ fontSize:48, marginBottom:16 }}>💪</div>
-                <h3 style={{ color:TEXT, fontWeight:700, fontSize:'1.1rem', margin:'0 0 8px' }}>Start tracking your progress</h3>
+                <h3 style={{ color:TEXT, fontWeight:400, fontSize:'1.1rem', margin:'0 0 8px' }}>Start tracking your progress</h3>
                 <p style={{ color:MUTED, fontSize:14, margin:'0 0 20px', lineHeight:1.6 }}>Add your first measurements to see how your body changes over time.</p>
-                <button onClick={() => setShowAddModal(true)} style={{ background:ORANGE, border:'none', borderRadius:12, color:'#fff', padding:'14px 28px', fontSize:15, fontWeight:700, cursor:'pointer' }}>+ Add First Measurement</button>
+                <button onClick={() => setShowAddModal(true)} style={{ background:ORANGE, border:'none', borderRadius:12, color:'#fff', padding:'14px 28px', fontSize:15, fontWeight:400, cursor:'pointer' }}>+ Add First Measurement</button>
               </div>
             ) : (
               <>
@@ -167,7 +167,7 @@ export default function ClientProgress() {
                           <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' ? ')}</p>
                         </div>
                         <div style={{ textAlign:'right' }}>
-                          <p style={{ fontSize:'1.4rem', fontWeight:800, color:GREEN, letterSpacing:'-0.03em', margin:0 }}>{entry.weight_kg || '?'}</p>
+                          <p style={{ fontSize:'1.4rem', fontWeight:300, color:GREEN, letterSpacing:'-0.04em', margin:0 }}>{entry.weight_kg || '?'}</p>
                           <p style={{ color:MUTED, fontSize:11, margin:0 }}>kg</p>
                         </div>
                       </div>

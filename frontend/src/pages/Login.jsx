@@ -81,12 +81,12 @@ export default function Login() {
           <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '8px', borderRadius: '8px', display: 'flex' }}>
             <Zap style={{ width: '18px', height: '18px', color: '#000', fill: '#000' }} />
           </div>
-          <span style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.3rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
+          <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.3rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
         </div>
 
         <div>
           <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 1rem' }}>Premium Training</p>
-          <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 1.5rem' }}>Train smarter.<br />Live better.</h2>
+          <h2 style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 1.5rem' }}>Train smarter.<br />Live better.</h2>
           <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.85rem', color: '#3a3a3a', margin: 0, lineHeight: 1.7, maxWidth: '320px' }}>Your personal training hub. Track sessions, monitor progress and stay connected with your PT.</p>
         </div>
 
@@ -109,12 +109,12 @@ export default function Login() {
           <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '7px', borderRadius: '7px', display: 'flex' }}>
             <Zap style={{ width: '16px', height: '16px', color: '#000', fill: '#000' }} />
           </div>
-          <span style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
+          <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
         </div>
 
         {/* Heading */}
         <div style={{ marginBottom: '2.5rem' }}>
-          <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.4rem', lineHeight: 1.1 }}>Welcome back</h1>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.4rem', lineHeight: 1.1 }}>Welcome back</h1>
           <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Sign in to your account to continue</p>
         </div>
 

@@ -153,7 +153,7 @@ export function ShoppingListTab() {
       <div style={{ padding: '1.25rem 1.5rem', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <ShoppingCart size={18} color={ORANGE} />
-          <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: 0 }}>My Shopping List</h2>
+          <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: 0 }}>My Shopping List</h2>
         </div>
         {checkedCount > 0 && (
           <button onClick={clearBought} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', fontWeight: 600, color: MUTED, minHeight: 'auto', padding: 0, transition: 'color 0.15s' }}
@@ -176,7 +176,7 @@ export function ShoppingListTab() {
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{checkedCount} of {items.length} items checked</p>
-                <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE, margin: 0 }}>{Math.round((checkedCount/items.length)*100)}%</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE, margin: 0 }}>{Math.round((checkedCount/items.length)*100)}%</p>
               </div>
               <div style={{ width: '100%', height: '3px', backgroundColor: SURFACE2, borderRadius: '2px' }}>
                 <div style={{ height: '100%', width: `${(checkedCount/items.length)*100}%`, background: `linear-gradient(90deg, ${ORANGE}, ${YELLOW})`, borderRadius: '2px', transition: 'width 0.3s ease' }} />
@@ -244,7 +244,7 @@ export function ShoppingListTab() {
       {items.length === 0 ? (
         <div style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
           <ShoppingCart size={36} color={MUTED} style={{ marginBottom: '1rem', opacity: 0.4 }} />
-          <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Your list is empty</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Your list is empty</p>
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 1.25rem', opacity: 0.7 }}>Add ingredients from any meal or add items manually above</p>
         </div>
       ) : (

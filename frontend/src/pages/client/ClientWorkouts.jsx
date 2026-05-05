@@ -29,7 +29,7 @@ const difficultyConfig = {
 };
 
 function SectionLabel({ children, color = MUTED }) {
-  return <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
+  return <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
 }
 
 export default function ClientWorkouts() {
@@ -66,8 +66,8 @@ export default function ClientWorkouts() {
 
         {/* Header */}
         <div style={{ marginBottom:'1.5rem' }}>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Training</p>
-          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 0.3rem' }}>My Workouts</h1>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Training</p>
+          <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'2rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.3rem' }}>My Workouts</h1>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>Assigned by your PT</p>
         </div>
 
@@ -78,7 +78,7 @@ export default function ClientWorkouts() {
         ) : workouts.length === 0 ? (
           <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'3rem', textAlign:'center', border:`1px solid ${BORDER}` }}>
             <Dumbbell size={32} color={MUTED} style={{ marginBottom:'1rem', opacity:0.4 }} />
-            <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.2rem', fontWeight:700, color:MUTED, letterSpacing:'-0.02em', margin:'0 0 0.5rem' }}>No workouts yet</p>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.2rem', fontWeight:400, color:MUTED, letterSpacing:'-0.04em', margin:'0 0 0.5rem' }}>No workouts yet</p>
             <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.82rem', color:MUTED, margin:0, opacity:0.7 }}>Your PT will assign workouts soon.</p>
           </div>
         ) : (
@@ -91,8 +91,8 @@ export default function ClientWorkouts() {
                 { value: completed.length,label: 'Done',    color: GREEN },
               ].map((s, i) => (
                 <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-                  <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:800, color:s.color, letterSpacing:'-0.03em', lineHeight:1, margin:'0 0 0.35rem' }}>{s.value}</p>
-                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{s.label}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'2rem', fontWeight:300, color:s.color, letterSpacing:'-0.04em', lineHeight:1, margin:'0 0 0.35rem' }}>{s.value}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{s.label}</p>
                 </div>
               ))}
             </div>
@@ -115,7 +115,7 @@ export default function ClientWorkouts() {
                       >
                         <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'0.6rem' }}>
                           <div style={{ flex:1, marginRight:'1rem' }}>
-                            <h3 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.1rem', fontWeight:700, color:TEXT, letterSpacing:'-0.02em', margin:'0 0 0.25rem', lineHeight:1.2 }}>{workout.name}</h3>
+                            <h3 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.1rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.25rem', lineHeight:1.6 }}>{workout.name}</h3>
                             {workout.description && <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', color:MUTED, margin:0, lineHeight:1.5 }}>{workout.description}</p>}
                           </div>
                           <ArrowRight size={14} color={MUTED} style={{ flexShrink:0, marginTop:'2px' }} />
@@ -134,8 +134,8 @@ export default function ClientWorkouts() {
                             <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED }}>{workout.exercises?.length || 0} exercises</span>
                           </div>
                           <div style={{ marginLeft:'auto', display:'flex', gap:'8px' }}>
-                            <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:diff.color, backgroundColor:`${diff.color}15`, padding:'2px 7px', borderRadius:'4px' }}>{diff.label}</span>
-                            <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:status.color, backgroundColor:`${status.color}15`, padding:'2px 7px', borderRadius:'4px' }}>{status.label}</span>
+                            <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:diff.color, backgroundColor:`${diff.color}15`, padding:'2px 7px', borderRadius:'4px' }}>{diff.label}</span>
+                            <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:status.color, backgroundColor:`${status.color}15`, padding:'2px 7px', borderRadius:'4px' }}>{status.label}</span>
                           </div>
                         </div>
                       </div>
@@ -168,7 +168,7 @@ export default function ClientWorkouts() {
                       </div>
                       <div style={{ display:'flex', alignItems:'center', gap:'5px', flexShrink:0 }}>
                         <Check size={12} color={GREEN} />
-                        <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:GREEN }}>Done</span>
+                        <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:GREEN }}>Done</span>
                       </div>
                     </div>
                   ))}

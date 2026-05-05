@@ -57,7 +57,7 @@ export default function ClientLeaderboard() {
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Community</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Trophy size={20} color={YELLOW} />
-            <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Leaderboard</h1>
+            <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Leaderboard</h1>
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export default function ClientLeaderboard() {
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, transparent, ${ORANGE}, transparent)` }} />
 
           <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-            <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '3.5rem', fontWeight: 800, color: ORANGE, letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '3.5rem', fontWeight: 800, color: ORANGE, letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>
               {userStats?.total_sessions || 0}
             </p>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '6px 0 0' }}>Sessions Completed</p>
@@ -84,7 +84,7 @@ export default function ClientLeaderboard() {
               { value: `#${userStats?.current_rank || '?'}`, label: 'Your Rank', highlight: true },
             ].map((s, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.4rem', fontWeight: 800, color: s.highlight ? ORANGE : TEXT, letterSpacing: '-0.03em', margin: '0 0 4px' }}>{s.value}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.4rem', fontWeight: 800, color: s.highlight ? ORANGE : TEXT, letterSpacing: '-0.03em', margin: '0 0 4px' }}>{s.value}</p>
                 <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
               </div>
             ))}
@@ -134,7 +134,7 @@ export default function ClientLeaderboard() {
                     {entry.rank <= 3 ? (
                       <span style={{ fontSize: '1.25rem' }}>{MEDAL[entry.rank]}</span>
                     ) : (
-                      <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: MUTED }}>#{entry.rank}</span>
+                      <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: MUTED }}>#{entry.rank}</span>
                     )}
                   </div>
 
@@ -144,7 +144,7 @@ export default function ClientLeaderboard() {
                     backgroundColor: isCurrentUser ? ORANGE : `${medalColor}22`,
                     border: `1px solid ${isCurrentUser ? ORANGE : medalColor}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: "'Clash Display', system-ui", fontSize: '0.8rem', fontWeight: 800,
+                    fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', fontWeight: 800,
                     color: isCurrentUser ? '#000' : medalColor,
                   }}>{initials}</div>
 
@@ -157,7 +157,7 @@ export default function ClientLeaderboard() {
 
                   {/* Sessions */}
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: isCurrentUser ? ORANGE : TEXT, margin: 0, letterSpacing: '-0.02em' }}>{sessions}</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 800, color: isCurrentUser ? ORANGE : TEXT, margin: 0, letterSpacing: '-0.02em' }}>{sessions}</p>
                     <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
                   </div>
                 </div>
@@ -170,16 +170,16 @@ export default function ClientLeaderboard() {
                 <div style={{ textAlign: 'center', color: MUTED, fontSize: '1rem', padding: '0.5rem 0' }}>• • •</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.875rem 1rem', borderRadius: '10px', backgroundColor: `${ORANGE}18`, border: `1px solid ${ORANGE}44` }}>
                   <div style={{ width: '32px', textAlign: 'center', flexShrink: 0 }}>
-                    <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>#{userStats?.current_rank}</span>
+                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>#{userStats?.current_rank}</span>
                   </div>
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: ORANGE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Clash Display', system-ui", fontSize: '0.8rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: ORANGE, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
                     {user?.name?.substring(0, 1) || '?'}
                   </div>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: ORANGE, margin: 0 }}>You</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: ORANGE, margin: 0 }}>{leaderboardType === 'weekly' ? userStats?.sessions_this_week : userStats?.total_sessions}</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 800, color: ORANGE, margin: 0 }}>{leaderboardType === 'weekly' ? userStats?.sessions_this_week : userStats?.total_sessions}</p>
                     <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
                   </div>
                 </div>

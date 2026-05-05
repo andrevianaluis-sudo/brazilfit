@@ -59,7 +59,7 @@ export default function ClientLayout() {
               <Zap style={{ width: '18px', height: '18px', color: '#000', fill: '#000' }} />
             </div>
             <div>
-              <h1 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.03em', fontFamily: "'Clash Display', system-ui" }}>BrazilFit</h1>
+              <h1 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', margin: 0, letterSpacing: '-0.03em', fontFamily: "'DM Sans', system-ui" }}>BrazilFit</h1>
               <p style={{ fontSize: '0.65rem', color: '#FF6B2B', margin: 0, letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700 }}>Client Portal</p>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function ClientLayout() {
               style={{ padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <h2 className="hidden md:block" style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.01em' }}>
+            <h2 className="hidden md:block" style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.01em' }}>
               {currentLabel}
             </h2>
           </div>

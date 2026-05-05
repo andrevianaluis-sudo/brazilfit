@@ -20,7 +20,7 @@ function QuestionCard({ label, title, children }) {
   return (
     <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', borderLeft: `3px solid ${ORANGE}` }}>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, color: ORANGE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>{label}</p>
-      <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1.25rem' }}>{title}</h3>
+      <h3 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1.25rem' }}>{title}</h3>
       {children}
     </div>
   );
@@ -57,7 +57,7 @@ function LifestyleSliders({ formData, setFormData }) {
         <div key={item.key}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
             <label style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 500, color: '#c0c0c0' }}>{item.label}</label>
-            <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.2rem', fontWeight: 800, color: ORANGE }}>{item.format(formData[item.key])}{item.unit}</span>
+            <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.2rem', fontWeight: 800, color: ORANGE }}>{item.format(formData[item.key])}{item.unit}</span>
           </div>
           <input type="range" min={item.min} max={item.max} step={item.step} value={formData[item.key]}
             onChange={e => setFormData({ ...formData, [item.key]: parseFloat(e.target.value) })}
@@ -209,7 +209,7 @@ export default function ClientCheckIn() {
             }}>
               <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000' }}>✓</span>
             </div>
-            <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.75rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>Check-in Submitted!</h2>
+            <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.75rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>Check-in Submitted!</h2>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', color: ORANGE, fontWeight: 600, margin: '0 0 0.35rem' }}>Great work this week</p>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>Your PT will review your answers and respond soon</p>
           </div>
@@ -218,7 +218,7 @@ export default function ClientCheckIn() {
           <div style={{ background: `linear-gradient(135deg, ${ORANGE}22, ${YELLOW}11)`, border: `1px solid ${ORANGE}33`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
-              <div style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, lineHeight: 1 }}>{streak}</div>
+              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, lineHeight: 1 }}>{streak}</div>
               <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, marginTop: '4px' }}>Week Streak</div>
             </div>
             <div style={{ flex: 1 }}>
@@ -230,19 +230,19 @@ export default function ClientCheckIn() {
           {/* Leaderboard */}
           <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem' }}>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>👑 Community Leaderboard</p>
-            <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1rem' }}>You are climbing the ranks</h3>
+            <h3 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1rem' }}>You are climbing the ranks</h3>
             <div style={{ marginBottom: '1rem' }}>
               {[['🥇', 'Anonymous Client', '487 pts'], ['🥈', 'Anonymous Client', '456 pts'], ['🥉', 'Anonymous Client', '421 pts']].map(([medal, name, pts], i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderBottom: `1px solid ${BORDER}` }}>
                   <span>{medal}</span>
                   <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{name}</span>
-                  <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT }}>{pts}</span>
+                  <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT }}>{pts}</span>
                 </div>
               ))}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', backgroundColor: `${ORANGE}15`, borderRadius: '8px', marginTop: '8px' }}>
                 <span style={{ color: ORANGE }}>📍</span>
                 <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>Your Position: #{currentRank}</span>
-                <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>324 pts</span>
+                <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>324 pts</span>
               </div>
             </div>
             <button onClick={() => navigate('/client/leaderboard')} style={{
@@ -323,7 +323,7 @@ export default function ClientCheckIn() {
         {/* Header */}
         <div style={{ margin: '1.25rem 0 2rem' }}>
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Weekly Review</p>
-          <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.4rem' }}>Weekly Check-in</h1>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.4rem' }}>Weekly Check-in</h1>
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 0.75rem' }}>Takes about 5 minutes · Helps your PT support you better</p>
           {mondayDate && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

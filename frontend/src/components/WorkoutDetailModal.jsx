@@ -53,7 +53,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginTop: '0.5rem' }}>
             <div style={{ flex: 1, marginRight: '1rem' }}>
               <Label color="#FF6B2B">Workout</Label>
-              <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.4rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '0.25rem 0 0.25rem', lineHeight: 1.1 }}>{workout.name}</h2>
+              <h2 style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.4rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '0.25rem 0 0.25rem', lineHeight: 1.1 }}>{workout.name}</h2>
               {workout.pt_name && (
                 <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.75rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>By {workout.pt_name}</p>
               )}
@@ -76,7 +76,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
               { value: workout.exercises?.length || 0, label: 'Exercises' },
             ].map((s, i) => (
               <div key={i}>
-                <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 800, color: i === 0 ? '#FF6B2B' : i === 1 ? '#FFD600' : '#4CAF50', letterSpacing: '-0.02em', margin: 0, textTransform: s.cap ? 'capitalize' : 'none' }}>{s.value}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 800, color: i === 0 ? '#FF6B2B' : i === 1 ? '#FFD600' : '#4CAF50', letterSpacing: '-0.02em', margin: 0, textTransform: s.cap ? 'capitalize' : 'none' }}>{s.value}</p>
                 <Label>{s.label}</Label>
               </div>
             ))}
@@ -141,7 +141,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                 >
                   {/* Number */}
                   <div style={{ width: '28px', height: '28px', borderRadius: '50%', border: `1px solid ${isExpanded ? '#FF6B2B' : '#1e1e1e'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'border-color 0.15s' }}>
-                    <span style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '0.75rem', fontWeight: 700, color: isExpanded ? '#FF6B2B' : '#3a3a3a' }}>{idx + 1}</span>
+                    <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.75rem', fontWeight: 700, color: isExpanded ? '#FF6B2B' : '#3a3a3a' }}>{idx + 1}</span>
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -184,7 +184,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                           ...(ex.weight_kg ? [{ label: 'Weight', value: `${ex.weight_kg}kg`, color: '#FF6B2B' }] : []),
                         ].map((s, i) => (
                           <div key={i} style={{ backgroundColor: '#111', borderRadius: '8px', padding: '0.75rem', textAlign: 'center', border: '1px solid #1a1a1a' }}>
-                            <p style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 800, color: s.color, letterSpacing: '-0.02em', margin: '0 0 2px', lineHeight: 1 }}>{s.value}</p>
+                            <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.1rem', fontWeight: 800, color: s.color, letterSpacing: '-0.02em', margin: '0 0 2px', lineHeight: 1 }}>{s.value}</p>
                             <Label>{s.label}</Label>
                           </div>
                         ))}

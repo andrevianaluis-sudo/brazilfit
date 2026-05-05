@@ -116,7 +116,7 @@ export default function ProUpgradePage() {
         </div>
 
         <h1 style={{
-          fontFamily: "'Clash Display', system-ui",
+          fontFamily: "'DM Sans', system-ui",
           fontSize: '2rem', fontWeight: 800, margin: '0 0 10px',
           letterSpacing: '-0.03em',
         }}>

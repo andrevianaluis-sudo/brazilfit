@@ -45,7 +45,7 @@ function SliderField({ icon, label, hint, value, onChange, min, max, step, unit,
       {hint && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
         {emoji ? <span style={{ fontSize: '1.25rem' }}>{emoji}</span> : <span />}
-        <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color }}>{value || 0} {unit}</span>
+        <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 800, color }}>{value || 0} {unit}</span>
       </div>
       <input type="range" min={min} max={max} step={step} value={value || 0}
         onChange={e => onChange(parseFloat(e.target.value))}
@@ -66,7 +66,7 @@ function NumberField({ icon, label, hint, value, onChange, min, max, unit, color
         onChange={e => onChange(e.target.value ? parseInt(e.target.value) : null)}
         style={{
           width: '100%', padding: '0.7rem 1rem', border: `1px solid ${BORDER}`, borderRadius: '8px',
-          backgroundColor: SURFACE2, color, fontFamily: "'Clash Display', system-ui", fontSize: '1rem', fontWeight: 700,
+          backgroundColor: SURFACE2, color, fontFamily: "'DM Sans', system-ui", fontSize: '1rem', fontWeight: 700,
           outline: 'none', transition: 'border-color 0.15s', boxSizing: 'border-box',
         }}
         onFocus={e => e.target.style.borderColor = color}
@@ -79,7 +79,7 @@ function MetricCard({ icon, label, value, unit, color }) {
   return (
     <div style={{ backgroundColor: SURFACE, borderRadius: '12px', padding: '1rem', border: `1px solid ${BORDER}`, textAlign: 'center' }}>
       <div style={{ fontSize: '1.5rem', marginBottom: '6px' }}>{icon}</div>
-      <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.02em' }}>{value} <span style={{ fontSize: '0.8rem' }}>{unit}</span></p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.3rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.02em' }}>{value} <span style={{ fontSize: '0.8rem' }}>{unit}</span></p>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</p>
     </div>
   );
@@ -197,7 +197,7 @@ export default function ClientHabits() {
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Daily Tracking</p>
-          <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Health & Habits</h1>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Health & Habits</h1>
         </div>
 
         {/* Wellness Score */}
@@ -213,7 +213,7 @@ export default function ClientHabits() {
                   style={{ transition: 'stroke-dashoffset 0.8s ease' }} />
               </svg>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.75rem', fontWeight: 800, color: wellnessColor, margin: 0, lineHeight: 1 }}>{wellnessScore}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.75rem', fontWeight: 800, color: wellnessColor, margin: 0, lineHeight: 1 }}>{wellnessScore}</p>
                 <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', color: MUTED, margin: 0 }}>/ 100</p>
               </div>
             </div>
@@ -244,7 +244,7 @@ export default function ClientHabits() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
               <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
-              <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Day Streak</p>
             </div>
             <div style={{ flex: 1 }}>

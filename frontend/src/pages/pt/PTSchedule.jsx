@@ -70,7 +70,7 @@ function PTNotesModal({ session, onClose }) {
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
             <FileText size={15} color={ORANGE} />
             <div>
-              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:TEXT, margin:0 }}>Session Notes</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>Session Notes</p>
               <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} · {session.scheduled_date} {session.scheduled_time}</p>
             </div>
           </div>
@@ -85,7 +85,7 @@ function PTNotesModal({ session, onClose }) {
           <div style={{ overflowY:'auto', flex:1, padding:'1rem 1.25rem', display:'flex', flexDirection:'column', gap:'0.75rem' }}>
             {fields.map(({ key, label, color }) => (
               <div key={key}>
-                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.14em', color, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>{label}</label>
+                <label style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.14em', color, textTransform:'uppercase', display:'block', marginBottom:'0.4rem' }}>{label}</label>
                 <textarea value={note[key] || ''} onChange={e => setNote(n => ({...n, [key]: e.target.value}))}
                   rows={key === 'injuries_concerns' ? 2 : 3} placeholder={`${label}...`}
                   style={{ width:'100%', backgroundColor:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:'8px', padding:'0.65rem 0.875rem', color:TEXT, fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', outline:'none', resize:'none', boxSizing:'border-box', transition:'border-color 0.15s' }}
@@ -98,7 +98,7 @@ function PTNotesModal({ session, onClose }) {
 
         <div style={{ display:'flex', borderTop:`1px solid ${BORDER}`, flexShrink:0 }}>
           <button onClick={onClose} style={{ flex:1, padding:'0.9rem', background:'none', border:'none', color:MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', cursor:'pointer', minHeight:'auto' }}>Cancel</button>
-          <button onClick={handleSave} disabled={saving} style={{ flex:1, padding:'0.9rem', background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, border:'none', borderLeft:`1px solid ${BORDER}`, color:'#000', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:800, cursor:saving?'not-allowed':'pointer', opacity:saving?0.7:1, minHeight:'auto' }}>
+          <button onClick={handleSave} disabled={saving} style={{ flex:1, padding:'0.9rem', background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, border:'none', borderLeft:`1px solid ${BORDER}`, color:'#000', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:300, cursor:saving?'not-allowed':'pointer', opacity:saving?0.7:1, minHeight:'auto' }}>
             {saving ? 'Saving…' : 'Save Notes'}
           </button>
         </div>
@@ -120,7 +120,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#f9a8d4', margin:'0 0 2px' }}>{entry.name}</p>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(249,168,212,0.6)', margin:0 }}>{entry.scheduled_time} · {entry.payment_type === 'per_person' ? `£${entry.per_person_fee}/person` : `£${entry.flat_fee}`}</p>
       </div>
-      <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'#f9a8d4', backgroundColor:'rgba(244,114,182,0.15)', padding:'2px 8px', borderRadius:'4px' }}>Class</span>
+      <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:'#f9a8d4', backgroundColor:'rgba(244,114,182,0.15)', padding:'2px 8px', borderRadius:'4px' }}>Class</span>
     </div>
   );
 
@@ -129,7 +129,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
       <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
         <Ban size={13} color={MUTED} />
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:MUTED, margin:0, textDecoration:'line-through' }}>{entry.client_name}</p>
-        <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, backgroundColor:'rgba(255,255,255,0.05)', padding:'2px 6px', borderRadius:'4px' }}>CANCELLED</span>
+        <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:MUTED, backgroundColor:'rgba(255,255,255,0.05)', padding:'2px 6px', borderRadius:'4px' }}>CANCELLED</span>
       </div>
       <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:'3px 0 0 21px' }}>
         {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` · ${Math.floor(entry.cancellation_notice_hours)}h notice · session carried over` : ''}
@@ -142,9 +142,9 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px' }}>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ display:'flex', alignItems:'center', gap:'6px', flexWrap:'wrap', marginBottom:'3px' }}>
-            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:TEXT, margin:0 }}>{entry.client_name}</p>
-            {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
-            {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>{entry.client_name}</p>
+            {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
+            {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} · Session {entry.sessions_used} of 10 · {entry.sessions_remaining} remaining</p>
         </div>
@@ -169,7 +169,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             </button>
           )}
           {entry.status !== 'missed' && entry.status !== 'attended' && (
-            <button onClick={onMarkMissed} style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto', color:'#ef4444', fontWeight:700, fontSize:'0.85rem' }}>✕</button>
+            <button onClick={onMarkMissed} style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto', color:'#ef4444', fontWeight:400, fontSize:'0.85rem' }}>✕</button>
           )}
         </div>
       </div>
@@ -194,7 +194,7 @@ function WeekView({ data }) {
           const isToday = date === today;
           return (
             <div key={date} style={{ borderRadius:'8px', border:`1px solid ${isToday ? `${ORANGE}44` : BORDER}`, backgroundColor: isToday ? `${ORANGE}08` : SURFACE, padding:'0.5rem 0.4rem' }}>
-              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, textAlign:'center', color: isToday ? ORANGE : MUTED, margin:'0 0 6px', letterSpacing:'0.05em' }}>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, textAlign:'center', color: isToday ? ORANGE : MUTED, margin:'0 0 6px', letterSpacing:'0.05em' }}>
                 {DAY_NAMES[d.getDay()]}<br/><span style={{ fontWeight:400 }}>{d.getDate()}</span>
               </p>
               <div style={{ display:'flex', flexDirection:'column', gap:'3px' }}>
@@ -290,13 +290,13 @@ export default function PTSchedule() {
       {/* Header */}
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'1.25rem' }}>
         <div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
-          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.75rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 0.25rem' }}>Schedule</h1>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
+          <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.75rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.25rem' }}>Schedule</h1>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{FULL_DAYS[dateObj.getDay()]} · {format(dateObj, 'd MMM yyyy')}</p>
         </div>
         <div style={{ display:'flex', gap:'6px', backgroundColor:SURFACE, borderRadius:'10px', padding:'3px' }}>
           {[['day','Day'],['week','Week']].map(([k,l]) => (
-            <button key={k} onClick={() => setView(k)} style={{ padding:'6px 14px', borderRadius:'8px', border:'none', backgroundColor: view===k ? ORANGE : 'transparent', color: view===k ? '#000' : MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', fontWeight:700, cursor:'pointer', minHeight:'auto', transition:'all 0.15s' }}>{l}</button>
+            <button key={k} onClick={() => setView(k)} style={{ padding:'6px 14px', borderRadius:'8px', border:'none', backgroundColor: view===k ? ORANGE : 'transparent', color: view===k ? '#000' : MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', fontWeight:400, cursor:'pointer', minHeight:'auto', transition:'all 0.15s' }}>{l}</button>
           ))}
         </div>
       </div>
@@ -382,7 +382,7 @@ export default function PTSchedule() {
                 { value: (scheduleData.ptSessions?.length||0) + (scheduleData.classes?.length||0), label: 'Total', color: ORANGE },
               ].map((s,i) => (
                 <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'10px', padding:'0.875rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-                  <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.5rem', fontWeight:800, color:s.color, letterSpacing:'-0.03em', margin:'0 0 2px' }}>{s.value}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.5rem', fontWeight:300, color:s.color, letterSpacing:'-0.04em', margin:'0 0 2px' }}>{s.value}</p>
                   <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', color:MUTED, margin:0, fontWeight:600, letterSpacing:'0.08em', textTransform:'uppercase' }}>{s.label}</p>
                 </div>
               ))}

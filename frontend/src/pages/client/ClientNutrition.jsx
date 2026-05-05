@@ -78,7 +78,7 @@ function TipCard({ tip, isExpanded, onToggleExpand, isSaved, onToggleSave }) {
           background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', padding: '2px', minHeight: 'auto', minWidth: 'auto',
         }}>{isSaved ? '⭐' : '☆'}</button>
       </div>
-      <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>{tip.title}</h3>
+      <h3 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>{tip.title}</h3>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#b0b0b0', lineHeight: 1.65, margin: '0 0 0.5rem',
         ...(isExpanded ? {} : { overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' })
       }}>{tip.content}</p>
@@ -124,7 +124,7 @@ function MealCard({ meal, onFavorite, onRecipe, isPro }) {
       {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', marginBottom: '4px' }}>
-          <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.95rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.01em', margin: 0, lineHeight: 1.2 }}>{meal.name}</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.95rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.01em', margin: 0, lineHeight: 1.2 }}>{meal.name}</p>
           {isPro && (
             <button onClick={e => { e.stopPropagation(); onFavorite(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0, padding: '2px', minHeight: 'auto', minWidth: 'auto' }}>
               <Heart size={16} style={{ color: meal.isFavorite ? '#ef4444' : MUTED, fill: meal.isFavorite ? '#ef4444' : 'none' }} />
@@ -152,7 +152,7 @@ function ProGate({ count, type, onUpgrade }) {
       <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(255,214,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
         <Crown size={20} color={YELLOW} />
       </div>
-      <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Unlock Full {type} Library</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Unlock Full {type} Library</p>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: '0 0 1.25rem', lineHeight: 1.6 }}>
         Get access to all {count} {type.toLowerCase()} with BrazilFit Pro
       </p>
@@ -253,7 +253,7 @@ export default function ClientNutrition() {
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Fuel</p>
-          <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Nutrition</h1>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Nutrition</h1>
         </div>
 
         {/* Tip of the Week */}
@@ -271,7 +271,7 @@ export default function ClientNutrition() {
             <span style={{ backgroundColor: `${CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE}20`, color: CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE, padding: '3px 10px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               {tipOfWeek.category}
             </span>
-            <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0.6rem 0 0.5rem' }}>{tipOfWeek.title}</h2>
+            <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0.6rem 0 0.5rem' }}>{tipOfWeek.title}</h2>
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', color: '#c0c0c0', lineHeight: 1.65, margin: 0 }}>{tipOfWeek.content}</p>
           </div>
         )}

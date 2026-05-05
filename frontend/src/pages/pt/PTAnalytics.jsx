@@ -34,7 +34,7 @@ const ANALYTICS_DATA = {
 
 function SectionLabel({ children }) {
   return (
-    <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:MUTED, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>
+    <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', color:MUTED, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>
   );
 }
 
@@ -42,10 +42,10 @@ function MetricCard({ label, value, icon: Icon, trend, color }) {
   return (
     <div style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}` }}>
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:'0.6rem' }}>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', margin:0 }}>{label}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', margin:0 }}>{label}</p>
         <Icon size={14} color={color || ORANGE} style={{ opacity:0.7 }} />
       </div>
-      <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.6rem', fontWeight:800, color: color || ORANGE, letterSpacing:'-0.03em', margin:'0 0 0.5rem', lineHeight:1 }}>{value}</p>
+      <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.6rem', fontWeight:300, color: color || ORANGE, letterSpacing:'-0.04em', margin:'0 0 0.5rem', lineHeight:1 }}>{value}</p>
       {trend && (
         <div style={{ display:'flex', alignItems:'center', gap:'4px' }}>
           {trend > 0
@@ -68,10 +68,10 @@ export default function PTAnalytics() {
 
       {/* Header */}
       <div>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
         <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
           <BarChart3 size={18} color={ORANGE} />
-          <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.75rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:0 }}>Analytics</h1>
+          <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.75rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:0 }}>Analytics</h1>
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export default function PTAnalytics() {
             padding:'6px 14px', borderRadius:'8px', border:'none',
             backgroundColor: timeRange===key ? ORANGE : 'transparent',
             color: timeRange===key ? '#000' : MUTED,
-            fontFamily:"'DM Sans', system-ui", fontSize:'0.75rem', fontWeight:700,
+            fontFamily:"'DM Sans', system-ui", fontSize:'0.75rem', fontWeight:400,
             cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', transition:'all 0.15s',
           }}>{label}</button>
         ))}
@@ -130,8 +130,8 @@ export default function PTAnalytics() {
             return (
               <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1rem', border:`1px solid ${BORDER}` }}>
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.6rem' }}>
-                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:TEXT, margin:0 }}>{cls.name}</p>
-                  <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1rem', fontWeight:800, color:c, margin:0, letterSpacing:'-0.02em' }}>£{cls.revenue}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>{cls.name}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1rem', fontWeight:300, color:c, margin:0, letterSpacing:'-0.04em' }}>£{cls.revenue}</p>
                 </div>
                 <div style={{ backgroundColor:SURFACE2, borderRadius:'3px', height:'4px', overflow:'hidden', marginBottom:'6px' }}>
                   <div style={{ height:'100%', width:`${pct}%`, backgroundColor:c, borderRadius:'3px', transition:'width 0.5s ease' }} />

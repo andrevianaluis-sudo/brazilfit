@@ -56,7 +56,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        style={{ display:'flex', alignItems:'center', gap:8, background:'#4CAF50', color:'#fff', border:'none', borderRadius:10, padding:'10px 18px', fontSize:14, fontWeight:700, cursor:'pointer' }}
+        style={{ display:'flex', alignItems:'center', gap:8, background:'#4CAF50', color:'#fff', border:'none', borderRadius:10, padding:'10px 18px', fontSize:14, fontWeight:400, cursor:'pointer' }}
       >
         <Camera size={16} />
         Upload Photo
@@ -67,7 +67,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
           <div style={{ width:'100%', maxWidth:480, background:'#1e1e1e', borderRadius:'20px 20px 0 0', padding:24, maxHeight:'90vh', overflowY:'auto', border:'1px solid rgba(255,255,255,0.1)', borderBottom:'none' }}>
             
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
-              <h2 style={{ color:'#fff', fontWeight:700, fontSize:18, margin:0 }}>Upload Progress Photo</h2>
+              <h2 style={{ color:'#fff', fontWeight:400, fontSize:18, margin:0 }}>Upload Progress Photo</h2>
               <button onClick={() => setIsOpen(false)} style={{ background:'#2a2a2a', border:'none', color:'#888', borderRadius:8, width:32, height:32, cursor:'pointer', fontSize:16 }}>X</button>
             </div>
 
@@ -96,11 +96,11 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
 
             {/* Angle */}
             <div style={{ marginBottom:16 }}>
-              <p style={{ color:'#888', fontSize:12, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:8 }}>Photo Angle</p>
+              <p style={{ color:'#888', fontSize:12, fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:8 }}>Photo Angle</p>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8 }}>
                 {angles.map(angle => (
                   <button key={angle.value} onClick={() => setSelectedAngle(angle.value)}
-                    style={{ padding:'10px', borderRadius:10, border:'none', fontWeight:700, fontSize:14, cursor:'pointer', background: selectedAngle === angle.value ? '#4CAF50' : '#2a2a2a', color: selectedAngle === angle.value ? '#fff' : '#888' }}>
+                    style={{ padding:'10px', borderRadius:10, border:'none', fontWeight:400, fontSize:14, cursor:'pointer', background: selectedAngle === angle.value ? '#4CAF50' : '#2a2a2a', color: selectedAngle === angle.value ? '#fff' : '#888' }}>
                     {angle.label}
                   </button>
                 ))}
@@ -109,7 +109,7 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
 
             {/* Notes */}
             <div style={{ marginBottom:20 }}>
-              <p style={{ color:'#888', fontSize:12, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:8 }}>Notes (Optional)</p>
+              <p style={{ color:'#888', fontSize:12, fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:8 }}>Notes (Optional)</p>
               <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="How are you feeling?" rows={2}
                 style={{ width:'100%', background:'#2a2a2a', border:'1px solid rgba(255,255,255,0.1)', borderRadius:10, color:'#fff', padding:'10px 12px', fontSize:14, boxSizing:'border-box', resize:'none', outline:'none', fontFamily:'inherit' }}/>
             </div>
@@ -117,11 +117,11 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
             {/* Buttons */}
             <div style={{ display:'flex', gap:10 }}>
               <button onClick={() => setIsOpen(false)}
-                style={{ flex:1, background:'#2a2a2a', border:'none', borderRadius:12, color:'#888', padding:'14px', fontSize:14, fontWeight:700, cursor:'pointer' }}>
+                style={{ flex:1, background:'#2a2a2a', border:'none', borderRadius:12, color:'#888', padding:'14px', fontSize:14, fontWeight:400, cursor:'pointer' }}>
                 Cancel
               </button>
               <button onClick={handleUpload} disabled={!selectedFile || isLoading}
-                style={{ flex:2, background: !selectedFile || isLoading ? '#2a2a2a' : '#4CAF50', border:'none', borderRadius:12, color: !selectedFile || isLoading ? '#555' : '#fff', padding:'14px', fontSize:14, fontWeight:700, cursor: !selectedFile || isLoading ? 'default' : 'pointer' }}>
+                style={{ flex:2, background: !selectedFile || isLoading ? '#2a2a2a' : '#4CAF50', border:'none', borderRadius:12, color: !selectedFile || isLoading ? '#555' : '#fff', padding:'14px', fontSize:14, fontWeight:400, cursor: !selectedFile || isLoading ? 'default' : 'pointer' }}>
                 {isLoading ? 'Uploading...' : 'Upload Photo'}
               </button>
             </div>

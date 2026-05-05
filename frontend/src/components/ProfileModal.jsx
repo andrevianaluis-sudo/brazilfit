@@ -140,7 +140,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                 />
               ) : (
                 <span style={{
-                  fontFamily: "'Clash Display', system-ui",
+                  fontFamily: "'DM Sans', system-ui",
                   fontSize: '2rem', fontWeight: 800, color: ORANGE,
                 }}>
                   {initials}
@@ -169,7 +169,7 @@ export default function ProfileModal({ isOpen, onClose }) {
 
             {/* Name */}
             <h2 style={{
-              fontFamily: "'Clash Display', system-ui",
+              fontFamily: "'DM Sans', system-ui",
               fontSize: '1.6rem', fontWeight: 700, color: TEXT,
               margin: '0 0 6px', letterSpacing: '-0.02em',
             }}>
@@ -259,7 +259,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                 background: SURFACE, padding: '14px 8px',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
               }}>
-                <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.4rem', fontWeight: 800, color: ORANGE }}>
+                <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.4rem', fontWeight: 800, color: ORANGE }}>
                   {stat.value}
                 </span>
                 <span style={{ fontSize: '11px', color: MUTED, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
