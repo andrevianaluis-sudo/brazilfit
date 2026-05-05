@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Trophy, Activity } from 'lucide-react';
+import { Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Activity } from 'lucide-react';
 import api from '../../utils/api';
 const QUOTES = [{ text: 'Progress is progress no matter how small.', author: 'Unknown' },{ text: 'Train hard, recover harder.', author: 'Unknown' }];
-const LINKS = [{ label: 'My Sessions', sub: 'Book & manage', to: '/client/sessions', ic: Calendar, color: '#FF6B2B' },{ label: 'Progress', sub: 'Track results', to: '/client/progress', ic: TrendingUp, color: '#4CAF50' },{ label: 'Wellness', sub: 'Daily check-in', to: '/client/wellness', ic: Heart, color: '#a78bfa' },{ label: 'Nutrition', sub: 'Food & shopping', to: '/client/nutrition', ic: Activity, color: '#60a5fa' },{ label: 'Messages', sub: 'Chat with PT', to: '/client/messages', ic: MessageSquare, color: '#4CAF50' },{ label: 'Check-in', sub: 'Weekly review', to: '/client/checkin', ic: ClipboardList, color: '#FFD600' },{ label: 'Workouts', sub: 'Browse library', to: '/client/workouts', ic: Dumbbell, color: '#FF6B2B' },{ label: 'Leaderboard', sub: 'See rankings', to: '/client/leaderboard', ic: Trophy, color: '#FFD600' }];
+const LINKS = [{ label: 'My Sessions', sub: 'Book & manage', to: '/client/sessions', ic: Calendar, color: '#FF6B2B' },{ label: 'Progress', sub: 'Track results', to: '/client/progress', ic: TrendingUp, color: '#4CAF50' },{ label: 'Wellness', sub: 'Daily check-in', to: '/client/wellness', ic: Heart, color: '#a78bfa' },{ label: 'Nutrition', sub: 'Food & shopping', to: '/client/nutrition', ic: Activity, color: '#60a5fa' },{ label: 'Messages', sub: 'Chat with PT', to: '/client/messages', ic: MessageSquare, color: '#4CAF50' },{ label: 'Check-in', sub: 'Weekly review', to: '/client/checkin', ic: ClipboardList, color: '#FFD600' },{ label: 'Workouts', sub: 'Browse library', to: '/client/workouts', ic: Dumbbell, color: '#FF6B2B' }];
 export default function ClientHome() {
   const { user } = useAuth(); const navigate = useNavigate();
   const [sessions, setSessions] = useState(null); const [loading, setLoading] = useState(true);
@@ -66,7 +66,7 @@ export default function ClientHome() {
         <div style={{...C,borderLeft:'3px solid #FF6B2B'}}>
           <p style={{fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:'#FF6B2B',textTransform:'uppercase',margin:'0 0 0.75rem'}}>Motivation</p>
           <p style={{fontSize:'0.9rem',color:'#b0b0b0',lineHeight:1.65,margin:'0 0 0.5rem',fontStyle:'italic'}}>"{quote.text}"</p>
-          <p style={{fontSize:'0.65rem',fontWeight:700,color:'#FF6B2B',margin:0}}>— {quote.author}</p>
+          <p style={{fontSize:'0.65rem',fontWeight:700,color:'#FF6B2B',margin:0}}>ï¿½ {quote.author}</p>
         </div>
       </div>
     </div>
