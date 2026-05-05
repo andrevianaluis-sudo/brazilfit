@@ -621,7 +621,8 @@ export default function ClientWellness() {
                 <ContentCard key={item.id} item={item} tab={tab}
                   expanded={expanded===item.id}
                   onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
-                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}/>
+                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}
+                  onStartRoutine={item.type==="rest_day"?()=>setStretchRoutineSession(item):null}/>
               ))}
             </div>
             <div style={{borderTop:`1px solid ${BORDER}`,paddingTop:"1.25rem",marginBottom:"1rem"}}>
