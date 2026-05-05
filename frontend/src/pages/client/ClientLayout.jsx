@@ -40,6 +40,8 @@ export default function ClientLayout() {
   };
 
   const handleLogout = () => { logout(); navigate('/login'); };
+  useEffect(()=>{ api.get('/pt/client-notifications').then(r=>{setUnreadCount(r.data.unreadCount||0);setNotifications(r.data.notifications||[]);}).catch(()=>{}); },[]);
+
   const currentLabel = navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Dashboard';
 
   return (
@@ -134,11 +136,11 @@ export default function ClientLayout() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
+            <button onClick={()=>setShowNotifs(n=>!n)} style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: showNotifs?'rgba(255,107,43,0.1)':'transparent', cursor: 'pointer', color: showNotifs?'#FF6B2B':'#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
               <Bell size={18} />
-              <span style={{ position: 'absolute', top: '6px', right: '6px', width: '7px', height: '7px', backgroundColor: '#FF6B2B', borderRadius: '50%' }} />
+              {unreadCount > 0 && <span style={{ position: 'absolute', top: '4px', right: '4px', minWidth: '16px', height: '16px', background: '#FF6B2B', borderRadius: '50%', fontSize: '9px', fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount > 9 ? '9+' : unreadCount}</span>}
             </button>
-
+            {showNotifs && (<div style={{ position: 'fixed', top: 60, right: 12, width: 300, maxHeight: 400, background: '#1e1e1e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, zIndex: 200, overflowY: 'auto', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}><div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between' }}><p style={{ color: '#fff', fontWeight: 500, fontSize: 14, margin: 0 }}>Notifications</p>{unreadCount > 0 && <button onClick={()=>{ api.put('/pt/client-notifications/read-all').then(()=>{ setUnreadCount(0); }); }} style={{ background: 'none', border: 'none', color: '#FF6B2B', fontSize: 12, cursor: 'pointer' }}>Mark all read</button>}</div>{notifications.length === 0 ? <p style={{ color: '#707070', fontSize: 13, padding: '20px 16px', textAlign: 'center', margin: 0 }}>No notifications yet</p> : notifications.map((n,i) => (<div key={i} style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)', background: n.is_read ? 'transparent' : 'rgba(255,107,43,0.06)' }}><p style={{ color: '#fff', fontSize: 13, margin: '0 0 3px', fontWeight: n.is_read ? 400 : 600 }}>{n.title}</p><p style={{ color: '#707070', fontSize: 12, margin: 0 }}>{n.message}</p></div>))}</div>)}
             <button onClick={() => setShowProfileModal(true)}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 10px', borderRadius: '8px', border: 'none', backgroundColor: 'rgba(255,255,255,0.05)', cursor: 'pointer', minHeight: 'auto', minWidth: 'auto', transition: 'background 0.15s' }}
               onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'}
