@@ -37,7 +37,7 @@ export default function Login() {
     backgroundColor: '#111111',
     border: '1px solid #1e1e1e',
     borderRadius: '6px',
-    fontFamily: "'Satoshi', system-ui, sans-serif",
+    fontFamily: "'DM Sans', system-ui, sans-serif",
     fontSize: '0.9rem',
     color: '#ffffff',
     outline: 'none',
@@ -85,12 +85,12 @@ export default function Login() {
         </div>
 
         <div>
-          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 1rem' }}>Premium Training</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 1rem' }}>Premium Training</p>
           <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 1.5rem' }}>Train smarter.<br />Live better.</h2>
-          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#3a3a3a', margin: 0, lineHeight: 1.7, maxWidth: '320px' }}>Your personal training hub. Track sessions, monitor progress and stay connected with your PT.</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.85rem', color: '#3a3a3a', margin: 0, lineHeight: 1.7, maxWidth: '320px' }}>Your personal training hub. Track sessions, monitor progress and stay connected with your PT.</p>
         </div>
 
-        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0, letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
+        <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0, letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
       </div>
 
       {/* Right panel — form */}
@@ -115,7 +115,7 @@ export default function Login() {
         {/* Heading */}
         <div style={{ marginBottom: '2.5rem' }}>
           <h1 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.4rem', lineHeight: 1.1 }}>Welcome back</h1>
-          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Sign in to your account to continue</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Sign in to your account to continue</p>
         </div>
 
         {/* Form */}
@@ -123,7 +123,7 @@ export default function Login() {
 
           {/* Username */}
           <div>
-            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Username</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Username</p>
             <input
               type="text"
               placeholder="Enter your username"
@@ -139,7 +139,7 @@ export default function Login() {
 
           {/* Password */}
           <div>
-            <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Password</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Password</p>
             <div style={{ position: 'relative' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -175,7 +175,7 @@ export default function Login() {
               color: loading ? '#606060' : '#000',
               border: 'none',
               borderRadius: '6px',
-              fontFamily: "'Satoshi', system-ui, sans-serif",
+              fontFamily: "'DM Sans', system-ui, sans-serif",
               fontSize: '0.875rem',
               fontWeight: 700,
               letterSpacing: '0.02em',
@@ -204,7 +204,7 @@ export default function Login() {
         {/* Divider */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '2rem 0' }}>
           <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
-          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#2a2a2a', textTransform: 'uppercase', margin: 0 }}>Quick access</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#2a2a2a', textTransform: 'uppercase', margin: 0 }}>Quick access</p>
           <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
         </div>
 
@@ -230,7 +230,7 @@ export default function Login() {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ backgroundColor: '#4CAF50', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>PT</span>
-              <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Personal Trainer login</span>
+              <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Personal Trainer login</span>
             </div>
             <ArrowRight size={13} color="#2a2a2a" />
           </button>
@@ -255,13 +255,13 @@ export default function Login() {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <span style={{ backgroundColor: '#FF6B2B', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Client</span>
-              <span style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Client login</span>
+              <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Client login</span>
             </div>
             <ArrowRight size={13} color="#2a2a2a" />
           </button>
         </div>
 
-        <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.65rem', color: '#2a2a2a', margin: '2rem 0 0', textAlign: 'center', letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
+        <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.65rem', color: '#2a2a2a', margin: '2rem 0 0', textAlign: 'center', letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
       </div>
     </div>
   );

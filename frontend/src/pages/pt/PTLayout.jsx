@@ -85,7 +85,7 @@ export default function PTLayout() {
                   color: active ? '#000' : '#707070',
                   fontWeight: active ? 700 : 500, fontSize: '0.85rem', textAlign: 'left',
                   minHeight: 'auto', transition: 'all 0.15s ease',
-                  fontFamily: "'Satoshi', system-ui",
+                  fontFamily: "'DM Sans', system-ui",
                 }}
                 onMouseEnter={e => { if (!active) { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; } }}
                 onMouseLeave={e => { if (!active) { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; } }}
@@ -100,7 +100,7 @@ export default function PTLayout() {
         {/* Footer */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <button onClick={() => { navigate('/pt/settings'); setSidebarOpen(false); }}
-            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'Satoshi', system-ui" }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'DM Sans', system-ui" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#fff'; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
@@ -108,7 +108,7 @@ export default function PTLayout() {
             <span>Settings</span>
           </button>
           <button onClick={handleLogout}
-            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'Satoshi', system-ui" }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '8px', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#707070', fontSize: '0.85rem', fontWeight: 500, textAlign: 'left', minHeight: 'auto', transition: 'all 0.15s ease', fontFamily: "'DM Sans', system-ui" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255,67,67,0.1)'; e.currentTarget.style.color = '#ef4444'; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#707070'; }}
           >
@@ -164,7 +164,7 @@ export default function PTLayout() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '0.7rem', fontWeight: 800, color: '#000',
               }}>{initials}</div>
-              <span className="hidden sm:inline" style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', fontWeight: 700, color: '#fff' }}>{user?.name || 'PT'}</span>
+              <span className="hidden sm:inline" style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', fontWeight: 700, color: '#fff' }}>{user?.name || 'PT'}</span>
             </div>
           </div>
         </header>

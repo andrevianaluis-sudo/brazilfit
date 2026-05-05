@@ -54,11 +54,11 @@ function ShoppingItemRow({ item, onToggle, onDelete }) {
       {/* Name */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600,
+          fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600,
           color: isChecked ? MUTED : TEXT, margin: 0,
           textDecoration: isChecked ? 'line-through' : 'none',
         }}>{item.name}</p>
-        {item.quantity && <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.72rem', color: MUTED, margin: '2px 0 0' }}>{item.quantity}</p>}
+        {item.quantity && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, margin: '2px 0 0' }}>{item.quantity}</p>}
       </div>
 
       {/* Delete */}
@@ -156,7 +156,7 @@ export function ShoppingListTab() {
           <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: 0 }}>My Shopping List</h2>
         </div>
         {checkedCount > 0 && (
-          <button onClick={clearBought} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Satoshi', system-ui", fontSize: '0.75rem', fontWeight: 600, color: MUTED, minHeight: 'auto', padding: 0, transition: 'color 0.15s' }}
+          <button onClick={clearBought} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', fontWeight: 600, color: MUTED, minHeight: 'auto', padding: 0, transition: 'color 0.15s' }}
             onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
             onMouseLeave={e => e.currentTarget.style.color = MUTED}>
             Clear bought
@@ -170,12 +170,12 @@ export function ShoppingListTab() {
           {isComplete ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Check size={16} color={GREEN} />
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 700, color: GREEN, margin: 0 }}>Shopping complete! 🎉</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: GREEN, margin: 0 }}>Shopping complete! 🎉</p>
             </div>
           ) : (
             <>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{checkedCount} of {items.length} items checked</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{checkedCount} of {items.length} items checked</p>
                 <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE, margin: 0 }}>{Math.round((checkedCount/items.length)*100)}%</p>
               </div>
               <div style={{ width: '100%', height: '3px', backgroundColor: SURFACE2, borderRadius: '2px' }}>
@@ -198,7 +198,7 @@ export function ShoppingListTab() {
               flex: 1, padding: '0.7rem 1rem', height: '42px',
               border: `1px solid ${BORDER}`, borderRight: 'none',
               borderRadius: '8px 0 0 8px', backgroundColor: SURFACE2,
-              color: TEXT, fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem',
+              color: TEXT, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem',
               outline: 'none',
             }}
             onFocus={e => e.target.style.borderColor = ORANGE}
@@ -206,7 +206,7 @@ export function ShoppingListTab() {
           />
           <button onClick={addItem} style={{
             padding: '0 1.25rem', height: '42px', backgroundColor: ORANGE, color: '#000',
-            fontFamily: "'Satoshi', system-ui", fontWeight: 800, fontSize: '0.875rem',
+            fontFamily: "'DM Sans', system-ui", fontWeight: 800, fontSize: '0.875rem',
             border: 'none', borderRadius: '0 8px 8px 0', cursor: 'pointer',
             display: 'flex', alignItems: 'center', gap: '5px', minHeight: 'auto',
             transition: 'background 0.15s',
@@ -229,7 +229,7 @@ export function ShoppingListTab() {
                 border: `1px solid ${isActive ? config.color : BORDER}`,
                 backgroundColor: isActive ? `${config.color}20` : 'transparent',
                 color: isActive ? config.color : MUTED,
-                fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', fontWeight: 700,
+                fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', fontWeight: 700,
                 cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto', whiteSpace: 'nowrap',
               }}>
                 <span style={{ fontSize: '0.8rem' }}>{config.emoji}</span>
@@ -245,7 +245,7 @@ export function ShoppingListTab() {
         <div style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
           <ShoppingCart size={36} color={MUTED} style={{ marginBottom: '1rem', opacity: 0.4 }} />
           <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Your list is empty</p>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 1.25rem', opacity: 0.7 }}>Add ingredients from any meal or add items manually above</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 1.25rem', opacity: 0.7 }}>Add ingredients from any meal or add items manually above</p>
         </div>
       ) : (
         <div>
@@ -258,8 +258,8 @@ export function ShoppingListTab() {
                 {/* Category header */}
                 <div style={{ padding: '0.6rem 1.5rem', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: `${config.color}08` }}>
                   <span style={{ fontSize: '0.85rem' }}>{config.emoji}</span>
-                  <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: config.color, textTransform: 'uppercase', margin: 0 }}>{category}</p>
-                  <span style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, marginLeft: '2px' }}>({categoryItems.length})</span>
+                  <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: config.color, textTransform: 'uppercase', margin: 0 }}>{category}</p>
+                  <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, marginLeft: '2px' }}>({categoryItems.length})</span>
                 </div>
                 {categoryItems.map(item => (
                   <ShoppingItemRow key={item.id} item={item}
@@ -279,7 +279,7 @@ export function ShoppingListTab() {
             width: '100%', padding: '0.75rem',
             backgroundColor: 'transparent', border: `1px solid ${BORDER}`,
             borderRadius: '8px', color: TEXT,
-            fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600,
+            fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             gap: '8px', minHeight: 'auto', transition: 'all 0.15s',
           }}

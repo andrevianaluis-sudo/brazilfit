@@ -20,7 +20,7 @@ export default function ClientHome() {
   const today = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
   const C = {background:'#2a2a2a',borderRadius:'14px',border:'1px solid rgba(255,255,255,0.15)',padding:'1rem 1.25rem'};
   return (
-    <div style={{background:'#111',minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'Satoshi',system-ui,sans-serif"}}>
+    <div style={{background:'#111',minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui,sans-serif"}}>
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
         <div style={{marginBottom:'1.5rem'}}>
           <p style={{fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:'#FF6B2B',textTransform:'uppercase',margin:'0 0 0.4rem'}}>{g}</p>

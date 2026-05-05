@@ -19,7 +19,7 @@ const YELLOW = '#FFD600';
 function QuestionCard({ label, title, children }) {
   return (
     <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', borderLeft: `3px solid ${ORANGE}` }}>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, color: ORANGE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>{label}</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, color: ORANGE, letterSpacing: '0.18em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>{label}</p>
       <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1.25rem' }}>{title}</h3>
       {children}
     </div>
@@ -39,7 +39,7 @@ function EmojiSelector({ emojis, labels, selected, onChange }) {
           transition: 'all 0.15s ease', minHeight: 'auto',
         }}>
           <span style={{ fontSize: '1.75rem' }}>{emoji}</span>
-          <span style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 600, color: selected === emoji ? ORANGE : MUTED, textAlign: 'center' }}>{labels[idx]}</span>
+          <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 600, color: selected === emoji ? ORANGE : MUTED, textAlign: 'center' }}>{labels[idx]}</span>
         </button>
       ))}
     </div>
@@ -56,7 +56,7 @@ function LifestyleSliders({ formData, setFormData }) {
       ].map(item => (
         <div key={item.key}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-            <label style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 500, color: '#c0c0c0' }}>{item.label}</label>
+            <label style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 500, color: '#c0c0c0' }}>{item.label}</label>
             <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.2rem', fontWeight: 800, color: ORANGE }}>{item.format(formData[item.key])}{item.unit}</span>
           </div>
           <input type="range" min={item.min} max={item.max} step={item.step} value={formData[item.key]}
@@ -76,7 +76,7 @@ function MindsetScales({ formData, setFormData }) {
         { key: 'stress_score', label: 'Stress', color: YELLOW },
       ].map(item => (
         <div key={item.key}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600, color: '#c0c0c0', margin: '0 0 0.75rem' }}>{item.label}</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600, color: '#c0c0c0', margin: '0 0 0.75rem' }}>{item.label}</p>
           <div style={{ display: 'flex', gap: '6px', justifyContent: 'space-between' }}>
             {[...Array(10)].map((_, i) => {
               const num = i + 1;
@@ -94,7 +94,7 @@ function MindsetScales({ formData, setFormData }) {
               );
             })}
           </div>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: MUTED, margin: '0.5rem 0 0' }}>1 is Low · 10 is High</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: MUTED, margin: '0.5rem 0 0' }}>1 is Low · 10 is High</p>
         </div>
       ))}
     </div>
@@ -113,7 +113,7 @@ function DynamicInputList({ items, setItems, placeholder, bullet, maxItems, labe
             style={{
               flex: 1, padding: '0', border: 'none', borderRadius: '0',
               backgroundColor: 'transparent', color: TEXT,
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', outline: 'none',
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', outline: 'none',
             }} />
         </div>
       ))}
@@ -121,7 +121,7 @@ function DynamicInputList({ items, setItems, placeholder, bullet, maxItems, labe
         <button type="button" onClick={() => setItems([...items, ''])} style={{
           display: 'flex', alignItems: 'center', gap: '6px', color: ORANGE,
           backgroundColor: 'transparent', border: 'none', cursor: 'pointer',
-          fontFamily: "'Satoshi', system-ui", fontSize: '0.85rem', fontWeight: 600,
+          fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', fontWeight: 600,
           padding: '8px 0 0', minHeight: 'auto',
         }}>
           <Plus size={14} /> {label}
@@ -210,8 +210,8 @@ export default function ClientCheckIn() {
               <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000' }}>✓</span>
             </div>
             <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.75rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>Check-in Submitted!</h2>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', color: ORANGE, fontWeight: 600, margin: '0 0 0.35rem' }}>Great work this week</p>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>Your PT will review your answers and respond soon</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', color: ORANGE, fontWeight: 600, margin: '0 0 0.35rem' }}>Great work this week</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>Your PT will review your answers and respond soon</p>
           </div>
 
           {/* Streak card */}
@@ -219,42 +219,42 @@ export default function ClientCheckIn() {
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
               <div style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, lineHeight: 1 }}>{streak}</div>
-              <div style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, marginTop: '4px' }}>Week Streak</div>
+              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, marginTop: '4px' }}>Week Streak</div>
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: TEXT, margin: '0 0 4px' }}>Keep it up — you're building something special</p>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, fontStyle: 'italic' }}>Your PT can see your consistency — it matters</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: TEXT, margin: '0 0 4px' }}>Keep it up — you're building something special</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, fontStyle: 'italic' }}>Your PT can see your consistency — it matters</p>
             </div>
           </div>
 
           {/* Leaderboard */}
           <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem' }}>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>👑 Community Leaderboard</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>👑 Community Leaderboard</p>
             <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1rem' }}>You are climbing the ranks</h3>
             <div style={{ marginBottom: '1rem' }}>
               {[['🥇', 'Anonymous Client', '487 pts'], ['🥈', 'Anonymous Client', '456 pts'], ['🥉', 'Anonymous Client', '421 pts']].map(([medal, name, pts], i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderBottom: `1px solid ${BORDER}` }}>
                   <span>{medal}</span>
-                  <span style={{ flex: 1, fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{name}</span>
+                  <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{name}</span>
                   <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT }}>{pts}</span>
                 </div>
               ))}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', backgroundColor: `${ORANGE}15`, borderRadius: '8px', marginTop: '8px' }}>
                 <span style={{ color: ORANGE }}>📍</span>
-                <span style={{ flex: 1, fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>Your Position: #{currentRank}</span>
+                <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>Your Position: #{currentRank}</span>
                 <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>324 pts</span>
               </div>
             </div>
             <button onClick={() => navigate('/client/leaderboard')} style={{
               width: '100%', padding: '0.8rem', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
-              border: 'none', borderRadius: '10px', color: '#000', fontFamily: "'Satoshi', system-ui",
+              border: 'none', borderRadius: '10px', color: '#000', fontFamily: "'DM Sans', system-ui",
               fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', minHeight: 'auto',
             }}>View Full Leaderboard</button>
           </div>
 
           {/* Why it matters */}
           <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderLeft: `3px solid ${GREEN}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem' }}>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: GREEN, textTransform: 'uppercase', margin: '0 0 1rem' }}>Why Consistency Matters</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: GREEN, textTransform: 'uppercase', margin: '0 0 1rem' }}>Why Consistency Matters</p>
             {[
               'Clients who check in weekly see 3x better results — research backed',
               'Your PT uses your answers to personalise next week\'s programme',
@@ -263,14 +263,14 @@ export default function ClientCheckIn() {
             ].map((benefit, i) => (
               <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: i < 3 ? '10px' : 0 }}>
                 <span style={{ color: GREEN, fontWeight: 700, flexShrink: 0 }}>✓</span>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', color: '#b0b0b0', margin: 0, lineHeight: 1.6 }}>{benefit}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#b0b0b0', margin: 0, lineHeight: 1.6 }}>{benefit}</p>
               </div>
             ))}
           </div>
 
           {/* Your answers */}
           <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1.5rem' }}>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 1rem' }}>Your Answers</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 1rem' }}>Your Answers</p>
             {[
               { q: 'Goals last week', a: currentCheckIn.goals_achieved },
               { q: 'Workouts completed', a: currentCheckIn.workouts_completed },
@@ -280,8 +280,8 @@ export default function ClientCheckIn() {
               { q: 'Stress', a: `${currentCheckIn.stress_score}/10` },
             ].filter(i => i.a).map((item, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${BORDER}` }}>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>{item.q}</p>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', fontWeight: 700, color: TEXT, margin: 0 }}>{item.a}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>{item.q}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', fontWeight: 700, color: TEXT, margin: 0 }}>{item.a}</p>
               </div>
             ))}
           </div>
@@ -290,14 +290,14 @@ export default function ClientCheckIn() {
             <button onClick={() => { setSubmitted(false); setCurrentCheckIn(null); window.scrollTo(0,0); }} style={{
               width: '100%', padding: '0.9rem', backgroundColor: 'transparent',
               border: `1px solid ${BORDER}`, borderRadius: '10px',
-              color: TEXT, fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600,
+              color: TEXT, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600,
               cursor: 'pointer', minHeight: 'auto',
             }}>View Full Form</button>
             <button onClick={() => navigate('/client')} style={{
               width: '100%', padding: '0.9rem',
               background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
               border: 'none', borderRadius: '10px', color: '#000',
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 800,
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 800,
               cursor: 'pointer', minHeight: 'auto',
             }}>Back to Dashboard</button>
           </div>
@@ -310,7 +310,7 @@ export default function ClientCheckIn() {
     width: '100%', padding: '0.8rem 1rem',
     border: `1px solid ${BORDER}`, borderRadius: '8px',
     backgroundColor: SURFACE2, color: TEXT,
-    fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', outline: 'none',
+    fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', outline: 'none',
     transition: 'border-color 0.15s ease',
     boxSizing: 'border-box',
   };
@@ -322,13 +322,13 @@ export default function ClientCheckIn() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 2rem' }}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Weekly Review</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Weekly Review</p>
           <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.4rem' }}>Weekly Check-in</h1>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 0.75rem' }}>Takes about 5 minutes · Helps your PT support you better</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 0.75rem' }}>Takes about 5 minutes · Helps your PT support you better</p>
           {mondayDate && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Calendar size={13} color={GREEN} />
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: GREEN, fontWeight: 600, margin: 0 }}>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: GREEN, fontWeight: 600, margin: 0 }}>
                 Week of {new Date(mondayDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
               </p>
             </div>
@@ -404,7 +404,7 @@ export default function ClientCheckIn() {
                   <input type="checkbox" checked={formData[item.key] || false}
                     onChange={e => setFormData({ ...formData, [item.key]: e.target.checked })}
                     style={{ width: '18px', height: '18px', accentColor: ORANGE, cursor: 'pointer' }} />
-                  <span style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{item.label}</span>
+                  <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{item.label}</span>
                   {formData[item.key] && <Check size={14} color={GREEN} />}
                 </label>
               ))}
@@ -429,7 +429,7 @@ export default function ClientCheckIn() {
               style={{ ...inputStyle, resize: 'vertical' }}
               onFocus={e => { e.target.style.borderColor = ORANGE; e.target.style.boxShadow = `0 0 0 3px ${ORANGE}22`; }}
               onBlur={e => { e.target.style.borderColor = BORDER; e.target.style.boxShadow = 'none'; }} />
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: MUTED, margin: '6px 0 0', textAlign: 'right' }}>{formData.motivation_factors.length} of 500</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: MUTED, margin: '6px 0 0', textAlign: 'right' }}>{formData.motivation_factors.length} of 500</p>
           </QuestionCard>
 
           {/* Wins */}
@@ -456,7 +456,7 @@ export default function ClientCheckIn() {
               width: '100%', padding: '1rem',
               background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
               border: 'none', borderRadius: '10px', color: '#000',
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 800,
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 800,
               cursor: submitting ? 'not-allowed' : 'pointer',
               opacity: submitting ? 0.7 : 1,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
@@ -466,7 +466,7 @@ export default function ClientCheckIn() {
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px', justifyContent: 'center' }}>
               <Lock size={12} color={MUTED} />
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.72rem', color: MUTED, margin: 0 }}>Your responses are private and shared only with your PT</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, margin: 0 }}>Your responses are private and shared only with your PT</p>
             </div>
           </div>
         </form>

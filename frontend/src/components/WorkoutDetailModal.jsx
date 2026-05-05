@@ -6,7 +6,7 @@ import ExerciseTimer from './ExerciseTimer';
 import { getExerciseMuscles } from '../data/exerciseMuscleMap';
 
 const Label = ({ children, color }) => (
-  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: color || '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.4rem 0' }}>{children}</p>
+  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: color || '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.4rem 0' }}>{children}</p>
 );
 
 const Line = () => <div style={{ height: '1px', backgroundColor: '#1a1a1a' }} />;
@@ -55,7 +55,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
               <Label color="#FF6B2B">Workout</Label>
               <h2 style={{ fontFamily: "'Clash Display', system-ui, sans-serif", fontSize: '1.4rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', margin: '0.25rem 0 0.25rem', lineHeight: 1.1 }}>{workout.name}</h2>
               {workout.pt_name && (
-                <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.75rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>By {workout.pt_name}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.75rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>By {workout.pt_name}</p>
               )}
             </div>
             <button
@@ -91,7 +91,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
             <>
               <div style={{ padding: '1.25rem 1.5rem' }}>
                 <Label>Description</Label>
-                <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.85rem', color: '#606060', margin: 0, lineHeight: 1.65 }}>{workout.description}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.85rem', color: '#606060', margin: 0, lineHeight: 1.65 }}>{workout.description}</p>
               </div>
               <Line />
             </>
@@ -103,16 +103,16 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
               <div style={{ backgroundColor: '#0a1a0a', borderLeft: '2px solid #4CAF50', borderRadius: '6px', padding: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <CheckCircle size={16} color="#4CAF50" />
                 <div>
-                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', fontWeight: 700, color: '#4CAF50', margin: '0 0 2px' }}>Completed</p>
-                  {workout.completed_date && <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0 }}>{new Date(workout.completed_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}</p>}
+                  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.82rem', fontWeight: 700, color: '#4CAF50', margin: '0 0 2px' }}>Completed</p>
+                  {workout.completed_date && <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0 }}>{new Date(workout.completed_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}</p>}
                 </div>
               </div>
             ) : (
               <div style={{ backgroundColor: '#1a1000', borderLeft: '2px solid #FF6B2B', borderRadius: '6px', padding: '1rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Calendar size={16} color="#FF6B2B" />
                 <div>
-                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.82rem', fontWeight: 700, color: '#FF6B2B', margin: '0 0 2px' }}>Scheduled</p>
-                  <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0 }}>{new Date(workout.scheduled_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.82rem', fontWeight: 700, color: '#FF6B2B', margin: '0 0 2px' }}>Scheduled</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0 }}>{new Date(workout.scheduled_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
                 </div>
               </div>
             )}
@@ -145,8 +145,8 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ex.name}</p>
-                    <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
+                    <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ex.name}</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
                       {ex.sets} sets · {ex.reps} reps · {ex.rest_seconds}s rest{ex.weight_kg ? ` · ${ex.weight_kg}kg` : ''}
                     </p>
                   </div>
@@ -216,7 +216,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                       {ex.type === 'stretching' && gifMapping[ex.name] && (
                         <button
                           onClick={() => setTimerExercise(ex)}
-                          style={{ width: '100%', padding: '0.8rem', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', border: 'none', borderRadius: '8px', color: '#000', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', letterSpacing: '0.02em', marginBottom: '0.75rem', minHeight: 'auto' }}>
+                          style={{ width: '100%', padding: '0.8rem', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', border: 'none', borderRadius: '8px', color: '#000', fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', letterSpacing: '0.02em', marginBottom: '0.75rem', minHeight: 'auto' }}>
                           <Play size={14} style={{ fill: '#000' }} /> Start Exercise
                         </button>
                       )}
@@ -225,7 +225,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                       {ex.notes && (
                         <div style={{ backgroundColor: '#111', borderLeft: '2px solid #FFD600', borderRadius: '6px', padding: '0.75rem' }}>
                           <Label color="#FFD600">Notes</Label>
-                          <p style={{ fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
+                          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', margin: 0, lineHeight: 1.6 }}>{ex.notes}</p>
                         </div>
                       )}
                     </div>
@@ -243,13 +243,13 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
           {!isCompleted && (
             <button
               onClick={onComplete}
-              style={{ width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', border: 'none', borderRadius: '8px', color: '#000', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', letterSpacing: '0.02em', minHeight: 'auto' }}>
+              style={{ width: '100%', padding: '0.9rem', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', border: 'none', borderRadius: '8px', color: '#000', fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', letterSpacing: '0.02em', minHeight: 'auto' }}>
               <CheckCircle size={16} /> Mark as Complete
             </button>
           )}
           <button
             onClick={onClose}
-            style={{ width: '100%', padding: '0.8rem', backgroundColor: 'transparent', border: '1px solid #1a1a1a', borderRadius: '8px', color: '#3a3a3a', fontFamily: "'Satoshi', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', minHeight: 'auto', transition: 'all 0.15s' }}
+            style={{ width: '100%', padding: '0.8rem', backgroundColor: 'transparent', border: '1px solid #1a1a1a', borderRadius: '8px', color: '#3a3a3a', fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', minHeight: 'auto', transition: 'all 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = '#2a2a2a'; e.currentTarget.style.color = '#fff'; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.color = '#3a3a3a'; }}
           >

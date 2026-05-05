@@ -54,7 +54,7 @@ export default function ClientLeaderboard() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Community</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Community</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Trophy size={20} color={YELLOW} />
             <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Leaderboard</h1>
@@ -74,7 +74,7 @@ export default function ClientLeaderboard() {
             <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '3.5rem', fontWeight: 800, color: ORANGE, letterSpacing: '-0.04em', margin: 0, lineHeight: 1 }}>
               {userStats?.total_sessions || 0}
             </p>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '6px 0 0' }}>Sessions Completed</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '6px 0 0' }}>Sessions Completed</p>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', borderTop: `1px solid ${BORDER}`, paddingTop: '1rem' }}>
@@ -85,7 +85,7 @@ export default function ClientLeaderboard() {
             ].map((s, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.4rem', fontWeight: 800, color: s.highlight ? ORANGE : TEXT, letterSpacing: '-0.03em', margin: '0 0 4px' }}>{s.value}</p>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -98,14 +98,14 @@ export default function ClientLeaderboard() {
               flex: 1, padding: '0.7rem', borderRadius: '8px', border: 'none',
               backgroundColor: leaderboardType === key ? ORANGE : 'transparent',
               color: leaderboardType === key ? '#000' : MUTED,
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 700,
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700,
               cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto',
             }}>{label}</button>
           ))}
         </div>
 
         {/* List header */}
-        <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>
+        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>
           {leaderboardType === 'weekly' ? 'Weekly Leaders' : 'All Time Leaders'}
         </p>
 
@@ -150,7 +150,7 @@ export default function ClientLeaderboard() {
 
                   {/* Name */}
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: isCurrentUser ? ORANGE : TEXT, margin: 0 }}>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: isCurrentUser ? ORANGE : TEXT, margin: 0 }}>
                       {isCurrentUser ? 'You' : (entry.is_anonymous ? 'Member' : (entry.name || 'Anonymous'))}
                     </p>
                   </div>
@@ -158,7 +158,7 @@ export default function ClientLeaderboard() {
                   {/* Sessions */}
                   <div style={{ textAlign: 'right' }}>
                     <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: isCurrentUser ? ORANGE : TEXT, margin: 0, letterSpacing: '-0.02em' }}>{sessions}</p>
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
                   </div>
                 </div>
               );
@@ -176,11 +176,11 @@ export default function ClientLeaderboard() {
                     {user?.name?.substring(0, 1) || '?'}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: ORANGE, margin: 0 }}>You</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: ORANGE, margin: 0 }}>You</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color: ORANGE, margin: 0 }}>{leaderboardType === 'weekly' ? userStats?.sessions_this_week : userStats?.total_sessions}</p>
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0 }}>sessions</p>
                   </div>
                 </div>
               </>
@@ -193,7 +193,7 @@ export default function ClientLeaderboard() {
           width: '100%', padding: '1rem', marginTop: '1.5rem',
           background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
           border: 'none', borderRadius: '10px', color: '#000',
-          fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 800,
+          fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 800,
           cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
           gap: '8px', minHeight: 'auto', transition: 'all 0.15s',
         }}>

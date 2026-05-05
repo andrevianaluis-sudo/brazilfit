@@ -203,7 +203,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             )}
 
             {/* Member since */}
-            <p style={{ fontSize: '12px', color: MUTED, marginTop: '8px', fontFamily: "'Satoshi', system-ui" }}>
+            <p style={{ fontSize: '12px', color: MUTED, marginTop: '8px', fontFamily: "'DM Sans', system-ui" }}>
               Member since {memberSinceDate}
             </p>
           </div>

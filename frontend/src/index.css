@@ -69,7 +69,7 @@ html { scroll-behavior: smooth; }
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -91,7 +91,7 @@ h3 { font-size: 1.5rem; }
 h4 { font-size: 1.25rem; }
 
 p {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   line-height: 1.7;
 }
@@ -110,7 +110,7 @@ input, select, textarea {
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
   font-size: 1rem;
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   transition: all 0.2s ease-in-out;
 }
 
@@ -148,7 +148,7 @@ input[type='checkbox'], input[type='radio'] {
   padding: 0.75rem 1.5rem;
   border: none;
   cursor: pointer;
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.9rem;
   letter-spacing: 0.02em;
   transition: all var(--transition-fast);
@@ -170,7 +170,7 @@ input[type='checkbox'], input[type='radio'] {
   padding: 0.75rem 1.5rem;
   border: 1px solid var(--color-border);
   cursor: pointer;
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   transition: all var(--transition-fast);
 }
 
@@ -267,7 +267,7 @@ header.bg-white, header.sticky {
 
 /* === SECTION LABELS === */
 .section-label {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 0.6rem;
   letter-spacing: 0.18em;
@@ -315,7 +315,7 @@ header.bg-white, header.sticky {
 }
 
 .dashboard-hero-subtitle {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -341,7 +341,7 @@ header.bg-white, header.sticky {
 }
 
 .stat-card-label {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -360,7 +360,7 @@ header.bg-white, header.sticky {
 }
 
 .stat-card-subtitle {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.8rem;
   color: var(--color-text-secondary);
   margin: 0;
@@ -368,7 +368,7 @@ header.bg-white, header.sticky {
 
 /* === SECTION HEADER === */
 .section-header {
-  font-family: 'Satoshi', system-ui, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.12em;

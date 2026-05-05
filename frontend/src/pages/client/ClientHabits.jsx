@@ -28,7 +28,7 @@ const MOODS = [
 const ENERGY_EMOJIS = ['😴','😴','😕','😕','😊','😊','💪','💪','🔥','🔥'];
 
 function Label({ children }) {
-  return <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>{children}</p>;
+  return <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>{children}</p>;
 }
 
 function Card({ children, style = {} }) {
@@ -40,9 +40,9 @@ function SliderField({ icon, label, hint, value, onChange, min, max, step, unit,
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <span style={{ fontSize: '1.1rem' }}>{icon}</span>
-        <label style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: '#c0c0c0' }}>{label}</label>
+        <label style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: '#c0c0c0' }}>{label}</label>
       </div>
-      {hint && <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
+      {hint && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
         {emoji ? <span style={{ fontSize: '1.25rem' }}>{emoji}</span> : <span />}
         <span style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 800, color }}>{value || 0} {unit}</span>
@@ -59,9 +59,9 @@ function NumberField({ icon, label, hint, value, onChange, min, max, unit, color
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <span style={{ fontSize: '1.1rem' }}>{icon}</span>
-        <label style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 600, color: '#c0c0c0' }}>{label}</label>
+        <label style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: '#c0c0c0' }}>{label}</label>
       </div>
-      {hint && <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
+      {hint && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
       <input type="number" min={min} max={max} value={value || ''} placeholder={`${min}–${max} ${unit}`}
         onChange={e => onChange(e.target.value ? parseInt(e.target.value) : null)}
         style={{
@@ -80,7 +80,7 @@ function MetricCard({ icon, label, value, unit, color }) {
     <div style={{ backgroundColor: SURFACE, borderRadius: '12px', padding: '1rem', border: `1px solid ${BORDER}`, textAlign: 'center' }}>
       <div style={{ fontSize: '1.5rem', marginBottom: '6px' }}>{icon}</div>
       <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.02em' }}>{value} <span style={{ fontSize: '0.8rem' }}>{unit}</span></p>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</p>
     </div>
   );
 }
@@ -88,13 +88,13 @@ function MetricCard({ icon, label, value, unit, color }) {
 function ChartCard({ title, color, children }) {
   return (
     <div style={{ backgroundColor: SURFACE, borderRadius: '14px', padding: '1.25rem', border: `1px solid ${BORDER}` }}>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: '0 0 1rem' }}>{title}</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: '0 0 1rem' }}>{title}</p>
       {children}
     </div>
   );
 }
 
-const tooltipStyle = { backgroundColor: SURFACE2, border: `1px solid ${BORDER}`, borderRadius: '8px', color: TEXT, fontFamily: "'Satoshi', system-ui", fontSize: '0.75rem' };
+const tooltipStyle = { backgroundColor: SURFACE2, border: `1px solid ${BORDER}`, borderRadius: '8px', color: TEXT, fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem' };
 
 export default function ClientHabits() {
   const { user } = useAuth();
@@ -196,7 +196,7 @@ export default function ClientHabits() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Daily Tracking</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Daily Tracking</p>
           <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Health & Habits</h1>
         </div>
 
@@ -214,14 +214,14 @@ export default function ClientHabits() {
               </svg>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.75rem', fontWeight: 800, color: wellnessColor, margin: 0, lineHeight: 1 }}>{wellnessScore}</p>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', color: MUTED, margin: 0 }}>/ 100</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', color: MUTED, margin: 0 }}>/ 100</p>
               </div>
             </div>
             <div style={{ textAlign: 'left' }}>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 700, color: wellnessColor, margin: '0 0 4px' }}>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: wellnessColor, margin: '0 0 4px' }}>
                 {wellnessScore >= 70 ? '🟢 Excellent' : wellnessScore >= 40 ? '🟡 Good' : '🔴 Needs attention'}
               </p>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, maxWidth: '200px' }}>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, maxWidth: '200px' }}>
                 {wellnessScore >= 70 ? 'Keep up your healthy habits!' : 'Focus on sleep and movement today'}
               </p>
             </div>
@@ -233,7 +233,7 @@ export default function ClientHabits() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem' }}>
             {insights.map((ins, i) => (
               <div key={i} style={{ backgroundColor: ins.type === 'positive' ? `${GREEN}12` : `${ORANGE}12`, borderLeft: `3px solid ${ins.type === 'positive' ? GREEN : ORANGE}`, borderRadius: '8px', padding: '0.75rem 1rem' }}>
-                <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', color: '#c0c0c0', margin: 0 }}>{ins.text}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#c0c0c0', margin: 0 }}>{ins.text}</p>
               </div>
             ))}
           </div>
@@ -245,7 +245,7 @@ export default function ClientHabits() {
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
               <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
               <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Day Streak</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Day Streak</p>
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', justifyContent: 'center' }}>
@@ -259,7 +259,7 @@ export default function ClientHabits() {
                   }} />
                 ))}
               </div>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: '#c0c0c0', fontStyle: 'italic', textAlign: 'center', margin: 0 }}>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: '#c0c0c0', fontStyle: 'italic', textAlign: 'center', margin: 0 }}>
                 {streak === 0 ? 'Every journey starts with a single step' :
                  streak <= 6 ? 'Building momentum — keep going!' :
                  streak <= 13 ? 'One week strong — real habits forming' :
@@ -335,9 +335,9 @@ export default function ClientHabits() {
         {/* Today's log */}
         <Card style={{ marginBottom: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Today</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Today</p>
             <div style={{ flex: 1, height: '1px', background: `linear-gradient(90deg, ${ORANGE}, transparent)` }} />
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.75rem', color: MUTED, margin: 0 }}>{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' })}</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', color: MUTED, margin: 0 }}>{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' })}</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -347,7 +347,7 @@ export default function ClientHabits() {
             <SliderField icon="🥗" label="Vegetables" hint="Micronutrients from veg fuel your body" value={form.veg_portions} onChange={v => setForm(f => ({...f, veg_portions: v}))} min={0} max={10} step={1} unit="portions" color={GREEN} />
 
             <div style={{ height: '1px', backgroundColor: BORDER }} />
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Advanced Metrics</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Advanced Metrics</p>
 
             <NumberField icon="❤️" label="Resting Heart Rate" hint="Lower is generally better (60–100 bpm)" value={form.resting_heart_rate} onChange={v => setForm(f => ({...f, resting_heart_rate: v}))} min={40} max={120} unit="bpm" color="#ef4444" />
             <NumberField icon="💓" label="Heart Rate Variability" hint="Higher HRV = better recovery (20–120 ms)" value={form.hrv} onChange={v => setForm(f => ({...f, hrv: v}))} min={20} max={120} unit="ms" color="#ef4444" />
@@ -365,7 +365,7 @@ export default function ClientHabits() {
               backgroundColor: form.alcohol_free ? `${GREEN}22` : SURFACE2,
               border: `1px solid ${form.alcohol_free ? GREEN : BORDER}`,
               borderRadius: '10px', color: form.alcohol_free ? GREEN : MUTED,
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 700,
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
               gap: '8px', transition: 'all 0.15s ease', minHeight: 'auto',
             }}>
@@ -375,7 +375,7 @@ export default function ClientHabits() {
 
             {/* Mood */}
             <div>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600, color: '#c0c0c0', margin: '0 0 0.75rem' }}>How are you feeling?</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600, color: '#c0c0c0', margin: '0 0 0.75rem' }}>How are you feeling?</p>
               <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between' }}>
                 {MOODS.map((mood, i) => {
                   const colors = ['#ef4444','#FF6B2B','#FFD600','#4CAF50','#a78bfa'];
@@ -389,7 +389,7 @@ export default function ClientHabits() {
                       alignItems: 'center', gap: '4px', transition: 'all 0.15s ease', minHeight: 'auto',
                     }}>
                       <span>{mood.emoji}</span>
-                      <span style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', color: isSelected ? colors[i] : MUTED, fontWeight: 600 }}>{mood.label}</span>
+                      <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', color: isSelected ? colors[i] : MUTED, fontWeight: 600 }}>{mood.label}</span>
                     </button>
                   );
                 })}
@@ -402,18 +402,18 @@ export default function ClientHabits() {
             width: '100%', padding: '1rem', marginTop: '1.5rem',
             background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
             border: 'none', borderRadius: '10px', color: '#000',
-            fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 800,
+            fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 800,
             cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1,
             minHeight: 'auto', transition: 'all 0.15s',
           }}>
             {saving ? 'Saving...' : 'Save All Health Metrics'}
           </button>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: MUTED, textAlign: 'center', margin: '10px 0 0' }}>Your PT uses this data to optimise your programme</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: MUTED, textAlign: 'center', margin: '10px 0 0' }}>Your PT uses this data to optimise your programme</p>
         </Card>
 
         {/* Why it matters */}
         <Card style={{ borderTop: `3px solid ${ORANGE}` }}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 1rem' }}>Why Health Metrics Matter</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 1rem' }}>Why Health Metrics Matter</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
             {[
               ['Sleep and recovery', 'Determines 40% of your fitness results'],
@@ -426,8 +426,8 @@ export default function ClientHabits() {
               <div key={i} style={{ display: 'flex', gap: '10px' }}>
                 <span style={{ color: ORANGE, fontWeight: 700, flexShrink: 0, marginTop: '2px' }}>✓</span>
                 <div>
-                  <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 700, color: TEXT, margin: '0 0 2px' }}>{title}</p>
-                  <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{desc}</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: TEXT, margin: '0 0 2px' }}>{title}</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{desc}</p>
                 </div>
               </div>
             ))}

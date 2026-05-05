@@ -22,7 +22,7 @@ function hoursUntil(date, time) {
 }
 
 function SectionLabel({ children, color = MUTED }) {
-  return <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
+  return <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
 }
 
 // ── Notes Modal ───────────────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ function SessionNoteModal({ session, onClose }) {
           ) : !note ? (
             <div style={{ textAlign:'center', padding:'2rem 0' }}>
               <FileText size={28} color={MUTED} style={{ marginBottom:'0.75rem', opacity:0.4 }} />
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', color:MUTED, margin:0 }}>No notes yet — your PT will add them after the session.</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', color:MUTED, margin:0 }}>No notes yet — your PT will add them after the session.</p>
             </div>
           ) : (
             <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
@@ -65,22 +65,22 @@ function SessionNoteModal({ session, onClose }) {
                 { key:'focus_next_session',label:'Next session focus', color:'#60a5fa' },
               ].filter(f => note[f.key]).map(f => (
                 <div key={f.key} style={{ backgroundColor:SURFACE2, borderLeft:`2px solid ${f.color}`, borderRadius:'6px', padding:'1rem' }}>
-                  <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.14em', color:f.color, textTransform:'uppercase', margin:'0 0 0.4rem' }}>{f.label}</p>
-                  <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', color:'#b0b0b0', margin:0, lineHeight:1.6 }}>{note[f.key]}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.14em', color:f.color, textTransform:'uppercase', margin:'0 0 0.4rem' }}>{f.label}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', color:'#b0b0b0', margin:0, lineHeight:1.6 }}>{note[f.key]}</p>
                 </div>
               ))}
               {note.injuries_concerns && (
                 <div style={{ backgroundColor:'rgba(239,68,68,0.08)', borderLeft:'2px solid #ef4444', borderRadius:'6px', padding:'1rem' }}>
-                  <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.14em', color:'#ef4444', textTransform:'uppercase', margin:'0 0 0.4rem' }}>Injuries / Concerns</p>
-                  <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', color:'#ef4444', margin:0, lineHeight:1.6 }}>{note.injuries_concerns}</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.14em', color:'#ef4444', textTransform:'uppercase', margin:'0 0 0.4rem' }}>Injuries / Concerns</p>
+                  <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', color:'#ef4444', margin:0, lineHeight:1.6 }}>{note.injuries_concerns}</p>
                 </div>
               )}
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', color:GREEN, textAlign:'right', margin:'0.25rem 0 0' }}>Written by your PT</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', color:GREEN, textAlign:'right', margin:'0.25rem 0 0' }}>Written by your PT</p>
             </div>
           )}
         </div>
         <div style={{ padding:'1rem 1.5rem', borderTop:`1px solid ${BORDER}` }}>
-          <button onClick={onClose} style={{ width:'100%', padding:'0.8rem', backgroundColor:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:'8px', color:TEXT, fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:600, cursor:'pointer', minHeight:'auto' }}>Close</button>
+          <button onClick={onClose} style={{ width:'100%', padding:'0.8rem', backgroundColor:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:'8px', color:TEXT, fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:600, cursor:'pointer', minHeight:'auto' }}>Close</button>
         </div>
       </div>
     </div>
@@ -98,9 +98,9 @@ function CancelModal({ session, onConfirm, onClose, loading }) {
         <div style={{ padding:'1.5rem' }}>
           <SectionLabel color={canCancel ? ORANGE : '#ef4444'}>{canCancel ? 'Cancel Session' : 'Cannot Cancel'}</SectionLabel>
           <h3 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.3rem', fontWeight:700, color:TEXT, letterSpacing:'-0.02em', margin:'0 0 0.3rem' }}>{canCancel ? 'Are you sure?' : '24-Hour Policy'}</h3>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.8rem', color:MUTED, margin:'0 0 1.25rem' }}>{fmtDateTime(session.scheduled_date, session.scheduled_time)}</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:'0 0 1.25rem' }}>{fmtDateTime(session.scheduled_date, session.scheduled_time)}</p>
           <div style={{ backgroundColor:SURFACE2, borderLeft:`2px solid ${canCancel ? GREEN : '#ef4444'}`, borderRadius:'6px', padding:'1rem' }}>
-            <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', color:'#b0b0b0', margin:0, lineHeight:1.6 }}>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', color:'#b0b0b0', margin:0, lineHeight:1.6 }}>
               {canCancel
                 ? <>This session will be <strong style={{ color:TEXT }}>returned to your block</strong>. You have {Math.floor(hours)}h notice — within policy.</>
                 : <>This session is in <strong style={{ color:TEXT }}>{Math.max(0, hours).toFixed(1)} hours</strong>. Cancellations require at least 24 hours notice.</>}
@@ -108,11 +108,11 @@ function CancelModal({ session, onConfirm, onClose, loading }) {
           </div>
         </div>
         <div style={{ borderTop:`1px solid ${BORDER}`, display:'flex' }}>
-          <button onClick={onClose} style={{ flex:1, padding:'1rem', backgroundColor:'transparent', border:'none', borderRight:`1px solid ${BORDER}`, color:MUTED, fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:600, cursor:'pointer', minHeight:'auto' }}>
+          <button onClick={onClose} style={{ flex:1, padding:'1rem', backgroundColor:'transparent', border:'none', borderRight:`1px solid ${BORDER}`, color:MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:600, cursor:'pointer', minHeight:'auto' }}>
             {canCancel ? 'Keep Session' : 'Got It'}
           </button>
           {canCancel && (
-            <button onClick={onConfirm} disabled={loading} style={{ flex:1, padding:'1rem', backgroundColor:'transparent', border:'none', color:'#ef4444', fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:700, cursor:loading?'not-allowed':'pointer', opacity:loading?0.5:1, minHeight:'auto' }}>
+            <button onClick={onConfirm} disabled={loading} style={{ flex:1, padding:'1rem', backgroundColor:'transparent', border:'none', color:'#ef4444', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, cursor:loading?'not-allowed':'pointer', opacity:loading?0.5:1, minHeight:'auto' }}>
               {loading ? 'Cancelling…' : 'Yes, Cancel'}
             </button>
           )}
@@ -176,7 +176,7 @@ export default function ClientSessions() {
 
         {/* Header */}
         <div style={{ margin:'1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Training</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Training</p>
           <h1 style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:700, color:TEXT, letterSpacing:'-0.03em', margin:0 }}>My Sessions</h1>
         </div>
 
@@ -189,7 +189,7 @@ export default function ClientSessions() {
           ].map((s, i) => (
             <div key={i} style={{ backgroundColor:SURFACE, borderRadius:'12px', padding:'1.1rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
               <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'2rem', fontWeight:800, color:s.color, letterSpacing:'-0.03em', lineHeight:1, margin:'0 0 0.35rem' }}>{s.value}</p>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{s.label}</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{s.label}</p>
             </div>
           ))}
         </div>
@@ -199,7 +199,7 @@ export default function ClientSessions() {
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.75rem' }}>
             <div>
               <SectionLabel>Block {user?.blockNumber || 1} Progress</SectionLabel>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.78rem', color:MUTED, margin:0 }}>{sessionsUsed} of {totalSessions} sessions completed</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.78rem', color:MUTED, margin:0 }}>{sessionsUsed} of {totalSessions} sessions completed</p>
             </div>
             <p style={{ fontFamily:"'Clash Display', system-ui", fontSize:'1.5rem', fontWeight:800, color:GREEN, letterSpacing:'-0.03em', margin:0 }}>{Math.round(pct)}%</p>
           </div>
@@ -209,8 +209,8 @@ export default function ClientSessions() {
           {sessionsRemaining <= 3 && sessionsRemaining > 0 && (
             <div style={{ marginTop:'0.875rem', backgroundColor:`${YELLOW}12`, borderLeft:`2px solid ${YELLOW}`, borderRadius:'6px', padding:'0.75rem 1rem', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
               <div>
-                <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.82rem', fontWeight:700, color:YELLOW, margin:'0 0 2px' }}>Block almost complete</p>
-                <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{sessionsRemaining} session{sessionsRemaining!==1?'s':''} remaining</p>
+                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.82rem', fontWeight:700, color:YELLOW, margin:'0 0 2px' }}>Block almost complete</p>
+                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{sessionsRemaining} session{sessionsRemaining!==1?'s':''} remaining</p>
               </div>
               <ArrowRight size={14} color={YELLOW} />
             </div>
@@ -231,8 +231,8 @@ export default function ClientSessions() {
                     <div style={{ display:'flex', alignItems:'center', gap:'10px', flex:1 }}>
                       <div style={{ width:'7px', height:'7px', borderRadius:'50%', backgroundColor:locked?'#ef4444':GREEN, flexShrink:0, boxShadow:`0 0 6px ${locked?'#ef4444':GREEN}66` }} />
                       <div>
-                        <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:600, color:TEXT, margin:'0 0 2px' }}>{fmtDateTimeFull(s.scheduled_date, s.scheduled_time)}</p>
-                        <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>
+                        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:600, color:TEXT, margin:'0 0 2px' }}>{fmtDateTimeFull(s.scheduled_date, s.scheduled_time)}</p>
+                        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>
                           {sessionsLeftAfter} session{sessionsLeftAfter!==1?'s':''} left after this
                           {locked && <span style={{ color:'#ef4444', marginLeft:'8px' }}>· Within 24h</span>}
                         </p>
@@ -242,7 +242,7 @@ export default function ClientSessions() {
                       padding:'5px 12px', backgroundColor:'transparent',
                       border:`1px solid ${locked?SURFACE2:BORDER}`,
                       borderRadius:'6px', color:locked?SURFACE2:MUTED,
-                      fontFamily:"'Satoshi', system-ui", fontSize:'0.72rem', fontWeight:600,
+                      fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', fontWeight:600,
                       cursor:locked?'not-allowed':'pointer', display:'flex', alignItems:'center', gap:'4px',
                       minHeight:'auto', transition:'all 0.15s',
                     }}
@@ -263,7 +263,7 @@ export default function ClientSessions() {
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'0.75rem' }}>
             <SectionLabel>Session History</SectionLabel>
             {!user?.isPro && history.length > 5 && (
-              <button onClick={() => navigate('/client/upgrade')} style={{ display:'flex', alignItems:'center', gap:'4px', background:'none', border:'none', cursor:'pointer', fontFamily:"'Satoshi', system-ui", fontSize:'0.65rem', fontWeight:700, color:YELLOW, letterSpacing:'0.08em', textTransform:'uppercase', minHeight:'auto', padding:0 }}>
+              <button onClick={() => navigate('/client/upgrade')} style={{ display:'flex', alignItems:'center', gap:'4px', background:'none', border:'none', cursor:'pointer', fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, color:YELLOW, letterSpacing:'0.08em', textTransform:'uppercase', minHeight:'auto', padding:0 }}>
                 <Crown size={11}/> See all {history.length}
               </button>
             )}
@@ -271,7 +271,7 @@ export default function ClientSessions() {
 
           {limitedHistory.length === 0 ? (
             <div style={{ backgroundColor:SURFACE, borderRadius:'10px', padding:'2rem', textAlign:'center', border:`1px solid ${BORDER}` }}>
-              <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', color:MUTED, margin:0 }}>No session history yet</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', color:MUTED, margin:0 }}>No session history yet</p>
             </div>
           ) : (
             <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
@@ -284,9 +284,9 @@ export default function ClientSessions() {
                     <div style={{ display:'flex', alignItems:'center', gap:'10px', flex:1 }}>
                       <div style={{ width:'7px', height:'7px', borderRadius:'50%', backgroundColor:statusColor, flexShrink:0 }} />
                       <div>
-                        <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.875rem', fontWeight:600, color:isAttended?TEXT:'#808080', margin:'0 0 2px' }}>{fmtDateTime(s.scheduled_date, s.scheduled_time)}</p>
-                        {s.status === 'missed' && <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', color:'#ef4444', margin:0 }}>Missed · block preserved</p>}
-                        {isCancelled && s.session_carried_over === 1 && <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>Cancelled · returned to block{s.cancellation_notice_hours!=null?` · ${Math.floor(s.cancellation_notice_hours)}h notice`:''}</p>}
+                        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:600, color:isAttended?TEXT:'#808080', margin:'0 0 2px' }}>{fmtDateTime(s.scheduled_date, s.scheduled_time)}</p>
+                        {s.status === 'missed' && <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'#ef4444', margin:0 }}>Missed · block preserved</p>}
+                        {isCancelled && s.session_carried_over === 1 && <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>Cancelled · returned to block{s.cancellation_notice_hours!=null?` · ${Math.floor(s.cancellation_notice_hours)}h notice`:''}</p>}
                       </div>
                     </div>
                     <div style={{ display:'flex', alignItems:'center', gap:'8px', flexShrink:0 }}>
@@ -297,7 +297,7 @@ export default function ClientSessions() {
                           <FileText size={14}/>
                         </button>
                       )}
-                      <span style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:statusColor, backgroundColor:`${statusColor}15`, padding:'2px 7px', borderRadius:'4px' }}>{s.status}</span>
+                      <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:statusColor, backgroundColor:`${statusColor}15`, padding:'2px 7px', borderRadius:'4px' }}>{s.status}</span>
                     </div>
                   </div>
                 );
@@ -308,8 +308,8 @@ export default function ClientSessions() {
           {!user?.isPro && history.length > 5 && (
             <div onClick={() => navigate('/client/upgrade')} style={{ marginTop:'8px', backgroundColor:SURFACE, borderRadius:'10px', padding:'0.875rem 1rem', border:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between', cursor:'pointer' }}>
               <div>
-                <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.85rem', fontWeight:600, color:MUTED, margin:'0 0 2px' }}>{history.length - 5} more sessions</p>
-                <p style={{ fontFamily:"'Satoshi', system-ui", fontSize:'0.72rem', color:MUTED, margin:0, opacity:0.7 }}>Upgrade to Pro to see full history</p>
+                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:MUTED, margin:'0 0 2px' }}>{history.length - 5} more sessions</p>
+                <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0, opacity:0.7 }}>Upgrade to Pro to see full history</p>
               </div>
               <Crown size={14} color={YELLOW}/>
             </div>

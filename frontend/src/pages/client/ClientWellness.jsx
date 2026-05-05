@@ -144,10 +144,10 @@ function MindfulnessPlayer({ session, onClose }) {
   return (
     <div style={{position:'fixed',inset:0,zIndex:50,background:'linear-gradient(180deg,#0d0d0d 0%,#1a1008 100%)',display:'flex',flexDirection:'column',alignItems:'center',padding:'env(safe-area-inset-top,2rem) 1.5rem 2rem',overflowY:'auto',minHeight:'100dvh'}}>
       <button onClick={handleClose} style={{position:'absolute',top:'1rem',right:'1rem',background:'none',border:'none',cursor:'pointer',color:MUTED,padding:'8px',minHeight:'auto',minWidth:'auto'}}><X size={20}/></button>
-      <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Mindfulness Session</p>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Mindfulness Session</p>
       <h2 style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 1.5rem',textAlign:'center'}}>{session.title}</h2>
       <div style={{width:'100%',maxWidth:'320px',marginBottom:'1.5rem'}}>
-        <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
+        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
         <MusicSelector music={music}/>
       </div>
       <div style={{position:'relative',width:'200px',height:'200px',marginBottom:'1.5rem',flexShrink:0}}>
@@ -165,11 +165,11 @@ function MindfulnessPlayer({ session, onClose }) {
           <div style={{opacity:1}}>
             <CheckCircle size={36} color={GREEN} style={{marginBottom:'0.75rem'}}/>
             <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:GREEN,margin:'0 0 0.4rem'}}>Session Complete</p>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>Take a moment to notice how you feel.</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>Take a moment to notice how you feel.</p>
           </div>
         ):steps.length>0?(
           <div style={{opacity:fadeIn?1:0,transform:fadeIn?'scale(1)':'scale(0.95)',transition:'all 0.8s ease'}}>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.12em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.75rem'}}>Step {currentStepIdx+1} of {steps.length}</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.12em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.75rem'}}>Step {currentStepIdx+1} of {steps.length}</p>
             <p style={{fontSize:'1.4rem',fontWeight:300,color:TEXT,lineHeight:1.5,margin:'0 0 0.75rem',letterSpacing:'-0.01em',maxWidth:340}}>{steps[currentStepIdx]}</p>
             <div style={{display:'flex',gap:'6px',justifyContent:'center'}}>
               {[...Array(steps.length)].map((_,i)=>(
@@ -178,7 +178,7 @@ function MindfulnessPlayer({ session, onClose }) {
             </div>
           </div>
         ):(
-          <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'1rem',color:MUTED,fontStyle:'italic'}}>Follow your breath and stay present.</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',color:MUTED,fontStyle:'italic'}}>Follow your breath and stay present.</p>
         )}
       </div>
       <div style={{display:'flex',gap:'10px',width:'100%',maxWidth:'300px'}}>
@@ -188,7 +188,7 @@ function MindfulnessPlayer({ session, onClose }) {
             {isActive?'Pause':elapsed===0?'Begin':'Resume'}
           </button>
         )}
-        <button onClick={handleClose} style={{flex:isDone?1:0,padding:'0.875rem 1.5rem',backgroundColor:'transparent',border:`1px solid ${BORDER}`,borderRadius:'10px',color:TEXT,fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>
+        <button onClick={handleClose} style={{flex:isDone?1:0,padding:'0.875rem 1.5rem',backgroundColor:'transparent',border:`1px solid ${BORDER}`,borderRadius:'10px',color:TEXT,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>
           {isDone?'Finish':'End'}
         </button>
       </div>
@@ -221,16 +221,16 @@ function BreathingPlayer({ exercise, onClose }) {
   return (
     <div style={{position:'fixed',inset:0,zIndex:50,backgroundColor:'#111',display:'flex',flexDirection:'column',alignItems:'center',padding:'2rem 1.25rem',overflowY:'auto'}}>
       <button onClick={handleClose} style={{position:'absolute',top:'1rem',right:'1rem',background:'none',border:'none',cursor:'pointer',color:MUTED,padding:'8px',minHeight:'auto',minWidth:'auto'}}><X size={20}/></button>
-      <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Breathing Exercise</p>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:typeInfo.color,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Breathing Exercise</p>
       <h2 style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.3rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 0.25rem',textAlign:'center'}}>{exercise.title}</h2>
-      <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1.25rem'}}>{isDone?'Complete!': `Round ${round} of ${totalRounds}`}</p>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1.25rem'}}>{isDone?'Complete!': `Round ${round} of ${totalRounds}`}</p>
       <div style={{width:'100%',maxWidth:'320px',marginBottom:'1.25rem'}}>
-        <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
+        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.14em',color:MUTED,textTransform:'uppercase',margin:'0 0 0.5rem',textAlign:'center'}}>Background Music</p>
         <MusicSelector music={music}/>
       </div>
       <div style={{display:'flex',alignItems:'center',justifyContent:'center',margin:'0.5rem 0 1rem'}}>
         <div style={{width:`${circleSize}px`,height:`${circleSize}px`,borderRadius:'50%',backgroundColor:typeInfo.bg,border:`2px solid ${typeInfo.color}44`,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',transition:'all 1s ease-in-out'}}>
-          <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'1rem',fontWeight:700,color:typeInfo.color,margin:0}}>{phase.label}</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:typeInfo.color,margin:0}}>{phase.label}</p>
           {isActive&&!isDone&&phase.rem>0&&<p style={{fontFamily:"'Clash Display',system-ui",fontSize:'2.5rem',fontWeight:800,color:TEXT,margin:'4px 0 0',lineHeight:1}}>{phase.rem}</p>}
         </div>
       </div>
@@ -238,21 +238,21 @@ function BreathingPlayer({ exercise, onClose }) {
         <div style={{textAlign:'center',marginBottom:'1.25rem'}}>
           <CheckCircle size={32} color={GREEN} style={{marginBottom:'0.5rem'}}/>
           <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1.1rem',fontWeight:700,color:GREEN,margin:'0 0 0.25rem'}}>Session Complete!</p>
-          <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Notice how you feel right now.</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Notice how you feel right now.</p>
         </div>
       ):(
-        <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.75rem',color:MUTED,margin:'0 0 1.25rem',textAlign:'center'}}>
+        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,margin:'0 0 1.25rem',textAlign:'center'}}>
           {[pattern.inhale&&`${pattern.inhale}s inhale`,pattern.hold_in&&`${pattern.hold_in}s hold`,pattern.exhale&&`${pattern.exhale}s exhale`,pattern.hold_out&&`${pattern.hold_out}s hold`].filter(Boolean).join(' · ')}
         </p>
       )}
       <div style={{display:'flex',gap:'10px',width:'100%',maxWidth:'300px'}}>
         {!isDone&&(
-          <button onClick={toggle} style={{flex:1,padding:'0.875rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'10px',color:'#000',fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
+          <button onClick={toggle} style={{flex:1,padding:'0.875rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'10px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             {isActive?<Pause size={16}/>:<Play size={16}/>}
             {isActive?'Pause':elapsed===0?'Start':'Resume'}
           </button>
         )}
-        <button onClick={handleClose} style={{flex:isDone?1:0,padding:'0.875rem 1.5rem',backgroundColor:'transparent',border:`1px solid ${BORDER}`,borderRadius:'10px',color:TEXT,fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>{isDone?'Finish':'End'}</button>
+        <button onClick={handleClose} style={{flex:isDone?1:0,padding:'0.875rem 1.5rem',backgroundColor:'transparent',border:`1px solid ${BORDER}`,borderRadius:'10px',color:TEXT,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>{isDone?'Finish':'End'}</button>
       </div>
     </div>
   );
@@ -324,18 +324,18 @@ function ExpandedDetail({ item }) {
     <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:`1px solid ${BORDER}`,display:'flex',flexDirection:'column',gap:'12px'}}>
       {sections.map((s,i)=>(
         <div key={i}>
-          {s.heading&&<p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:700,color:TEXT,margin:'0 0 4px'}}>{s.heading}</p>}
-          <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{s.body}</p>
+          {s.heading&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,color:TEXT,margin:'0 0 4px'}}>{s.heading}</p>}
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{s.body}</p>
         </div>
       ))}
-      {body.map((para,i)=><p key={i} style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{para}</p>)}
+      {body.map((para,i)=><p key={i} style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.65}}>{para}</p>)}
       {keyPoints.length>0&&(
         <div style={{backgroundColor:'#1a1a1a',borderRadius:'8px',padding:'0.875rem'}}>
-          <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',fontWeight:700,color:TEXT,margin:'0 0 0.5rem'}}>Key Takeaways</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,color:TEXT,margin:'0 0 0.5rem'}}>Key Takeaways</p>
           {keyPoints.map((kp,i)=>(
             <div key={i} style={{display:'flex',alignItems:'flex-start',gap:'8px',marginBottom:'6px'}}>
               <span style={{color:ORANGE,flexShrink:0,marginTop:'2px'}}>›</span>
-              <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{kp}</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{kp}</p>
             </div>
           ))}
         </div>
@@ -358,15 +358,15 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
           <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'8px',marginBottom:'6px'}}>
             <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.01em',margin:0,lineHeight:1.2}}>{item.title}</p>
             {item.duration_minutes>0&&(
-              <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',fontWeight:700,color:typeInfo.color,flexShrink:0}}>
+              <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,color:typeInfo.color,flexShrink:0}}>
                 <Clock size={12}/>{item.duration_minutes}m
               </span>
             )}
           </div>
-          {item.description&&<p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
+          {item.description&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
           <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
             {item.difficulty&&(
-              <span style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.62rem',fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',padding:'2px 8px',borderRadius:'4px',backgroundColor:`${item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}18`,color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}}>
+              <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',padding:'2px 8px',borderRadius:'4px',backgroundColor:`${item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}18`,color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}}>
                 {item.difficulty}
               </span>
             )}
@@ -375,12 +375,12 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart }) {
       </div>
       <div style={{marginTop:'0.875rem'}}>
         {isInteractive?(
-          <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
+          <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             <Play size={14}/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
           </button>
         ):(
           <>
-            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'Satoshi',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}}
+            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}}
               onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}>
               <span>{expanded?'Hide details':'View details'}</span>
               {expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}
@@ -443,9 +443,9 @@ export default function ClientWellness() {
         {/* Header */}
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',margin:'1.25rem 0 1.5rem'}}>
           <div>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Recovery</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Recovery</p>
             <h1 style={{fontFamily:"'Clash Display',system-ui",fontSize:'2rem',fontWeight:700,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 0.25rem'}}>Mind & Wellness</h1>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Mental performance & recovery</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Mental performance & recovery</p>
           </div>
           {isPro?(
             <span style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:700,padding:'4px 12px',borderRadius:'20px',background:`linear-gradient(135deg,${YELLOW},${ORANGE})`,color:'#000'}}>
@@ -461,7 +461,7 @@ export default function ClientWellness() {
         {/* Type tabs */}
         <div style={{display:'flex',gap:'6px',overflowX:'auto',paddingBottom:'4px',marginBottom:'1rem'}}>
           {TYPES.map(({key,label,icon:Icon})=>{const active=tab===key;const ti=TYPES.find(t=>t.key===key);return(
-            <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'8px',border:`1px solid ${active?ti.color:BORDER}`,backgroundColor:active?`${ti.color}20`:'transparent',color:active?ti.color:MUTED,fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',fontWeight:700,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',transition:'all 0.15s'}}>
+            <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'8px',border:`1px solid ${active?ti.color:BORDER}`,backgroundColor:active?`${ti.color}20`:'transparent',color:active?ti.color:MUTED,fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:700,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',transition:'all 0.15s'}}>
               <Icon size={13}/>{label}
             </button>
           );})}
@@ -471,7 +471,7 @@ export default function ClientWellness() {
         {sectionInfo&&(
           <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'0.875rem 1rem',backgroundColor:SURFACE,borderRadius:'10px',border:`1px solid ${BORDER}`,marginBottom:'1rem'}}>
             <span style={{fontSize:'1.25rem',flexShrink:0}}>{sectionInfo.emoji}</span>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{sectionInfo.text}</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{sectionInfo.text}</p>
           </div>
         )}
 
@@ -479,7 +479,7 @@ export default function ClientWellness() {
         {!isPro&&isLimited&&(
           <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'0.75rem 1rem',backgroundColor:`${YELLOW}10`,border:`1px solid ${YELLOW}22`,borderRadius:'8px',marginBottom:'1rem'}}>
             <Crown size={14} color={YELLOW}/>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.75rem',color:YELLOW,margin:0}}>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,margin:0}}>
               Showing 1 preview. <button onClick={()=>navigate('/client/upgrade')} style={{background:'none',border:'none',color:YELLOW,fontWeight:700,cursor:'pointer',textDecoration:'underline',padding:0,minHeight:'auto'}}>Upgrade to Pro</button> for the full library.
             </p>
           </div>
@@ -535,7 +535,7 @@ export default function ClientWellness() {
           </div>
         ):tabContent.length===0?(
           <div style={{textAlign:'center',padding:'3rem 0'}}>
-            <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',color:MUTED}}>No content available yet</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:MUTED}}>No content available yet</p>
           </div>
         ):(
           <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -549,8 +549,8 @@ export default function ClientWellness() {
               <div style={{backgroundColor:SURFACE,border:`1px solid ${YELLOW}22`,borderRadius:'12px',padding:'2rem',textAlign:'center'}}>
                 <Crown size={24} color={YELLOW} style={{marginBottom:'0.75rem'}}/>
                 <p style={{fontFamily:"'Clash Display',system-ui",fontSize:'1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:'0 0 0.4rem'}}>Unlock Full Library</p>
-                <p style={{fontFamily:"'Satoshi',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1rem',lineHeight:1.6}}>Get unlimited access to all sessions with BrazilFit Pro.</p>
-                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.8rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'Satoshi',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',minHeight:'auto'}}>Upgrade to Pro</button>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1rem',lineHeight:1.6}}>Get unlimited access to all sessions with BrazilFit Pro.</p>
+                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.8rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',minHeight:'auto'}}>Upgrade to Pro</button>
               </div>
             )}
           </div>

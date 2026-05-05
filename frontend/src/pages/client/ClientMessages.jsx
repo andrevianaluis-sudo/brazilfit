@@ -61,13 +61,13 @@ export default function ClientMessages() {
 
   if (!pt) return (
     <div style={{ backgroundColor: BG, minHeight: '100vh', padding: '2rem 1.5rem' }}>
-      <button onClick={() => navigate('/client')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 500, marginBottom: '3rem', padding: 0, minHeight: 'auto' }}>
+      <button onClick={() => navigate('/client')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 500, marginBottom: '3rem', padding: 0, minHeight: 'auto' }}>
         <ArrowLeft size={16} /> Back
       </button>
       <div style={{ textAlign: 'center', maxWidth: '360px', margin: '0 auto' }}>
         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👤</div>
         <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.3rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>No PT Assigned</h2>
-        <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.85rem', color: MUTED, margin: 0, lineHeight: 1.6 }}>You don't have a PT assigned yet. Contact your gym to get started.</p>
+        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', color: MUTED, margin: 0, lineHeight: 1.6 }}>You don't have a PT assigned yet. Contact your gym to get started.</p>
       </div>
     </div>
   );
@@ -91,14 +91,14 @@ export default function ClientMessages() {
         </div>
 
         <div>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT, margin: 0, letterSpacing: '-0.01em' }}>{pt.name}</p>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: GREEN, margin: 0, fontWeight: 600 }}>Your Personal Trainer</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT, margin: 0, letterSpacing: '-0.01em' }}>{pt.name}</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: GREEN, margin: 0, fontWeight: 600 }}>Your Personal Trainer</p>
         </div>
 
         {/* Online dot */}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '5px' }}>
           <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: GREEN, boxShadow: `0 0 6px ${GREEN}` }} />
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: GREEN, fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>Online</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: GREEN, fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>Online</p>
         </div>
       </div>
 
@@ -108,14 +108,14 @@ export default function ClientMessages() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
             <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: SURFACE, border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', fontSize: '1.5rem' }}>💬</div>
             <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: MUTED, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>No messages yet</p>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0, opacity: 0.7 }}>Send a message to get started!</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0, opacity: 0.7 }}>Send a message to get started!</p>
           </div>
         ) : (
           <>
             {/* Date separator */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '0.5rem 0' }}>
               <div style={{ flex: 1, height: '1px', backgroundColor: BORDER }} />
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 600, color: MUTED, margin: 0, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Today</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 600, color: MUTED, margin: 0, letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>Today</p>
               <div style={{ flex: 1, height: '1px', backgroundColor: BORDER }} />
             </div>
 
@@ -138,9 +138,9 @@ export default function ClientMessages() {
                       border: isClient ? 'none' : `1px solid ${BORDER}`,
                       wordBreak: 'break-word',
                     }}>
-                      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: isClient ? '#000' : TEXT, margin: 0, lineHeight: 1.5, fontWeight: isClient ? 500 : 400 }}>{msg.message_text}</p>
+                      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: isClient ? '#000' : TEXT, margin: 0, lineHeight: 1.5, fontWeight: isClient ? 500 : 400 }}>{msg.message_text}</p>
                     </div>
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', color: MUTED, margin: '4px 0 0', textAlign: isClient ? 'right' : 'left' }}>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: '4px 0 0', textAlign: isClient ? 'right' : 'left' }}>
                       {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -165,7 +165,7 @@ export default function ClientMessages() {
               flex: 1, padding: '0.75rem 1rem',
               border: `1px solid ${BORDER}`, borderRadius: '10px',
               backgroundColor: SURFACE2, color: TEXT,
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem',
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem',
               resize: 'none', outline: 'none', lineHeight: 1.5,
               transition: 'border-color 0.15s',
             }}

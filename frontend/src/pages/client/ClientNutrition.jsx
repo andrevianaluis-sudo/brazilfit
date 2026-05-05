@@ -79,10 +79,10 @@ function TipCard({ tip, isExpanded, onToggleExpand, isSaved, onToggleSave }) {
         }}>{isSaved ? '⭐' : '☆'}</button>
       </div>
       <h3 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>{tip.title}</h3>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.82rem', color: '#b0b0b0', lineHeight: 1.65, margin: '0 0 0.5rem',
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#b0b0b0', lineHeight: 1.65, margin: '0 0 0.5rem',
         ...(isExpanded ? {} : { overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' })
       }}>{tip.content}</p>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.7rem', color: cat.color, fontStyle: 'italic', margin: 0 }}>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: cat.color, fontStyle: 'italic', margin: 0 }}>
         {isExpanded ? 'Tap to collapse' : 'Tap to read more'}
       </p>
     </div>
@@ -131,14 +131,14 @@ function MealCard({ meal, onFavorite, onRecipe, isPro }) {
             </button>
           )}
         </div>
-        <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: MUTED, margin: '0 0 6px', fontWeight: 500 }}>{meal.calories} cal</p>
+        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: '0 0 6px', fontWeight: 500 }}>{meal.calories} cal</p>
         {meal.goal && (
-          <span style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: goalColor, backgroundColor: `${goalColor}15`, padding: '2px 8px', borderRadius: '3px' }}>
+          <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: goalColor, backgroundColor: `${goalColor}15`, padding: '2px 8px', borderRadius: '3px' }}>
             {meal.goal.replace('-', ' ')}
           </span>
         )}
         {meal.description && (
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.78rem', color: '#808080', margin: '6px 0 0', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{meal.description}</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: '#808080', margin: '6px 0 0', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{meal.description}</p>
         )}
       </div>
     </div>
@@ -153,13 +153,13 @@ function ProGate({ count, type, onUpgrade }) {
         <Crown size={20} color={YELLOW} />
       </div>
       <p style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Unlock Full {type} Library</p>
-      <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.8rem', color: MUTED, margin: '0 0 1.25rem', lineHeight: 1.6 }}>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: '0 0 1.25rem', lineHeight: 1.6 }}>
         Get access to all {count} {type.toLowerCase()} with BrazilFit Pro
       </p>
       <button onClick={onUpgrade} style={{
         padding: '0.8rem 2rem', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
         border: 'none', borderRadius: '8px', color: '#000',
-        fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 800,
+        fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 800,
         cursor: 'pointer', minHeight: 'auto',
       }}>Upgrade to Pro</button>
     </div>
@@ -180,7 +180,7 @@ function FilterPills({ options, active, onChange }) {
             border: `1px solid ${isActive ? col : BORDER}`,
             backgroundColor: isActive ? `${col}20` : 'transparent',
             color: isActive ? col : MUTED,
-            fontFamily: "'Satoshi', system-ui", fontSize: '0.75rem', fontWeight: 700,
+            fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', fontWeight: 700,
             cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto', whiteSpace: 'nowrap',
           }}>
             {CATEGORY_COLORS[opt.key]?.emoji && <span style={{ fontSize: '0.9rem' }}>{CATEGORY_COLORS[opt.key].emoji}</span>}
@@ -252,7 +252,7 @@ export default function ClientNutrition() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Fuel</p>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Fuel</p>
           <h1 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Nutrition</h1>
         </div>
 
@@ -266,13 +266,13 @@ export default function ClientNutrition() {
             <div style={{ position: 'absolute', top: '1rem', right: '1.25rem', fontSize: '3rem', color: `${YELLOW}20`, fontWeight: 900, lineHeight: 1 }}>"</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
               <span>⭐</span>
-              <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: 0 }}>Tip of the Week</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: 0 }}>Tip of the Week</p>
             </div>
             <span style={{ backgroundColor: `${CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE}20`, color: CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE, padding: '3px 10px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               {tipOfWeek.category}
             </span>
             <h2 style={{ fontFamily: "'Clash Display', system-ui", fontSize: '1.2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0.6rem 0 0.5rem' }}>{tipOfWeek.title}</h2>
-            <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.85rem', color: '#c0c0c0', lineHeight: 1.65, margin: 0 }}>{tipOfWeek.content}</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', color: '#c0c0c0', lineHeight: 1.65, margin: 0 }}>{tipOfWeek.content}</p>
           </div>
         )}
 
@@ -281,7 +281,7 @@ export default function ClientNutrition() {
           {['tips', 'meals', 'shopping'].map(tabName => (
             <button key={tabName} onClick={() => setTab(tabName)} style={{
               padding: '0.75rem 1.25rem',
-              fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', fontWeight: 600,
+              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600,
               color: tab === tabName ? ORANGE : MUTED,
               borderBottom: `2px solid ${tab === tabName ? ORANGE : 'transparent'}`,
                 background: 'none', border: 'none',
@@ -303,7 +303,7 @@ export default function ClientNutrition() {
                 <FilterPills options={CATEGORIES} active={categoryFilter} onChange={setCategoryFilter} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {filteredTips.length === 0 ? (
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: MUTED, textAlign: 'center', padding: '2rem 0' }}>No tips in this category</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: MUTED, textAlign: 'center', padding: '2rem 0' }}>No tips in this category</p>
                   ) : filteredTips.map(tip => (
                     <TipCard key={tip.id} tip={tip}
                       isExpanded={expandedTipId === tip.id}
@@ -346,7 +346,7 @@ export default function ClientNutrition() {
                 />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {filteredMeals.length === 0 ? (
-                    <p style={{ fontFamily: "'Satoshi', system-ui", fontSize: '0.875rem', color: MUTED, textAlign: 'center', padding: '2rem 0' }}>No meals here</p>
+                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: MUTED, textAlign: 'center', padding: '2rem 0' }}>No meals here</p>
                   ) : filteredMeals.map(m => (
                     <MealCard key={m.id} meal={m} isPro={user?.isPro}
                       onFavorite={() => toggleFavorite(m.id)}
