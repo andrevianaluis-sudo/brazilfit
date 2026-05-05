@@ -496,8 +496,8 @@ export default function ClientWellness() {
                 <ContentCard key={item.id} item={item} tab={tab}
                   expanded={expanded===item.id}
                   onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
-                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}/>
-              ))}
+                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}
+                  onStartRoutine={item.type==="rest_day"?()=>setStretchRoutineSession(item):null}/>
             </div>
             <div style={{borderTop:`1px solid ${BORDER}`,paddingTop:"1.25rem",marginBottom:"1rem"}}>
             <p style={{fontSize:"0.6rem",fontWeight:400,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 0.75rem"}}>Browse All Stretches</p>
@@ -546,8 +546,8 @@ export default function ClientWellness() {
               <ContentCard key={item.id} item={item} tab={tab}
                 expanded={expanded===item.id}
                 onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
-                onStart={()=>{if(item.type==='breathing')setBreathingSession(item);else setActiveSession(item);}}/>
-            ))}
+                onStart={()=>{if(item.type==='breathing')setBreathingSession(item);else setActiveSession(item);}}
+                onStartRoutine={item.type==='rest_day'?()=>setStretchRoutineSession(item):null}/>
             {isLimited&&(
               <div style={{backgroundColor:SURFACE,border:`1px solid ${YELLOW}22`,borderRadius:'12px',padding:'2rem',textAlign:'center'}}>
                 <Crown size={24} color={YELLOW} style={{marginBottom:'0.75rem'}}/>
