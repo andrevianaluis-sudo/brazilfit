@@ -284,12 +284,4 @@ router.delete('/photos/:photoId', (req, res) => {
 });
 
 
-// TEMP: Delete all progress entries for a client
-router.delete("/entries/:clientId", (req, res) => {
-  if (req.user.role !== "pt") return res.status(403).json({ error: "PT only" });
-  const db = getDb();
-  const result = db.prepare("DELETE FROM progress_entries WHERE client_id = ?").run(req.params.clientId);
-  res.json({ deleted: result.changes });
-});
-
 module.exports = router;
