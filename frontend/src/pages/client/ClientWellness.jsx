@@ -380,15 +380,18 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRout
           <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             <Play size={14}/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
           </button>
-        ):(
+        ):isStretchRoutine?(
           <>
-            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}}
-              onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}>
-              <span>{expanded?'Hide details':'View details'}</span>
-              {expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}
-            </button>
+              <button onClick={onStartRoutine} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:'none',borderRadius:'8px',color:'#fff',fontSize:'0.875rem',fontWeight:400,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto',marginBottom:8}}><Play size={14}/> Start Routine</button>
+            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto'}} onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}><span>{expanded?'Hide exercises':'Preview exercises'}</span>{expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
             {expanded&&<ExpandedDetail item={item}/>}
           </>
+        ):(
+          <>
+            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}} onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}><span>{expanded?'Hide details':'View details'}</span>{expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
+            {expanded&&<ExpandedDetail item={item}/>}
+          </>
+        )}
         )}
       </div>
     </div>
