@@ -41,7 +41,7 @@ export default function ClientLayout() {
   };
 
   const handleLogout = () => { logout(); navigate('/login'); };
-  useEffect(()=>{ api.get('/pt/client-notifications').then(r=>{setUnreadCount(r.data.unreadCount||0);setNotifications(r.data.notifications||[]);}).catch(()=>{}); },[]);
+  useEffect(()=>{ api.get('/messages/client-notifications').then(r=>{setUnreadCount(r.data.unreadCount||0);setNotifications(r.data.notifications||[]);}).catch(()=>{}); },[]);
 
   const currentLabel = navigationItems.find(item => isActive(item.to, item.exact))?.label || 'Dashboard';
 
