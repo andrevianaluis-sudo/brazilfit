@@ -137,7 +137,7 @@ export default function ClientLayout() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button onClick={()=>setShowNotifs(n=>!n)} style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: showNotifs?'rgba(255,107,43,0.1)':'transparent', cursor: 'pointer', color: showNotifs?'#FF6B2B':'#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
+            <button onClick={()=>{ setShowNotifs(n=>!n); if (!showNotifs && unreadCount>0) { api.put('/messages/client-notifications/read-all').then(()=>{ setUnreadCount(0); setNotifications(n=>n.map(x=>({...x,is_read:1}))); }).catch(()=>{}); } }} style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: showNotifs?'rgba(255,107,43,0.1)':'transparent', cursor: 'pointer', color: showNotifs?'#FF6B2B':'#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
               <Bell size={18} />
               {unreadCount > 0 && <span style={{ position: 'absolute', top: '4px', right: '4px', minWidth: '16px', height: '16px', background: '#FF6B2B', borderRadius: '50%', fontSize: '9px', fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount > 9 ? '9+' : unreadCount}</span>}
             </button>
