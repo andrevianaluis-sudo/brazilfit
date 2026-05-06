@@ -67,7 +67,7 @@ router.post('/', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(client.id, client.pt_id, 'client', message_text);
 
-    try { const st = db.prepare('SELECT settings FROM user_settings WHERE user_id = (SELECT user_id FROM clients WHERE id = ?)').get(clientId); const s = st ? JSON.parse(st.settings||'{}') : {}; if (s.ptMessage !== false) { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } } catch(e) {}
+    try { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } catch(e) { console.error('Notif error:', e.message); }
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
@@ -201,7 +201,7 @@ router.post('/pt/client/:clientId', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(clientId, req.user.id, 'pt', message_text);
 
-    try { const st = db.prepare('SELECT settings FROM user_settings WHERE user_id = (SELECT user_id FROM clients WHERE id = ?)').get(clientId); const s = st ? JSON.parse(st.settings||'{}') : {}; if (s.ptMessage !== false) { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } } catch(e) {}
+    try { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } catch(e) { console.error('Notif error:', e.message); }
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
