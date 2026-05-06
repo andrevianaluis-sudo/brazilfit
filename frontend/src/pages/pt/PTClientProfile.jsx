@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Phone, Mail, Calendar, CheckCircle, XCircle,
@@ -13,7 +13,7 @@ import PhotoGallery from '../../components/PhotoGallery';
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-// ── Override Cancel Modal ─────────────────────────────────────────────────────
+// â”€â”€ Override Cancel Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function OverrideModal({ session, onConfirm, onClose }) {
   const [note, setNote] = useState('');
@@ -55,7 +55,7 @@ function OverrideModal({ session, onConfirm, onClose }) {
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
-            placeholder="e.g. Emergency — rescheduling next week"
+            placeholder="e.g. Emergency â€” rescheduling next week"
             className="input resize-none h-20 text-sm w-full"
           />
         </div>
@@ -66,7 +66,7 @@ function OverrideModal({ session, onConfirm, onClose }) {
             disabled={loading}
             className="flex-1 py-3.5 text-sm font-semibold text-orange-400 hover:bg-orange-500/10 border-l border-white/10 transition-all disabled:opacity-50"
           >
-            {loading ? 'Applying…' : 'Approve Override'}
+            {loading ? 'Applyingâ€¦' : 'Approve Override'}
           </button>
         </div>
       </div>
@@ -74,8 +74,40 @@ function OverrideModal({ session, onConfirm, onClose }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
+function CheckinsTab({ clientId }) {
+  const [checkins, setCheckins] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    api.get('/checkins/pt/summary').then(r => {
+      const client = r.data.summary?.find(c => c.clientId === parseInt(clientId));
+      setCheckins(client?.pastCheckins || []);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, [clientId]);
+
+  if (loading) return <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>;
+  if (checkins.length === 0) return <p className="text-center text-grey-100 py-8">No check-ins submitted yet</p>;
+
+  return (
+    <div className="space-y-4">
+      {checkins.map((c, i) => (
+        <div key={i} className="card-dark border border-white/5 space-y-3">
+          <div className="flex justify-between items-center">
+            <p className="font-semibold text-brazil-green">Week of {c.week_start}</p>
+            <span className="text-xs text-grey-100">{new Date(c.submitted_at).toLocaleDateString()}</span>
+          </div>
+          {c.goals_last_week && <div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Goals last week</p><p className="text-sm">{c.goals_last_week}</p></div>}
+          {c.workout_feel && <div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Workout feel</p><p className="text-sm">{c.workout_feel}</p></div>}
+          {c.motivation_score && <div className="flex gap-4"><div><p className="text-xs text-grey-200">Motivation</p><p className="font-bold text-brazil-green">{c.motivation_score}/10</p></div><div><p className="text-xs text-grey-200">Stress</p><p className="font-bold text-brazil-yellow">{c.stress_score}/10</p></div><div><p className="text-xs text-grey-200">Mood</p><p className="font-bold">{c.mood}</p></div></div>}
+          {c.insight && <div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Insight</p><p className="text-sm italic">"{c.insight}"</p></div>}
+          {c.challenges?.[0] && <div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Challenges</p><p className="text-sm">{Array.isArray(c.challenges) ? c.challenges.join(', ') : c.challenges}</p></div>}
+        </div>
+      ))}
+    </div>
+  );
+}
 export default function PTClientProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -298,7 +330,7 @@ export default function PTClientProfile() {
   const handleOverride = async (sessionId, note) => {
     try {
       await api.post(`/sessions/${sessionId}/override-cancel`, { override_note: note });
-      toast.success('Override applied — session carried over.');
+      toast.success('Override applied â€” session carried over.');
       setOverrideTarget(null);
       loadClient();
     } catch {
@@ -324,7 +356,7 @@ export default function PTClientProfile() {
   const upcomingSessions = client.sessions?.filter(s => s.status === 'upcoming') || [];
   const cancelledSessions = client.sessions?.filter(s => s.status === 'cancelled') || [];
 
-  const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'onboarding', 'assessment', 'programme', 'workouts'];
+  const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'checkins', 'onboarding', 'assessment', 'programme', 'workouts'];
 
   return (
     <div className="animate-fade-in">
@@ -362,7 +394,7 @@ export default function PTClientProfile() {
         <div className="mt-4 card-dark p-3">
           <div className="flex justify-between items-center mb-2">
             <div>
-              <p className="text-xs text-grey-200">Block {client.current_block_number} · Started {fmtDate(client.block_start_date)}</p>
+              <p className="text-xs text-grey-200">Block {client.current_block_number} Â· Started {fmtDate(client.block_start_date)}</p>
               <p className="font-bold">
                 <span className="text-brazil-green">{client.sessions_used}</span>
                 <span className="text-grey-100"> / 10 sessions</span>
@@ -371,7 +403,7 @@ export default function PTClientProfile() {
                 </span>
               </p>
             </div>
-            <p className="text-lg font-bold text-brazil-yellow">£{client.block_price}</p>
+            <p className="text-lg font-bold text-brazil-yellow">Â£{client.block_price}</p>
           </div>
           <div className="bg-grey-100 rounded-full h-2.5">
             <div className={`h-full rounded-full transition-all ${pct >= 90 ? 'bg-red-400' : pct >= 80 ? 'bg-orange-400' : 'bg-brazil-green'}`}
@@ -416,7 +448,7 @@ export default function PTClientProfile() {
 
       <div className="px-4 py-4">
 
-        {/* ── Overview ── */}
+        {/* â”€â”€ Overview â”€â”€ */}
         {activeTab === 'overview' && (
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-3">
@@ -439,7 +471,7 @@ export default function PTClientProfile() {
                 <p className="text-xs font-semibold text-grey-200 mb-1">Cancellations this block</p>
                 <p className="text-2xl font-black text-grey-200">{cancelledSessions.length}</p>
                 <p className="text-xs text-grey-200 mt-0.5">
-                  {cancelledSessions.filter(s => s.session_carried_over).length} carried over · {cancelledSessions.filter(s => s.cancelled_by === 'pt_override').length} PT override
+                  {cancelledSessions.filter(s => s.session_carried_over).length} carried over Â· {cancelledSessions.filter(s => s.cancelled_by === 'pt_override').length} PT override
                 </p>
               </div>
             )}
@@ -473,7 +505,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Sessions ── */}
+        {/* â”€â”€ Sessions â”€â”€ */}
         {activeTab === 'sessions' && (
           <div className="space-y-2">
             {/* Upcoming sessions with override option */}
@@ -492,13 +524,13 @@ export default function PTClientProfile() {
                           <p className="text-sm font-medium">{s.scheduled_date} at {s.scheduled_time}</p>
                           <p className="text-xs text-grey-100">
                             {isWithin24
-                              ? <span className="text-orange-400">Within 24hrs — client cannot cancel</span>
+                              ? <span className="text-orange-400">Within 24hrs â€” client cannot cancel</span>
                               : 'Upcoming'}
                           </p>
                         </div>
                         <button
                           onClick={() => setOverrideTarget(s)}
-                          title="Override cancel — carry session over"
+                          title="Override cancel â€” carry session over"
                           className="flex items-center gap-1 text-[10px] text-orange-400/70 hover:text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/15 px-2 py-1 rounded-lg transition-all"
                         >
                           <RotateCcw className="w-3 h-3" /> Override
@@ -527,11 +559,11 @@ export default function PTClientProfile() {
                  <div className="w-5 h-5 rounded-full border-2 border-white/20 flex-shrink-0" />}
                 <div className="flex-1">
                   <p className="text-sm font-medium">{s.scheduled_date} at {s.scheduled_time}</p>
-                  {s.status === 'missed' && <p className="text-xs text-red-400">Missed — carried over</p>}
+                  {s.status === 'missed' && <p className="text-xs text-red-400">Missed â€” carried over</p>}
                   {s.status === 'cancelled' && (
                     <p className="text-xs text-grey-200">
-                      Cancelled · {s.cancellation_notice_hours != null ? `${Math.floor(s.cancellation_notice_hours)}h notice` : '—'}
-                      {s.cancelled_by === 'pt_override' ? ' · PT override' : ''}
+                      Cancelled Â· {s.cancellation_notice_hours != null ? `${Math.floor(s.cancellation_notice_hours)}h notice` : 'â€”'}
+                      {s.cancelled_by === 'pt_override' ? ' Â· PT override' : ''}
                     </p>
                   )}
                 </div>
@@ -548,7 +580,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Cancellations ── */}
+        {/* â”€â”€ Cancellations â”€â”€ */}
         {activeTab === 'cancellations' && (
           <div className="space-y-3">
             {cancelledSessions.length === 0 ? (
@@ -606,7 +638,7 @@ export default function PTClientProfile() {
                               ? noticeHours >= 48
                                 ? `${noticeDays} days`
                                 : `${Math.floor(noticeHours)} hours`
-                              : '—'}
+                              : 'â€”'}
                           </p>
                         </div>
                         <div className="bg-grey-100 rounded-lg px-2.5 py-2">
@@ -630,7 +662,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Progress ── */}
+        {/* â”€â”€ Progress â”€â”€ */}
         {activeTab === 'progress' && (
           <div className="space-y-3">
             {client.progress?.length === 0 ? (
@@ -651,14 +683,14 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Photos ── */}
+        {/* â”€â”€ Photos â”€â”€ */}
         {activeTab === 'photos' && (
           <div>
             <PhotoGallery clientId={id} />
           </div>
         )}
 
-        {/* ── Notes ── */}
+        {/* â”€â”€ Notes â”€â”€ */}
         {activeTab === 'notes' && (
           <div className="space-y-3">
             <button
@@ -692,7 +724,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Messages ── */}
+        {/* â”€â”€ Messages â”€â”€ */}
         {activeTab === 'messages' && (
           <div className="flex flex-col h-[500px] gap-3">
             {messagesLoading && messages.length === 0 ? (
@@ -760,7 +792,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Blocks ── */}
+        {/* â”€â”€ Blocks â”€â”€ */}
         {activeTab === 'blocks' && (
           <div className="space-y-3">
             {client.blocks?.length === 0 ? (
@@ -773,20 +805,20 @@ export default function PTClientProfile() {
                     <p className="text-xs text-grey-200">Started {b.start_date}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-brazil-yellow">£{b.amount_paid}</p>
+                    <p className="font-bold text-brazil-yellow">Â£{b.amount_paid}</p>
                     {b.is_current ? <span className="badge-green text-[10px]">Current</span> : <span className="text-xs text-grey-100">Completed</span>}
                   </div>
                 </div>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-brazil-green">✓ {b.sessions_attended} attended</span>
-                  {b.sessions_missed > 0 && <span className="text-red-400">✕ {b.sessions_missed} missed</span>}
+                  <span className="text-brazil-green">âœ“ {b.sessions_attended} attended</span>
+                  {b.sessions_missed > 0 && <span className="text-red-400">âœ• {b.sessions_missed} missed</span>}
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* ── Onboarding ── */}
+        {/* â”€â”€ Onboarding â”€â”€ */}
         {activeTab === 'onboarding' && (
           <div className="space-y-4">
             {onboardingLoading ? (
@@ -826,8 +858,8 @@ export default function PTClientProfile() {
                     <div className="flex items-center justify-between mb-3">
                       <p className="text-xs font-bold text-grey-200 uppercase">PAR-Q Results</p>
                       {onboardingData.parq.any_yes
-                        ? <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full font-semibold">⚠ Medical flag</span>
-                        : <span className="text-xs bg-brazil-green/20 text-brazil-green px-2 py-0.5 rounded-full font-semibold">✓ All clear</span>}
+                        ? <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full font-semibold">âš  Medical flag</span>
+                        : <span className="text-xs bg-brazil-green/20 text-brazil-green px-2 py-0.5 rounded-full font-semibold">âœ“ All clear</span>}
                     </div>
                     {['Has heart condition', 'Chest pain during activity', 'Chest pain at rest', 'Dizziness/balance issues', 'Bone/joint problems', 'BP/heart medication', 'Other reason'].map((q, i) => {
                       const ans = onboardingData.parq[`q${i+1}`];
@@ -863,7 +895,7 @@ export default function PTClientProfile() {
                     {(onboardingData.personal.emergency_contact_name) && (
                       <div className="mt-3 pt-3 border-t border-white/8">
                         <p className="text-[10px] text-grey-100 mb-1">Emergency Contact</p>
-                        <p className="text-sm">{onboardingData.personal.emergency_contact_name} · {onboardingData.personal.emergency_contact_phone}</p>
+                        <p className="text-sm">{onboardingData.personal.emergency_contact_name} Â· {onboardingData.personal.emergency_contact_phone}</p>
                       </div>
                     )}
                   </div>
@@ -878,10 +910,10 @@ export default function PTClientProfile() {
                       ['Motivation', onboardingData.lifestyle.motivation],
                       ['Exercise Likes', onboardingData.lifestyle.exercise_likes],
                       ['Exercise Dislikes', onboardingData.lifestyle.exercise_dislikes],
-                      ['FITT — Frequency', onboardingData.lifestyle.fitt_frequency],
-                      ['FITT — Intensity', onboardingData.lifestyle.fitt_intensity],
-                      ['FITT — Type', onboardingData.lifestyle.fitt_type],
-                      ['FITT — Time', onboardingData.lifestyle.fitt_time],
+                      ['FITT â€” Frequency', onboardingData.lifestyle.fitt_frequency],
+                      ['FITT â€” Intensity', onboardingData.lifestyle.fitt_intensity],
+                      ['FITT â€” Type', onboardingData.lifestyle.fitt_type],
+                      ['FITT â€” Time', onboardingData.lifestyle.fitt_time],
                       ['Barriers', onboardingData.lifestyle.barriers],
                       ['Strategies', onboardingData.lifestyle.barriers_strategies],
                       ['Short-term Goal', onboardingData.lifestyle.goal_short],
@@ -895,10 +927,10 @@ export default function PTClientProfile() {
                       </div>
                     ) : null)}
                     {onboardingData.lifestyle.smokes && (
-                      <p className="text-xs text-grey-200">🚬 Smokes: {onboardingData.lifestyle.cigarettes_per_day || '?'} per day</p>
+                      <p className="text-xs text-grey-200">ðŸš¬ Smokes: {onboardingData.lifestyle.cigarettes_per_day || '?'} per day</p>
                     )}
                     {onboardingData.lifestyle.drinks_alcohol && (
-                      <p className="text-xs text-grey-200 mt-1">🍷 Alcohol: {onboardingData.lifestyle.alcohol_units_per_week || '?'} units/week</p>
+                      <p className="text-xs text-grey-200 mt-1">ðŸ· Alcohol: {onboardingData.lifestyle.alcohol_units_per_week || '?'} units/week</p>
                     )}
                   </div>
                 )}
@@ -928,7 +960,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Assessment ── */}
+        {/* â”€â”€ Assessment â”€â”€ */}
         {activeTab === 'assessment' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -1002,7 +1034,7 @@ export default function PTClientProfile() {
                 <AssessSection title="Cardiovascular Tests">
                   <AssessGrid form={assessmentForm} setForm={setAssessmentForm} fields={[
                     ['cv_step_test_hr', "Queen's Step Test HR", 'number'],
-                    ['cv_step_test_vo2', "VO₂ Max (ml/kg/min)", 'number'],
+                    ['cv_step_test_vo2', "VOâ‚‚ Max (ml/kg/min)", 'number'],
                     ['cv_cooper_time', 'Cooper 1.5mi Run (min)', 'number'],
                   ]} />
                   <AssessField label="Bleep Test Level" field="cv_bleep_level" form={assessmentForm} setForm={setAssessmentForm} placeholder="e.g. Level 8.5" />
@@ -1040,7 +1072,7 @@ export default function PTClientProfile() {
                     className="px-4 py-3 rounded-[8px] bg-grey-100 text-grey-200 text-sm font-medium active:scale-95">Cancel</button>
                   <button onClick={saveAssessment} disabled={assessmentSaving}
                     className="flex-1 py-3 rounded-[8px] bg-brazil-green text-white font-bold text-sm active:scale-95 disabled:opacity-50">
-                    {assessmentSaving ? 'Saving…' : 'Save Assessment'}
+                    {assessmentSaving ? 'Savingâ€¦' : 'Save Assessment'}
                   </button>
                 </div>
               </div>
@@ -1058,7 +1090,7 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Programme ── */}
+        {/* â”€â”€ Programme â”€â”€ */}
         {activeTab === 'programme' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -1084,10 +1116,10 @@ export default function PTClientProfile() {
                       className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none" />
                   </div>
                 </div>
-                <CardSectionEditor title="Warm Up — Pulse Raiser" items={cardForm.warm_up_pulse}
+                <CardSectionEditor title="Warm Up â€” Pulse Raiser" items={cardForm.warm_up_pulse}
                   onChange={items => setCardForm(f => ({ ...f, warm_up_pulse: items }))}
                   columns={['Equipment','Duration','Level','Resistance','Speed','RPE','Heart Rate']} />
-                <CardSectionEditor title="Warm Up — Preparatory Stretches" items={cardForm.warm_up_stretches}
+                <CardSectionEditor title="Warm Up â€” Preparatory Stretches" items={cardForm.warm_up_stretches}
                   onChange={items => setCardForm(f => ({ ...f, warm_up_stretches: items }))}
                   columns={['Muscle Group','Position','Duration','Reps']} />
                 <CardSectionEditor title="Cardiovascular Training" items={cardForm.cardio}
@@ -1096,7 +1128,7 @@ export default function PTClientProfile() {
                 <CardSectionEditor title="Resistance Training" items={cardForm.resistance}
                   onChange={items => setCardForm(f => ({ ...f, resistance: items }))}
                   columns={['Exercise','Equipment','Weight','System','Reps','Sets','Rest','Notes']} />
-                <CardSectionEditor title="Cool Down — Cardiovascular" items={cardForm.cool_down_cv}
+                <CardSectionEditor title="Cool Down â€” Cardiovascular" items={cardForm.cool_down_cv}
                   onChange={items => setCardForm(f => ({ ...f, cool_down_cv: items }))}
                   columns={['Machine/Activity','Duration','System','Level','Speed','RPE','HR']} />
                 <CardSectionEditor title="Post-Workout Stretches (incl. PNF)" items={cardForm.cool_down_stretches}
@@ -1117,7 +1149,7 @@ export default function PTClientProfile() {
                     className="px-4 py-3 rounded-[8px] bg-grey-100 text-grey-200 text-sm font-medium active:scale-95">Cancel</button>
                   <button onClick={saveCard} disabled={cardSaving}
                     className="flex-1 py-3 rounded-[8px] bg-brazil-green text-white font-bold text-sm active:scale-95 disabled:opacity-50">
-                    {cardSaving ? 'Saving…' : 'Save Card'}
+                    {cardSaving ? 'Savingâ€¦' : 'Save Card'}
                   </button>
                 </div>
               </div>
@@ -1212,7 +1244,7 @@ export default function PTClientProfile() {
   );
 }
 
-// ── Assessment helpers ────────────────────────────────────────────────────────
+// â”€â”€ Assessment helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function AssessSection({ title, children }) {
   return (
@@ -1289,7 +1321,7 @@ function AssessmentCard({ assessment }) {
             ['Plank', assessment.me_plank_secs, 's'],
             ['Bench 1RM', assessment.ms_bench_1rm, 'kg'],
             ['Leg Press 1RM', assessment.ms_leg_press_1rm, 'kg'],
-            ['VO₂ Max', assessment.cv_step_test_vo2, 'ml/kg/min'],
+            ['VOâ‚‚ Max', assessment.cv_step_test_vo2, 'ml/kg/min'],
           ].map(([label, val, unit]) => val != null ? (
             <div key={label}>
               <p className="text-grey-100">{label}</p>
@@ -1331,8 +1363,8 @@ function ProgrammeCardView({ card, onDelete }) {
       {expanded && (
         <div className="mt-3 pt-3 border-t border-white/8 space-y-3">
           {[
-            ['Warm Up — Pulse Raiser', parse(card.warm_up_pulse), ['Equipment','Duration','Level','Resistance','Speed','RPE','HR']],
-            ['Warm Up — Stretches', parse(card.warm_up_stretches), ['Muscle Group','Position','Duration','Reps']],
+            ['Warm Up â€” Pulse Raiser', parse(card.warm_up_pulse), ['Equipment','Duration','Level','Resistance','Speed','RPE','HR']],
+            ['Warm Up â€” Stretches', parse(card.warm_up_stretches), ['Muscle Group','Position','Duration','Reps']],
             ['Cardiovascular', parse(card.cardio), ['Machine/Activity','Duration','System','Level','Resistance','Speed','RPE','HR']],
             ['Resistance Training', parse(card.resistance), ['Exercise','Equipment','Weight','System','Reps','Sets','Rest','Notes']],
             ['Cool Down CV', parse(card.cool_down_cv), ['Machine/Activity','Duration','System','Level','Speed','RPE','HR']],
@@ -1348,7 +1380,7 @@ function ProgrammeCardView({ card, onDelete }) {
                   <tbody>
                     {items.map((row, i) => (
                       <tr key={i} className="border-t border-white/5">
-                        {cols.map(c => <td key={c} className="pr-3 py-1 text-grey-200 whitespace-nowrap">{row[c.toLowerCase().replace(/[\s\/]/g,'_')] || '—'}</td>)}
+                        {cols.map(c => <td key={c} className="pr-3 py-1 text-grey-200 whitespace-nowrap">{row[c.toLowerCase().replace(/[\s\/]/g,'_')] || 'â€”'}</td>)}
                       </tr>
                     ))}
                   </tbody>
