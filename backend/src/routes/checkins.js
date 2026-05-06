@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -208,7 +208,7 @@ router.get('/pt/summary', authenticateToken, (req, res) => {
 
   const checkinSummary = clients.map(client => {
     const checkins = db.prepare(`
-      SELECT checkin_week, checkin_date, mood_rating, nutrition_goals_hit, energy_level, sleep_quality, pt_responded_at
+      SELECT checkin_week, checkin_date, mood_rating, nutrition_goals_hit, energy_level, sleep_quality, what_went_well, what_was_challenging, wins, challenges, next_week_goals, workouts_felt, overall_mood, motivation_score, stress_score, goals_last_week, goals_achieved, insight, sleep_hours, water_glasses, daily_steps, pt_responded_at
       FROM weekly_checkins
       WHERE client_id = ? AND checkin_week >= ?
       ORDER BY checkin_week DESC
