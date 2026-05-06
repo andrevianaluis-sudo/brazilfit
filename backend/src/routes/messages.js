@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -67,6 +67,7 @@ router.post('/', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(client.id, client.pt_id, 'client', message_text);
 
+    try { const st = db.prepare('SELECT settings FROM user_settings WHERE user_id = (SELECT user_id FROM clients WHERE id = ?)').get(clientId); const s = st ? JSON.parse(st.settings||'{}') : {}; if (s.ptMessage !== false) { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } } catch(e) {}
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
@@ -104,7 +105,7 @@ router.put('/:id/read', authenticateToken, (req, res) => {
   res.json({ message: 'Message marked as read' });
 });
 
-// ── PT ROUTES ────────────────────────────────────────────────────────────────
+// â”€â”€ PT ROUTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /api/pt/messages - PT gets all unread messages from all clients
 router.get('/pt/inbox', authenticateToken, (req, res) => {
@@ -200,6 +201,7 @@ router.post('/pt/client/:clientId', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(clientId, req.user.id, 'pt', message_text);
 
+    try { const st = db.prepare('SELECT settings FROM user_settings WHERE user_id = (SELECT user_id FROM clients WHERE id = ?)').get(clientId); const s = st ? JSON.parse(st.settings||'{}') : {}; if (s.ptMessage !== false) { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } } catch(e) {}
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
