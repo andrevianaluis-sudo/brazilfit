@@ -370,6 +370,19 @@ function seedUsers() {
 }
 
 function runMigrations() {
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN wins TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN challenges TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN next_week_goals TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN workouts_felt TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN overall_mood TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN motivation_score INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN stress_score INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN goals_last_week TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN goals_achieved INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN insight TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN sleep_hours REAL"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN water_glasses INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER"); } catch(e) {}
   try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE messages ADD COLUMN pt_id INTEGER'); } catch(e) {}
   try { db.exec('ALTER TABLE subscriptions ADD COLUMN active INTEGER DEFAULT 1'); } catch(e) {}
