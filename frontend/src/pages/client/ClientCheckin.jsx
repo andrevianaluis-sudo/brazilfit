@@ -170,14 +170,21 @@ export default function ClientCheckIn() {
     try {
       setSubmitting(true);
       await api.post('/checkins/submit', {
-        checkin_week: currentWeek, ...formData,
+        checkin_week: currentWeek,
         wins: JSON.stringify(filledWins),
         challenges: JSON.stringify(formData.challenges.filter(c => c.trim())),
         next_week_goals: JSON.stringify(formData.next_week_goals.filter(g => g.trim())),
         workouts_felt: formData.workouts_felt || null,
         overall_mood: formData.overall_mood || null,
+        motivation_score: formData.motivation_score || null,
+        stress_score: formData.stress_score || null,
+        sleep_hours: formData.sleep_hours || null,
+        water_glasses: formData.water_glasses || null,
+        daily_steps: formData.daily_steps || null,
+        insight: formData.motivation_factors || null,
+        goals_last_week: formData.goals_barrier || null,
+        goals_achieved: formData.goals_achieved || null,
       });
-      setSubmitted(true);
       toast.success('Check-in submitted!');
       setTimeout(() => fetchCheckIn(), 1000);
     } catch (err) {
