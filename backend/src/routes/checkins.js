@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -96,8 +96,8 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
         sleep_quality || null,
         what_went_well || null,
         what_was_challenging || null,
-        what_was_challenging || null,
         wins || null,
+        challenges || null,
         challenges || null,
         next_week_goals || null,
         workouts_felt || null,
@@ -110,10 +110,11 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
         sleep_hours || null,
         water_glasses || null,
         daily_steps || null,
+        daily_steps || null,
+        today,
         new Date().toISOString(),
         existing.id
       );
-      return res.json({ id: existing.id, message: 'Check-in updated' });
     }
 
     // Create new
