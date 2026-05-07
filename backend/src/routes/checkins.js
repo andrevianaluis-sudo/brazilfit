@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -244,3 +244,5 @@ router.get('/pt/summary', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
+router.delete('/client/:clientId/week/:week', authenticateToken, (req, res) => { if (req.user.role !== 'pt') return res.status(403).json({error:'PT only'}); const db = getDb(); const r = db.prepare('DELETE FROM weekly_checkins WHERE client_id = ? AND checkin_week = ?').run(req.params.clientId, req.params.week); res.json({deleted: r.changes}); });
