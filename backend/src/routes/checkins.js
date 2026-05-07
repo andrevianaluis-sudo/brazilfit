@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -86,7 +86,7 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       // Update existing
       db.prepare(`
         UPDATE weekly_checkins
-        SET mood_rating = ?, nutrition_goals_hit = ?, injuries_concerns = ?, energy_level = ?, sleep_quality = ?, what_went_well = ?, what_was_challenging = ?, checkin_date = ?, updated_at = ?
+        SET mood_rating = ?, nutrition_goals_hit = ?, injuries_concerns = ?, energy_level = ?, sleep_quality = ?, what_went_well = ?, what_was_challenging = ?, wins = ?, challenges = ?, next_week_goals = ?, workouts_felt = ?, overall_mood = ?, motivation_score = ?, stress_score = ?, goals_last_week = ?, goals_achieved = ?, insight = ?, sleep_hours = ?, water_glasses = ?, daily_steps = ?, checkin_date = ?, updated_at = ?
         WHERE id = ?
       `).run(
         mood_rating || null,
@@ -96,7 +96,20 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
         sleep_quality || null,
         what_went_well || null,
         what_was_challenging || null,
-        today,
+        what_was_challenging || null,
+        wins || null,
+        challenges || null,
+        next_week_goals || null,
+        workouts_felt || null,
+        overall_mood || null,
+        motivation_score || null,
+        stress_score || null,
+        goals_last_week || null,
+        goals_achieved || null,
+        insight || null,
+        sleep_hours || null,
+        water_glasses || null,
+        daily_steps || null,
         new Date().toISOString(),
         existing.id
       );
