@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -150,8 +150,8 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
     );
 
   } catch (err) {
-    res.status(500).json({ error: 'Failed to submit check-in' });
-  }
+    console.error('CHECKIN ERROR:', err.message);
+    res.status(500).json({ error: err.message });
 });
 
 // PUT /api/checkins/:id - PT updates response/note
