@@ -135,8 +135,8 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
     );
     res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to submit check-in' });
-  }
+    console.error('CHECKIN SUBMIT ERROR:', err.message, err.stack);
+    res.status(500).json({ error: err.message });
 });
 
 router.put('/:id', authenticateToken, (req, res) => {
