@@ -33,6 +33,21 @@ function getMondayOfWeek(isoWeek) {
 
 // GET /api/checkins/current - Get this week's check-in (if completed)
 
+// Add rich checkin columns migration
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN wins TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN challenges TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN next_week_goals TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN workouts_felt TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN overall_mood TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN motivation_score INTEGER'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN stress_score INTEGER'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN goals_last_week TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN goals_achieved INTEGER'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN insight TEXT'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN sleep_hours REAL'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN water_glasses INTEGER'); } catch(e) {}
+try { db.exec('ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER'); } catch(e) {}
+
 router.get('/current', authenticateToken, requirePro, (req, res) => {
   const db = getDb();
   const currentWeek = getISOWeek(new Date().toISOString().split('T')[0]);
@@ -71,34 +86,34 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       // Update existing
       db.prepare(`
         UPDATE weekly_checkins
-        SET mood_rating = ?, nutrition_goals_hit = ?, injuries_concerns = ?, energy_level = ?, sleep_quality = ?, what_went_well = ?, what_was_challenging = ?, wins = ?, challenges = ?, next_week_goals = ?, workouts_felt = ?, overall_mood = ?, motivation_score = ?, stress_score = ?, goals_last_week = ?, goals_achieved = ?, insight = ?, sleep_hours = ?, water_glasses = ?, daily_steps = ?, checkin_date = ?, updated_at = ?
+        SET mood_rating=?,nutrition_goals_hit=?,injuries_concerns=?,energy_level=?,sleep_quality=?,what_went_well=?,what_was_challenging=?,wins=?,challenges=?,next_week_goals=?,workouts_felt=?,overall_mood=?,motivation_score=?,stress_score=?,goals_last_week=?,goals_achieved=?,insight=?,sleep_hours=?,water_glasses=?,daily_steps=?,checkin_date=?,updated_at=?
         WHERE id = ?
       `).run(
-        mood_rating || null,
-        nutrition_goals_hit || null,
-        injuries_concerns || null,
-        energy_level || null,
-        sleep_quality || null,
-        what_went_well || null,
-        what_was_challenging || null,
-        wins || null,
-        wins || null,
-        challenges || null,
-        next_week_goals || null,
-        workouts_felt || null,
-        overall_mood || null,
-        motivation_score || null,
-        stress_score || null,
-        goals_last_week || null,
-        goals_achieved || null,
-        insight || null,
-        sleep_hours || null,
-        water_glasses || null,
-        daily_steps || null,
+        mood_rating||null,
+        nutrition_goals_hit||null,
+        injuries_concerns||null,
+        energy_level||null,
+        sleep_quality||null,
+        what_went_well||null,
+        what_was_challenging||null,
+        wins||null,
+        challenges||null,
+        next_week_goals||null,
+        workouts_felt||null,
+        overall_mood||null,
+        motivation_score||null,
+        stress_score||null,
+        goals_last_week||null,
+        goals_achieved||null,
+        insight||null,
+        sleep_hours||null,
+        water_glasses||null,
+        daily_steps||null,
         today,
         new Date().toISOString(),
         existing.id
       );
+      return res.json({ id: existing.id, message: 'Check-in updated' });
     }
 
     // Create new
@@ -116,9 +131,9 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       energy_level || null,
       sleep_quality || null,
       what_went_well || null,
+      what_went_well || null,
       what_was_challenging || null,
       wins || null,
-      challenges || null,
       challenges || null,
       next_week_goals || null,
       workouts_felt || null,
@@ -130,15 +145,15 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       insight || null,
       sleep_hours || null,
       water_glasses || null,
-      water_glasses || null,
       daily_steps || null
     );
-    res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
+
   } catch (err) {
-    console.error('CHECKIN SUBMIT ERROR:', err.message, err.stack);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to submit check-in' });
+  }
 });
 
+// PUT /api/checkins/:id - PT updates response/note
 router.put('/:id', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') {
     return res.status(403).json({ error: 'PT only' });
@@ -227,8 +242,5 @@ router.get('/pt/summary', authenticateToken, (req, res) => {
     summary: checkinSummary
   });
 });
-
-
-router.delete('/client/:clientId/week/:week', authenticateToken, (req, res) => { if (req.user.role !== 'pt') return res.status(403).json({error:'PT only'}); const db = getDb(); const r = db.prepare('DELETE FROM weekly_checkins WHERE client_id = ? AND checkin_week = ?').run(req.params.clientId, req.params.week); res.json({deleted: r.changes}); });
 
 module.exports = router;

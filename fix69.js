@@ -1,0 +1,1 @@
+﻿const fs=require("fs");const f="C:/Users/viana/BRAZILFIT/backend/src/routes/checkins.js";let c=fs.readFileSync(f,"utf8");c=c.replace("        existing.id\n      return","        existing.id\n      );\n      return");fs.writeFileSync(f,c,"utf8");console.log("Done:",c.includes("existing.id\n      );"));
