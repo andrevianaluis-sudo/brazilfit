@@ -147,13 +147,13 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       water_glasses || null,
       daily_steps || null
     );
-
+    res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
+    res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to submit check-in' });
+    console.error('CHECKIN ERROR:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
-
-// PUT /api/checkins/:id - PT updates response/note
 router.put('/:id', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') {
     return res.status(403).json({ error: 'PT only' });
