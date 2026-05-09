@@ -11,7 +11,7 @@ import ProfileModal from '../../components/ProfileModal';
 const navigationItems = [
   { icon: Home,         label: 'Dashboard',       to: '/client',                exact: true },
   { icon: Calendar,     label: 'My Sessions',      to: '/client/sessions'                   },
-  { icon: Dumbbell,     label: 'Stretches',        to: '/client/exercises'                   },
+  { icon: Dumbbell,     label: 'My Workouts',      to: '/client/workouts'                   },
   { icon: TrendingUp,   label: 'Progress',         to: '/client/progress'                   },
 
   { icon: Heart,        label: 'Wellness',         to: '/client/wellness'                   },
@@ -19,7 +19,7 @@ const navigationItems = [
   { icon: MessageSquare,label: 'Messages',         to: '/client/messages'                   },
   { icon: CheckSquare,  label: 'Check-in',         to: '/client/checkin'                    },
   { icon: BarChart3,    label: 'Habits',           to: '/client/habits'                     },
-  { icon: Dumbbell,     label: 'Stretches',        to: '/client/exercises'                  },
+  { icon: Zap,          label: 'Stretches',        to: '/client/exercises'                  },
 ];
 
 export default function ClientLayout() {
