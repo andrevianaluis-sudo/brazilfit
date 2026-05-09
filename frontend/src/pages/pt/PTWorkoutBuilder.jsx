@@ -25,12 +25,12 @@ function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const fetchExercises = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (search) params.set('search', search);
-      if (category) params.set('category', category);
-      params.set('limit', '50');
       const res = await api.get('/stretches');
-      setExercises(res.data || []);
+      const all = res.data || [];
+      const filtered = category && category !== 'All' ? all.filter(s => s.muscle_group === category) : all;
+      const searched = search ? filtered.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) : filtered;
+      setExercises(searched);
+      setLoading(false);
     } catch {
       toast.error('Failed to load exercises');
     } finally {
