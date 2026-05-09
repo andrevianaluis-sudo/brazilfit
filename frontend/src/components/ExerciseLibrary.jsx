@@ -1,22 +1,22 @@
-// frontend/src/components/ExerciseLibrary.jsx
+﻿// frontend/src/components/ExerciseLibrary.jsx
 import { useState, useEffect, useCallback } from 'react';
 import api from '../utils/api';
 
 const TABS = [
   { key: '', label: 'All' },
-  { key: 'Push', label: 'Push' },
-  { key: 'Pull', label: 'Pull' },
+  { key: 'Arms', label: 'Arms' },
+  { key: 'Back', label: 'Back' },
+  { key: 'Chest', label: 'Chest' },
+  { key: 'Full Body', label: 'Full Body' },
+  { key: 'Hips', label: 'Hips' },
   { key: 'Legs', label: 'Legs' },
-  { key: 'Core', label: 'Core' },
-  { key: 'Cardio', label: 'Cardio' },
-  { key: 'Stretching', label: '🧘 Stretching' },
   { key: 'Neck', label: 'Neck' },
   { key: 'Shoulders', label: 'Shoulders' },
-  { key: 'Back', label: 'Back' },
-  { key: 'Hips', label: 'Hips' },
-  { key: 'Thighs', label: 'Thighs' },
   { key: 'Calves', label: 'Calves' },
 ];
+
+
+
 
 function ExerciseCard({ exercise, onAdd }) {
   const [imgError, setImgError] = useState(false);
@@ -92,15 +92,15 @@ export default function ExerciseLibrary() {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (search) params.set('search', search);
-      if (activeTab) params.set('category', activeTab);
-      params.set('limit', LIMIT);
-      params.set('offset', reset ? 0 : page * LIMIT);
-
-      const res = await api.get(`/exercises?${params}`);
-      const data = res.data;
-      const list = data.exercises || data || [];
-      const tot = data.total || list.length;
+      const res = await api.get('/stretches');
+      const allData = Array.isArray(res.data) ? res.data : [];
+      const list = activeTab ? allData.filter(s => s.muscle_group === activeTab) : allData;
+      const tot = list.length;
+      setTotal(tot);
+      setExercises(list);
+      setPage(0);
+      const list = Array.isArray(data) ? data : [];
+      const tot = list.length;
 
       setTotal(tot);
       if (reset) {
