@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Plus, Trash2, X, Users, Dumbbell, Check, Edit2 } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
@@ -7,9 +7,9 @@ const GIF_BASE = '/exercise-gifs/';
 
 function getGifUrl(exercise) {
   if (!exercise) return null;
+  if (exercise.gif_file) return GIF_BASE + exercise.gif_file;
   if (exercise.gif_url) return exercise.gif_url;
-  const slug = (exercise.name || exercise.exercise_name || '')
-    .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  return null;
   return slug ? `${GIF_BASE}${slug}.gif` : null;
 }
 
@@ -20,7 +20,7 @@ function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const CATEGORIES = ['Push', 'Pull', 'Legs', 'Core', 'Cardio', 'Compound', 'Isolation'];
+  const CATEGORIES = ['All','Arms','Back','Calves','Chest','Full Body','Hips','Legs','Neck','Shoulders'];
 
   const fetchExercises = useCallback(async () => {
     setLoading(true);
@@ -29,8 +29,8 @@ function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
       if (search) params.set('search', search);
       if (category) params.set('category', category);
       params.set('limit', '50');
-      const res = await api.get(`/exercises?${params}`);
-      setExercises(res.data?.exercises || res.data || []);
+      const res = await api.get('/stretches');
+      setExercises(Array.isArray(res.data) ? res.data : []);
     } catch {
       toast.error('Failed to load exercises');
     } finally {
