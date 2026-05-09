@@ -19,6 +19,7 @@ const navigationItems = [
   { icon: MessageSquare,label: 'Messages',         to: '/client/messages'                   },
   { icon: CheckSquare,  label: 'Check-in',         to: '/client/checkin'                    },
   { icon: BarChart3,    label: 'Habits',           to: '/client/habits'                     },
+  { icon: Dumbbell,     label: 'Stretches',        to: '/client/exercises'                  },
 ];
 
 export default function ClientLayout() {
