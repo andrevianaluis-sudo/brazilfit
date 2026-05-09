@@ -11,7 +11,7 @@ import ProfileModal from '../../components/ProfileModal';
 const navigationItems = [
   { icon: Home,         label: 'Dashboard',       to: '/client',                exact: true },
   { icon: Calendar,     label: 'My Sessions',      to: '/client/sessions'                   },
-  { icon: Dumbbell,     label: 'My Workouts',      to: '/client/workouts'                   },
+  { icon: Dumbbell,     label: 'Stretches',        to: '/client/exercises'                   },
   { icon: TrendingUp,   label: 'Progress',         to: '/client/progress'                   },
 
   { icon: Heart,        label: 'Wellness',         to: '/client/wellness'                   },
