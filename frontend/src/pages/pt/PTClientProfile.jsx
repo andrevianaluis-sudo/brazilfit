@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Phone, Mail, Calendar, CheckCircle, XCircle,
@@ -816,6 +816,10 @@ export default function PTClientProfile() {
             ))}
           </div>
         )}
+
+
+        {/* -- Checkins -- */}
+        {activeTab === 'checkins' && <CheckinsTab clientId={id} />}
 
         {/* ── Onboarding ── */}
         {activeTab === 'onboarding' && (
