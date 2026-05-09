@@ -80,34 +80,44 @@ function OverrideModal({ session, onConfirm, onClose }) {
 function CheckinsTab({ clientId }) {
   const [checkins, setCheckins] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const parse = v => { try { const a=JSON.parse(v); return Array.isArray(a)?a:[v]; } catch { return v?[v]:[]; } };
   React.useEffect(() => {
     api.get("/checkins/pt/summary").then(r => {
-      const client = r.data.summary?.find(c => c.clientId === parseInt(clientId));
-      setCheckins(client?.pastCheckins || []);
-    }).catch(() => {}).finally(() => setLoading(false));
+      const cl = r.data.summary?.find(x => x.clientId === parseInt(clientId));
+      setCheckins(cl?.pastCheckins || []);
+    }).catch(()=>{}).finally(()=>setLoading(false));
   }, [clientId]);
-  if (loading) return <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>;
-  if (checkins.length === 0) return <p className="text-center text-grey-100 py-8">No check-ins submitted yet.</p>;
+  if (loading) return <div style={{display:"flex",justifyContent:"center",padding:"2rem"}}><div style={{width:24,height:24,border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}}/></div>;
+  if (!checkins.length) return <p style={{textAlign:"center",color:"#707070",padding:"2rem"}}>No check-ins submitted yet</p>;
   return (
-    <div className="space-y-4">
-      {checkins.map((c, i) => (
-        <div key={i} className="card-dark border border-white/5 p-4 space-y-3">
-          <div className="flex justify-between items-center border-b border-white/5 pb-3">
-            <p className="font-semibold text-brazil-green">{c.checkin_week}</p>
-            <span className="text-xs text-grey-100">{c.checkin_date}</span>
+    <div style={{display:"flex",flexDirection:"column",gap:16}}>
+      {checkins.map((c,i)=>(
+        <div key={i} style={{background:"#1a1a1a",borderRadius:14,padding:"1.5rem",border:"1px solid rgba(255,255,255,0.06)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16,paddingBottom:12,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+            <span style={{fontSize:"0.7rem",fontWeight:400,letterSpacing:"0.15em",color:"#4CAF50",textTransform:"uppercase"}}>{c.checkin_week}</span>
+            <span style={{fontSize:"0.75rem",color:"#606060"}}>{c.checkin_date}</span>
           </div>
-          {(c.motivation_score||c.stress_score) && <div className="flex gap-6 mt-2"><div><p className="text-xs text-grey-200">Motivation</p><p className="text-xl font-bold text-brazil-green">{c.motivation_score}/10</p></div><div><p className="text-xs text-grey-200">Stress</p><p className="text-xl font-bold text-brazil-yellow">{c.stress_score}/10</p></div>{c.overall_mood&&<div><p className="text-xs text-grey-200">Mood</p><p className="text-xl font-bold">{c.overall_mood}</p></div>}</div>}
-          {c.workouts_felt&&<div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Workouts felt</p><p className="text-sm">{c.workouts_felt}</p></div>}
-          {c.insight&&<div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Insight</p><p className="text-sm italic opacity-80">{c.insight}</p></div>}
-          {c.wins&&<div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Wins</p><p className="text-sm text-brazil-green">{c.wins}</p></div>}
-          {c.challenges&&<div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">Challenges</p><p className="text-sm">{c.challenges}</p></div>}
-          {c.what_was_challenging&&<div><p className="text-xs text-grey-200 uppercase tracking-wider mb-1">What was challenging</p><p className="text-sm">{c.what_was_challenging}</p></div>}
-          {(c.sleep_hours||c.water_glasses||c.daily_steps)&&<div className="flex gap-4 text-xs text-grey-200 mt-2"><span>Sleep: {c.sleep_hours}h</span><span>Water: {c.water_glasses} glasses</span><span>Steps: {c.daily_steps}</span></div>}
+          {(c.motivation_score||c.stress_score||c.overall_mood)&&(
+            <div style={{display:"flex",gap:24,marginBottom:16}}>
+              {c.motivation_score&&<div><p style={{fontSize:"0.65rem",letterSpacing:"0.1em",textTransform:"uppercase",color:"#505050",margin:"0 0 4px"}}>Motivation</p><p style={{fontSize:"1.75rem",fontWeight:300,color:"#4CAF50",margin:0,lineHeight:1}}>{c.motivation_score}<span style={{fontSize:"0.875rem",color:"#404040"}}>/10</span></p></div>}
+              {c.stress_score&&<div><p style={{fontSize:"0.65rem",letterSpacing:"0.1em",textTransform:"uppercase",color:"#505050",margin:"0 0 4px"}}>Stress</p><p style={{fontSize:"1.75rem",fontWeight:300,color:"#FFD600",margin:0,lineHeight:1}}>{c.stress_score}<span style={{fontSize:"0.875rem",color:"#404040"}}>/10</span></p></div>}
+              {c.overall_mood&&<div><p style={{fontSize:"0.65rem",letterSpacing:"0.1em",textTransform:"uppercase",color:"#505050",margin:"0 0 4px"}}>Mood</p><p style={{fontSize:"1.75rem",fontWeight:300,color:"#fff",margin:0,lineHeight:1}}>{c.overall_mood}</p></div>}
+            </div>
+          )}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:12}}>
+            {c.workouts_felt&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"10px 12px"}}><p style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#505050",margin:"0 0 4px"}}>Workouts</p><p style={{fontSize:"0.875rem",color:"#fff",margin:0,fontWeight:300}}>{c.workouts_felt}</p></div>}
+            {c.goals_last_week&&<div style={{background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"10px 12px"}}><p style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#505050",margin:"0 0 4px"}}>Goals last week</p><p style={{fontSize:"0.875rem",color:"#fff",margin:0,fontWeight:300}}>{c.goals_last_week}</p></div>}
+          </div>
+          {c.insight&&<div style={{background:"rgba(76,175,80,0.06)",borderRadius:8,padding:"10px 14px",marginBottom:12,borderLeft:"2px solid #4CAF50"}}><p style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#4CAF50",margin:"0 0 4px"}}>Insight</p><p style={{fontSize:"0.875rem",color:"rgba(255,255,255,0.8)",margin:0,fontStyle:"italic",fontWeight:300}}>{c.insight}</p></div>}
+          {c.wins&&parse(c.wins).length>0&&<div style={{marginBottom:12}}><p style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#505050",margin:"0 0 8px"}}>Wins</p><div style={{display:"flex",flexDirection:"column",gap:4}}>{parse(c.wins).map((w,j)=><div key={j} style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:"#4CAF50",fontSize:"0.75rem"}}>✓</span><span style={{fontSize:"0.875rem",color:"rgba(255,255,255,0.8)",fontWeight:300}}>{w}</span></div>)}</div></div>}
+          {c.challenges&&parse(c.challenges).length>0&&<div style={{marginBottom:12}}><p style={{fontSize:"0.6rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#505050",margin:"0 0 8px"}}>Challenges</p><div style={{display:"flex",flexDirection:"column",gap:4}}>{parse(c.challenges).map((ch,j)=><div key={j} style={{display:"flex",alignItems:"center",gap:8}}><span style={{color:"#FF6B2B",fontSize:"0.75rem"}}>!</span><span style={{fontSize:"0.875rem",color:"rgba(255,255,255,0.8)",fontWeight:300}}>{ch}</span></div>)}</div></div>}
+          {(c.sleep_hours||c.water_glasses||c.daily_steps)&&<div style={{display:"flex",gap:16,paddingTop:12,borderTop:"1px solid rgba(255,255,255,0.04)"}}>{c.sleep_hours&&<span style={{fontSize:"0.75rem",color:"#606060"}}>Sleep <strong style={{color:"#fff",fontWeight:400}}>{c.sleep_hours}h</strong></span>}{c.water_glasses&&<span style={{fontSize:"0.75rem",color:"#606060"}}>Water <strong style={{color:"#fff",fontWeight:400}}>{c.water_glasses} glasses</strong></span>}{c.daily_steps&&<span style={{fontSize:"0.75rem",color:"#606060"}}>Steps <strong style={{color:"#fff",fontWeight:400}}>{c.daily_steps?.toLocaleString()}</strong></span>}</div>}
         </div>
       ))}
     </div>
   );
 }
+
 export default function PTClientProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
