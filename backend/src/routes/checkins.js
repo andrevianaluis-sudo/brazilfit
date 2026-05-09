@@ -131,7 +131,6 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       energy_level || null,
       sleep_quality || null,
       what_went_well || null,
-      what_went_well || null,
       what_was_challenging || null,
       wins || null,
       challenges || null,
@@ -147,7 +146,6 @@ router.post('/submit', authenticateToken, requirePro, (req, res) => {
       water_glasses || null,
       daily_steps || null
     );
-    res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
     res.json({ id: result.lastInsertRowid, message: 'Check-in submitted' });
   } catch (err) {
     console.error('CHECKIN ERROR:', err.message);
