@@ -30,7 +30,7 @@ function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
       if (category) params.set('category', category);
       params.set('limit', '50');
       const res = await api.get('/stretches');
-      setExercises(Array.isArray(res.data) ? res.data : []);
+      setExercises(res.data || []);
     } catch {
       toast.error('Failed to load exercises');
     } finally {
