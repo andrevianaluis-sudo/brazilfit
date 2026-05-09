@@ -91,7 +91,6 @@ export default function ExerciseLibrary() {
   const fetchExercises = useCallback(async (reset = false) => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
       const res = await api.get('/stretches');
       const allData = Array.isArray(res.data) ? res.data : [];
       const list = activeTab ? allData.filter(s => s.muscle_group === activeTab) : allData;
@@ -99,16 +98,17 @@ export default function ExerciseLibrary() {
       setTotal(tot);
       setExercises(list);
       setPage(0);
-      const list = Array.isArray(data) ? data : [];
-      const tot = list.length;
 
-      setTotal(tot);
-      if (reset) {
-        setExercises(list);
-        setPage(0);
-      } else {
-        setExercises(prev => [...prev, ...list]);
-      }
+
+
+
+
+
+
+
+
+
+
     } catch (e) {
       console.error(e);
     } finally {
