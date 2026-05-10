@@ -176,4 +176,11 @@ export default function PTWorkoutBuilder() {
                 ))}
               </div>
               <button onClick={handleSave} className="w-full py-3 bg-brazil-green text-white rounded-lg font-semibold hover:bg-brazil-green/90 transition"><Check className="w-4 h-4 inline mr-2"/>Save Workout</button>
-            </di
+            </div>
+          </div>
+        </div>
+      )}
+      {showPicker && <ExercisePickerModal onSelect={addExercise} onClose={() => setShowPicker(false)} alreadyAdded={exercises} />}
+    </div>
+  );
+}

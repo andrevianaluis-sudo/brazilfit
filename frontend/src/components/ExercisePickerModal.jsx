@@ -14,10 +14,10 @@ const CATEGORIES = [
   { key: 'Legs', label: 'Legs' },
   { key: 'Neck', label: 'Neck' },
   { key: 'Shoulders', label: 'Shoulders' },
+  { key: 'Shoulders', label: 'Shoulders' },
 ];
-  { key: 'Thighs', label: 'Thighs' },
-  { key: 'Calves', label: 'Calves' },
-];
+
+
 
 const STRETCH_CATS = ['Stretching','Neck','Shoulders','Back','Hips','Thighs','Calves','Forearms','Waist','Upper Arms'];
 
@@ -50,8 +50,8 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
           borderRadius: 16, overflow: 'hidden', background: exercise.gif_url ? '#fff' : '#2a2a2a',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16
         }}>
-          {exercise.gif_url ? (
-            <img src={exercise.gif_url} alt={exercise.name}
+          background: ex.gif_file ? '#fff' : '#2a2a2a',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16
               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               onError={e => { e.target.style.display = 'none'; }} />
           ) : (
@@ -135,7 +135,7 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
   const [allStretches, setAllStretches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(null);
-
+  const [category, setCategory] = useState('');
   useEffect(() => {
     api.get('/stretches').then(r => { setAllStretches(r.data||[]); setExercises(r.data||[]); }).catch(()=>{});
   }, []);
@@ -146,13 +146,13 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
     if (search) f = f.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
     setExercises(f);
   }, [category, search, allStretches]);
-      console.error('Failed to fetch exercises:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [search, category]);
 
-  useEffect(() => { fetchExercises(); }, [fetchExercises]);
+
+
+
+
+
+
 
   const addedIds = new Set((alreadyAdded || []).map(e => e.exercise_id || e.id));
   const isStretch = (ex) => STRETCH_CATS.includes(ex.category);
@@ -267,11 +267,11 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
                         {/* Thumbnail */}
                         <div style={{
                           width: 52, height: 52, borderRadius: 10, overflow: 'hidden',
-                          background: ex.gif_url ? '#fff' : '#2a2a2a',
+          background: ex.gif_file ? '#fff' : '#2a2a2a',
                           flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
-                          {ex.gif_url ? (
-                            <img src={ex.gif_url} alt={ex.name}
+          {ex.gif_file ? (
+            <img src={'/exercise-gifs/' + ex.gif_file} alt={ex.name}
                               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                               onError={e => { e.target.style.display = 'none'; }} />
                           ) : (
