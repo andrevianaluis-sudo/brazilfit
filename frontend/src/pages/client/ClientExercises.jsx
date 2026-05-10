@@ -1,7 +1,7 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../utils/api';
 
-const BG='#141414';const SURFACE='#1e1e1e';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#707070';const GREEN='#4CAF50';const ORANGE='#FF6B2B';
+const BG='#141414';const SURFACE='#1e1e1e';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#707070';const GREEN='#4CAF50';const ORANGE='#FF6B2B';const YELLOW='#FFD600';
 
 function StretchPlayer({ stretches, onClose }) {
   const [idx,setIdx]=useState(0);const [timeLeft,setTimeLeft]=useState(45);const [active,setActive]=useState(false);const [done,setDone]=useState(false);
@@ -19,20 +19,177 @@ export default function ClientExercises() {
   const saveRoutine=()=>{if(!routineName.trim()||picked.length<2)return;const r={id:Date.now(),name:routineName,stretches:picked};const u=[...myRoutines,r];setMyRoutines(u);localStorage.setItem('brazilfit_routines',JSON.stringify(u));setRoutineMode(false);setPicked([]);setRoutineName('');setTab('routines');};
   const deleteRoutine=(id)=>{const u=myRoutines.filter(r=>r.id!==id);setMyRoutines(u);localStorage.setItem('brazilfit_routines',JSON.stringify(u));};
   if(player)return <StretchPlayer stretches={player.stretches} onClose={()=>setPlayer(null)}/>;
-  return(
+
+  return (
     <div style={{backgroundColor:BG,minHeight:'100vh',paddingBottom:'6rem'}}>
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
-        <p style={{fontSize:'0.65rem',fontWeight:400,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Training</p>
+
+        {/* Header */}
+        <p style={{fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Training</p>
         <h1 style={{fontSize:'2rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 1.5rem'}}>Stretches</h1>
-        <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap'}}>
-          <button onClick={()=>setTab('browse')} style={{padding:'8px 20px',borderRadius:8,border:`1px solid ${tab==='browse'?GREEN:BORDER}`,background:tab==='browse'?'rgba(76,175,80,0.15)':'transparent',color:tab==='browse'?GREEN:MUTED,fontSize:'0.8rem',cursor:'pointer',minHeight:'auto'}}>Browse Library</button>
-          <button onClick={()=>setTab('routines')} style={{padding:'8px 20px',borderRadius:8,border:`1px solid ${tab==='routines'?GREEN:BORDER}`,background:tab==='routines'?'rgba(76,175,80,0.15)':'transparent',color:tab==='routines'?GREEN:MUTED,fontSize:'0.8rem',cursor:'pointer',minHeight:'auto'}}>My Routines ({myRoutines.length})</button>
-          <button onClick={()=>{setRoutineMode(!routineMode);setPicked([]);}} style={{marginLeft:'auto',padding:'8px 20px',borderRadius:8,border:'1px solid #FF6B2B',background:routineMode?'rgba(255,107,43,0.15)':'transparent',color:'#FF6B2B',fontSize:'0.8rem',cursor:'pointer',minHeight:'auto'}}>{routineMode?'Cancel':'+ Create Routine'}</button>
+
+        {/* Tab bar + Create Routine */}
+        <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap',alignItems:'center'}}>
+
+          {/* Browse tab */}
+          <button
+            onClick={()=>setTab('browse')}
+            style={{
+              padding:'9px 20px',borderRadius:8,fontSize:'0.82rem',cursor:'pointer',minHeight:'auto',fontWeight:600,
+              border: tab==='browse' ? '1px solid rgba(76,175,80,0.6)' : `1px solid ${BORDER}`,
+              background: tab==='browse' ? 'rgba(76,175,80,0.18)' : 'rgba(255,255,255,0.04)',
+              color: tab==='browse' ? GREEN : '#aaaaaa',
+              boxShadow: tab==='browse' ? '0 0 12px rgba(76,175,80,0.12)' : 'none',
+            }}
+          >Browse Library</button>
+
+          {/* My Routines tab */}
+          <button
+            onClick={()=>setTab('routines')}
+            style={{
+              padding:'9px 20px',borderRadius:8,fontSize:'0.82rem',cursor:'pointer',minHeight:'auto',fontWeight:600,
+              border: tab==='routines' ? '1px solid rgba(76,175,80,0.6)' : `1px solid ${BORDER}`,
+              background: tab==='routines' ? 'rgba(76,175,80,0.18)' : 'rgba(255,255,255,0.04)',
+              color: tab==='routines' ? GREEN : '#aaaaaa',
+              boxShadow: tab==='routines' ? '0 0 12px rgba(76,175,80,0.12)' : 'none',
+            }}
+          >My Routines ({myRoutines.length})</button>
+
+          {/* Create Routine — full premium orange */}
+          <button
+            onClick={()=>{setRoutineMode(!routineMode);setPicked([]);}}
+            style={{
+              marginLeft:'auto',padding:'9px 20px',borderRadius:8,fontSize:'0.82rem',cursor:'pointer',minHeight:'auto',fontWeight:700,
+              background: routineMode
+                ? 'rgba(255,107,43,0.15)'
+                : `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+              border: routineMode ? `1px solid ${ORANGE}` : 'none',
+              color: routineMode ? ORANGE : '#000',
+              boxShadow: routineMode ? 'none' : '0 4px 16px rgba(255,107,43,0.4)',
+              letterSpacing: '0.01em',
+            }}
+          >{routineMode ? '✕ Cancel' : '+ Create Routine'}</button>
         </div>
-        {routineMode&&<div style={{background:SURFACE,borderRadius:12,padding:'1rem',marginBottom:16,border:'1px solid rgba(255,107,43,0.2)'}}><p style={{fontSize:'0.7rem',color:ORANGE,letterSpacing:'0.1em',textTransform:'uppercase',margin:'0 0 8px'}}>Tap stretches below to add to routine</p><input value={routineName} onChange={e=>setRoutineName(e.target.value)} placeholder="Routine name..." style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:8,color:TEXT,padding:'8px 12px',fontSize:'0.875rem',boxSizing:'border-box',outline:'none',marginBottom:8}}/><p style={{fontSize:'0.75rem',color:MUTED,margin:'0 0 8px'}}>{picked.length} stretches selected</p><div style={{display:'flex',gap:4,flexWrap:'wrap',marginBottom:8}}>{picked.map(s=><span key={s.id} style={{fontSize:'0.7rem',padding:'3px 8px',borderRadius:20,background:'rgba(76,175,80,0.15)',color:GREEN}}>{s.name.split(' ').slice(0,3).join(' ')}</span>)}</div><button onClick={saveRoutine} disabled={!routineName.trim()||picked.length<2} style={{padding:'10px 20px',background:routineName.trim()&&picked.length>=2?'linear-gradient(135deg,#4CAF50,#2d8a30)':'rgba(255,255,255,0.05)',border:'none',borderRadius:8,color:routineName.trim()&&picked.length>=2?'#fff':MUTED,cursor:'pointer',fontSize:'0.875rem'}}>Save Routine ({picked.length} stretches)</button></div>}
-        {tab==='routines'&&<div style={{display:'flex',flexDirection:'column',gap:12}}>{myRoutines.length===0?<p style={{color:MUTED,textAlign:'center',padding:'3rem'}}>No routines yet. Create your first one!</p>:myRoutines.map(r=>(<div key={r.id} style={{background:SURFACE,borderRadius:12,padding:'1rem',border:`1px solid ${BORDER}`,display:'flex',alignItems:'center',justifyContent:'space-between'}}><div><p style={{fontWeight:400,color:TEXT,margin:'0 0 4px'}}>{r.name}</p><p style={{fontSize:'0.75rem',color:MUTED,margin:0}}>{r.stretches.length} stretches</p></div><div style={{display:'flex',gap:8}}><button onClick={()=>setPlayer(r)} style={{padding:'8px 16px',background:'linear-gradient(135deg,#4CAF50,#2d8a30)',border:'none',borderRadius:8,color:'#fff',cursor:'pointer',fontSize:'0.8rem'}}>▶ Start</button><button onClick={()=>deleteRoutine(r.id)} style={{padding:'8px 12px',background:'rgba(239,68,68,0.1)',border:'1px solid rgba(239,68,68,0.2)',borderRadius:8,color:'#ef4444',cursor:'pointer',fontSize:'0.8rem'}}>Delete</button></div></div>))}</div>}
-        {tab==='browse'&&<><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search stretches..." style={{width:'100%',background:SURFACE,border:`1px solid ${BORDER}`,borderRadius:10,color:TEXT,padding:'10px 14px',fontSize:14,boxSizing:'border-box',outline:'none',marginBottom:12}}/><div style={{display:'flex',gap:6,overflowX:'auto',paddingBottom:8,marginBottom:16}}>{groups.map(g=><button key={g} onClick={()=>setGroup(g)} style={{flexShrink:0,padding:'6px 14px',borderRadius:8,border:`1px solid ${group===g?GREEN:BORDER}`,background:group===g?'rgba(76,175,80,0.15)':'transparent',color:group===g?GREEN:MUTED,fontSize:'0.75rem',cursor:'pointer',whiteSpace:'nowrap',minHeight:'auto'}}>{g}</button>)}</div>{loading?<div style={{display:'flex',justifyContent:'center',padding:'4rem'}}><div style={{width:20,height:20,border:'2px solid #4CAF50',borderTop:'2px solid transparent',borderRadius:'50%',animation:'spin 1s linear infinite'}}/></div>:<div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10}}>{filtered.map(s=>{const isPicked=picked.find(x=>x.id===s.id);return(<div key={s.id} onClick={()=>routineMode?togglePick(s):setSelected(selected?.id===s.id?null:s)} style={{background:SURFACE,borderRadius:12,overflow:'hidden',border:`1px solid ${isPicked&&routineMode?ORANGE:selected?.id===s.id?GREEN:BORDER}`,cursor:'pointer',position:'relative'}}>{isPicked&&routineMode&&<div style={{position:'absolute',top:8,right:8,width:22,height:22,borderRadius:'50%',background:ORANGE,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,color:'#fff',zIndex:2}}>✓</div>}<div style={{background:'#1a1a1a',aspectRatio:'1',overflow:'hidden'}}><img src={`/exercise-gifs/${s.gif_file}`} alt={s.name} style={{width:'100%',height:'100%',objectFit:'cover'}} loading="lazy"/></div><div style={{padding:'8px 10px'}}><p style={{fontSize:'0.72rem',color:TEXT,margin:'0 0 2px',lineHeight:1.3,fontWeight:300}}>{s.name}</p><p style={{fontSize:'0.62rem',color:GREEN,margin:0}}>{s.muscle_group}</p></div></div>);})}</div>}</>}
-        {selected&&!routineMode&&<div style={{position:'fixed',inset:0,zIndex:50,background:'rgba(0,0,0,0.9)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem'}} onClick={()=>setSelected(null)}><div style={{background:SURFACE,borderRadius:16,overflow:'hidden',maxWidth:380,width:'100%',border:`1px solid ${BORDER}`}} onClick={e=>e.stopPropagation()}><img src={`/exercise-gifs/${selected.gif_file}`} alt={selected.name} style={{width:'100%',aspectRatio:'1',objectFit:'cover'}}/><div style={{padding:'1rem'}}><p style={{fontSize:'1rem',fontWeight:300,color:TEXT,margin:'0 0 4px'}}>{selected.name}</p><p style={{fontSize:'0.78rem',color:GREEN,margin:0}}>{selected.muscle_group}</p></div></div></div>}
+
+        {/* Routine builder panel */}
+        {routineMode && (
+          <div style={{background:SURFACE,borderRadius:12,padding:'1rem',marginBottom:16,border:'1px solid rgba(255,107,43,0.25)',boxShadow:'0 0 20px rgba(255,107,43,0.06)'}}>
+            <p style={{fontSize:'0.7rem',color:ORANGE,letterSpacing:'0.1em',textTransform:'uppercase',margin:'0 0 10px',fontWeight:700}}>Tap stretches below to add to routine</p>
+            <input
+              value={routineName} onChange={e=>setRoutineName(e.target.value)}
+              placeholder="Routine name..."
+              style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:8,color:TEXT,padding:'10px 12px',fontSize:'0.875rem',boxSizing:'border-box',outline:'none',marginBottom:10}}
+            />
+            <p style={{fontSize:'0.75rem',color:MUTED,margin:'0 0 8px'}}>{picked.length} stretches selected</p>
+            <div style={{display:'flex',gap:4,flexWrap:'wrap',marginBottom:10}}>
+              {picked.map(s=>(
+                <span key={s.id} style={{fontSize:'0.7rem',padding:'3px 10px',borderRadius:20,background:'rgba(76,175,80,0.15)',color:GREEN,border:'1px solid rgba(76,175,80,0.2)'}}>
+                  {s.name.split(' ').slice(0,3).join(' ')}
+                </span>
+              ))}
+            </div>
+            <button
+              onClick={saveRoutine}
+              disabled={!routineName.trim()||picked.length<2}
+              style={{
+                padding:'11px 20px',border:'none',borderRadius:8,fontSize:'0.875rem',cursor:'pointer',fontWeight:700,
+                background: routineName.trim()&&picked.length>=2
+                  ? `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`
+                  : 'rgba(255,255,255,0.05)',
+                color: routineName.trim()&&picked.length>=2 ? '#000' : MUTED,
+                boxShadow: routineName.trim()&&picked.length>=2 ? '0 4px 16px rgba(255,107,43,0.35)' : 'none',
+              }}
+            >Save Routine ({picked.length} stretches)</button>
+          </div>
+        )}
+
+        {/* My Routines list */}
+        {tab==='routines' && (
+          <div style={{display:'flex',flexDirection:'column',gap:12}}>
+            {myRoutines.length===0
+              ? <p style={{color:MUTED,textAlign:'center',padding:'3rem'}}>No routines yet. Create your first one!</p>
+              : myRoutines.map(r=>(
+                <div key={r.id} style={{background:SURFACE,borderRadius:12,padding:'1rem',border:`1px solid ${BORDER}`,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                  <div>
+                    <p style={{fontWeight:600,color:TEXT,margin:'0 0 4px'}}>{r.name}</p>
+                    <p style={{fontSize:'0.75rem',color:MUTED,margin:0}}>{r.stretches.length} stretches</p>
+                  </div>
+                  <div style={{display:'flex',gap:8}}>
+                    <button onClick={()=>setPlayer(r)} style={{padding:'8px 16px',background:'linear-gradient(135deg,#4CAF50,#2d8a30)',border:'none',borderRadius:8,color:'#fff',cursor:'pointer',fontSize:'0.8rem',fontWeight:600}}>▶ Start</button>
+                    <button onClick={()=>deleteRoutine(r.id)} style={{padding:'8px 12px',background:'rgba(239,68,68,0.1)',border:'1px solid rgba(239,68,68,0.2)',borderRadius:8,color:'#ef4444',cursor:'pointer',fontSize:'0.8rem'}}>Delete</button>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        )}
+
+        {/* Browse tab */}
+        {tab==='browse' && (
+          <>
+            <input
+              value={search} onChange={e=>setSearch(e.target.value)}
+              placeholder="Search stretches..."
+              style={{width:'100%',background:SURFACE,border:`1px solid ${BORDER}`,borderRadius:10,color:TEXT,padding:'10px 14px',fontSize:14,boxSizing:'border-box',outline:'none',marginBottom:12}}
+            />
+
+            {/* Muscle group filter pills */}
+            <div style={{display:'flex',gap:6,overflowX:'auto',paddingBottom:8,marginBottom:16}}>
+              {groups.map(g=>(
+                <button
+                  key={g} onClick={()=>setGroup(g)}
+                  style={{
+                    flexShrink:0,padding:'7px 15px',borderRadius:8,fontSize:'0.75rem',cursor:'pointer',whiteSpace:'nowrap',minHeight:'auto',fontWeight:600,
+                    border: group===g ? '1px solid rgba(76,175,80,0.6)' : `1px solid ${BORDER}`,
+                    background: group===g ? 'rgba(76,175,80,0.18)' : 'rgba(255,255,255,0.04)',
+                    color: group===g ? GREEN : '#999999',
+                    boxShadow: group===g ? '0 0 10px rgba(76,175,80,0.15)' : 'none',
+                  }}
+                >{g}</button>
+              ))}
+            </div>
+
+            {loading
+              ? <div style={{display:'flex',justifyContent:'center',padding:'4rem'}}><div style={{width:20,height:20,border:'2px solid #4CAF50',borderTop:'2px solid transparent',borderRadius:'50%',animation:'spin 1s linear infinite'}}/></div>
+              : <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10}}>
+                  {filtered.map(s=>{
+                    const isPicked=picked.find(x=>x.id===s.id);
+                    return(
+                      <div key={s.id}
+                        onClick={()=>routineMode?togglePick(s):setSelected(selected?.id===s.id?null:s)}
+                        style={{background:SURFACE,borderRadius:12,overflow:'hidden',border:`1px solid ${isPicked&&routineMode?ORANGE:selected?.id===s.id?GREEN:BORDER}`,cursor:'pointer',position:'relative',transition:'border-color 0.15s'}}
+                      >
+                        {isPicked&&routineMode&&(
+                          <div style={{position:'absolute',top:8,right:8,width:22,height:22,borderRadius:'50%',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,color:'#000',zIndex:2,fontWeight:700}}>✓</div>
+                        )}
+                        <div style={{background:'#1a1a1a',aspectRatio:'1',overflow:'hidden'}}>
+                          <img src={`/exercise-gifs/${s.gif_file}`} alt={s.name} style={{width:'100%',height:'100%',objectFit:'cover'}} loading="lazy"/>
+                        </div>
+                        <div style={{padding:'8px 10px'}}>
+                          <p style={{fontSize:'0.72rem',color:TEXT,margin:'0 0 2px',lineHeight:1.3,fontWeight:400}}>{s.name}</p>
+                          <p style={{fontSize:'0.62rem',color:GREEN,margin:0}}>{s.muscle_group}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+            }
+          </>
+        )}
+
+        {/* Stretch detail modal */}
+        {selected&&!routineMode&&(
+          <div style={{position:'fixed',inset:0,zIndex:50,background:'rgba(0,0,0,0.9)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem'}} onClick={()=>setSelected(null)}>
+            <div style={{background:SURFACE,borderRadius:16,overflow:'hidden',maxWidth:380,width:'100%',border:`1px solid ${BORDER}`}} onClick={e=>e.stopPropagation()}>
+              <img src={`/exercise-gifs/${selected.gif_file}`} alt={selected.name} style={{width:'100%',aspectRatio:'1',objectFit:'cover'}}/>
+              <div style={{padding:'1rem'}}>
+                <p style={{fontSize:'1rem',fontWeight:400,color:TEXT,margin:'0 0 4px'}}>{selected.name}</p>
+                <p style={{fontSize:'0.78rem',color:GREEN,margin:0}}>{selected.muscle_group}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
