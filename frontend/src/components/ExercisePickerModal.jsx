@@ -50,9 +50,9 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
           borderRadius: 16, overflow: 'hidden', background: exercise.gif_url ? '#fff' : '#2a2a2a',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16
         }}>
-          background: ex.gif_file ? '#fff' : '#2a2a2a',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16
-              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+          {exercise.gif_file ? (
+            <img src={'/exercise-gifs/' + exercise.gif_file} alt={exercise.name}
+              style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               onError={e => { e.target.style.display = 'none'; }} />
           ) : (
             <span style={{ fontSize: 64 }}>{stretch ? '🧘' : '💪'}</span>
