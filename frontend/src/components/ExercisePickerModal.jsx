@@ -1,20 +1,20 @@
-// frontend/src/components/ExercisePickerModal.jsx
+﻿// frontend/src/components/ExercisePickerModal.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { X, Plus, Search, ChevronLeft } from 'lucide-react';
 import api from '../utils/api';
 
 const CATEGORIES = [
   { key: '', label: 'All' },
-  { key: 'Push', label: 'Push' },
-  { key: 'Pull', label: 'Pull' },
+  { key: 'Arms', label: 'Arms' },
+  { key: 'Back', label: 'Back' },
+  { key: 'Calves', label: 'Calves' },
+  { key: 'Chest', label: 'Chest' },
+  { key: 'Full Body', label: 'Full Body' },
+  { key: 'Hips', label: 'Hips' },
   { key: 'Legs', label: 'Legs' },
-  { key: 'Core', label: 'Core' },
-  { key: 'Cardio', label: 'Cardio' },
-  { key: 'Stretching', label: '🧘 Stretch' },
   { key: 'Neck', label: 'Neck' },
   { key: 'Shoulders', label: 'Shoulders' },
-  { key: 'Back', label: 'Back' },
-  { key: 'Hips', label: 'Hips' },
+];
   { key: 'Thighs', label: 'Thighs' },
   { key: 'Calves', label: 'Calves' },
 ];
@@ -132,20 +132,20 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
 export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const [exercises, setExercises] = useState([]);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
+  const [allStretches, setAllStretches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const fetchExercises = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (search) params.set('search', search);
-      if (category) params.set('category', category);
-      params.set('limit', '100');
-      const res = await api.get(`/exercises?${params}`);
-      setExercises(res.data?.exercises || res.data || []);
-    } catch (err) {
+  useEffect(() => {
+    api.get('/stretches').then(r => { setAllStretches(r.data||[]); setExercises(r.data||[]); }).catch(()=>{});
+  }, []);
+
+  useEffect(() => {
+    let f = allStretches;
+    if (category) f = f.filter(s => s.muscle_group === category);
+    if (search) f = f.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
+    setExercises(f);
+  }, [category, search, allStretches]);
       console.error('Failed to fetch exercises:', err);
     } finally {
       setLoading(false);
