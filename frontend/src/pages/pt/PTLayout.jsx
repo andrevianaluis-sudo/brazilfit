@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+﻿import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
@@ -13,7 +13,7 @@ const navigationItems = [
   { icon: Dumbbell, label: 'Workouts',         to: '/pt/workouts'               },
   { icon: DollarSign, label: 'Income',         to: '/pt/income'                 },
   { icon: BarChart3,  label: 'Analytics',      to: '/pt/analytics'              },
-  { icon: BookOpen,   label: 'Exercise Library', to: '/pt/exercises'            },
+
 ];
 
 export default function PTLayout() {
