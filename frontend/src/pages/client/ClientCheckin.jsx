@@ -300,7 +300,7 @@ export default function ClientCheckIn() {
           </QuestionCard>
 
           {/* 2 Workouts */}
-          <QuestionCard step={2} total={TOTAL} emoji="🏋️" label="Workouts" title="How many assigned workouts did you complete?">
+          <QuestionCard step={2} total={TOTAL} emoji="💪" label="Workouts" title="How many assigned workouts did you complete?">
             <ChoiceGrid selected={formData.workouts_completed} onChange={v=>upd('workouts_completed',v)} options={[
               {value:'All of them',  label:'All of them',  emoji:'🔥',color:GREEN},
               {value:'Most of them', label:'Most of them', emoji:'💪',color:'#60a5fa'},
@@ -327,14 +327,13 @@ export default function ClientCheckIn() {
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
               {[{key:'alcohol_free',label:'Alcohol-free most days',emoji:'🍷'},{key:'ate_breakfast',label:'Ate breakfast daily',emoji:'🥣'},{key:'limited_processed',label:'Limited processed food',emoji:'🥗'}].map(item=>(
-                <label key={item.key} style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer',padding:'10px 12px',background:formData[item.key]?'rgba(76,175,80,0.08)':SURFACE2,borderRadius:'10px',border:`1px solid ${formData[item.key]?'rgba(76,175,80,0.3)':BORDER}`,transition:'all 0.15s'}}>
+                <div key={item.key} onClick={()=>upd(item.key,!formData[item.key])} style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer',padding:'10px 12px',background:formData[item.key]?'rgba(76,175,80,0.08)':SURFACE2,borderRadius:'10px',border:`1px solid ${formData[item.key]?'rgba(76,175,80,0.3)':BORDER}`,transition:'all 0.15s'}}>
                   <span style={{fontSize:'1.1rem'}}>{item.emoji}</span>
                   <span style={{flex:1,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:formData[item.key]?TEXT:'#a0a0a0',fontWeight:formData[item.key]?600:400}}>{item.label}</span>
                   <div style={{width:'22px',height:'22px',borderRadius:'6px',border:`1px solid ${formData[item.key]?GREEN:BORDER}`,background:formData[item.key]?GREEN:SURFACE2,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.15s',flexShrink:0}}>
                     {formData[item.key]&&<Check size={13} color="#000"/>}
                   </div>
-                  <input type="checkbox" checked={formData[item.key]||false} onChange={e=>upd(item.key,e.target.checked)} style={{position:'absolute',opacity:0,pointerEvents:'none'}}/>
-                </label>
+                </div>
               ))}
             </div>
           </QuestionCard>
