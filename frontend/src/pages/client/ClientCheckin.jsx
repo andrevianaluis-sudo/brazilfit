@@ -255,6 +255,7 @@ export default function ClientCheckIn() {
             ))}
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+            <button onClick={()=>{setSubmitted(false);setCurrentCheckIn(null);window.scrollTo(0,0);}} style={{width:'100%',padding:'0.9rem',background:'transparent',border:`1px solid ${BORDER}`,borderRadius:'12px',color:TEXT,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>View This Week's Form</button>
             <button onClick={()=>navigate('/client')} style={{width:'100%',padding:'0.9rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'12px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.9rem',fontWeight:800,cursor:'pointer',minHeight:'auto',boxShadow:`0 4px 20px ${ORANGE}44`}}>Back to Dashboard</button>
           </div>
         </div>
@@ -269,6 +270,18 @@ export default function ClientCheckIn() {
     <div style={{backgroundColor:BG,minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui"}}>
       <div style={{maxWidth:'680px',margin:'0 auto',padding:'2rem 1.25rem'}}>
         <BackButton to="/client"/>
+
+        {/* Already submitted banner */}
+        {currentCheckIn && (
+          <div style={{background:'rgba(76,175,80,0.1)',border:'1px solid rgba(76,175,80,0.25)',borderRadius:'14px',padding:'1rem 1.25rem',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'12px'}}>
+            <span style={{fontSize:'1.3rem'}}>✅</span>
+            <div style={{flex:1}}>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',fontWeight:700,color:GREEN,margin:'0 0 2px'}}>Already submitted this week</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,margin:0}}>You're viewing a read-only copy of your answers</p>
+            </div>
+            <button onClick={()=>setSubmitted(true)} style={{background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'10px',padding:'8px 14px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',fontWeight:800,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap'}}>Back</button>
+          </div>
+        )}
 
         {/* Header */}
         <div style={{margin:'1.5rem 0 2rem'}}>
