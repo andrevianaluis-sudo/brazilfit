@@ -4,17 +4,17 @@ import { X, Plus, Search, ChevronLeft } from 'lucide-react';
 import api from '../utils/api';
 
 const CATEGORIES = [
-  { key: '', label: 'All' },
-  { key: 'Arms', label: 'Arms' },
-  { key: 'Back', label: 'Back' },
-  { key: 'Calves', label: 'Calves' },
-  { key: 'Chest', label: 'Chest' },
-  { key: 'Full Body', label: 'Full Body' },
-  { key: 'Hips', label: 'Hips' },
-  { key: 'Legs', label: 'Legs' },
-  { key: 'Neck', label: 'Neck' },
-  { key: 'Shoulders', label: 'Shoulders' },
+  { key: '', label: 'Stretches' },
 ];
+
+
+
+
+
+
+
+
+
 
 
 
