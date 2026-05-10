@@ -1,4 +1,4 @@
-// frontend/src/pages/pt/WorkoutBuilder.jsx
+﻿// frontend/src/pages/pt/WorkoutBuilder.jsx
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -29,12 +29,12 @@ function ExerciseSearchModal({ onAdd, onClose, alreadyAdded }) {
       const params = new URLSearchParams();
       if (query) params.set('search', query);
       if (category) params.set('category', category);
-      params.set('limit', '30');
-      const res = await fetch(`${API}/api/exercises?${params}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
+      const res = await fetch('/api/stretches', { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } });
       const data = await res.json();
-      setExercises(data.exercises || data || []);
+      setExercises(Array.isArray(data) ? data : []);
+
+
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -84,11 +84,11 @@ function ExerciseSearchModal({ onAdd, onClose, alreadyAdded }) {
               color: category ? '#fff' : '#888', padding: '10px 14px', fontSize: 14, cursor: 'pointer'
             }}
           >
-            <option value="">All Categories</option>
-            {['Push', 'Pull', 'Legs', 'Core', 'Cardio', 'Compound', 'Isolation'].map(c => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+          <option value=''>All Stretches</option>
+
+
+
+
         </div>
 
         {/* Exercise List */}
