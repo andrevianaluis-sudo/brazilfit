@@ -7,12 +7,12 @@ import BackButton from '../../components/BackButton';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const BG = '#141414';
-const SURFACE = '#2a2a2a';
-const SURFACE2 = '#333333';
-const BORDER = 'rgba(255,255,255,0.15)';
+const BG='#0f0f0f';
+const SURFACE='#1a1a1a';
+const SURFACE2='#222';
+const BORDER='rgba(255,255,255,0.08)';
 const TEXT = '#ffffff';
-const MUTED = '#707070';
+const MUTED='#606060';
 const ORANGE = '#FF6B2B';
 const YELLOW = '#FFD600';
 const GREEN = '#4CAF50';
@@ -77,18 +77,21 @@ function NumberField({ icon, label, hint, value, onChange, min, max, unit, color
 
 function MetricCard({ icon, label, value, unit, color }) {
   return (
-    <div style={{ backgroundColor: SURFACE, borderRadius: '12px', padding: '1rem', border: `1px solid ${BORDER}`, textAlign: 'center' }}>
+    <div style={{ borderRadius: '16px', padding: '1rem', border: `1px solid ${color}30`, textAlign: 'center', background:`linear-gradient(135deg,${color}10,#1a1a1a)` }}>
       <div style={{ fontSize: '1.5rem', marginBottom: '6px' }}>{icon}</div>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.3rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.02em' }}>{value} <span style={{ fontSize: '0.8rem' }}>{unit}</span></p>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: 0, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.4rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.03em' }}>{value} <span style={{ fontSize: '0.75rem', opacity:0.7 }}>{unit}</span></p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.58rem', color: MUTED, margin: 0, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
     </div>
   );
 }
 
 function ChartCard({ title, color, children }) {
   return (
-    <div style={{ backgroundColor: SURFACE, borderRadius: '14px', padding: '1.25rem', border: `1px solid ${BORDER}` }}>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: '0 0 1rem' }}>{title}</p>
+    <div style={{ background:'#1a1a1a', borderRadius: '16px', padding: '1.25rem', border: `1px solid rgba(255,255,255,0.08)` }}>
+      <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1rem' }}>
+        <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
+        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: 0 }}>{title}</p>
+      </div>
       {children}
     </div>
   );
@@ -196,8 +199,8 @@ export default function ClientHabits() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Daily Tracking</p>
-          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Health & Habits</h1>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.2em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 6px' }}>Daily Tracking</p>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.05em', margin: 0, lineHeight: 1 }}>Health & Habits</h1>
         </div>
 
         {/* Wellness Score */}

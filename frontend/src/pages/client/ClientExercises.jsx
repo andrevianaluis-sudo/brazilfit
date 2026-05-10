@@ -25,8 +25,8 @@ export default function ClientExercises() {
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
 
         {/* Header */}
-        <p style={{fontSize:'0.65rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Training</p>
-        <h1 style={{fontSize:'2rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 1.5rem'}}>Stretches</h1>
+        <p style={{fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 6px'}}>Training</p>
+        <h1 style={{fontFamily:"'DM Sans',system-ui",fontSize:'2.5rem',fontWeight:800,color:TEXT,letterSpacing:'-0.05em',margin:'0 0 1.5rem',lineHeight:1}}>Stretches</h1>
 
         {/* Tab bar + Create Routine */}
         <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap',alignItems:'center'}}>

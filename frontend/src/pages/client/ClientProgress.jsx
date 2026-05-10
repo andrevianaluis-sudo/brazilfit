@@ -8,18 +8,23 @@ import { TrendingDown, TrendingUp, Plus, ChevronDown, ChevronUp } from 'lucide-r
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const BG = '#141414';
-const SURFACE = '#1e1e1e';
-const SURFACE2 = '#2a2a2a';
-const BORDER = 'rgba(255,255,255,0.1)';
+const BG='#0f0f0f';
+const SURFACE='#1a1a1a';
+const SURFACE2='#222';
+const BORDER='rgba(255,255,255,0.08)';
 const TEXT = '#ffffff';
-const MUTED = '#707070';
+const MUTED='#606060';
 const ORANGE = '#FF6B2B';
 const GREEN = '#4CAF50';
 const RED = '#ef4444';
 
-function SectionLabel({ children, color = MUTED }) {
-  return <p style={{ fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', color, textTransform:'uppercase', margin:'0 0 0.75rem' }}>{children}</p>;
+function SectionLabel({ children, color = ORANGE }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'0.875rem' }}>
+      <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
+      <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color, textTransform:'uppercase', margin:0 }}>{children}</p>
+    </div>
+  );
 }
 
 function StatCard({ label, value, unit, change, accent }) {
@@ -81,7 +86,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
             <label style={{ color:MUTED, fontSize:11, display:'block', marginBottom:5, fontWeight:600 }}>NOTES (optional)</label>
             <input type="text" value={form.notes} onChange={e => setForm(f => ({...f, notes:e.target.value}))} placeholder="How are you feeling?" style={{ width:'100%', background:SURFACE2, border:`1px solid ${BORDER}`, borderRadius:10, color:TEXT, padding:'11px 14px', fontSize:14, boxSizing:'border-box', outline:'none' }}/>
           </div>
-          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:ORANGE, border:'none', borderRadius:14, color:saving?MUTED:'#fff', padding:'16px', fontSize:16, fontWeight:300, cursor:saving?'default':'pointer' }}>{saving ? 'Saving...' : 'Save Measurements'}</button>
+          <button onClick={handleSave} disabled={saving} style={{ width:'100%', background:saving?SURFACE2:`linear-gradient(135deg,${ORANGE},#FFD600)`, border:'none', borderRadius:14, color:saving?MUTED:'#000', padding:'16px', fontSize:16, fontWeight:800, cursor:saving?'default':'pointer', boxShadow:saving?'none':'0 4px 20px rgba(255,107,43,0.4)' }}>{saving ? 'Saving...' : 'Save Measurements'}</button>
         </div>
       </div>
     </div>
@@ -121,16 +126,21 @@ export default function ClientProgress() {
         <BackButton to="/client" />
         <div style={{ margin:'1.25rem 0 1rem', display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
           <div>
-            <p style={{ fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.4rem' }}>Your Journey</p>
-            <h1 style={{ fontSize:'2rem', fontWeight:400, color:TEXT, margin:0 }}>Progress</h1>
+            <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:ORANGE, textTransform:'uppercase', margin:'0 0 6px' }}>Your Journey</p>
+            <h1 style={{ fontFamily:"'DM Sans',system-ui", fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.05em', margin:0, lineHeight:1 }}>Progress</h1>
           </div>
-          <button onClick={() => setShowAddModal(true)} style={{ display:'flex', alignItems:'center', gap:6, background:ORANGE, border:'none', borderRadius:10, color:'#fff', padding:'10px 16px', fontSize:13, fontWeight:400, cursor:'pointer' }}>
+          <button onClick={() => setShowAddModal(true)} style={{ display:'flex', alignItems:'center', gap:6, background:`linear-gradient(135deg,${ORANGE},#FFD600)`, border:'none', borderRadius:12, color:'#000', padding:'10px 18px', fontSize:13, fontWeight:800, cursor:'pointer', boxShadow:`0 4px 16px rgba(255,107,43,0.4)` }}>
             <Plus size={14}/> Add
           </button>
         </div>
-        <div style={{ display:'flex', gap:8, marginBottom:'1.5rem', borderBottom:`1px solid ${BORDER}` }}>
-          {[{key:'progress',label:'Stats'},{key:'photos',label:'Photos'}].map(t => (
-            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{ background:'none', border:'none', color:activeTab===t.key?ORANGE:MUTED, fontWeight:400, fontSize:'0.875rem', padding:'0.5rem 1rem', cursor:'pointer', borderBottom:activeTab===t.key?`2px solid ${ORANGE}`:'2px solid transparent', marginBottom:'-1px' }}>{t.label}</button>
+        <div style={{ display:'flex', gap:8, marginBottom:'1.5rem' }}>
+          {[{key:'progress',label:'📊 Stats'},{key:'photos',label:'📸 Photos'}].map(t => (
+            <button key={t.key} onClick={() => setActiveTab(t.key)} style={{
+              padding:'8px 20px', borderRadius:'8px', border:'none', cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto',
+              background: activeTab===t.key ? `rgba(255,107,43,0.18)` : 'rgba(255,255,255,0.04)',
+              color: activeTab===t.key ? ORANGE : '#aaa',
+              border: activeTab===t.key ? `1px solid rgba(255,107,43,0.4)` : '1px solid rgba(255,255,255,0.08)',
+            }}>{t.label}</button>
           ))}
         </div>
         {activeTab === 'progress' && (
@@ -161,13 +171,13 @@ export default function ClientProgress() {
                   <SectionLabel>History</SectionLabel>
                   <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                     {shown.map((entry, i) => (
-                      <div key={i} style={{ background:`linear-gradient(135deg, #1e1e1e, #222)`, borderRadius:12, padding:'14px 16px', border:`1px solid rgba(255,255,255,0.07)`, display:'flex', alignItems:'center', justifyContent:'space-between', borderLeft:`3px solid ${ORANGE}` }}>
+                      <div key={i} style={{ background:'linear-gradient(135deg,#1a2a1a,#1a1a1a)', borderRadius:14, padding:'14px 16px', border:'1px solid rgba(76,175,80,0.2)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                         <div>
-                          <p style={{ color:TEXT, fontWeight:600, fontSize:14, margin:'0 0 3px' }}>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</p>
-                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' ? ')}</p>
+                          <p style={{ color:TEXT, fontWeight:700, fontSize:14, margin:'0 0 3px' }}>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</p>
+                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' · ')}</p>
                         </div>
                         <div style={{ textAlign:'right' }}>
-                          <p style={{ fontSize:'1.4rem', fontWeight:300, color:GREEN, letterSpacing:'-0.04em', margin:0 }}>{entry.weight_kg || '?'}</p>
+                          <p style={{ fontSize:'1.6rem', fontWeight:800, color:GREEN, letterSpacing:'-0.04em', margin:0 }}>{entry.weight_kg || '—'}</p>
                           <p style={{ color:MUTED, fontSize:11, margin:0 }}>kg</p>
                         </div>
                       </div>

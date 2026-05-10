@@ -4,14 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const BG = '#141414';
-const SURFACE = '#2a2a2a';
-const SURFACE2 = '#333333';
-const BORDER = 'rgba(255,255,255,0.15)';
-const TEXT = '#ffffff';
-const MUTED = '#707070';
-const ORANGE = '#FF6B2B';
-const GREEN = '#4CAF50';
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const SURFACE2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#606060';const ORANGE='#FF6B2B';const GREEN='#4CAF50';
 
 export default function ClientMessages() {
   const navigate = useNavigate();
@@ -78,27 +71,22 @@ export default function ClientMessages() {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: BG }}>
 
       {/* Header */}
-      <div style={{ padding: '0 1.5rem', height: '64px', backgroundColor: '#111111', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
-        <button onClick={() => navigate('/client')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '6px', display: 'flex', alignItems: 'center', color: MUTED, minHeight: 'auto', minWidth: 'auto', transition: 'color 0.15s' }}
-          onMouseEnter={e => e.currentTarget.style.color = TEXT}
-          onMouseLeave={e => e.currentTarget.style.color = MUTED}>
-          <ArrowLeft size={18} />
+      <div style={{ padding:'0 1.5rem', height:'64px', backgroundColor:'#111', borderBottom:`1px solid ${BORDER}`, display:'flex', alignItems:'center', gap:'1rem', flexShrink:0, boxShadow:'0 2px 20px rgba(0,0,0,0.4)' }}>
+        <button onClick={() => navigate('/client')} style={{ background:'rgba(255,255,255,0.06)', border:`1px solid ${BORDER}`, cursor:'pointer', padding:'7px', display:'flex', alignItems:'center', color:TEXT, minHeight:'auto', minWidth:'auto', borderRadius:'10px', transition:'all 0.15s' }}
+          onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.1)'}
+          onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.06)'}>
+          <ArrowLeft size={16} />
         </button>
-
-        {/* PT Avatar */}
-        <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: `linear-gradient(135deg, ${ORANGE}, #FF8C55)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+        <div style={{ width:'40px', height:'40px', borderRadius:'50%', background:`linear-gradient(135deg,${ORANGE},#FFD600)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.78rem', fontWeight:800, color:'#000', flexShrink:0, boxShadow:`0 4px 12px rgba(255,107,43,0.4)` }}>
           {ptInitials}
         </div>
-
         <div>
-          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT, margin: 0, letterSpacing: '-0.01em' }}>{pt.name}</p>
-          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: GREEN, margin: 0, fontWeight: 600 }}>Your Personal Trainer</p>
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.95rem', fontWeight:800, color:TEXT, margin:0, letterSpacing:'-0.02em' }}>{pt.name}</p>
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.68rem', color:GREEN, margin:0, fontWeight:700 }}>Your Personal Trainer</p>
         </div>
-
-        {/* Online dot */}
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: GREEN, boxShadow: `0 0 6px ${GREEN}` }} />
-          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: GREEN, fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>Online</p>
+        <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:'6px', background:'rgba(76,175,80,0.1)', border:'1px solid rgba(76,175,80,0.2)', borderRadius:'20px', padding:'4px 10px' }}>
+          <div style={{ width:'6px', height:'6px', borderRadius:'50%', backgroundColor:GREEN, boxShadow:`0 0 6px ${GREEN}` }} />
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.62rem', color:GREEN, fontWeight:700, margin:0 }}>Online</p>
         </div>
       </div>
 
@@ -122,26 +110,25 @@ export default function ClientMessages() {
             {messages.map((msg) => {
               const isClient = msg.sender_type === 'client';
               return (
-                <div key={msg.id} style={{ display: 'flex', justifyContent: isClient ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '8px' }}>
-                  {/* PT avatar */}
+                <div key={msg.id} style={{ display:'flex', justifyContent:isClient?'flex-end':'flex-start', alignItems:'flex-end', gap:'8px' }}>
                   {!isClient && (
-                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: `linear-gradient(135deg, ${ORANGE}, #FF8C55)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', fontWeight: 800, color: '#000', flexShrink: 0 }}>
+                    <div style={{ width:'30px', height:'30px', borderRadius:'50%', background:`linear-gradient(135deg,${ORANGE},#FFD600)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.62rem', fontWeight:800, color:'#000', flexShrink:0 }}>
                       {ptInitials}
                     </div>
                   )}
-
-                  <div style={{ maxWidth: '70%' }}>
+                  <div style={{ maxWidth:'70%' }}>
                     <div style={{
-                      padding: '0.7rem 1rem',
-                      borderRadius: isClient ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                      backgroundColor: isClient ? ORANGE : SURFACE2,
-                      border: isClient ? 'none' : `1px solid ${BORDER}`,
-                      wordBreak: 'break-word',
+                      padding:'0.75rem 1rem',
+                      borderRadius: isClient ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                      background: isClient ? `linear-gradient(135deg,${ORANGE},#FF8C55)` : SURFACE,
+                      border: isClient ? 'none' : `1px solid rgba(255,255,255,0.1)`,
+                      boxShadow: isClient ? `0 4px 16px rgba(255,107,43,0.3)` : 'none',
+                      wordBreak:'break-word',
                     }}>
-                      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: isClient ? '#000' : TEXT, margin: 0, lineHeight: 1.5, fontWeight: isClient ? 500 : 400 }}>{msg.message_text}</p>
+                      <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', color:isClient?'#000':TEXT, margin:0, lineHeight:1.5, fontWeight:isClient?600:400 }}>{msg.message_text}</p>
                     </div>
-                    <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: MUTED, margin: '4px 0 0', textAlign: isClient ? 'right' : 'left' }}>
-                      {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.62rem', color:MUTED, margin:'4px 0 0', textAlign:isClient?'right':'left' }}>
+                      {new Date(msg.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}
                     </p>
                   </div>
                 </div>
@@ -153,37 +140,21 @@ export default function ClientMessages() {
       </div>
 
       {/* Input */}
-      <div style={{ padding: '1rem 1.5rem', backgroundColor: '#111111', borderTop: `1px solid ${BORDER}`, flexShrink: 0 }}>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+      <div style={{ padding:'1rem 1.5rem', backgroundColor:'#111', borderTop:`1px solid ${BORDER}`, flexShrink:0, boxShadow:'0 -4px 20px rgba(0,0,0,0.3)' }}>
+        <div style={{ display:'flex', gap:'8px', alignItems:'flex-end', background:SURFACE, borderRadius:'16px', border:`1px solid ${BORDER}`, padding:'6px 6px 6px 14px', transition:'border-color 0.15s' }}
+          onFocus={()=>{}} >
           <textarea
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}
             placeholder="Message your PT..."
             onKeyPress={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             rows={1}
-            style={{
-              flex: 1, padding: '0.75rem 1rem',
-              border: `1px solid ${BORDER}`, borderRadius: '10px',
-              backgroundColor: SURFACE2, color: TEXT,
-              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem',
-              resize: 'none', outline: 'none', lineHeight: 1.5,
-              transition: 'border-color 0.15s',
-            }}
-            onFocus={e => e.target.style.borderColor = ORANGE}
-            onBlur={e => e.target.style.borderColor = BORDER}
+            style={{ flex:1, padding:'8px 0', border:'none', backgroundColor:'transparent', color:TEXT, fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', resize:'none', outline:'none', lineHeight:1.5 }}
           />
           <button
             onClick={handleSend}
             disabled={!newMessage.trim() || sending}
-            style={{
-              width: '42px', height: '42px', borderRadius: '10px', border: 'none',
-              backgroundColor: newMessage.trim() && !sending ? ORANGE : SURFACE2,
-              color: newMessage.trim() && !sending ? '#000' : MUTED,
-              cursor: newMessage.trim() && !sending ? 'pointer' : 'not-allowed',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0, transition: 'all 0.15s ease', minHeight: 'auto', minWidth: 'auto',
-            }}
-          >
+            style={{ width:'40px', height:'40px', borderRadius:'12px', border:'none', background:newMessage.trim()&&!sending?`linear-gradient(135deg,${ORANGE},#FFD600)`:'rgba(255,255,255,0.06)', color:newMessage.trim()&&!sending?'#000':MUTED, cursor:newMessage.trim()&&!sending?'pointer':'not-allowed', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, transition:'all 0.15s', minHeight:'auto', minWidth:'auto', boxShadow:newMessage.trim()&&!sending?`0 4px 12px rgba(255,107,43,0.4)`:'none' }}>
             <Send size={16} />
           </button>
         </div>

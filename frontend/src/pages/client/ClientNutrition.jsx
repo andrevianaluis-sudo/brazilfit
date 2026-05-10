@@ -8,12 +8,12 @@ import { ShoppingListTab } from '../../components/ShoppingListTab';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const BG = '#141414';
-const SURFACE = '#2a2a2a';
-const SURFACE2 = '#333333';
-const BORDER = 'rgba(255,255,255,0.15)';
+const BG='#0f0f0f';
+const SURFACE='#1a1a1a';
+const SURFACE2='#222';
+const BORDER='rgba(255,255,255,0.08)';
 const TEXT = '#ffffff';
-const MUTED = '#707070';
+const MUTED='#606060';
 const ORANGE = '#FF6B2B';
 const YELLOW = '#FFD600';
 const GREEN = '#4CAF50';
@@ -252,8 +252,8 @@ export default function ClientNutrition() {
 
         {/* Header */}
         <div style={{ margin: '1.25rem 0 1.5rem' }}>
-          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>Fuel</p>
-          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: 0 }}>Nutrition</h1>
+          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.2em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 6px' }}>Fuel</p>
+          <h1 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.05em', margin: 0, lineHeight: 1 }}>Nutrition</h1>
         </div>
 
         {/* Tip of the Week */}
@@ -277,20 +277,18 @@ export default function ClientNutrition() {
         )}
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '0', marginBottom: '1.25rem', borderBottom: `1px solid ${BORDER}` }}>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem' }}>
           {['tips', 'meals', 'shopping'].map(tabName => (
             <button key={tabName} onClick={() => setTab(tabName)} style={{
-              padding: '0.75rem 1.25rem',
-              fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 600,
-              color: tab === tabName ? ORANGE : MUTED,
-              borderBottom: `2px solid ${tab === tabName ? ORANGE : 'transparent'}`,
-                background: 'none', border: 'none',
-              cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto',
-              display: 'flex', alignItems: 'center', gap: '6px', textTransform: 'capitalize',
+              padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, minHeight: 'auto',
+              background: tab === tabName ? 'rgba(255,107,43,0.18)' : 'rgba(255,255,255,0.04)',
+              color: tab === tabName ? ORANGE : '#aaa',
+              border: tab === tabName ? '1px solid rgba(255,107,43,0.4)' : '1px solid rgba(255,255,255,0.08)',
+              display: 'flex', alignItems: 'center', gap: '6px',
             }}>
-              {tabName === 'tips' && `Tips (${tips.length})`}
-              {tabName === 'meals' && <>{`Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW} />}</>}
-              {tabName === 'shopping' && 'Shopping'}
+              {tabName === 'tips' && `🥗 Tips (${tips.length})`}
+              {tabName === 'meals' && <>{`🍽️ Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW}/>}</>}
+              {tabName === 'shopping' && '🛒 Shopping'}
             </button>
           ))}
         </div>
