@@ -37,9 +37,9 @@ function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
     setExercises(f);
   }, [search, category, all]);
 
-  const addedIds = new Set(alreadyAdded.map(e => e.exercise_id));  useEffect(() => { fetchExercises(); }, [fetchExercises]);
-
   const addedIds = new Set(alreadyAdded.map(e => e.exercise_id));
+
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 px-4 pb-4 sm:pb-0">
