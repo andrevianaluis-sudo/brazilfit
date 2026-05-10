@@ -44,7 +44,7 @@ const AMBIENT_OPTIONS = [
   { key:'forest',  label:'Forest',  emoji:'🌿' },
 ];
 
-const BG='#141414', SURFACE='#2a2a2a', SURFACE2='#333', BORDER='rgba(255,255,255,0.12)', TEXT='#fff', MUTED='#707070', ORANGE='#FF6B2B', YELLOW='#FFD600', GREEN='#4CAF50';
+const BG='#0f0f0f', SURFACE='#1a1a1a', SURFACE2='#222', BORDER='rgba(255,255,255,0.08)', TEXT='#fff', MUTED='#606060', ORANGE='#FF6B2B', YELLOW='#FFD600', GREEN='#4CAF50';
 
 function buildAmbientNodes(ctx, type) {
   const sr=ctx.sampleRate, len=sr*10, buf=ctx.createBuffer(2,len,sr);
@@ -441,38 +441,61 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRout
   }
 
   return (
-    <div style={{backgroundColor:SURFACE,borderRadius:'12px',padding:'1.1rem',border:`1px solid ${BORDER}`,borderLeft:`3px solid ${typeInfo.color}`}}>
-      <div style={{display:'flex',alignItems:'flex-start',gap:'12px'}}>
-        <div style={{padding:'8px',borderRadius:'8px',backgroundColor:typeInfo.bg,flexShrink:0}}>
-          <Icon size={18} color={typeInfo.color}/>
-        </div>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'8px',marginBottom:'6px'}}>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:400,color:TEXT,letterSpacing:'-0.01em',margin:0,lineHeight:1.6}}>{item.title}</p>
-            {item.duration_minutes>0&&(
-              <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,color:typeInfo.color,flexShrink:0}}>
-                <Clock size={12}/>{item.duration_minutes}m
-              </span>
-            )}
+    <div style={{
+      borderRadius:'16px', overflow:'hidden',
+      background:`linear-gradient(135deg,#1a1a1a,${typeInfo.bg.replace('0.15','0.08')})`,
+      border:`1px solid ${typeInfo.color}30`,
+      boxShadow:`0 4px 20px ${typeInfo.color}10`,
+      transition:'transform 0.15s,box-shadow 0.15s',
+    }}>
+      <div style={{height:'3px',background:`linear-gradient(90deg,${typeInfo.color},${typeInfo.color}55)`}}/>
+      <div style={{padding:'1.1rem 1.25rem'}}>
+        <div style={{display:'flex',alignItems:'flex-start',gap:'12px',marginBottom:'0.875rem'}}>
+          <div style={{width:'40px',height:'40px',borderRadius:'12px',background:typeInfo.bg,border:`1px solid ${typeInfo.color}40`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <Icon size={18} color={typeInfo.color}/>
           </div>
-          {item.description&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
-          <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'8px',marginBottom:'5px'}}>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.97rem',fontWeight:700,color:TEXT,letterSpacing:'-0.01em',margin:0,lineHeight:1.3}}>{item.title}</p>
+              {item.duration_minutes>0&&(
+                <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.68rem',fontWeight:700,color:typeInfo.color,background:typeInfo.bg,border:`1px solid ${typeInfo.color}30`,borderRadius:'20px',padding:'2px 9px',flexShrink:0,whiteSpace:'nowrap'}}>
+                  <Clock size={11}/>{item.duration_minutes}m
+                </span>
+              )}
+            </div>
+            {item.description&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.77rem',color:'#a0a0a0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
             {item.difficulty&&(
-              <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:400,letterSpacing:'0.08em',textTransform:'uppercase',padding:'2px 8px',borderRadius:'4px',backgroundColor:`${item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}18`,color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444'}}>
-                {item.difficulty}
-              </span>
+              <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',padding:'2px 9px',borderRadius:'20px',
+                background:item.difficulty==='beginner'?'rgba(76,175,80,0.12)':item.difficulty==='intermediate'?'rgba(255,107,43,0.12)':'rgba(239,68,68,0.12)',
+                color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444',
+                border:`1px solid ${item.difficulty==='beginner'?'rgba(76,175,80,0.25)':item.difficulty==='intermediate'?'rgba(255,107,43,0.25)':'rgba(239,68,68,0.25)'}`,
+              }}>{item.difficulty}</span>
             )}
           </div>
         </div>
-      </div>
-      <div style={{marginTop:'0.875rem'}}>
+
         {isInteractive?(
-          <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
-            <Play size={14}/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
+          <button onClick={onStart} style={{
+            width:'100%',padding:'0.85rem',background:`linear-gradient(135deg,${typeInfo.color},${typeInfo.color}bb)`,
+            border:'none',borderRadius:'10px',color:'#000',fontFamily:"'DM Sans',system-ui",
+            fontSize:'0.875rem',fontWeight:800,cursor:'pointer',
+            display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',
+            minHeight:'auto',boxShadow:`0 4px 16px ${typeInfo.color}40`,letterSpacing:'0.01em',
+          }}>
+            <Play size={14} fill="#000"/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
           </button>
         ):(
           <>
-            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}} onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}><span>{expanded?'Hide details':'View details'}</span>{expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
+            <button onClick={onToggleExpand} style={{
+              width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',
+              fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,
+              background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',
+            }}
+              onMouseEnter={e=>e.currentTarget.style.color=typeInfo.color}
+              onMouseLeave={e=>e.currentTarget.style.color=MUTED}>
+              <span>{expanded?'Hide details':'View details'}</span>
+              {expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}
+            </button>
             {expanded&&<ExpandedDetail item={item}/>}
           </>
         )}
@@ -766,46 +789,64 @@ export default function ClientWellness() {
         <BackButton to="/client"/>
 
         {/* Header */}
-        <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',margin:'1.25rem 0 1.5rem'}}>
+        <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',margin:'1.5rem 0 1.5rem'}}>
           <div>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:400,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:'0 0 0.4rem'}}>Recovery</p>
-            <h1 style={{fontFamily:"'DM Sans',system-ui",fontSize:'2rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 0.25rem'}}>Mind & Wellness</h1>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 6px'}}>Recovery</p>
+            <h1 style={{fontFamily:"'DM Sans',system-ui",fontSize:'2.5rem',fontWeight:800,color:TEXT,letterSpacing:'-0.05em',margin:'0 0 4px',lineHeight:1}}>Mind & Wellness</h1>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Mental performance & recovery</p>
           </div>
           {isPro?(
-            <span style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:400,padding:'4px 12px',borderRadius:'20px',background:`linear-gradient(135deg,${YELLOW},${ORANGE})`,color:'#000'}}>
+            <span style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:800,padding:'5px 14px',borderRadius:'20px',background:`linear-gradient(135deg,${YELLOW},${ORANGE})`,color:'#000',boxShadow:`0 4px 12px ${ORANGE}44`}}>
               <Crown size={12}/> Pro
             </span>
           ):(
-            <button onClick={()=>navigate('/client/upgrade')} style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:400,color:YELLOW,border:`1px solid ${YELLOW}44`,borderRadius:'20px',padding:'4px 12px',background:'none',cursor:'pointer',minHeight:'auto'}}>
+            <button onClick={()=>navigate('/client/upgrade')} style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'0.72rem',fontWeight:700,color:YELLOW,border:`1px solid ${YELLOW}44`,borderRadius:'20px',padding:'5px 14px',background:`${YELLOW}10`,cursor:'pointer',minHeight:'auto'}}>
               <Crown size={12}/> Upgrade
             </button>
           )}
         </div>
 
         {/* Type tabs */}
-        <div style={{display:'flex',gap:'6px',overflowX:'auto',paddingBottom:'4px',marginBottom:'1rem'}}>
-          {TYPES.map(({key,label,icon:Icon})=>{const active=tab===key;const ti=TYPES.find(t=>t.key===key);return(
-            <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'7px 14px',borderRadius:'8px',border:`1px solid ${active?ti.color:BORDER}`,backgroundColor:active?`${ti.color}20`:'transparent',color:active?ti.color:MUTED,fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',transition:'all 0.15s'}}>
-              <Icon size={13}/>{label}
-            </button>
-          );})}
+        <div style={{display:'flex',gap:'6px',overflowX:'auto',paddingBottom:'8px',marginBottom:'1.25rem'}}>
+          {TYPES.map(({key,label,icon:Icon})=>{
+            const active=tab===key;
+            const ti=TYPES.find(t=>t.key===key);
+            return(
+              <button key={key} onClick={()=>{setTab(key);setExpanded(null);}} style={{
+                flexShrink:0,display:'flex',alignItems:'center',gap:'6px',padding:'8px 16px',
+                borderRadius:'10px',cursor:'pointer',minHeight:'auto',whiteSpace:'nowrap',
+                border:`1px solid ${active?ti.color:BORDER}`,
+                background:active?`${ti.color}18`:'rgba(255,255,255,0.04)',
+                color:active?ti.color:'#888',
+                fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:active?700:500,
+                boxShadow:active?`0 0 12px ${ti.color}25`:'none',
+                transition:'all 0.15s',
+              }}>
+                <Icon size={13}/>{label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Section info */}
-        {sectionInfo&&(
-          <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'0.875rem 1rem',backgroundColor:SURFACE,borderRadius:'10px',border:`1px solid ${BORDER}`,marginBottom:'1rem'}}>
-            <span style={{fontSize:'1.25rem',flexShrink:0}}>{sectionInfo.emoji}</span>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{sectionInfo.text}</p>
+        {sectionInfo&&tab!=='rest_day'&&(
+          <div style={{
+            borderRadius:'16px',padding:'1rem 1.25rem',marginBottom:'1.25rem',
+            background:`linear-gradient(135deg,${TYPES.find(t=>t.key===tab)?.color||ORANGE}12,#1a1a1a)`,
+            border:`1px solid ${TYPES.find(t=>t.key===tab)?.color||ORANGE}25`,
+            display:'flex',alignItems:'center',gap:'14px',
+          }}>
+            <span style={{fontSize:'1.5rem',flexShrink:0}}>{sectionInfo.emoji}</span>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:'#c0c0c0',margin:0,lineHeight:1.6,fontWeight:500}}>{sectionInfo.text}</p>
           </div>
         )}
 
         {/* Pro hint */}
         {!isPro&&isLimited&&(
-          <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'0.75rem 1rem',backgroundColor:`${YELLOW}10`,border:`1px solid ${YELLOW}22`,borderRadius:'8px',marginBottom:'1rem'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'0.875rem 1rem',background:`${YELLOW}10`,border:`1px solid ${YELLOW}25`,borderRadius:'12px',marginBottom:'1.25rem'}}>
             <Crown size={14} color={YELLOW}/>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,margin:0}}>
-              Showing 1 preview. <button onClick={()=>navigate('/client/upgrade')} style={{background:'none',border:'none',color:YELLOW,fontWeight:400,cursor:'pointer',textDecoration:'underline',padding:0,minHeight:'auto'}}>Upgrade to Pro</button> for the full library.
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:YELLOW,margin:0,fontWeight:500}}>
+              Showing 1 preview. <button onClick={()=>navigate('/client/upgrade')} style={{background:'none',border:'none',color:YELLOW,fontWeight:700,cursor:'pointer',textDecoration:'underline',padding:0,minHeight:'auto'}}>Upgrade to Pro</button> for the full library.
             </p>
           </div>
         )}
@@ -914,11 +955,12 @@ export default function ClientWellness() {
             </div>
           </div>
         ):tabContent.length===0?(
-          <div style={{textAlign:'center',padding:'3rem 0'}}>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:MUTED}}>No content available yet</p>
+          <div style={{borderRadius:'20px',padding:'3rem',textAlign:'center',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)',border:'1px solid rgba(255,107,43,0.15)'}}>
+            <p style={{fontSize:'2rem',margin:'0 0 8px'}}>🧘</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:MUTED,margin:0}}>No content available yet</p>
           </div>
         ):(
-          <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+          <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
             {tabContent.map(item=>(
               <ContentCard key={item.id} item={item} tab={tab}
                 expanded={expanded===item.id}
@@ -926,11 +968,11 @@ export default function ClientWellness() {
                 onStart={()=>{if(item.type==='breathing')setBreathingSession(item);else setActiveSession(item);}}/>
             ))}
             {isLimited&&(
-              <div style={{backgroundColor:SURFACE,border:`1px solid ${YELLOW}22`,borderRadius:'12px',padding:'2rem',textAlign:'center'}}>
+              <div style={{borderRadius:'16px',padding:'2rem',textAlign:'center',background:'linear-gradient(135deg,rgba(255,214,0,0.06),#1a1a1a)',border:`1px solid ${YELLOW}25`}}>
                 <Crown size={24} color={YELLOW} style={{marginBottom:'0.75rem'}}/>
-                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:400,color:TEXT,letterSpacing:'-0.04em',margin:'0 0 0.4rem'}}>Unlock Full Library</p>
-                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1rem',lineHeight:1.6}}>Get unlimited access to all sessions with BrazilFit Pro.</p>
-                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.8rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',minHeight:'auto'}}>Upgrade to Pro</button>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:800,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 6px'}}>Unlock Full Library</p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:MUTED,margin:'0 0 1.25rem',lineHeight:1.6}}>Get unlimited access to all sessions with BrazilFit Pro.</p>
+                <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.875rem 2rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'12px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:'pointer',minHeight:'auto',boxShadow:`0 4px 16px ${ORANGE}40`}}>Upgrade to Pro</button>
               </div>
             )}
           </div>
