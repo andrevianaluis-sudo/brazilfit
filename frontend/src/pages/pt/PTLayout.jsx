@@ -201,7 +201,7 @@ export default function PTLayout() {
 
               {/* Dropdown */}
               {showNotifs && (
-                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, width: '340px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', boxShadow: '0 20px 60px rgba(0,0,0,0.6)', zIndex: 100, overflow: 'hidden' }}>
+                <div style={{ position: 'fixed', top: '68px', right: '12px', width: 'min(340px, calc(100vw - 24px))', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', boxShadow: '0 20px 60px rgba(0,0,0,0.8)', zIndex: 999, overflow: 'hidden' }}>
                   {/* Header */}
                   <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>Notifications</span>
