@@ -16,29 +16,28 @@ function getGifUrl(exercise) {
 // ─── Exercise Picker Modal ────────────────────────────────────────────────────
 function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const [exercises, setExercises] = useState([]);
+  const [all, setAll] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const CATEGORIES = ['All','Arms','Back','Calves','Chest','Full Body','Hips','Legs','Neck','Shoulders'];
 
-  const fetchExercises = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await api.get('/stretches');
-      const all = res.data || [];
-      const filtered = category && category !== 'All' ? all.filter(s => s.muscle_group === category) : all;
-      const searched = search ? filtered.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) : filtered;
-      setExercises(searched);
-      setLoading(false);
-    } catch {
-      toast.error('Failed to load exercises');
-    } finally {
-      setLoading(false);
-    }
-  }, [search, category]);
+  useEffect(() => {
+    api.get('/stretches').then(r => {
+      setAll(r.data || []);
+      setExercises(r.data || []);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
 
-  useEffect(() => { fetchExercises(); }, [fetchExercises]);
+  useEffect(() => {
+    let f = all;
+    if (category && category !== 'All') f = f.filter(s => s.muscle_group === category);
+    if (search) f = f.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
+    setExercises(f);
+  }, [search, category, all]);
+
+  const addedIds = new Set(alreadyAdded.map(e => e.exercise_id));  useEffect(() => { fetchExercises(); }, [fetchExercises]);
 
   const addedIds = new Set(alreadyAdded.map(e => e.exercise_id));
 
