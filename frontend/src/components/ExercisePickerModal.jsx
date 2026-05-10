@@ -14,8 +14,8 @@ const CATEGORIES = [
   { key: 'Legs', label: 'Legs' },
   { key: 'Neck', label: 'Neck' },
   { key: 'Shoulders', label: 'Shoulders' },
-  { key: 'Shoulders', label: 'Shoulders' },
 ];
+
 
 
 
