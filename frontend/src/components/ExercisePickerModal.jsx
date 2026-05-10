@@ -53,9 +53,9 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
           {exercise.gif_file ? (
             <img src={'/exercise-gifs/' + exercise.gif_file} alt={exercise.name}
               style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              onError={e => { e.target.style.display = 'none'; }} />
           ) : (
             <span style={{ fontSize: 64 }}>{stretch ? '🧘' : '💪'}</span>
+          )}
           )}
         </div>
 
