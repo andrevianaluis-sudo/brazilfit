@@ -108,7 +108,7 @@ function PTNotesModal({ session, onClose }) {
 }
 
 // ── Session Slot ──────────────────────────────────────────────────────────────
-function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes }) {
+function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate }) {
   const isClass = entry.entryType === 'class';
   const isCancelled = entry.status === 'cancelled';
   const borderColor = isClass ? '#f472b6' : getStatusBorder(entry.status);
@@ -125,11 +125,22 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
   );
 
   if (isCancelled) return (
-    <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(255,255,255,0.03)', border:`1px solid ${BORDER}`, opacity:0.7 }}>
-      <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-        <Ban size={13} color={MUTED} />
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:MUTED, margin:0, textDecoration:'line-through' }}>{entry.client_name}</p>
-        <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:MUTED, backgroundColor:'rgba(255,255,255,0.05)', padding:'2px 6px', borderRadius:'4px' }}>CANCELLED</span>
+    <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(255,255,255,0.03)', border:`1px solid ${BORDER}`, opacity:0.85 }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'8px' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:'8px', flex:1, minWidth:0 }}>
+          <Ban size={13} color={MUTED} style={{ flexShrink:0 }} />
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:MUTED, margin:0, textDecoration:'line-through' }}>{entry.client_name}</p>
+          <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:MUTED, backgroundColor:'rgba(255,255,255,0.05)', padding:'2px 6px', borderRadius:'4px', flexShrink:0 }}>CANCELLED</span>
+        </div>
+        <button
+          onClick={() => onReinstate && onReinstate(entry.id)}
+          title="Reinstate session"
+          style={{ flexShrink:0, fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:700, color:'#4CAF50', backgroundColor:'rgba(76,175,80,0.12)', border:'1px solid rgba(76,175,80,0.3)', padding:'3px 10px', borderRadius:'6px', cursor:'pointer', whiteSpace:'nowrap', transition:'all 0.15s' }}
+          onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(76,175,80,0.25)'}
+          onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(76,175,80,0.12)'}
+        >
+          ↩ Reinstate
+        </button>
       </div>
       <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:'3px 0 0 21px' }}>
         {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` · ${Math.floor(entry.cancellation_notice_hours)}h notice · session carried over` : ''}
@@ -259,6 +270,15 @@ export default function PTSchedule() {
     } catch { toast.error('Failed to update session'); }
   };
 
+  const reinstateSession = async (sessionId) => {
+    if (!window.confirm('Reinstate this cancelled session? It will become upcoming again.')) return;
+    try {
+      await api.post(`/sessions/${sessionId}/reinstate`);
+      toast.success('Session reinstated ✅');
+      loadDaySchedule();
+    } catch { toast.error('Failed to reinstate session'); }
+  };
+
   const prevDay = () => { const d = new Date(selectedDate + 'T12:00:00'); d.setDate(d.getDate()-1); setSelectedDate(d.toISOString().split('T')[0]); };
   const nextDay = () => { const d = new Date(selectedDate + 'T12:00:00'); d.setDate(d.getDate()+1); setSelectedDate(d.toISOString().split('T')[0]); };
 
@@ -364,7 +384,8 @@ export default function PTSchedule() {
                           onMarkAttended={() => markSession(entry.id, 'attended')}
                           onMarkMissed={() => markSession(entry.id, 'missed')}
                           onMarkUpcoming={() => markSession(entry.id, 'upcoming')}
-                          onNotes={setNotesSession} />
+                          onNotes={setNotesSession}
+                          onReinstate={() => reinstateSession(entry.id)} />
                       ))}
                     </div>
                   )}

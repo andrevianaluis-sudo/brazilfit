@@ -223,6 +223,45 @@ router.post('/:id/override-cancel', requirePT, (req, res) => {
   res.json({ message: 'Session cancelled with PT override. Session carried over.', carriedOver: true });
 });
 
+// POST /sessions/:id/reinstate — PT reinstates a cancelled session back to upcoming
+router.post('/:id/reinstate', requirePT, (req, res) => {
+  const db = getDb();
+  const { note } = req.body;
+
+  const session = db.prepare('SELECT * FROM sessions WHERE id = ?').get(req.params.id);
+  if (!session) return res.status(404).json({ error: 'Session not found' });
+  if (session.status !== 'cancelled') return res.status(400).json({ error: 'Only cancelled sessions can be reinstated' });
+
+  // Restore to upcoming, clear cancellation fields
+  db.prepare(`
+    UPDATE sessions
+    SET status = 'upcoming',
+        cancelled_at = NULL,
+        cancellation_notice_hours = NULL,
+        session_carried_over = 0,
+        cancelled_by = NULL,
+        pt_override_note = CASE WHEN ? IS NOT NULL THEN ? ELSE pt_override_note END
+    WHERE id = ?
+  `).run(note || null, note || null, session.id);
+
+  // Log notification so client knows
+  const clientRow = db.prepare(`
+    SELECT u.name FROM clients c JOIN users u ON c.user_id = u.id WHERE c.id = ?
+  `).get(session.client_id);
+
+  db.prepare(`
+    INSERT INTO notifications (type, title, message, client_id, session_id)
+    VALUES ('reinstate', ?, ?, ?, ?)
+  `).run(
+    `Session reinstated: ${clientRow?.name}`,
+    `PT reinstated the cancelled session for ${clientRow?.name} on ${session.scheduled_date} at ${session.scheduled_time}. Session is now upcoming again.${note ? ' Note: ' + note : ''}`,
+    session.client_id,
+    session.id
+  );
+
+  res.json({ message: 'Session reinstated. It is now upcoming again.', sessionId: session.id });
+});
+
 // ─── Session Notes ────────────────────────────────────────────────────────────
 
 // GET /sessions/:id/note — get note for a session

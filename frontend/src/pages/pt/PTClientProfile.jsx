@@ -348,6 +348,17 @@ export default function PTClientProfile() {
     }
   };
 
+  const handleReinstate = async (sessionId) => {
+    if (!window.confirm('Reinstate this cancelled session? It will become upcoming again.')) return;
+    try {
+      await api.post(`/sessions/${sessionId}/reinstate`);
+      toast.success('Session reinstated — it\'s upcoming again ✅');
+      loadClient();
+    } catch {
+      toast.error('Failed to reinstate session');
+    }
+  };
+
   if (loading) return (
     <div className="flex justify-center py-12">
       <div className="w-8 h-8 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
@@ -585,6 +596,15 @@ export default function PTClientProfile() {
                 }`}>
                   {s.status}
                 </span>
+                {s.status === 'cancelled' && (
+                  <button
+                    onClick={() => handleReinstate(s.id)}
+                    title="Reinstate — move back to upcoming"
+                    className="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-brazil-green/15 text-brazil-green hover:bg-brazil-green/30 transition-colors flex-shrink-0 font-semibold"
+                  >
+                    Reinstate
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -664,10 +684,17 @@ export default function PTClientProfile() {
                           "{s.pt_override_note}"
                         </div>
                       )}
+
+                      <button
+                        onClick={() => handleReinstate(s.id)}
+                        className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-brazil-green/10 text-brazil-green text-xs font-semibold hover:bg-brazil-green/20 transition-colors border border-brazil-green/20"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        Reinstate Session
+                      </button>
                     </div>
                   );
-                })}
-              </>
+                })}              </>
             )}
           </div>
         )}
