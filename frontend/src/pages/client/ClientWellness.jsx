@@ -350,6 +350,96 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRout
   const isInteractive=tab==='mindfulness'||tab==='breathing';
   const isStretchRoutine=tab==='rest_day'&&onStartRoutine;
 
+  if (tab === 'rest_day') {
+    return (
+      <div style={{
+        borderRadius:'16px', overflow:'hidden',
+        background:'linear-gradient(135deg, #1e1e1e 0%, #1a2a1a 100%)',
+        border:'1px solid rgba(76,175,80,0.25)',
+        boxShadow:'0 4px 24px rgba(76,175,80,0.08)',
+        position:'relative',
+      }}>
+        {/* Green accent top bar */}
+        <div style={{height:'3px', background:`linear-gradient(90deg, ${GREEN}, ${ORANGE})`, width:'100%'}}/>
+        <div style={{padding:'1.25rem'}}>
+          {/* Header row */}
+          <div style={{display:'flex',alignItems:'flex-start',gap:'14px',marginBottom:'1rem'}}>
+            <div style={{
+              width:'46px', height:'46px', borderRadius:'12px', flexShrink:0,
+              background:`linear-gradient(135deg, rgba(76,175,80,0.25), rgba(255,107,43,0.15))`,
+              border:'1px solid rgba(76,175,80,0.3)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+            }}>
+              <Icon size={20} color={GREEN}/>
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'8px',marginBottom:'5px'}}>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:TEXT,margin:0,letterSpacing:'-0.01em'}}>{item.title}</p>
+                {item.duration_minutes>0&&(
+                  <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',fontWeight:700,color:GREEN,background:'rgba(76,175,80,0.12)',border:'1px solid rgba(76,175,80,0.25)',borderRadius:'20px',padding:'2px 10px',flexShrink:0}}>
+                    <Clock size={11}/>{item.duration_minutes}m
+                  </span>
+                )}
+              </div>
+              {item.description&&<p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#a0a0a0',margin:'0 0 8px',lineHeight:1.6}}>{item.description}</p>}
+              {item.difficulty&&(
+                <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',padding:'3px 10px',borderRadius:'20px',
+                  background:item.difficulty==='beginner'?'rgba(76,175,80,0.15)':item.difficulty==='intermediate'?'rgba(255,107,43,0.15)':'rgba(239,68,68,0.15)',
+                  color:item.difficulty==='beginner'?GREEN:item.difficulty==='intermediate'?ORANGE:'#ef4444',
+                  border:`1px solid ${item.difficulty==='beginner'?'rgba(76,175,80,0.3)':item.difficulty==='intermediate'?'rgba(255,107,43,0.3)':'rgba(239,68,68,0.3)'}`,
+                }}>
+                  {item.difficulty}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          {isStretchRoutine ? (
+            <>
+              <button onClick={onStartRoutine} style={{
+                width:'100%', padding:'0.85rem', borderRadius:'10px', border:'none', cursor:'pointer',
+                background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+                color:'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:800,
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
+                minHeight:'auto', boxShadow:`0 4px 20px rgba(255,107,43,0.4)`, marginBottom:'8px',
+                letterSpacing:'0.01em',
+              }}>
+                <Play size={15} fill="#000"/> Start Routine
+              </button>
+              <button onClick={onToggleExpand} style={{
+                width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px',
+                fontSize:'0.73rem', color:MUTED, background:'none', border:'none', cursor:'pointer',
+                padding:'6px 0', minHeight:'auto', transition:'color 0.15s',
+              }}
+                onMouseEnter={e=>e.currentTarget.style.color=GREEN}
+                onMouseLeave={e=>e.currentTarget.style.color=MUTED}>
+                <span>{expanded?'Hide exercises':'Preview exercises'}</span>
+                {expanded?<ChevronUp size={13}/>:<ChevronDown size={13}/>}
+              </button>
+              {expanded&&<ExpandedDetail item={item}/>}
+            </>
+          ) : (
+            <>
+              <button onClick={onToggleExpand} style={{
+                width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between',
+                fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', color:MUTED,
+                background:'none', border:'none', cursor:'pointer', padding:'6px 0',
+                minHeight:'auto', transition:'color 0.15s',
+              }}
+                onMouseEnter={e=>e.currentTarget.style.color=GREEN}
+                onMouseLeave={e=>e.currentTarget.style.color=MUTED}>
+                <span>{expanded?'Hide details':'View details'}</span>
+                {expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}
+              </button>
+              {expanded&&<ExpandedDetail item={item}/>}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{backgroundColor:SURFACE,borderRadius:'12px',padding:'1.1rem',border:`1px solid ${BORDER}`,borderLeft:`3px solid ${typeInfo.color}`}}>
       <div style={{display:'flex',alignItems:'flex-start',gap:'12px'}}>
@@ -380,12 +470,6 @@ function ContentCard({ item, tab, expanded, onToggleExpand, onStart, onStartRout
           <button onClick={onStart} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,border:'none',borderRadius:'8px',color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:300,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto'}}>
             <Play size={14}/>{tab==='breathing'?'Start Breathing Exercise':'Begin Session'}
           </button>
-        ):isStretchRoutine?(
-          <>
-              <button onClick={onStartRoutine} style={{width:'100%',padding:'0.8rem',background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:'none',borderRadius:'8px',color:'#fff',fontSize:'0.875rem',fontWeight:400,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto',marginBottom:8}}><Play size={14}/> Start Routine</button>
-            <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto'}} onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}><span>{expanded?'Hide exercises':'Preview exercises'}</span>{expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
-            {expanded&&<ExpandedDetail item={item}/>}
-          </>
         ):(
           <>
             <button onClick={onToggleExpand} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,background:'none',border:'none',cursor:'pointer',padding:'6px 0',minHeight:'auto',transition:'color 0.15s'}} onMouseEnter={e=>e.currentTarget.style.color=TEXT} onMouseLeave={e=>e.currentTarget.style.color=MUTED}><span>{expanded?'Hide details':'View details'}</span>{expanded?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
@@ -729,42 +813,102 @@ export default function ClientWellness() {
         {/* Content */}
         {tab==="rest_day"?(
           <div>
-            <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:"1rem"}}>
-              {tabContent.map(item=>(
-                <ContentCard key={item.id} item={item} tab={tab}
-                  expanded={expanded===item.id}
-                  onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
-                  onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}
-                  onStartRoutine={item.type==="rest_day"?()=>setStretchRoutineSession(item):null}/>
-              ))}
+
+            {/* Premium hero banner */}
+            <div style={{
+              borderRadius:'20px', padding:'1.75rem', marginBottom:'1.25rem',
+              background:'linear-gradient(135deg, #1a2a1a 0%, #1e1a0a 50%, #1e1e1e 100%)',
+              border:'1px solid rgba(76,175,80,0.3)',
+              boxShadow:'0 8px 40px rgba(76,175,80,0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
+              position:'relative', overflow:'hidden',
+            }}>
+              {/* Decorative glow */}
+              <div style={{position:'absolute',top:'-40px',right:'-40px',width:'160px',height:'160px',borderRadius:'50%',background:GREEN,opacity:0.06,pointerEvents:'none'}}/>
+              <div style={{position:'absolute',bottom:'-30px',left:'-20px',width:'120px',height:'120px',borderRadius:'50%',background:ORANGE,opacity:0.05,pointerEvents:'none'}}/>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:GREEN,textTransform:'uppercase',margin:'0 0 8px'}}>🌿 REST DAY</p>
+              <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:800,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 8px',lineHeight:1.2}}>Active Recovery Day</h2>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:'#a0a0a0',margin:'0 0 1.25rem',lineHeight:1.6}}>This is where your gains are made. Rest isn't weakness — it's the secret weapon of every elite athlete.</p>
+              <div style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
+                {[{icon:'💪',label:'Mobility'},{icon:'🧘',label:'Recovery'},{icon:'🔥',label:'Stay Active'}].map((b,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'center',gap:'6px',padding:'5px 12px',borderRadius:'20px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)'}}>
+                    <span style={{fontSize:'0.85rem'}}>{b.icon}</span>
+                    <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',fontWeight:600,color:'#c0c0c0'}}>{b.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* 5 curated stretch routines */}
-            <p style={{fontSize:"0.6rem",fontWeight:700,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 10px"}}>🌿 Curated Stretch Routines</p>
-            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {/* PT's assigned routines */}
+            {tabContent.length > 0 && (
+              <>
+                <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}}>
+                  <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,rgba(76,175,80,0.4),transparent)'}}/>
+                  <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:GREEN,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>⚡ Your PT's Routines</p>
+                  <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,transparent,rgba(76,175,80,0.4))'}}/>
+                </div>
+                <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:"1.5rem"}}>
+                  {tabContent.map(item=>(
+                    <ContentCard key={item.id} item={item} tab={tab}
+                      expanded={expanded===item.id}
+                      onToggleExpand={()=>setExpanded(expanded===item.id?null:item.id)}
+                      onStart={()=>{if(item.type==="breathing")setBreathingSession(item);else setActiveSession(item);}}
+                      onStartRoutine={item.type==="rest_day"?()=>setStretchRoutineSession(item):null}/>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Curated routines section */}
+            <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}}>
+              <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,rgba(255,107,43,0.4),transparent)'}}/>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>🌿 Curated Routines</p>
+              <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,transparent,rgba(255,107,43,0.4))'}}/>
+            </div>
+
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[
-                { emoji:'☀️', title:'Morning Wake-Up Flow', tag:'10 min · Beginner', color:'#FFD600', bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.25)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Cat-cow, neck rolls, seated spinal twist, standing quad stretch, and a final forward fold.', keywords:['neck','back','spine','hip','hamstring'] },
-                { emoji:'🦵', title:'Hip Flexor & Lower Back Release', tag:'12 min · All Levels', color:'#FF6B2B', bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.25)', desc:'Targets the two areas that tighten most from training and sitting. Kneeling lunge, pigeon pose, supine twist, glute bridge hold, and child\'s pose.', keywords:['hip','glute','lower back','hamstring','quad'] },
-                { emoji:'🧘', title:'Post-Workout Full Body Cool Down', tag:'15 min · All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.1)', border:'rgba(96,165,250,0.25)', desc:'The perfect session finisher. Hamstring stretch, seated figure-four, chest opener, doorway shoulder stretch, and a 2-minute savasana to close.', keywords:['chest','shoulder','hamstring','calf','back'] },
-                { emoji:'🌙', title:'Evening Wind-Down Routine', tag:'8 min · Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.1)', border:'rgba(192,132,252,0.25)', desc:'Calm your nervous system before bed. Legs up the wall, supine knee hug, reclined butterfly, side-lying stretch, and slow deep breathing to finish.', keywords:['hip','glute','spine','neck','shoulder'] },
-                { emoji:'💪', title:'Upper Body & Shoulder Reset', tag:'10 min · All Levels', color:'#4CAF50', bg:'rgba(76,175,80,0.1)', border:'rgba(76,175,80,0.25)', desc:'Undoes the tightness from pressing, pulling, and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend, and wrist circles.', keywords:['shoulder','chest','tricep','lat','back'] },
+                { emoji:'☀️', title:'Morning Wake-Up Flow', tag:'10 min', level:'Beginner', color:YELLOW, bg:'rgba(255,214,0,0.08)', border:'rgba(255,214,0,0.2)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Neck rolls, spinal twist, quad stretch, forward fold.', keywords:['neck','back','spine','hip','hamstring'] },
+                { emoji:'🦵', title:'Hip Flexor & Lower Back', tag:'12 min', level:'All Levels', color:ORANGE, bg:'rgba(255,107,43,0.08)', border:'rgba(255,107,43,0.2)', desc:'Targets the two areas that tighten most from training and sitting. Pigeon pose, supine twist, glute bridge, child\'s pose.', keywords:['hip','glute','lower back','hamstring','quad'] },
+                { emoji:'🧘', title:'Post-Workout Cool Down', tag:'15 min', level:'All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.08)', border:'rgba(96,165,250,0.2)', desc:'The perfect session finisher. Hamstring stretch, figure-four, chest opener, shoulder stretch, savasana.', keywords:['chest','shoulder','hamstring','calf','back'] },
+                { emoji:'🌙', title:'Evening Wind-Down', tag:'8 min', level:'Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.08)', border:'rgba(192,132,252,0.2)', desc:'Calm your nervous system before bed. Legs up the wall, knee hug, reclined butterfly, slow breathing.', keywords:['hip','glute','spine','neck','shoulder'] },
+                { emoji:'💪', title:'Upper Body & Shoulder Reset', tag:'10 min', level:'All Levels', color:GREEN, bg:'rgba(76,175,80,0.08)', border:'rgba(76,175,80,0.2)', desc:'Undoes tightness from pressing and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend.', keywords:['shoulder','chest','tricep','lat','back'] },
               ].map((r,i)=>(
-                <div key={i} style={{backgroundColor:SURFACE,borderRadius:'12px',padding:'1.1rem',border:`1px solid ${r.border}`,borderLeft:`3px solid ${r.color}`}}>
-                  <div style={{display:'flex',alignItems:'flex-start',gap:'12px',marginBottom:'0.875rem'}}>
-                    <div style={{width:'40px',height:'40px',borderRadius:'10px',background:r.bg,border:`1px solid ${r.border}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'1.2rem'}}>
-                      {r.emoji}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'8px',marginBottom:'4px'}}>
-                        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.95rem',fontWeight:700,color:TEXT,margin:0}}>{r.title}</p>
-                        <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,color:r.color,background:r.bg,border:`1px solid ${r.border}`,borderRadius:'20px',padding:'2px 8px',flexShrink:0,whiteSpace:'nowrap'}}>{r.tag}</span>
+                <div key={i} style={{
+                  borderRadius:'16px', overflow:'hidden',
+                  background:`linear-gradient(135deg, #1e1e1e, ${r.bg.replace('0.08','0.15')})`,
+                  border:`1px solid ${r.border}`,
+                  boxShadow:`0 4px 20px ${r.color}10`,
+                  position:'relative',
+                }}>
+                  <div style={{height:'2px',background:`linear-gradient(90deg,${r.color},transparent)`}}/>
+                  <div style={{padding:'1.15rem'}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:'14px',marginBottom:'1rem'}}>
+                      <div style={{
+                        width:'48px',height:'48px',borderRadius:'14px',flexShrink:0,
+                        background:`linear-gradient(135deg,${r.bg.replace('0.08','0.3')},${r.bg})`,
+                        border:`1px solid ${r.border}`,
+                        display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.5rem',
+                      }}>{r.emoji}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.97rem',fontWeight:800,color:TEXT,margin:'0 0 5px',letterSpacing:'-0.01em'}}>{r.title}</p>
+                        <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
+                          <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:700,color:r.color,background:r.bg,border:`1px solid ${r.border}`,borderRadius:'20px',padding:'2px 9px'}}>⏱ {r.tag}</span>
+                          <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:600,color:'#888',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'20px',padding:'2px 9px'}}>{r.level}</span>
+                        </div>
                       </div>
-                      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#a0a0a0',margin:0,lineHeight:1.6}}>{r.desc}</p>
                     </div>
+                    <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',color:'#909090',margin:'0 0 1rem',lineHeight:1.65}}>{r.desc}</p>
+                    <button onClick={()=>setCuratedSession(r)} style={{
+                      width:'100%',padding:'0.85rem',borderRadius:'10px',border:'none',cursor:'pointer',
+                      background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,
+                      color:'#000',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,
+                      display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',
+                      minHeight:'auto',boxShadow:`0 4px 20px rgba(255,107,43,0.35)`,
+                      letterSpacing:'0.01em',
+                    }}>
+                      <Play size={14} fill="#000"/> Start Routine
+                    </button>
                   </div>
-                  <button onClick={()=>setCuratedSession(r)} style={{width:'100%',padding:'0.75rem',background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:'none',borderRadius:'8px',color:'#fff',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto',boxShadow:`0 4px 14px rgba(76,175,80,0.3)`}}>
-                    <span>▶</span> Start Routine
-                  </button>
                 </div>
               ))}
             </div>
