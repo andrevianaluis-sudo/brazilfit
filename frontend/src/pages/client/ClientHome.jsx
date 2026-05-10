@@ -32,7 +32,7 @@ export default function ClientHome(){
     if(!user?.clientId)return;
     Promise.all([
       api.get(`/sessions/client/${user.clientId}`).catch(()=>null),
-      api.get(`/habits/${user.clientId}`).catch(()=>null),
+      api.get('/checkins/streak').catch(()=>null),
       api.get('/messages/unread-count').catch(()=>null),
     ]).then(([sessRes,habitsRes,msgRes])=>{
       if(sessRes)setSessions(sessRes.data);
@@ -113,7 +113,7 @@ export default function ClientHome(){
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
             {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:'📦'},
-            {v:streak, l:'Week Streak',   c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'🔥'},
+            {v:streak, l:'Check-in Streak', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'🔥'},
             {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:'✅'},
           ].map((s,i)=>(
             <div key={i} style={{borderRadius:'16px',padding:'1rem 0.75rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>

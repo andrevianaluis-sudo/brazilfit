@@ -241,4 +241,51 @@ router.get('/pt/summary', authenticateToken, (req, res) => {
   });
 });
 
+// GET /api/checkins/streak — consecutive weekly check-in streak for the logged-in client
+router.get('/streak', authenticateToken, (req, res) => {
+  const db = getDb();
+  const clientId = req.user.clientId;
+  if (!clientId) return res.status(403).json({ error: 'Clients only' });
+
+  // Get all checkin weeks for this client, newest first
+  const rows = db.prepare(`
+    SELECT checkin_week FROM weekly_checkins
+    WHERE client_id = ?
+    ORDER BY checkin_week DESC
+  `).all(clientId);
+
+  if (rows.length === 0) return res.json({ streak: 0 });
+
+  const currentWeek = getISOWeek(new Date().toISOString().split('T')[0]);
+
+  // Build streak — count consecutive weeks going backwards from current or last week
+  let streak = 0;
+  let expected = currentWeek;
+
+  // If they haven't checked in this week, start from last week
+  if (rows[0].checkin_week !== currentWeek) {
+    // Allow 1 week grace — start from last week
+    const lastMonday = new Date();
+    lastMonday.setDate(lastMonday.getDate() - 7);
+    expected = getISOWeek(lastMonday.toISOString().split('T')[0]);
+  }
+
+  const weekSet = new Set(rows.map(r => r.checkin_week));
+
+  // Count backwards week by week
+  for (let i = 0; i < 52; i++) {
+    if (weekSet.has(expected)) {
+      streak++;
+      // Go back one week
+      const monday = new Date(getMondayOfWeek(expected) + 'T12:00:00');
+      monday.setDate(monday.getDate() - 7);
+      expected = getISOWeek(monday.toISOString().split('T')[0]);
+    } else {
+      break;
+    }
+  }
+
+  res.json({ streak });
+});
+
 module.exports = router;
