@@ -29,7 +29,24 @@ export default function ClientHome() {
         </div>
         <div onClick={()=>navigate('/client/sessions')} style={{background:'linear-gradient(135deg,#FF6B2B,#FFD600)',borderRadius:'14px',padding:'1.25rem 1.5rem',marginBottom:'1rem',cursor:'pointer'}}>
           <p style={{fontSize:'0.6rem',fontWeight:400,letterSpacing:'0.16em',color:'rgba(0,0,0,0.55)',textTransform:'uppercase',margin:'0 0 0.4rem'}}>Next Session</p>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:400,color:'#000',margin:0}}>{sessions?.upcoming?.[0]?.title||'No session booked yet'}</p>
+          {sessions?.upcoming?.[0] ? (
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <div>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.15rem',fontWeight:800,color:'#000',margin:'0 0 2px'}}>
+                  {new Date(sessions.upcoming[0].scheduled_date + 'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
+                </p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',fontWeight:600,color:'rgba(0,0,0,0.6)',margin:0}}>
+                  {sessions.upcoming[0].scheduled_time} · {sessions.upcoming[0].session_type || 'PT Session'}
+                </p>
+              </div>
+              <div style={{background:'rgba(0,0,0,0.15)',borderRadius:'10px',padding:'6px 14px',textAlign:'center'}}>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,color:'rgba(0,0,0,0.6)',margin:'0 0 2px',letterSpacing:'0.05em'}}>BLOCK</p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:800,color:'#000',margin:0}}>#{sessions.upcoming[0].block_number || '—'}</p>
+              </div>
+            </div>
+          ) : (
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:600,color:'rgba(0,0,0,0.7)',margin:0}}>No session booked yet — contact your PT</p>
+          )}
         </div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px',marginBottom:'1rem'}}>
           {[{v:rem,l:'Sessions Left',c:sc},{v:5,l:'Week Streak',c:'#FF6B2B'},{v:used,l:'Completed',c:'#FFD600'}].map((s,i)=>(
