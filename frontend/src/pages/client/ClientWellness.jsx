@@ -520,6 +520,118 @@ function StretchRoutinePlayer({ item, onClose }) {
   );
 }
 
+// Player for curated routines — fetches stretches by muscle group keywords
+function CuratedRoutinePlayer({ routine, onClose }) {
+  const [stretches, setStretches] = useState([]);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(45);
+  const [isActive, setIsActive] = useState(false);
+  const [isDone, setIsDone] = useState(false);
+  const [quote] = useState(STRETCH_QUOTES[Math.floor(Math.random() * STRETCH_QUOTES.length)]);
+  const totalTime = 45;
+  const circumference = 2 * Math.PI * 54;
+
+  useEffect(() => {
+    api.get('/stretches').then(r => {
+      const all = r.data;
+      // Pick 5 stretches filtered by the routine's muscle groups keywords
+      const keywords = routine.keywords || [];
+      let picked = keywords.length > 0
+        ? all.filter(s => keywords.some(k => (s.muscle_group || '').toLowerCase().includes(k) || (s.name || '').toLowerCase().includes(k)))
+        : all;
+      // Shuffle and take 5
+      picked = picked.sort(() => Math.random() - 0.5).slice(0, 5);
+      // Fallback: just take 5 random if no matches
+      if (picked.length === 0) picked = all.sort(() => Math.random() - 0.5).slice(0, 5);
+      setStretches(picked);
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!isActive || isDone) return;
+    if (timeLeft <= 0) {
+      if (currentIdx < stretches.length - 1) { setCurrentIdx(i => i + 1); setTimeLeft(45); }
+      else { setIsDone(true); setIsActive(false); }
+      return;
+    }
+    const timer = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    return () => clearInterval(timer);
+  }, [isActive, timeLeft, currentIdx, stretches.length, isDone]);
+
+  const current = stretches[currentIdx];
+  const progress = stretches.length > 0 ? (currentIdx / stretches.length) * 100 : 0;
+
+  if (stretches.length === 0) return (
+    <div style={{position:'fixed',inset:0,zIndex:50,background:'#0d0d0d',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{width:24,height:24,border:'2px solid #4CAF50',borderTop:'2px solid transparent',borderRadius:'50%',animation:'spin 1s linear infinite'}}/>
+    </div>
+  );
+
+  if (isDone) return (
+    <div style={{position:'fixed',inset:0,zIndex:50,background:'linear-gradient(180deg,#0d0d0d,#0a1a0a)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'2rem'}}>
+      <div style={{fontSize:64,marginBottom:24}}>🌿</div>
+      <p style={{fontSize:'0.65rem',letterSpacing:'0.2em',color:'#4CAF50',textTransform:'uppercase',margin:'0 0 12px'}}>Complete</p>
+      <h2 style={{fontSize:'2rem',fontWeight:300,color:'#fff',letterSpacing:'-0.03em',margin:'0 0 24px',textAlign:'center'}}>{routine.title}</h2>
+      <div style={{background:'rgba(76,175,80,0.1)',border:'1px solid rgba(76,175,80,0.2)',borderRadius:16,padding:'1.5rem',maxWidth:340,marginBottom:32,textAlign:'center'}}>
+        <p style={{fontSize:'1rem',fontWeight:300,color:'#fff',lineHeight:1.7,margin:0,fontStyle:'italic'}}>"{quote}"</p>
+      </div>
+      <div style={{display:'flex',gap:12,width:'100%',maxWidth:320}}>
+        <button onClick={()=>{setCurrentIdx(0);setTimeLeft(45);setIsActive(false);setIsDone(false);}} style={{flex:1,padding:'14px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:12,color:'#fff',fontSize:'0.875rem',cursor:'pointer'}}>Restart</button>
+        <button onClick={onClose} style={{flex:2,padding:'14px',background:'linear-gradient(135deg,#4CAF50,#2d8a30)',border:'none',borderRadius:12,color:'#fff',fontSize:'0.875rem',fontWeight:700,cursor:'pointer'}}>Finish</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{position:'fixed',inset:0,zIndex:50,background:'#0d0d0d',display:'flex',flexDirection:'column',overflowY:'auto'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'1rem 1.25rem',flexShrink:0}}>
+        <div>
+          <p style={{fontSize:'0.6rem',letterSpacing:'0.18em',color:'#4CAF50',textTransform:'uppercase',margin:0}}>{routine.title}</p>
+          <p style={{fontSize:'0.8rem',color:'rgba(255,255,255,0.4)',margin:'2px 0 0'}}>{currentIdx + 1} of {stretches.length}</p>
+        </div>
+        <button onClick={onClose} style={{background:'rgba(255,255,255,0.08)',border:'none',borderRadius:'50%',width:36,height:36,cursor:'pointer',color:'rgba(255,255,255,0.6)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.1rem'}}>✕</button>
+      </div>
+      <div style={{height:2,background:'rgba(255,255,255,0.08)',flexShrink:0}}>
+        <div style={{height:'100%',background:'linear-gradient(90deg,#4CAF50,#FFD600)',width:progress+'%',transition:'width 0.5s ease'}}/>
+      </div>
+      <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',padding:'1rem',minHeight:280}}>
+        {current && (
+          <div style={{width:'100%',maxWidth:320,aspectRatio:'1',borderRadius:20,overflow:'hidden',background:'#1a1a1a'}}>
+            <img src={'/exercise-gifs/'+current.gif_file} alt={current.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+          </div>
+        )}
+      </div>
+      <div style={{padding:'0 1.5rem 2rem',flexShrink:0,textAlign:'center'}}>
+        <p style={{fontSize:'0.65rem',letterSpacing:'0.15em',color:'#4CAF50',textTransform:'uppercase',margin:'0 0 6px'}}>{current?.muscle_group}</p>
+        <h2 style={{fontSize:'1.5rem',fontWeight:300,color:'#fff',letterSpacing:'-0.03em',margin:'0 0 24px',lineHeight:1.2}}>{current?.name}</h2>
+        <div style={{position:'relative',width:140,height:140,margin:'0 auto 24px'}}>
+          <svg width="140" height="140" viewBox="0 0 120 120" style={{transform:'rotate(-90deg)'}}>
+            <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6"/>
+            <circle cx="60" cy="60" r="54" fill="none" stroke="#4CAF50" strokeWidth="6" strokeLinecap="round"
+              strokeDasharray={circumference} strokeDashoffset={circumference*(1-timeLeft/totalTime)}
+              style={{transition:'stroke-dashoffset 1s linear'}}/>
+          </svg>
+          <div style={{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+            <p style={{fontSize:'2.2rem',fontWeight:300,color:'#fff',margin:0,lineHeight:1}}>{timeLeft}</p>
+            <p style={{fontSize:'0.65rem',color:'rgba(255,255,255,0.4)',margin:0}}>seconds</p>
+          </div>
+        </div>
+        <div style={{display:'flex',gap:10,marginBottom:8}}>
+          <button onClick={()=>{if(currentIdx>0){setCurrentIdx(i=>i-1);setTimeLeft(45);}}} disabled={currentIdx===0}
+            style={{flex:1,padding:'13px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:12,color:currentIdx===0?'rgba(255,255,255,0.2)':'#fff',fontSize:'0.85rem',cursor:currentIdx===0?'default':'pointer'}}>Prev</button>
+          <button onClick={()=>setIsActive(a=>!a)}
+            style={{flex:2,padding:'13px',background:isActive?'rgba(255,107,43,0.15)':'linear-gradient(135deg,#4CAF50,#2d8a30)',border:isActive?'1px solid rgba(255,107,43,0.3)':'none',borderRadius:12,color:'#fff',fontSize:'0.95rem',cursor:'pointer'}}>
+            {isActive ? 'Pause' : timeLeft===totalTime ? 'Start' : 'Resume'}
+          </button>
+          <button onClick={()=>{if(currentIdx<stretches.length-1){setCurrentIdx(i=>i+1);setTimeLeft(45);}else setIsDone(true);}}
+            style={{flex:1,padding:'13px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:12,color:'#fff',fontSize:'0.85rem',cursor:'pointer'}}>Next</button>
+        </div>
+        <p style={{fontSize:'0.7rem',color:'rgba(255,255,255,0.25)',margin:0}}>Hold the stretch. Breathe deeply.</p>
+      </div>
+    </div>
+  );
+}
+
 export default function ClientWellness() {
   const { user }=useAuth();
   const navigate=useNavigate();
@@ -532,6 +644,7 @@ export default function ClientWellness() {
   const [activeSession,setActiveSession]=useState(null);
   const [breathingSession,setBreathingSession]=useState(null);
   const [stretchRoutineSession,setStretchRoutineSession]=useState(null);
+  const [curatedSession,setCuratedSession]=useState(null);
   const [stretches,setStretches]=useState([]);
   const [stretchGroup,setStretchGroup]=useState("All");
   const [stretchSearch,setStretchSearch]=useState("");
@@ -630,11 +743,11 @@ export default function ClientWellness() {
             <p style={{fontSize:"0.6rem",fontWeight:700,letterSpacing:"0.18em",color:GREEN,textTransform:"uppercase",margin:"0 0 10px"}}>🌿 Curated Stretch Routines</p>
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
               {[
-                { emoji:'☀️', title:'Morning Wake-Up Flow', tag:'10 min · Beginner', color:'#FFD600', bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.25)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Cat-cow, neck rolls, seated spinal twist, standing quad stretch, and a final forward fold.' },
-                { emoji:'🦵', title:'Hip Flexor & Lower Back Release', tag:'12 min · All Levels', color:'#FF6B2B', bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.25)', desc:'Targets the two areas that tighten most from training and sitting. Kneeling lunge, pigeon pose, supine twist, glute bridge hold, and child\'s pose.' },
-                { emoji:'🧘', title:'Post-Workout Full Body Cool Down', tag:'15 min · All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.1)', border:'rgba(96,165,250,0.25)', desc:'The perfect session finisher. Hamstring stretch, seated figure-four, chest opener, doorway shoulder stretch, and a 2-minute savasana to close.' },
-                { emoji:'🌙', title:'Evening Wind-Down Routine', tag:'8 min · Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.1)', border:'rgba(192,132,252,0.25)', desc:'Calm your nervous system before bed. Legs up the wall, supine knee hug, reclined butterfly, side-lying stretch, and slow deep breathing to finish.' },
-                { emoji:'💪', title:'Upper Body & Shoulder Reset', tag:'10 min · All Levels', color:'#4CAF50', bg:'rgba(76,175,80,0.1)', border:'rgba(76,175,80,0.25)', desc:'Undoes the tightness from pressing, pulling, and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend, and wrist circles.' },
+                { emoji:'☀️', title:'Morning Wake-Up Flow', tag:'10 min · Beginner', color:'#FFD600', bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.25)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Cat-cow, neck rolls, seated spinal twist, standing quad stretch, and a final forward fold.', keywords:['neck','back','spine','hip','hamstring'] },
+                { emoji:'🦵', title:'Hip Flexor & Lower Back Release', tag:'12 min · All Levels', color:'#FF6B2B', bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.25)', desc:'Targets the two areas that tighten most from training and sitting. Kneeling lunge, pigeon pose, supine twist, glute bridge hold, and child\'s pose.', keywords:['hip','glute','lower back','hamstring','quad'] },
+                { emoji:'🧘', title:'Post-Workout Full Body Cool Down', tag:'15 min · All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.1)', border:'rgba(96,165,250,0.25)', desc:'The perfect session finisher. Hamstring stretch, seated figure-four, chest opener, doorway shoulder stretch, and a 2-minute savasana to close.', keywords:['chest','shoulder','hamstring','calf','back'] },
+                { emoji:'🌙', title:'Evening Wind-Down Routine', tag:'8 min · Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.1)', border:'rgba(192,132,252,0.25)', desc:'Calm your nervous system before bed. Legs up the wall, supine knee hug, reclined butterfly, side-lying stretch, and slow deep breathing to finish.', keywords:['hip','glute','spine','neck','shoulder'] },
+                { emoji:'💪', title:'Upper Body & Shoulder Reset', tag:'10 min · All Levels', color:'#4CAF50', bg:'rgba(76,175,80,0.1)', border:'rgba(76,175,80,0.25)', desc:'Undoes the tightness from pressing, pulling, and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend, and wrist circles.', keywords:['shoulder','chest','tricep','lat','back'] },
               ].map((r,i)=>(
                 <div key={i} style={{backgroundColor:SURFACE,borderRadius:'12px',padding:'1.1rem',border:`1px solid ${r.border}`,borderLeft:`3px solid ${r.color}`}}>
                   <div style={{display:'flex',alignItems:'flex-start',gap:'12px',marginBottom:'0.875rem'}}>
@@ -649,7 +762,7 @@ export default function ClientWellness() {
                       <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#a0a0a0',margin:0,lineHeight:1.6}}>{r.desc}</p>
                     </div>
                   </div>
-                  <button style={{width:'100%',padding:'0.75rem',background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:'none',borderRadius:'8px',color:'#fff',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto',boxShadow:`0 4px 14px rgba(76,175,80,0.3)`}}>
+                  <button onClick={()=>setCuratedSession(r)} style={{width:'100%',padding:'0.75rem',background:`linear-gradient(135deg,${GREEN},#2d8a30)`,border:'none',borderRadius:'8px',color:'#fff',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px',minHeight:'auto',boxShadow:`0 4px 14px rgba(76,175,80,0.3)`}}>
                     <span>▶</span> Start Routine
                   </button>
                 </div>
@@ -683,6 +796,7 @@ export default function ClientWellness() {
       {activeSession&&<MindfulnessPlayer session={activeSession} onClose={()=>setActiveSession(null)}/>}
       {breathingSession&&<BreathingPlayer exercise={breathingSession} onClose={()=>setBreathingSession(null)}/> }
       {stretchRoutineSession&&<StretchRoutinePlayer item={stretchRoutineSession} onClose={()=>setStretchRoutineSession(null)}/>}
+      {curatedSession&&<CuratedRoutinePlayer routine={curatedSession} onClose={()=>setCuratedSession(null)}/>}
     </div>
   );
 }
