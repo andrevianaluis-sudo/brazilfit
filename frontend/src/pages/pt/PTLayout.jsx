@@ -22,19 +22,64 @@ export default function PTLayout() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifs, setShowNotifs] = useState(false);
+  const notifRef = useRef(null);
   const pollRef = useRef(null);
 
+  const fetchNotifications = async () => {
+    try {
+      const res = await api.get('/pt/notifications');
+      setUnreadCount(res.data.unreadCount || 0);
+      setNotifications(res.data.notifications || []);
+    } catch {}
+  };
+
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await api.get('/pt/notifications');
-        setUnreadCount(res.data.unreadCount || 0);
-      } catch {}
-    };
     fetchNotifications();
     pollRef.current = setInterval(fetchNotifications, 30000);
     return () => clearInterval(pollRef.current);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setShowNotifs(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleBellClick = async () => {
+    setShowNotifs(prev => !prev);
+    if (!showNotifs && unreadCount > 0) {
+      try {
+        await api.put('/pt/notifications/read-all');
+        setUnreadCount(0);
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: 1 })));
+      } catch {}
+    }
+  };
+
+  const getNotifIcon = (type) => {
+    if (type === 'cancellation') return '❌';
+    if (type === 'reinstate') return '✅';
+    if (type === 'override') return '⚡';
+    if (type === 'checkin') return '📋';
+    if (type === 'message') return '💬';
+    return '🔔';
+  };
+
+  const timeAgo = (dateStr) => {
+    if (!dateStr) return '';
+    const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+  };
 
   const isActive = (to, exact = false) => {
     if (exact) return location.pathname === to;
@@ -141,20 +186,58 @@ export default function PTLayout() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Notifications */}
-            <button style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto' }}>
-              <Bell size={18} />
-              {unreadCount > 0 && (
-                <span style={{
-                  position: 'absolute', top: '4px', right: '4px',
-                  minWidth: '16px', height: '16px', padding: '0 3px',
-                  background: 'linear-gradient(135deg, #FF6B2B, #FFD600)',
-                  color: '#000', fontSize: '0.55rem', fontWeight: 800,
-                  borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
+            <div ref={notifRef} style={{ position: 'relative' }}>
+              <button
+                onClick={handleBellClick}
+                style={{ position: 'relative', padding: '8px', borderRadius: '8px', border: 'none', backgroundColor: showNotifs ? 'rgba(255,255,255,0.08)' : 'transparent', cursor: 'pointer', color: showNotifs ? '#fff' : '#707070', display: 'flex', alignItems: 'center', minHeight: 'auto', minWidth: 'auto', transition: 'all 0.15s' }}
+              >
+                <Bell size={18} />
+                {unreadCount > 0 && (
+                  <span style={{ position: 'absolute', top: '4px', right: '4px', minWidth: '16px', height: '16px', padding: '0 3px', background: 'linear-gradient(135deg, #FF6B2B, #FFD600)', color: '#000', fontSize: '0.55rem', fontWeight: 800, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Dropdown */}
+              {showNotifs && (
+                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, width: '340px', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', boxShadow: '0 20px 60px rgba(0,0,0,0.6)', zIndex: 100, overflow: 'hidden' }}>
+                  {/* Header */}
+                  <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>Notifications</span>
+                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: '#707070' }}>All caught up ✓</span>
+                  </div>
+
+                  {/* List */}
+                  <div style={{ maxHeight: '380px', overflowY: 'auto' }}>
+                    {notifications.length === 0 ? (
+                      <div style={{ padding: '2rem', textAlign: 'center' }}>
+                        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.5rem', marginBottom: '8px' }}>🔔</p>
+                        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#707070', margin: 0 }}>No notifications yet</p>
+                      </div>
+                    ) : notifications.map(n => (
+                      <div
+                        key={n.id}
+                        onClick={() => { if (n.client_id) { navigate(`/pt/clients/${n.client_id}`); setShowNotifs(false); } }}
+                        style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '12px', alignItems: 'flex-start', cursor: n.client_id ? 'pointer' : 'default', backgroundColor: n.is_read ? 'transparent' : 'rgba(255,107,43,0.05)', transition: 'background 0.15s' }}
+                        onMouseEnter={e => { if (n.client_id) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.04)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = n.is_read ? 'transparent' : 'rgba(255,107,43,0.05)'; }}
+                      >
+                        <span style={{ fontSize: '1.1rem', flexShrink: 0, marginTop: '1px' }}>{getNotifIcon(n.type)}</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{n.title}</p>
+                          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: '#707070', margin: '0 0 4px', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{n.message}</p>
+                          <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.65rem', color: '#505050', margin: 0 }}>{timeAgo(n.created_at)}</p>
+                        </div>
+                        {!n.is_read && (
+                          <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#FF6B2B', flexShrink: 0, marginTop: '5px' }} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </button>
+            </div>
 
             {/* PT Avatar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '5px 10px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
