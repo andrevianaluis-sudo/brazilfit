@@ -209,68 +209,58 @@ export default function ClientCheckIn() {
           {/* Hero */}
           <div style={{ textAlign: 'center', padding: '2rem 0 2.5rem' }}>
             <div style={{
-              width: '80px', height: '80px', margin: '0 auto 1.25rem',
+              width: '90px', height: '90px', margin: '0 auto 1.25rem',
               background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
               borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: `0 8px 32px ${ORANGE}44`,
+              boxShadow: `0 0 0 12px ${ORANGE}18, 0 8px 40px ${ORANGE}55`,
+              animation: 'pulse 2s ease-in-out infinite',
             }}>
-              <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#000' }}>✓</span>
+              <span style={{ fontSize: '2.2rem' }}>✅</span>
             </div>
-            <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.75rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>Check-in Submitted!</h2>
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', color: ORANGE, fontWeight: 600, margin: '0 0 0.35rem' }}>Great work this week</p>
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: 0 }}>Your PT will review your answers and respond soon</p>
+            <h2 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.85rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em', margin: '0 0 0.5rem' }}>Check-in Submitted!</h2>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.95rem', color: ORANGE, fontWeight: 700, margin: '0 0 0.35rem' }}>🔥 Great work this week</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: 0 }}>Your PT will review your answers and respond soon</p>
           </div>
 
           {/* Streak card */}
-          <div style={{ background: `linear-gradient(135deg, ${ORANGE}22, ${YELLOW}11)`, border: `1px solid ${ORANGE}33`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
-              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, lineHeight: 1 }}>{streak}</div>
-              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, marginTop: '4px' }}>Week Streak</div>
+          <div style={{ background: `linear-gradient(135deg, ${ORANGE}28, ${YELLOW}14)`, border: `1px solid ${ORANGE}44`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '1.5rem', boxShadow: `0 4px 24px ${ORANGE}22` }}>
+            <div style={{ textAlign: 'center', flexShrink: 0 }}>
+              <div style={{ fontSize: '2rem', marginBottom: '4px' }}>🔥</div>
+              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '3rem', fontWeight: 900, color: ORANGE, lineHeight: 1, textShadow: `0 0 20px ${ORANGE}88` }}>{streak}</div>
+              <div style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, marginTop: '4px' }}>Week Streak</div>
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: TEXT, margin: '0 0 4px' }}>Keep it up — you're building something special</p>
-              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, fontStyle: 'italic' }}>Your PT can see your consistency — it matters</p>
-            </div>
-          </div>
-
-          {/* Leaderboard */}
-          <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem' }}>
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: '0 0 0.75rem' }}>👑 Community Leaderboard</p>
-            <h3 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 1rem' }}>You are climbing the ranks</h3>
-            <div style={{ marginBottom: '1rem' }}>
-              {[['🥇', 'Anonymous Client', '487 pts'], ['🥈', 'Anonymous Client', '456 pts'], ['🥉', 'Anonymous Client', '421 pts']].map(([medal, name, pts], i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 0', borderBottom: `1px solid ${BORDER}` }}>
-                  <span>{medal}</span>
-                  <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>{name}</span>
-                  <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: TEXT }}>{pts}</span>
-                </div>
-              ))}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', backgroundColor: `${ORANGE}15`, borderRadius: '8px', marginTop: '8px' }}>
-                <span style={{ color: ORANGE }}>📍</span>
-                <span style={{ flex: 1, fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', color: '#c0c0c0' }}>Your Position: #{currentRank}</span>
-                <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: ORANGE }}>324 pts</span>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.92rem', fontWeight: 700, color: TEXT, margin: '0 0 6px' }}>Keep it up — you're building something special</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: '0 0 10px' }}>Your PT can see your consistency — it matters</p>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: `${ORANGE}20`, border: `1px solid ${ORANGE}35`, borderRadius: '20px', padding: '4px 12px' }}>
+                <span style={{ fontSize: '0.8rem' }}>⚡</span>
+                <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', fontWeight: 700, color: ORANGE }}>+1 streak point earned!</span>
               </div>
             </div>
-            <button onClick={() => navigate('/client/leaderboard')} style={{
-              width: '100%', padding: '0.8rem', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
-              border: 'none', borderRadius: '10px', color: '#000', fontFamily: "'DM Sans', system-ui",
-              fontSize: '0.875rem', fontWeight: 800, cursor: 'pointer', minHeight: 'auto',
-            }}>View Full Leaderboard</button>
           </div>
 
-          {/* Why it matters */}
-          <div style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}`, borderLeft: `3px solid ${GREEN}`, borderRadius: '16px', padding: '1.5rem', marginBottom: '1rem' }}>
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: GREEN, textTransform: 'uppercase', margin: '0 0 1rem' }}>Why Consistency Matters</p>
+          {/* Why it matters — vivid premium cards */}
+          <div style={{ marginBottom: '1rem' }}>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: '0 0 1rem' }}>⚡ Why Consistency Matters</p>
             {[
-              'Clients who check in weekly see 3x better results — research backed',
-              'Your PT uses your answers to personalise next week\'s programme',
-              'Habit streaks are the number one predictor of long term fitness success',
-              'Every check-in brings you closer to your next achievement badge',
-            ].map((benefit, i) => (
-              <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: i < 3 ? '10px' : 0 }}>
-                <span style={{ color: GREEN, fontWeight: 700, flexShrink: 0 }}>✓</span>
-                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#b0b0b0', margin: 0, lineHeight: 1.6 }}>{benefit}</p>
+              { icon: '🔥', color: ORANGE, bg: `${ORANGE}15`, border: `${ORANGE}30`, text: 'Every check-in adds +1 to your streak — keep the chain going and watch your rank climb' },
+              { icon: '📊', color: '#60a5fa', bg: 'rgba(96,165,250,0.12)', border: 'rgba(96,165,250,0.25)', text: 'Clients who check in weekly see 3× better results — research backed' },
+              { icon: '🎯', color: GREEN, bg: 'rgba(76,175,80,0.12)', border: 'rgba(76,175,80,0.25)', text: 'Your PT uses your answers to personalise next week\'s programme around your real life' },
+              { icon: '⚡', color: YELLOW, bg: `${YELLOW}12`, border: `${YELLOW}25`, text: 'Habit streaks are the number one predictor of long term fitness success' },
+              { icon: '🏆', color: '#c084fc', bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.25)', text: 'Every check-in brings you closer to your next achievement badge' },
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'flex-start', gap: '14px',
+                padding: '14px 16px', borderRadius: '12px', marginBottom: '8px',
+                background: item.bg, border: `1px solid ${item.border}`,
+              }}>
+                <span style={{ fontSize: '1.3rem', flexShrink: 0, marginTop: '1px' }}>{item.icon}</span>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.84rem', color: TEXT, margin: 0, lineHeight: 1.55, fontWeight: 500 }}>
+                  <span style={{ color: item.color, fontWeight: 700 }}>
+                    {item.text.split(' ').slice(0, 4).join(' ')}{' '}
+                  </span>
+                  {item.text.split(' ').slice(4).join(' ')}
+                </p>
               </div>
             ))}
           </div>
