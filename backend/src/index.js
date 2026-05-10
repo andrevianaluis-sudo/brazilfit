@@ -165,8 +165,31 @@ cron.schedule('0 20 * * 1-5', async () => {
             WHERE c.id = ?
             LIMIT 1
           `).run(client_id);
+
+          // Also push a bell notification
+          const clientUser = db.prepare(`SELECT u.name FROM clients c JOIN users u ON c.user_id = u.id WHERE c.id = ?`).get(client_id);
+          db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
+            .run(
+              'renewal',
+              '1 session remaining 🔔',
+              `You're on your 9th session — just 1 left in your block. Your PT will be in touch to arrange renewal. Keep going ${clientUser?.name || ''}!`,
+              client_id
+            );
           console.log('[CRON] Low session alert sent to client ' + client_id);
         } catch(e) { console.error('[CRON] Alert error:', e.message); }
+      }
+
+      if (remaining === 0) {
+        try {
+          const clientUser = db.prepare(`SELECT u.name FROM clients c JOIN users u ON c.user_id = u.id WHERE c.id = ?`).get(client_id);
+          db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
+            .run(
+              'renewal',
+              'Block complete! 🏆',
+              `Amazing — you've completed all 10 sessions! Contact your PT to start your next block and keep your momentum.`,
+              client_id
+            );
+        } catch(e) { console.error('[CRON] Block complete notification error:', e.message); }
       }
     }
     console.log('[CRON] Auto-marked ' + result.changes + ' sessions');
