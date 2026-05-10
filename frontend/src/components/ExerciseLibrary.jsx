@@ -1,207 +1,63 @@
-﻿// frontend/src/components/ExerciseLibrary.jsx
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect } from 'react';
 import api from '../utils/api';
 
-const TABS = [
-  { key: '', label: 'All' },
-  { key: 'Arms', label: 'Arms' },
-  { key: 'Back', label: 'Back' },
-  { key: 'Chest', label: 'Chest' },
-  { key: 'Full Body', label: 'Full Body' },
-  { key: 'Hips', label: 'Hips' },
-  { key: 'Legs', label: 'Legs' },
-  { key: 'Neck', label: 'Neck' },
-  { key: 'Shoulders', label: 'Shoulders' },
-  { key: 'Calves', label: 'Calves' },
-];
-
-
-
-
-function ExerciseCard({ exercise, onAdd }) {
-  const [imgError, setImgError] = useState(false);
-  const hasGif = exercise.gif_url && !imgError;
-  const isStretching = exercise.category === 'Stretching' ||
-    ['Neck', 'Shoulders', 'Back', 'Hips', 'Thighs', 'Calves', 'Forearms',
-     'Waist', 'Chest', 'Upper Arms', 'Articulations', 'Pilates', 'Yoga'].includes(exercise.category);
-
-  return (
-    <div className="bg-dark-grey-100 rounded-[12px] overflow-hidden border border-white/5 hover:border-white/15 transition-all group">
-      {/* GIF / Placeholder */}
-      <div className="relative w-full aspect-square bg-grey-100 overflow-hidden">
-        {hasGif ? (
-          <img
-            src={exercise.gif_url}
-            alt={exercise.name}
-            className="w-full h-full object-cover"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-            <span className="text-4xl">{isStretching ? '🧘' : '💪'}</span>
-            <span className="text-xs text-grey-200 text-center px-2">{exercise.category}</span>
-          </div>
-        )}
-        {/* Category badge */}
-        <div className="absolute top-2 left-2">
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-            isStretching
-              ? 'bg-blue-500/80 text-white'
-              : 'bg-brazil-orange/80 text-white'
-          }`}>
-            {exercise.category}
-          </span>
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="p-3">
-        <p className="font-bold text-sm text-white leading-tight mb-1">{exercise.name}</p>
-        {exercise.muscle_groups && (
-          <p className="text-xs text-grey-200 mb-2">{exercise.muscle_groups}</p>
-        )}
-        <div className="flex items-center gap-2">
-          {exercise.difficulty && (
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
-              exercise.difficulty === 'beginner' ? 'bg-brazil-green/20 text-brazil-green' :
-              exercise.difficulty === 'advanced' ? 'bg-red-500/20 text-red-400' :
-              'bg-yellow-500/20 text-yellow-400'
-            }`}>
-              {exercise.difficulty}
-            </span>
-          )}
-          {exercise.equipment && exercise.equipment !== 'bodyweight' && (
-            <span className="text-[10px] text-grey-200">{exercise.equipment}</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+const GROUPS = ['All','Arms','Back','Calves','Chest','Full Body','Hips','Legs','Neck','Shoulders'];
 
 export default function ExerciseLibrary() {
-  const [activeTab, setActiveTab] = useState('');
+  const [stretches, setStretches] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [group, setGroup] = useState('All');
   const [search, setSearch] = useState('');
-  const [exercises, setExercises] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(0);
-  const LIMIT = 30;
-
-  const fetchExercises = useCallback(async (reset = false) => {
-    setLoading(true);
-    try {
-      const res = await api.get('/stretches');
-      const allData = Array.isArray(res.data) ? res.data : [];
-      const list = activeTab ? allData.filter(s => s.muscle_group === activeTab) : allData;
-      const tot = list.length;
-      setTotal(tot);
-      setExercises(list);
-      setPage(0);
-
-
-
-
-
-
-
-
-
-
-
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  }, [search, activeTab, page]);
-
-  // Reset and fetch when tab or search changes
-  useEffect(() => {
-    setPage(0);
-    fetchExercises(true);
-  }, [activeTab, search]);
-
-  const loadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-  };
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    if (page > 0) fetchExercises(false);
-  }, [page]);
+    api.get('/stretches').then(r => {
+      setStretches(r.data);
+      setFiltered(r.data);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    let f = stretches;
+    if (group !== 'All') f = f.filter(s => s.muscle_group === group);
+    if (search) f = f.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
+    setFiltered(f);
+  }, [group, search, stretches]);
 
   return (
     <div>
-      {/* Search */}
-      <div className="mb-4">
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search exercises..."
-          className="w-full bg-dark-grey-100 border border-white/10 rounded-[10px] px-4 py-3 text-sm text-white placeholder-grey-200 focus:outline-none focus:border-brazil-orange transition-colors"
-        />
+      <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search stretches..." className="w-full bg-dark-grey-100 border border-white/10 rounded-lg px-4 py-2 text-white mb-4 outline-none" />
+      <div className="flex gap-2 flex-wrap mb-4">
+        {GROUPS.map(g => <button key={g} onClick={() => setGroup(g)} className={`px-3 py-1 rounded-full text-sm border ${group === g ? 'border-brazil-green bg-brazil-green/20 text-brazil-green' : 'border-white/10 text-grey-200'}`}>{g}</button>)}
       </div>
-
-      {/* Category tabs */}
-      <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-3 mb-5">
-        {TABS.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`flex-shrink-0 text-xs font-semibold px-3 py-2 rounded-full transition-all ${
-              activeTab === tab.key
-                ? tab.key === 'Stretching' || ['Neck','Shoulders','Back','Hips','Thighs','Calves'].includes(tab.key)
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-brazil-orange text-white'
-                : 'bg-dark-grey-100 text-grey-200 hover:text-white border border-white/10'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Count */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-grey-200">
-          {loading && exercises.length === 0 ? 'Loading...' : `${exercises.length}${total > exercises.length ? ` of ${total}` : ''} exercises`}
-        </p>
-        {activeTab === 'Stretching' || ['Neck','Shoulders','Back','Hips','Thighs','Calves'].includes(activeTab) ? (
-          <span className="text-xs text-blue-400 font-semibold">🧘 Stretching & Mobility</span>
-        ) : null}
-      </div>
-
-      {/* Grid */}
-      {loading && exercises.length === 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-dark-grey-100 rounded-[12px] aspect-square animate-pulse" />
+      <p className="text-grey-200 text-sm mb-4">{filtered.length} of {stretches.length} stretches</p>
+      {loading ? <p className="text-grey-200 text-center py-8">Loading...</p> : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filtered.map(s => (
+            <div key={s.id} onClick={() => setSelected(selected?.id === s.id ? null : s)} className="bg-dark-grey-100 rounded-xl overflow-hidden border border-white/5 cursor-pointer hover:border-brazil-green/30 transition">
+              <div className="aspect-square bg-black/20 overflow-hidden">
+                <img src={`/exercise-gifs/${s.gif_file}`} alt={s.name} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div className="p-2">
+                <p className="text-white text-xs font-medium leading-tight">{s.name}</p>
+                <p className="text-brazil-green text-xs mt-1">{s.muscle_group}</p>
+              </div>
+            </div>
           ))}
         </div>
-      ) : exercises.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-grey-200 text-sm">No exercises found</p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {exercises.map(ex => (
-              <ExerciseCard key={ex.id} exercise={ex} />
-            ))}
+      )}
+      {selected && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
+          <div className="bg-dark-grey-100 rounded-xl overflow-hidden max-w-sm w-full border border-white/10" onClick={e => e.stopPropagation()}>
+            <img src={`/exercise-gifs/${selected.gif_file}`} alt={selected.name} className="w-full aspect-square object-cover" />
+            <div className="p-4">
+              <p className="text-white font-medium">{selected.name}</p>
+              <p className="text-brazil-green text-sm mt-1">{selected.muscle_group}</p>
+              <button onClick={() => setSelected(null)} className="w-full mt-3 py-2 bg-brazil-green text-white rounded-lg text-sm">Close</button>
+            </div>
           </div>
-
-          {/* Load more */}
-          {exercises.length < total && (
-            <button
-              onClick={loadMore}
-              disabled={loading}
-              className="w-full mt-5 py-3 border border-dashed border-white/15 rounded-[10px] text-sm text-grey-200 hover:text-white hover:border-white/30 transition-all disabled:opacity-50"
-            >
-              {loading ? 'Loading...' : `Load more (${total - exercises.length} remaining)`}
-            </button>
-          )}
-        </>
+        </div>
       )}
     </div>
   );
