@@ -45,13 +45,13 @@ import PTExercises from './pages/pt/PTExercises';
 import PTWorkoutBuilder from './pages/pt/PTWorkoutBuilder';
 import PTWorkouts from './pages/pt/PTWorkouts';
 import PTMediaManager from './pages/pt/PTMediaManager';
-import ClientChallenges from './pages/client/ClientChallenges';
+
 import ClientVirtualSession from './pages/client/ClientVirtualSession';
 import PTAdvancedBlockManagement from './pages/pt/PTAdvancedBlockManagement';
 import ClientSettings from './pages/client/ClientSettings';
 import ClientHelp from './pages/client/ClientHelp';
-import ClientLeaderboard from './pages/client/ClientLeaderboard';
-import ClientAchievements from './pages/client/ClientAchievements';
+
+
 import PTMessages from './pages/pt/PTMessages';
 import ClientProgressPhotos from './pages/client/ClientProgressPhotos';
 
@@ -137,10 +137,10 @@ function AppRoutes() {
         <Route path="profile" element={<ClientProfilePage />} />
         <Route path="search" element={<ClientSearch />} />
         <Route path="trainer" element={<TrainerProfile />} />
-        <Route path="challenges" element={<ClientChallenges />} />
+        
         <Route path="virtual-session" element={<ClientVirtualSession />} />
-        <Route path="leaderboard" element={<ClientLeaderboard />} />
-        <Route path="achievements" element={<ClientAchievements />} />
+     
+     
         <Route path="settings" element={<ClientSettings />} />
         <Route path="help" element={<ClientHelp />} />
       </Route>
