@@ -113,11 +113,13 @@ export default function ClientHabits() {
 
   useEffect(() => {
     if (!user?.clientId) return;
-    api.get(`/habits/${user.clientId}`)
-      .then(r => {
-        setHabitData(r.data);
-        if (r.data.todayLog) {
-          const l = r.data.todayLog;
+    Promise.all([
+      api.get(`/habits/${user.clientId}`),
+      api.get('/checkins/streak').catch(() => ({ data: { streak: 0 } })),
+    ]).then(([habitsRes, streakRes]) => {
+        setHabitData({ ...habitsRes.data, streak: streakRes.data.streak || 0 });
+        if (habitsRes.data.todayLog) {
+          const l = habitsRes.data.todayLog;
           setForm({
             water_glasses: l.water_glasses || 0, sleep_hours: l.sleep_hours || 7,
             steps: l.steps || 0, veg_portions: l.veg_portions || 0,
@@ -248,7 +250,7 @@ export default function ClientHabits() {
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
               <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
-              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Day Streak</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Check-in Streak</p>
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', justifyContent: 'center' }}>

@@ -395,6 +395,13 @@ try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER"); } c
   try { db.exec('ALTER TABLE sessions ADD COLUMN cancelled_by TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE sessions ADD COLUMN pt_override_note TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE sessions ADD COLUMN session_carried_over INTEGER DEFAULT 0'); } catch(e) {}
+  try { db.exec(`CREATE TABLE IF NOT EXISTS client_routines (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    client_id INTEGER NOT NULL REFERENCES clients(id),
+    name TEXT NOT NULL,
+    stretches TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now'))
+  )`); } catch(e) {}
 
   // Notifications table for PT in-app alerts
   db.exec(`

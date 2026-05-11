@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import toast from 'react-hot-toast';
 
 const BG='#141414';const SURFACE='#1e1e1e';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#707070';const GREEN='#4CAF50';const ORANGE='#FF6B2B';const YELLOW='#FFD600';
 
@@ -13,11 +14,31 @@ function StretchPlayer({ stretches, onClose }) {
 
 export default function ClientExercises() {
   const [stretches,setStretches]=useState([]);const [loading,setLoading]=useState(true);const [group,setGroup]=useState('All');const [search,setSearch]=useState('');const [groups,setGroups]=useState(['All']);const [selected,setSelected]=useState(null);const [tab,setTab]=useState('browse');const [routineMode,setRoutineMode]=useState(false);const [picked,setPicked]=useState([]);const [routineName,setRoutineName]=useState('');const [myRoutines,setMyRoutines]=useState([]);const [player,setPlayer]=useState(null);
-  useEffect(()=>{api.get('/stretches').then(r=>{setStretches(r.data);const g=['All',...new Set(r.data.map(s=>s.muscle_group).filter(Boolean))];setGroups(g);}).catch(()=>{}).finally(()=>setLoading(false));const saved=JSON.parse(localStorage.getItem('brazilfit_routines')||'[]');setMyRoutines(saved);},[]);
+  useEffect(()=>{
+    api.get('/stretches').then(r=>{
+      setStretches(r.data);
+      const g=['All',...new Set(r.data.map(s=>s.muscle_group).filter(Boolean))];
+      setGroups(g);
+    }).catch(()=>{}).finally(()=>setLoading(false));
+    api.get('/routines').then(r=>setMyRoutines(r.data||[])).catch(()=>{});
+  },[]);
   const filtered=stretches.filter(s=>(group==='All'||s.muscle_group===group)&&(search===''||s.name.toLowerCase().includes(search.toLowerCase())));
   const togglePick=(s)=>setPicked(p=>p.find(x=>x.id===s.id)?p.filter(x=>x.id!==s.id):[...p,s]);
-  const saveRoutine=()=>{if(!routineName.trim()||picked.length<2)return;const r={id:Date.now(),name:routineName,stretches:picked};const u=[...myRoutines,r];setMyRoutines(u);localStorage.setItem('brazilfit_routines',JSON.stringify(u));setRoutineMode(false);setPicked([]);setRoutineName('');setTab('routines');};
-  const deleteRoutine=(id)=>{const u=myRoutines.filter(r=>r.id!==id);setMyRoutines(u);localStorage.setItem('brazilfit_routines',JSON.stringify(u));};
+  const saveRoutine=async()=>{
+    if(!routineName.trim()||picked.length<2)return;
+    try{
+      const res=await api.post('/routines',{name:routineName,stretches:picked});
+      setMyRoutines(prev=>[res.data,...prev]);
+      setRoutineMode(false);setPicked([]);setRoutineName('');setTab('routines');
+      toast.success('Routine saved!');
+    }catch{toast.error('Failed to save routine');}
+  };
+  const deleteRoutine=async(id)=>{
+    try{
+      await api.delete(`/routines/${id}`);
+      setMyRoutines(prev=>prev.filter(r=>r.id!==id));
+    }catch{toast.error('Failed to delete routine');}
+  };
   if(player)return <StretchPlayer stretches={player.stretches} onClose={()=>setPlayer(null)}/>;
 
   return (
