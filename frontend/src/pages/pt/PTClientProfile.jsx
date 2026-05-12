@@ -127,6 +127,9 @@ export default function PTClientProfile() {
   const [progressNote, setProgressNote] = useState('');
   const [showNoteForm, setShowNoteForm] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetPasswordValue, setResetPasswordValue] = useState('');
+  const [resettingPassword, setResettingPassword] = useState(false);
   const [overrideTarget, setOverrideTarget] = useState(null);
 
   // Onboarding tab state
@@ -348,6 +351,19 @@ export default function PTClientProfile() {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!resetPasswordValue || resetPasswordValue.length < 6) return;
+    setResettingPassword(true);
+    try {
+      await api.post('/auth/pt-reset-password', { username: client.username, newPassword: resetPasswordValue });
+      toast.success(`Password reset for ${client.name} ✅`);
+      setShowResetPassword(false);
+      setResetPasswordValue('');
+    } catch(e) {
+      toast.error(e.response?.data?.error || 'Failed to reset password');
+    } finally { setResettingPassword(false); }
+  };
+
   const handleReinstate = async (sessionId) => {
     if (!window.confirm('Reinstate this cancelled session? It will become upcoming again.')) return;
     try {
@@ -523,11 +539,49 @@ export default function PTClientProfile() {
                 <Save  /> Save Note
               </button>
             </div>
+            <div style={{background:"#1a1a1a",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+              <p style={{fontSize:"0.75rem",fontWeight:700,color:"#606060",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:"10px"}}>Account</p>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+                <div>
+                  <p style={{fontSize:"0.875rem",fontWeight:600,color:"#fff",margin:"0 0 2px"}}>Reset Client Password</p>
+                  <p style={{fontSize:"0.75rem",color:"#606060",margin:0}}>Set a new temporary password for {client.name}</p>
+                </div>
+                <button onClick={()=>setShowResetPassword(true)} style={{padding:"8px 16px",borderRadius:"8px",border:"1px solid rgba(255,107,43,0.3)",background:"rgba(255,107,43,0.08)",color:"#FF6B2B",fontFamily:"'DM Sans',system-ui",fontSize:"0.78rem",fontWeight:700,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap",flexShrink:0}}>
+                  Reset Password
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* ── Sessions ── */}
-        {activeTab === 'sessions' && (
+        {/* Reset Password Modal */}
+        {showResetPassword && (
+          <div onClick={()=>setShowResetPassword(false)} style={{position:"fixed",inset:0,zIndex:50,background:"rgba(0,0,0,0.85)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1.5rem",backdropFilter:"blur(4px)"}}>
+            <div onClick={e=>e.stopPropagation()} style={{background:"#111",borderRadius:"20px",border:"1px solid rgba(255,107,43,0.2)",padding:"1.75rem",maxWidth:"380px",width:"100%"}}>
+              <h3 style={{fontFamily:"'DM Sans',system-ui",fontSize:"1.2rem",fontWeight:800,color:"#fff",margin:"0 0 6px",letterSpacing:"-0.02em"}}>Reset Password</h3>
+              <p style={{fontSize:"0.82rem",color:"#606060",margin:"0 0 1.25rem"}}>Set a new temporary password for <strong style={{color:"#fff"}}>{client.name}</strong></p>
+              <input
+                type="password"
+                value={resetPasswordValue}
+                onChange={e=>setResetPasswordValue(e.target.value)}
+                placeholder="New temporary password"
+                style={{width:"100%",padding:"0.875rem 1rem",background:"#1a1a1a",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"12px",color:"#fff",fontFamily:"'DM Sans',system-ui",fontSize:"0.875rem",outline:"none",boxSizing:"border-box",marginBottom:"8px"}}
+                onFocus={e=>e.target.style.borderColor="#FF6B2B"}
+                onBlur={e=>e.target.style.borderColor="rgba(255,255,255,0.08)"}/>
+              {resetPasswordValue && resetPasswordValue.length < 6 && (
+                <p style={{fontSize:"0.75rem",color:"#ef4444",margin:"0 0 12px"}}>⚠ Password must be at least 6 characters</p>
+              )}
+              <div style={{display:"flex",gap:"8px",marginTop:"1rem"}}>
+                <button onClick={()=>{setShowResetPassword(false);setResetPasswordValue('');}} style={{flex:1,padding:"0.875rem",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"12px",color:"#888",fontFamily:"'DM Sans',system-ui",fontSize:"0.875rem",fontWeight:600,cursor:"pointer",minHeight:"auto"}}>
+                  Cancel
+                </button>
+                <button onClick={handleResetPassword} disabled={!resetPasswordValue||resetPasswordValue.length<6||resettingPassword} style={{flex:1,padding:"0.875rem",background:resetPasswordValue&&resetPasswordValue.length>=6?"linear-gradient(135deg,#FF6B2B,#FFD600)":"#222",border:"none",borderRadius:"12px",color:resetPasswordValue&&resetPasswordValue.length>=6?"#000":"#606060",fontFamily:"'DM Sans',system-ui",fontSize:"0.875rem",fontWeight:800,cursor:resetPasswordValue&&resetPasswordValue.length>=6?"pointer":"not-allowed",minHeight:"auto"}}>
+                  {resettingPassword?"Resetting...":"Reset Password"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
           <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
             {/* Upcoming sessions with override option */}
             {upcomingSessions.length > 0 && (
