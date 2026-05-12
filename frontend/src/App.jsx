@@ -37,7 +37,6 @@ import ClientWorkouts from './pages/client/ClientWorkouts';
 import SuccessStories from './pages/client/SuccessStories';
 import ProUpgradePage from './pages/client/ProUpgradePage';
 import ClientWorkoutPlayer from './pages/client/ClientWorkoutPlayer';
-import ClientSearch from './pages/client/ClientSearch';
 import TrainerProfile from './pages/client/TrainerProfile';
 import PTAnalytics from './pages/pt/PTAnalytics';
 import PTExercises from './pages/pt/PTExercises';
@@ -132,7 +131,6 @@ function AppRoutes() {
         <Route path="pro-success" element={<ProUpgradePage success />} />
         <Route path="badges" element={<ClientBadges />} />
         <Route path="profile" element={<ClientProfilePage />} />
-        <Route path="search" element={<ClientSearch />} />
         <Route path="trainer" element={<TrainerProfile />} />
         <Route path="settings" element={<ClientSettings />} />
         <Route path="help" element={<ClientHelp />} />
