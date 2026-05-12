@@ -27,40 +27,40 @@ function OverrideModal({ session, onConfirm, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 px-4 pb-4 sm:pb-0">
-      <div className="w-full max-w-sm bg-dark-grey-100 rounded-[12px] border border-white/10 shadow-2xl overflow-hidden">
-        <div className="px-5 pt-5 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
+    <div style={{position:"fixed",inset:0,zIndex:50,display:"flex",alignItems:"flex-end",justifyContent:"center",background:"rgba(0,0,0,0.85)",padding:"1rem",backdropFilter:"blur(4px)"}}>
+      <div style={{width:"100%",maxWidth:"400px",background:"#1a1a1a",borderRadius:"16px",border:"1px solid rgba(255,255,255,0.1)",overflow:"hidden"}}>
+        <div style={{padding:"1.25rem 1.25rem 1rem"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"16px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
               <div className="w-10 h-10 rounded-[8px] bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                <RotateCcw className="w-5 h-5 text-orange-400" />
+                <RotateCcw  />
               </div>
               <div>
-                <p className="font-bold">Override Cancellation</p>
-                <p className="text-xs text-grey-200">
+                <p style={{fontWeight:700}}>Override Cancellation</p>
+                <p style={{fontSize:"0.75rem",color:"#606060"}}>
                   {new Date(session.scheduled_date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })} at {session.scheduled_time}
                 </p>
               </div>
             </div>
             <button onClick={onClose} className="p-1 rounded-lg text-grey-100 hover:text-white hover:bg-grey-100">
-              <X className="w-4 h-4" />
+              <X  />
             </button>
           </div>
-          <div className="bg-orange-500/10 border border-orange-500/20 rounded-[8px] px-4 py-3 mb-4">
-            <p className="text-sm text-orange-400 font-medium mb-1">Session will be carried over</p>
-            <p className="text-xs text-grey-200">
+          <div style={{background:"rgba(255,107,43,0.1)",border:"1px solid rgba(255,107,43,0.2)",borderRadius:"8px",padding:"0.75rem 1rem",marginBottom:"1rem"}}>
+            <p style={{fontSize:"0.875rem",color:"#FF6B2B",fontWeight:500,marginBottom:"4px"}}>Session will be carried over</p>
+            <p style={{fontSize:"0.75rem",color:"#606060"}}>
               This overrides the 24-hour policy. The session will be cancelled and returned to the client's block, not counted as used.
             </p>
           </div>
-          <label className="block text-xs text-grey-200 mb-1.5">Override reason (optional)</label>
+          <label style={{display:"block",fontSize:"0.75rem",color:"#606060",marginBottom:"6px"}}>Override reason (optional)</label>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
             placeholder="e.g. Emergency — rescheduling next week"
-            className="input resize-none h-20 text-sm w-full"
+            style={{width:"100%",height:"80px",padding:"0.75rem",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"8px",color:"#fff",fontSize:"0.875rem",outline:"none",resize:"none"}}
           />
         </div>
-        <div className="flex border-t border-white/10">
+        <div style={{display:"flex",borderTop:"1px solid rgba(255,255,255,0.08)"}}>
           <button onClick={onClose} className="flex-1 py-3.5 text-sm text-grey-200 hover:bg-grey-100 transition-all">Cancel</button>
           <button
             onClick={handleConfirm}
@@ -360,13 +360,13 @@ export default function PTClientProfile() {
   };
 
   if (loading) return (
-    <div className="flex justify-center py-12">
-      <div className="w-8 h-8 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
+    <div style={{display:"flex",justifyContent:"center",padding:"3rem 0"}}>
+      <div style={{width:"32px",height:"32px",border:"2px solid #FF6B2B",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} />
     </div>
   );
 
   if (!client) return (
-    <div className="px-4 py-12 text-center text-grey-200">Client not found</div>
+    <div style={{padding:"3rem 1rem",textAlign:"center",color:"#606060"}}>Client not found</div>
   );
 
   const sessionsRemaining = 10 - client.sessions_used;
@@ -380,19 +380,19 @@ export default function PTClientProfile() {
   const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'checkins', 'onboarding', 'assessment', 'programme', 'workouts'];
 
   return (
-    <div className="animate-fade-in">
+    <div style={{animation:"fadeIn 0.3s ease"}}>
       {/* Header */}
-      <div className="bg-dark-grey-100 border-b border-white/10 px-4 pt-4 pb-4">
-        <button onClick={() => navigate('/pt/clients')} className="flex items-center gap-2 text-grey-200 hover:text-white mb-4 transition-colors">
-          <ArrowLeft className="w-5 h-5" /> Back to Clients
+      <div style={{backgroundColor:"#1a1a1a",borderBottom:"1px solid rgba(255,255,255,0.08)",padding:"1rem"}}>
+        <button onClick={() => navigate('/pt/clients')} style={{display:"flex",alignItems:"center",gap:"8px",color:"#606060",marginBottom:"1rem",background:"none",border:"none",cursor:"pointer",fontFamily:"DM Sans,system-ui",fontSize:"0.875rem"}}>
+          <ArrowLeft  /> Back to Clients
         </button>
 
-        <div className="flex items-start gap-4">
+        <div style={{display:"flex",alignItems:"flex-start",gap:"16px"}}>
           <div className={`w-16 h-16 rounded-[12px] flex items-center justify-center text-2xl font-black flex-shrink-0
             ${client.client_type === 'Online' ? 'bg-blue-500/20 text-blue-400' : 'bg-brazil-green/20 text-brazil-green'}`}>
             {client.name.charAt(0)}
           </div>
-          <div className="flex-1">
+          <div style={{flex:1}}>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-xl font-black">{client.name}</h1>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${client.client_type === 'Online' ? 'bg-blue-500/20 text-blue-400' : 'bg-grey-100 text-grey-200'}`}>
@@ -401,11 +401,11 @@ export default function PTClientProfile() {
               {client.is_pro === 1 && <span className="badge-pro">PRO</span>}
             </div>
             <div className="flex items-center gap-3 mt-1 text-sm text-grey-200">
-              {client.email && <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5" />{client.email}</span>}
+              {client.email && <span className="flex items-center gap-1"><Mail  />{client.email}</span>}
             </div>
             {client.phone && (
               <p className="text-sm text-grey-200 flex items-center gap-1 mt-0.5">
-                <Phone className="w-3.5 h-3.5" />{client.phone}
+                <Phone  />{client.phone}
               </p>
             )}
           </div>
@@ -415,10 +415,10 @@ export default function PTClientProfile() {
         <div className="mt-4 card-dark p-3">
           <div className="flex justify-between items-center mb-2">
             <div>
-              <p className="text-xs text-grey-200">Block {client.current_block_number} · Started {fmtDate(client.block_start_date)}</p>
-              <p className="font-bold">
-                <span className="text-brazil-green">{client.sessions_used}</span>
-                <span className="text-grey-100"> / 10 sessions</span>
+              <p style={{fontSize:"0.75rem",color:"#606060"}}>Block {client.current_block_number} · Started {fmtDate(client.block_start_date)}</p>
+              <p style={{fontWeight:700}}>
+                <span style={{color:"#4CAF50"}}>{client.sessions_used}</span>
+                <span style={{color:"#888"}}> / 10 sessions</span>
                 <span className={`ml-2 text-sm ${sessionsRemaining <= 1 ? 'text-red-400' : sessionsRemaining <= 2 ? 'text-orange-400' : 'text-grey-200'}`}>
                   ({sessionsRemaining} remaining)
                 </span>
@@ -467,23 +467,23 @@ export default function PTClientProfile() {
         ))}
       </div>
 
-      <div className="px-4 py-4">
+      <div style={{padding:"1rem"}}>
 
         {/* ── Overview ── */}
         {activeTab === 'overview' && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3">
-              <div className="metric-card text-center">
+          <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"12px"}}>
+              <div style={{background:"#1a1a1a",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",textAlign:"center"}}>
                 <p className="text-2xl font-black text-brazil-green">{client.sessions_used}</p>
-                <p className="text-xs text-grey-200">Sessions Done</p>
+                <p style={{fontSize:"0.75rem",color:"#606060"}}>Sessions Done</p>
               </div>
-              <div className="metric-card text-center">
+              <div style={{background:"#1a1a1a",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",textAlign:"center"}}>
                 <p className="text-2xl font-black text-brazil-yellow">{sessionsRemaining}</p>
-                <p className="text-xs text-grey-200">Remaining</p>
+                <p style={{fontSize:"0.75rem",color:"#606060"}}>Remaining</p>
               </div>
-              <div className="metric-card text-center">
+              <div style={{background:"#1a1a1a",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",textAlign:"center"}}>
                 <p className="text-2xl font-black">{client.current_block_number}</p>
-                <p className="text-xs text-grey-200">Block #</p>
+                <p style={{fontSize:"0.75rem",color:"#606060"}}>Block #</p>
               </div>
             </div>
 
@@ -491,27 +491,27 @@ export default function PTClientProfile() {
               <div className="bg-grey-100 border border-white/10 rounded-[8px] px-4 py-3">
                 <p className="text-xs font-semibold text-grey-200 mb-1">Cancellations this block</p>
                 <p className="text-2xl font-black text-grey-200">{cancelledSessions.length}</p>
-                <p className="text-xs text-grey-200 mt-0.5">
+                <p style={{fontSize:"0.75rem",color:"#606060",marginTop:"2px"}}>
                   {cancelledSessions.filter(s => s.session_carried_over).length} carried over · {cancelledSessions.filter(s => s.cancelled_by === 'pt_override').length} PT override
                 </p>
               </div>
             )}
 
             {latestProgress && (
-              <div className="card-dark">
+              <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <p className="text-xs text-grey-200 mb-2">Latest Progress</p>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  {latestProgress.weight_kg && <div><span className="text-grey-200">Weight </span><span className="font-bold">{latestProgress.weight_kg}kg</span></div>}
-                  {latestProgress.waist_cm && <div><span className="text-grey-200">Waist </span><span className="font-bold">{latestProgress.waist_cm}cm</span></div>}
+                  {latestProgress.weight_kg && <div><span style={{color:"#606060"}}>Weight </span><span style={{fontWeight:700}}>{latestProgress.weight_kg}kg</span></div>}
+                  {latestProgress.waist_cm && <div><span style={{color:"#606060"}}>Waist </span><span style={{fontWeight:700}}>{latestProgress.waist_cm}cm</span></div>}
                 </div>
                 <p className="text-xs text-grey-100 mt-1">{latestProgress.entry_date}</p>
               </div>
             )}
 
-            <div className="card-dark border border-brazil-green/20">
-              <div className="flex items-center justify-between mb-2">
+            <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(76,175,80,0.2)"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"8px"}}>
                 <p className="text-sm font-semibold text-brazil-green">Encouragement Note</p>
-                <p className="text-xs text-grey-100">Shown to client</p>
+                <p style={{fontSize:"0.75rem",color:"#888"}}>Shown to client</p>
               </div>
               <textarea
                 value={progressNote}
@@ -520,7 +520,7 @@ export default function PTClientProfile() {
                 className="input text-sm resize-none h-20 mb-2"
               />
               <button onClick={saveProgressNote} className="btn-primary text-sm py-2 w-full flex items-center justify-center gap-2">
-                <Save className="w-4 h-4" /> Save Note
+                <Save  /> Save Note
               </button>
             </div>
           </div>
@@ -528,12 +528,12 @@ export default function PTClientProfile() {
 
         {/* ── Sessions ── */}
         {activeTab === 'sessions' && (
-          <div className="space-y-2">
+          <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
             {/* Upcoming sessions with override option */}
             {upcomingSessions.length > 0 && (
-              <div className="mb-4">
-                <p className="text-xs font-semibold text-grey-100 uppercase tracking-wider mb-2">Upcoming</p>
-                <div className="space-y-2">
+              <div style={{marginBottom:"1rem"}}>
+                <p style={{fontSize:"0.75rem",fontWeight:600,color:"#888",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:"8px"}}>Upcoming</p>
+                <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
                   {upcomingSessions.map(s => {
                     const sessionDt = new Date(`${s.scheduled_date}T${s.scheduled_time}:00`);
                     const hrs = (sessionDt - new Date()) / (1000 * 60 * 60);
@@ -541,11 +541,11 @@ export default function PTClientProfile() {
                     return (
                       <div key={s.id} className="flex items-center gap-3 rounded-[8px] px-3 py-2.5 bg-grey-100 border border-white/10">
                         <div className="w-5 h-5 rounded-full border-2 border-white/20 flex-shrink-0" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{s.scheduled_date} at {s.scheduled_time}</p>
-                          <p className="text-xs text-grey-100">
+                        <div style={{flex:1}}>
+                          <p style={{fontSize:"0.875rem",fontWeight:500}}>{s.scheduled_date} at {s.scheduled_time}</p>
+                          <p style={{fontSize:"0.75rem",color:"#888"}}>
                             {isWithin24
-                              ? <span className="text-orange-400">Within 24hrs — client cannot cancel</span>
+                              ? <span style={{color:"#FF6B2B"}}>Within 24hrs — client cannot cancel</span>
                               : 'Upcoming'}
                           </p>
                         </div>
@@ -554,7 +554,7 @@ export default function PTClientProfile() {
                           title="Override cancel — carry session over"
                           className="flex items-center gap-1 text-[10px] text-orange-400/70 hover:text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/15 px-2 py-1 rounded-lg transition-all"
                         >
-                          <RotateCcw className="w-3 h-3" /> Override
+                          <RotateCcw  /> Override
                         </button>
                       </div>
                     );
@@ -564,9 +564,9 @@ export default function PTClientProfile() {
             )}
 
             {/* All sessions history */}
-            <p className="text-xs font-semibold text-grey-100 uppercase tracking-wider mb-2">History</p>
+            <p style={{fontSize:"0.75rem",fontWeight:600,color:"#888",textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:"8px"}}>History</p>
             {client.sessions?.filter(s => s.status !== 'upcoming').length === 0 ? (
-              <p className="text-center text-grey-100 py-8">No session history yet</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No session history yet</p>
             ) : client.sessions?.filter(s => s.status !== 'upcoming').map(s => (
               <div key={s.id} className={`flex items-center gap-3 rounded-[8px] px-3 py-2.5 ${
                 s.status === 'attended' ? 'bg-brazil-green/10 border border-brazil-green/20' :
@@ -575,14 +575,14 @@ export default function PTClientProfile() {
                 'bg-grey-100 border border-white/10'
               }`}>
                 {s.status === 'attended' ? <CheckCircle className="w-5 h-5 text-brazil-green flex-shrink-0" /> :
-                 s.status === 'missed' ? <XCircle className="w-5 h-5 text-red-400 flex-shrink-0" /> :
+                 s.status === 'missed' ? <XCircle  /> :
                  s.status === 'cancelled' ? <Ban className="w-5 h-5 text-grey-200 flex-shrink-0" /> :
                  <div className="w-5 h-5 rounded-full border-2 border-white/20 flex-shrink-0" />}
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{s.scheduled_date} at {s.scheduled_time}</p>
+                <div style={{flex:1}}>
+                  <p style={{fontSize:"0.875rem",fontWeight:500}}>{s.scheduled_date} at {s.scheduled_time}</p>
                   {s.status === 'missed' && <p className="text-xs text-red-400">Missed — carried over</p>}
                   {s.status === 'cancelled' && (
-                    <p className="text-xs text-grey-200">
+                    <p style={{fontSize:"0.75rem",color:"#606060"}}>
                       Cancelled · {s.cancellation_notice_hours != null ? `${Math.floor(s.cancellation_notice_hours)}h notice` : '—'}
                       {s.cancelled_by === 'pt_override' ? ' · PT override' : ''}
                     </p>
@@ -612,7 +612,7 @@ export default function PTClientProfile() {
 
         {/* ── Cancellations ── */}
         {activeTab === 'cancellations' && (
-          <div className="space-y-3">
+          <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
             {cancelledSessions.length === 0 ? (
               <div className="text-center py-12">
                 <Ban className="w-10 h-10 text-grey-200 mx-auto mb-2" />
@@ -625,15 +625,15 @@ export default function PTClientProfile() {
                 <div className="grid grid-cols-3 gap-2 mb-2">
                   <div className="bg-grey-100 rounded-[8px] p-2.5 text-center">
                     <p className="text-xl font-black text-grey-200">{cancelledSessions.length}</p>
-                    <p className="text-[10px] text-grey-100">Total</p>
+                    <p style={{fontSize:"10px",color:"#888"}}>Total</p>
                   </div>
                   <div className="bg-brazil-green/8 rounded-[8px] p-2.5 text-center">
                     <p className="text-xl font-black text-brazil-green/70">{cancelledSessions.filter(s => s.session_carried_over).length}</p>
-                    <p className="text-[10px] text-grey-100">Carried Over</p>
+                    <p style={{fontSize:"10px",color:"#888"}}>Carried Over</p>
                   </div>
                   <div className="bg-orange-500/8 rounded-[8px] p-2.5 text-center">
                     <p className="text-xl font-black text-orange-400/70">{cancelledSessions.filter(s => s.cancelled_by === 'pt_override').length}</p>
-                    <p className="text-[10px] text-grey-100">PT Override</p>
+                    <p style={{fontSize:"10px",color:"#888"}}>PT Override</p>
                   </div>
                 </div>
 
@@ -645,12 +645,12 @@ export default function PTClientProfile() {
                     <div key={s.id} className="card-dark border border-white/8">
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div>
-                          <p className="text-sm font-semibold">
+                          <p style={{fontSize:"0.875rem",fontWeight:600}}>
                             {new Date(s.scheduled_date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
                             {' '}at {s.scheduled_time}
                           </p>
                           {s.cancelled_at && (
-                            <p className="text-xs text-grey-200 mt-0.5">
+                            <p style={{fontSize:"0.75rem",color:"#606060",marginTop:"2px"}}>
                               Cancelled {new Date(s.cancelled_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} at {new Date(s.cancelled_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
                             </p>
                           )}
@@ -661,8 +661,8 @@ export default function PTClientProfile() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-xs">
-                        <div className="bg-grey-100 rounded-lg px-2.5 py-2">
-                          <p className="text-grey-100 mb-0.5">Notice given</p>
+                        <div style={{background:"#222",borderRadius:"8px",padding:"0.5rem 0.625rem"}}>
+                          <p style={{color:"#888",marginBottom:"2px"}}>Notice given</p>
                           <p className={`font-semibold ${noticeHours != null && noticeHours >= 24 ? 'text-brazil-green' : 'text-orange-400'}`}>
                             {noticeHours != null
                               ? noticeHours >= 48
@@ -671,8 +671,8 @@ export default function PTClientProfile() {
                               : '—'}
                           </p>
                         </div>
-                        <div className="bg-grey-100 rounded-lg px-2.5 py-2">
-                          <p className="text-grey-100 mb-0.5">Session</p>
+                        <div style={{background:"#222",borderRadius:"8px",padding:"0.5rem 0.625rem"}}>
+                          <p style={{color:"#888",marginBottom:"2px"}}>Session</p>
                           <p className={`font-semibold ${s.session_carried_over ? 'text-brazil-green' : 'text-red-400'}`}>
                             {s.session_carried_over ? 'Carried over' : 'Counted'}
                           </p>
@@ -689,7 +689,7 @@ export default function PTClientProfile() {
                         onClick={() => handleReinstate(s.id)}
                         className="mt-3 w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-brazil-green/10 text-brazil-green text-xs font-semibold hover:bg-brazil-green/20 transition-colors border border-brazil-green/20"
                       >
-                        <RotateCcw className="w-3.5 h-3.5" />
+                        <RotateCcw  />
                         Reinstate Session
                       </button>
                     </div>
@@ -701,13 +701,13 @@ export default function PTClientProfile() {
 
         {/* ── Progress ── */}
         {activeTab === 'progress' && (
-          <div className="space-y-3">
+          <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
             {client.progress?.length === 0 ? (
-              <p className="text-center text-grey-100 py-8">No progress entries yet</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No progress entries yet</p>
             ) : client.progress?.map(p => (
-              <div key={p.id} className="card-dark">
+              <div key={p.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <div className="flex justify-between items-start">
-                  <p className="text-sm font-semibold">{p.entry_date}</p>
+                  <p style={{fontSize:"0.875rem",fontWeight:600}}>{p.entry_date}</p>
                   {p.weight_kg && <p className="font-bold text-brazil-green">{p.weight_kg}kg</p>}
                 </div>
                 <div className="grid grid-cols-3 gap-2 mt-2 text-xs text-grey-200">
@@ -729,31 +729,31 @@ export default function PTClientProfile() {
 
         {/* ── Notes ── */}
         {activeTab === 'notes' && (
-          <div className="space-y-3">
+          <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
             <button
               onClick={() => setShowNoteForm(!showNoteForm)}
               className="btn-secondary w-full flex items-center justify-center gap-2"
             >
-              <Plus className="w-4 h-4" /> Add Note
+              <Plus  /> Add Note
             </button>
             {showNoteForm && (
-              <div className="card-dark border border-brazil-green/20">
+              <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(76,175,80,0.2)"}}>
                 <textarea
                   value={noteText}
                   onChange={e => setNoteText(e.target.value)}
                   placeholder="Private note about this client..."
                   className="input resize-none h-24 mb-3"
                 />
-                <div className="flex gap-2">
+                <div style={{display:"flex",gap:"8px"}}>
                   <button onClick={saveNote} className="btn-primary flex-1 text-sm py-2">Save</button>
                   <button onClick={() => setShowNoteForm(false)} className="btn-secondary flex-1 text-sm py-2">Cancel</button>
                 </div>
               </div>
             )}
             {genNotes.length === 0 ? (
-              <p className="text-center text-grey-100 py-8">No notes yet</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No notes yet</p>
             ) : genNotes.map(n => (
-              <div key={n.id} className="card-dark">
+              <div key={n.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
                 <p className="text-sm text-black leading-relaxed">{n.content}</p>
                 <p className="text-xs text-grey-100 mt-2">{n.created_at?.split('T')[0]}</p>
               </div>
@@ -766,14 +766,14 @@ export default function PTClientProfile() {
           <div className="flex flex-col h-[500px] gap-3">
             {messagesLoading && messages.length === 0 ? (
               <div className="flex justify-center items-center h-full">
-                <div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
+                <div style={{width:"24px",height:"24px",border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} />
               </div>
             ) : (
               <>
                 {/* Messages list */}
                 <div className="flex-1 overflow-y-auto space-y-2 pb-3">
                   {messages.length === 0 ? (
-                    <p className="text-center text-grey-100 py-8">No messages yet</p>
+                    <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No messages yet</p>
                   ) : (
                     messages.map(msg => (
                       <div
@@ -821,7 +821,7 @@ export default function PTClientProfile() {
                     disabled={!messageText.trim() || messageSending}
                     className="flex items-center justify-center gap-2 px-3.5 py-2 bg-brazil-green hover:bg-brazil-green/80 disabled:bg-grey-100 disabled:text-grey-200 text-white rounded-lg transition-all text-sm font-semibold"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send  />
                   </button>
                 </div>
               </>
@@ -831,24 +831,24 @@ export default function PTClientProfile() {
 
         {/* ── Blocks ── */}
         {activeTab === 'blocks' && (
-          <div className="space-y-3">
+          <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
             {client.blocks?.length === 0 ? (
-              <p className="text-center text-grey-100 py-8">No block history</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No block history</p>
             ) : client.blocks?.map(b => (
               <div key={b.id} className={`card-dark border ${b.is_current ? 'border-brazil-green/30' : 'border-white/5'}`}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <p className="font-semibold">Block {b.block_number}</p>
-                    <p className="text-xs text-grey-200">Started {b.start_date}</p>
+                    <p style={{fontWeight:600}}>Block {b.block_number}</p>
+                    <p style={{fontSize:"0.75rem",color:"#606060"}}>Started {b.start_date}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-brazil-yellow">£{b.amount_paid}</p>
-                    {b.is_current ? <span className="badge-green text-[10px]">Current</span> : <span className="text-xs text-grey-100">Completed</span>}
+                    {b.is_current ? <span className="badge-green text-[10px]">Current</span> : <span style={{fontSize:"0.75rem",color:"#888"}}>Completed</span>}
                   </div>
                 </div>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-brazil-green">✓ {b.sessions_attended} attended</span>
-                  {b.sessions_missed > 0 && <span className="text-red-400">✕ {b.sessions_missed} missed</span>}
+                  <span style={{color:"#4CAF50"}}>✓ {b.sessions_attended} attended</span>
+                  {b.sessions_missed > 0 && <span style={{color:"#ef4444"}}>✕ {b.sessions_missed} missed</span>}
                 </div>
               </div>
             ))}
@@ -861,11 +861,11 @@ export default function PTClientProfile() {
 
         {/* ── Onboarding ── */}
         {activeTab === 'onboarding' && (
-          <div className="space-y-4">
+          <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
             {onboardingLoading ? (
-              <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>
+              <div style={{display:"flex",justifyContent:"center",padding:"2rem 0"}}><div style={{width:"24px",height:"24px",border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} /></div>
             ) : !onboardingData ? (
-              <p className="text-center text-grey-100 py-8">No onboarding data</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No onboarding data</p>
             ) : (
               <>
                 {/* Status cards */}
@@ -888,14 +888,14 @@ export default function PTClientProfile() {
                     <p className="text-sm text-red-400 flex-1">Onboarding incomplete</p>
                     <button onClick={sendReminder}
                       className="flex items-center gap-1.5 text-xs bg-grey-100 hover:bg-white/15 text-grey-200 px-3 py-1.5 rounded-lg active:scale-95">
-                      <Bell className="w-3 h-3" /> Remind
+                      <Bell  /> Remind
                     </button>
                   </div>
                 )}
 
                 {/* PAR-Q */}
                 {onboardingData.parq && (
-                  <div className="card-dark">
+                  <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
                     <div className="flex items-center justify-between mb-3">
                       <p className="text-xs font-bold text-grey-200 uppercase">PAR-Q Results</p>
                       {onboardingData.parq.any_yes
@@ -907,7 +907,7 @@ export default function PTClientProfile() {
                       return (
                         <div key={i} className="flex items-start gap-3 py-1.5 border-b border-white/5 last:border-0">
                           <span className={`text-xs font-bold flex-shrink-0 ${ans ? 'text-red-400' : 'text-brazil-green'}`}>{ans ? 'YES' : 'NO'}</span>
-                          <p className="text-xs text-grey-200">{q}</p>
+                          <p style={{fontSize:"0.75rem",color:"#606060"}}>{q}</p>
                         </div>
                       );
                     })}
@@ -916,8 +916,8 @@ export default function PTClientProfile() {
 
                 {/* Personal details */}
                 {onboardingData.personal && (
-                  <div className="card-dark">
-                    <p className="text-xs font-bold text-grey-200 uppercase mb-3">Personal Details</p>
+                  <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+                    <p style={{fontSize:"0.75rem",fontWeight:700,color:"#606060",textTransform:"uppercase",marginBottom:"12px"}}>Personal Details</p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                       {[
                         ['Full Name', onboardingData.personal.full_name],
@@ -928,15 +928,15 @@ export default function PTClientProfile() {
                         ['Address', onboardingData.personal.address],
                       ].map(([l, v]) => v ? (
                         <div key={l}>
-                          <p className="text-[10px] text-grey-100">{l}</p>
-                          <p className="text-black">{v}</p>
+                          <p style={{fontSize:"10px",color:"#888"}}>{l}</p>
+                          <p style={{color:"#ffffff"}}>{v}</p>
                         </div>
                       ) : null)}
                     </div>
                     {(onboardingData.personal.emergency_contact_name) && (
                       <div className="mt-3 pt-3 border-t border-white/8">
                         <p className="text-[10px] text-grey-100 mb-1">Emergency Contact</p>
-                        <p className="text-sm">{onboardingData.personal.emergency_contact_name} · {onboardingData.personal.emergency_contact_phone}</p>
+                        <p style={{fontSize:"0.875rem"}}>{onboardingData.personal.emergency_contact_name} · {onboardingData.personal.emergency_contact_phone}</p>
                       </div>
                     )}
                   </div>
@@ -944,8 +944,8 @@ export default function PTClientProfile() {
 
                 {/* Lifestyle & Goals */}
                 {onboardingData.lifestyle && (
-                  <div className="card-dark">
-                    <p className="text-xs font-bold text-grey-200 uppercase mb-3">Lifestyle & Goals</p>
+                  <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+                    <p style={{fontSize:"0.75rem",fontWeight:700,color:"#606060",textTransform:"uppercase",marginBottom:"12px"}}>Lifestyle & Goals</p>
                     {[
                       ['Lifestyle', onboardingData.lifestyle.lifestyle_description],
                       ['Motivation', onboardingData.lifestyle.motivation],
@@ -968,7 +968,7 @@ export default function PTClientProfile() {
                       </div>
                     ) : null)}
                     {onboardingData.lifestyle.smokes && (
-                      <p className="text-xs text-grey-200">🚬 Smokes: {onboardingData.lifestyle.cigarettes_per_day || '?'} per day</p>
+                      <p style={{fontSize:"0.75rem",color:"#606060"}}>🚬 Smokes: {onboardingData.lifestyle.cigarettes_per_day || '?'} per day</p>
                     )}
                     {onboardingData.lifestyle.drinks_alcohol && (
                       <p className="text-xs text-grey-200 mt-1">🍷 Alcohol: {onboardingData.lifestyle.alcohol_units_per_week || '?'} units/week</p>
@@ -978,18 +978,18 @@ export default function PTClientProfile() {
 
                 {/* PDF Downloads */}
                 {onboardingData.status?.completed && (
-                  <div className="card-dark">
-                    <p className="text-xs font-bold text-grey-200 uppercase mb-3">Signed Documents</p>
-                    <div className="flex gap-3">
+                  <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+                    <p style={{fontSize:"0.75rem",fontWeight:700,color:"#606060",textTransform:"uppercase",marginBottom:"12px"}}>Signed Documents</p>
+                    <div style={{display:"flex",gap:"12px"}}>
                       {onboardingData.status.pdf_parq_consent && (
                         <a href={`/api/onboarding/pdf/${id}/parq`}
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[8px] bg-grey-100 hover:bg-white/12 text-sm font-medium transition-all active:scale-95">
+                          style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",padding:"0.625rem",borderRadius:"8px",background:"#222",fontSize:"0.875rem",fontWeight:500,border:"none",cursor:"pointer",minHeight:"auto",color:"#fff"}}>
                           <Download className="w-4 h-4 text-brazil-green" /> PAR-Q & Consent
                         </a>
                       )}
                       {onboardingData.status.pdf_tc && (
                         <a href={`/api/onboarding/pdf/${id}/tc`}
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[8px] bg-grey-100 hover:bg-white/12 text-sm font-medium transition-all active:scale-95">
+                          style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"8px",padding:"0.625rem",borderRadius:"8px",background:"#222",fontSize:"0.875rem",fontWeight:500,border:"none",cursor:"pointer",minHeight:"auto",color:"#fff"}}>
                           <Download className="w-4 h-4 text-brazil-yellow" /> Terms & Conditions
                         </a>
                       )}
@@ -1003,20 +1003,20 @@ export default function PTClientProfile() {
 
         {/* ── Assessment ── */}
         {activeTab === 'assessment' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-grey-200">{assessments.length} assessment{assessments.length !== 1 ? 's' : ''}</p>
+          <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <p style={{fontSize:"0.875rem",fontWeight:600,color:"#606060"}}>{assessments.length} assessment{assessments.length !== 1 ? 's' : ''}</p>
               <button onClick={() => setShowNewAssessment(!showNewAssessment)}
-                className="flex items-center gap-1.5 bg-brazil-green text-white text-xs font-semibold px-3 py-2 rounded-[8px] active:scale-95">
-                <Plus className="w-3.5 h-3.5" /> New Assessment
+                style={{display:"flex",alignItems:"center",gap:"6px",background:"#4CAF50",color:"#fff",fontSize:"0.75rem",fontWeight:600,padding:"0.5rem 0.75rem",borderRadius:"8px",border:"none",cursor:"pointer",minHeight:"auto"}}>
+                <Plus  /> New Assessment
               </button>
             </div>
 
             {showNewAssessment && (
-              <div className="card-dark space-y-4">
-                <p className="font-bold text-sm">New Fitness Assessment</p>
+              <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",flexDirection:"column",gap:"16px"}}>
+                <p style={{fontWeight:700,fontSize:"0.875rem"}}>New Fitness Assessment</p>
                 <div>
-                  <label className="text-xs text-grey-100 mb-1 block">Assessment Date</label>
+                  <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"4px",display:"block"}}>Assessment Date</label>
                   <input type="date" value={assessmentForm.assessment_date || new Date().toISOString().split('T')[0]}
                     onChange={e => setAssessmentForm(f => ({ ...f, assessment_date: e.target.value }))}
                     className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none focus:border-brazil-green/50" />
@@ -1108,11 +1108,11 @@ export default function PTClientProfile() {
                   <AssessField label="Actions Required" field="posture_actions" form={assessmentForm} setForm={setAssessmentForm} multiline />
                 </AssessSection>
                 <AssessField label="General Notes" field="notes" form={assessmentForm} setForm={setAssessmentForm} multiline />
-                <div className="flex gap-3">
+                <div style={{display:"flex",gap:"12px"}}>
                   <button onClick={() => setShowNewAssessment(false)}
-                    className="px-4 py-3 rounded-[8px] bg-grey-100 text-grey-200 text-sm font-medium active:scale-95">Cancel</button>
+                    style={{padding:"0.75rem 1rem",borderRadius:"8px",background:"#222",color:"#606060",fontSize:"0.875rem",fontWeight:500,border:"none",cursor:"pointer",minHeight:"auto"}}>Cancel</button>
                   <button onClick={saveAssessment} disabled={assessmentSaving}
-                    className="flex-1 py-3 rounded-[8px] bg-brazil-green text-white font-bold text-sm active:scale-95 disabled:opacity-50">
+                    style={{flex:1,padding:"0.75rem",borderRadius:"8px",background:"#4CAF50",color:"#fff",fontWeight:700,fontSize:"0.875rem",cursor:"pointer",border:"none",minHeight:"auto"}}>
                     {assessmentSaving ? 'Saving…' : 'Save Assessment'}
                   </button>
                 </div>
@@ -1120,11 +1120,11 @@ export default function PTClientProfile() {
             )}
 
             {assessmentLoading ? (
-              <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>
+              <div style={{display:"flex",justifyContent:"center",padding:"2rem 0"}}><div style={{width:"24px",height:"24px",border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} /></div>
             ) : assessments.length === 0 ? (
-              <p className="text-center text-grey-100 py-8">No assessments recorded yet</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No assessments recorded yet</p>
             ) : (
-              <div className="space-y-3">
+              <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
                 {assessments.map(a => <AssessmentCard key={a.id} assessment={a} />)}
               </div>
             )}
@@ -1133,28 +1133,28 @@ export default function PTClientProfile() {
 
         {/* ── Programme ── */}
         {activeTab === 'programme' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-grey-200">{programmeCards.length} card{programmeCards.length !== 1 ? 's' : ''}</p>
+          <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <p style={{fontSize:"0.875rem",fontWeight:600,color:"#606060"}}>{programmeCards.length} card{programmeCards.length !== 1 ? 's' : ''}</p>
               <button onClick={() => setShowNewCard(!showNewCard)}
-                className="flex items-center gap-1.5 bg-brazil-green text-white text-xs font-semibold px-3 py-2 rounded-[8px] active:scale-95">
-                <Plus className="w-3.5 h-3.5" /> New Card
+                style={{display:"flex",alignItems:"center",gap:"6px",background:"#4CAF50",color:"#fff",fontSize:"0.75rem",fontWeight:600,padding:"0.5rem 0.75rem",borderRadius:"8px",border:"none",cursor:"pointer",minHeight:"auto"}}>
+                <Plus  /> New Card
               </button>
             </div>
 
             {showNewCard && (
-              <div className="card-dark space-y-4">
-                <p className="font-bold text-sm">New Programme Card</p>
-                <div className="grid grid-cols-2 gap-3">
+              <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",flexDirection:"column",gap:"16px"}}>
+                <p style={{fontWeight:700,fontSize:"0.875rem"}}>New Programme Card</p>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px"}}>
                   <div>
-                    <label className="text-xs text-grey-100 mb-1 block">Title</label>
+                    <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"4px",display:"block"}}>Title</label>
                     <input value={cardForm.title} onChange={e => setCardForm(f => ({ ...f, title: e.target.value }))}
-                      className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none" />
+                      style={{width:"100%",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"8px",padding:"0.625rem 0.75rem",fontSize:"0.875rem",color:"#fff",outline:"none"}} />
                   </div>
                   <div>
-                    <label className="text-xs text-grey-100 mb-1 block">Date</label>
+                    <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"4px",display:"block"}}>Date</label>
                     <input type="date" value={cardForm.card_date} onChange={e => setCardForm(f => ({ ...f, card_date: e.target.value }))}
-                      className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none" />
+                      style={{width:"100%",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"8px",padding:"0.625rem 0.75rem",fontSize:"0.875rem",color:"#fff",outline:"none"}} />
                   </div>
                 </div>
                 <CardSectionEditor title="Warm Up — Pulse Raiser" items={cardForm.warm_up_pulse}
@@ -1176,20 +1176,20 @@ export default function PTClientProfile() {
                   onChange={items => setCardForm(f => ({ ...f, cool_down_stretches: items }))}
                   columns={['Muscle Group','Position','Duration']} />
                 <div>
-                  <label className="text-xs text-grey-100 mb-1 block">Exercise & Activities Away from the Gym</label>
+                  <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"4px",display:"block"}}>Exercise & Activities Away from the Gym</label>
                   <textarea value={cardForm.activities_away} onChange={e => setCardForm(f => ({ ...f, activities_away: e.target.value }))} rows={2}
-                    className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none resize-none" />
+                    style={{width:"100%",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"8px",padding:"0.625rem 0.75rem",fontSize:"0.875rem",color:"#fff",outline:"none",resize:"none"}} />
                 </div>
                 <div>
-                  <label className="text-xs text-grey-100 mb-1 block">Session Notes</label>
+                  <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"4px",display:"block"}}>Session Notes</label>
                   <textarea value={cardForm.session_notes} onChange={e => setCardForm(f => ({ ...f, session_notes: e.target.value }))} rows={3}
-                    className="w-full bg-grey-100 border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none resize-none" />
+                    style={{width:"100%",background:"#222",border:"1px solid rgba(255,255,255,0.08)",borderRadius:"8px",padding:"0.625rem 0.75rem",fontSize:"0.875rem",color:"#fff",outline:"none",resize:"none"}} />
                 </div>
-                <div className="flex gap-3">
+                <div style={{display:"flex",gap:"12px"}}>
                   <button onClick={() => setShowNewCard(false)}
-                    className="px-4 py-3 rounded-[8px] bg-grey-100 text-grey-200 text-sm font-medium active:scale-95">Cancel</button>
+                    style={{padding:"0.75rem 1rem",borderRadius:"8px",background:"#222",color:"#606060",fontSize:"0.875rem",fontWeight:500,border:"none",cursor:"pointer",minHeight:"auto"}}>Cancel</button>
                   <button onClick={saveCard} disabled={cardSaving}
-                    className="flex-1 py-3 rounded-[8px] bg-brazil-green text-white font-bold text-sm active:scale-95 disabled:opacity-50">
+                    style={{flex:1,padding:"0.75rem",borderRadius:"8px",background:"#4CAF50",color:"#fff",fontWeight:700,fontSize:"0.875rem",cursor:"pointer",border:"none",minHeight:"auto"}}>
                     {cardSaving ? 'Saving…' : 'Save Card'}
                   </button>
                 </div>
@@ -1197,11 +1197,11 @@ export default function PTClientProfile() {
             )}
 
             {programmeLoading ? (
-              <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" /></div>
+              <div style={{display:"flex",justifyContent:"center",padding:"2rem 0"}}><div style={{width:"24px",height:"24px",border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} /></div>
             ) : programmeCards.length === 0 && !showNewCard ? (
-              <p className="text-center text-grey-100 py-8">No programme cards yet. Tap "New Card" to create one.</p>
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No programme cards yet. Tap "New Card" to create one.</p>
             ) : (
-              <div className="space-y-3">
+              <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
                 {programmeCards.map(card => <ProgrammeCardView key={card.id} card={card} onDelete={deleteCard} />)}
               </div>
             )}
@@ -1211,22 +1211,22 @@ export default function PTClientProfile() {
       </div>
         {/* -- Workouts -- */}
         {activeTab === 'workouts' && (
-          <div className="space-y-4">
+          <div style={{display:"flex",flexDirection:"column",gap:"16px"}}>
             {/* Assigned Plans */}
             <div>
-              <p className="text-sm font-semibold text-grey-200 mb-3">Assigned Plans</p>
+              <p style={{fontSize:"0.875rem",fontWeight:600,color:"#606060",marginBottom:"12px"}}>Assigned Plans</p>
               {plansLoading ? (
-                <div className="flex justify-center py-6"><div className="w-6 h-6 border-4 border-brazil-orange border-t-transparent rounded-full animate-spin" /></div>
+                <div className="flex justify-center py-6"><div style={{width:"24px",height:"24px",border:"2px solid #FF6B2B",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} /></div>
               ) : clientPlans.length === 0 ? (
-                <p className="text-center text-grey-100 py-6 text-sm">No workout plans assigned yet</p>
+                <p style={{textAlign:"center",color:"#888",padding:"1.5rem 0",fontSize:"0.875rem"}}>No workout plans assigned yet</p>
               ) : (
-                <div className="space-y-2">
+                <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
                   {clientPlans.map(plan => (
-                    <div key={plan.id} className="card-dark flex items-center gap-3">
+                    <div key={plan.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",gap:"12px"}}>
                       <div className="w-10 h-10 rounded-[8px] bg-brazil-orange/20 flex items-center justify-center text-lg flex-shrink-0">??</div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-sm">{plan.name}</p>
-                        {plan.description && <p className="text-xs text-grey-200 truncate">{plan.description}</p>}
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{fontWeight:700,fontSize:"0.875rem"}}>{plan.name}</p>
+                        {plan.description && <p style={{fontSize:"0.75rem",color:"#606060",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{plan.description}</p>}
                       </div>
                       <button onClick={() => unassignPlan(plan.id)}
                         className="text-xs text-red-400 hover:text-red-300 px-2 py-1 rounded bg-red-500/10 flex-shrink-0">
@@ -1240,20 +1240,20 @@ export default function PTClientProfile() {
 
             {/* All Plans - assign from here */}
             <div>
-              <p className="text-sm font-semibold text-grey-200 mb-3">All Workout Plans</p>
+              <p style={{fontSize:"0.875rem",fontWeight:600,color:"#606060",marginBottom:"12px"}}>All Workout Plans</p>
               {allPlans.length === 0 ? (
-                <p className="text-center text-grey-100 py-6 text-sm">No workout plans created yet. Go to Workouts to create one.</p>
+                <p style={{textAlign:"center",color:"#888",padding:"1.5rem 0",fontSize:"0.875rem"}}>No workout plans created yet. Go to Workouts to create one.</p>
               ) : (
-                <div className="space-y-2">
+                <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
                   {allPlans.map(plan => {
                     const isAssigned = clientPlans.some(p => p.id === plan.id);
                     return (
-                      <div key={plan.id} className="card-dark flex items-center gap-3">
+                      <div key={plan.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",gap:"12px"}}>
                         <div className="w-10 h-10 rounded-[8px] bg-grey-100 flex items-center justify-center text-lg flex-shrink-0">??</div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-sm">{plan.name}</p>
-                          {plan.description && <p className="text-xs text-grey-200 truncate">{plan.description}</p>}
-                          {plan.client_name && !isAssigned && <p className="text-xs text-grey-100">Currently: {plan.client_name}</p>}
+                        <div style={{flex:1,minWidth:0}}>
+                          <p style={{fontWeight:700,fontSize:"0.875rem"}}>{plan.name}</p>
+                          {plan.description && <p style={{fontSize:"0.75rem",color:"#606060",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{plan.description}</p>}
+                          {plan.client_name && !isAssigned && <p style={{fontSize:"0.75rem",color:"#888"}}>Currently: {plan.client_name}</p>}
                         </div>
                         {isAssigned ? (
                           <span className="text-xs text-brazil-green font-bold px-2 py-1 rounded bg-brazil-green/10 flex-shrink-0">? Assigned</span>
@@ -1301,7 +1301,7 @@ function AssessGrid({ form, setForm, fields }) {
     <div className="grid grid-cols-2 gap-2">
       {fields.map(([field, label, type]) => (
         <div key={field}>
-          <label className="text-[9px] text-grey-100 block mb-0.5">{label}</label>
+          <label style={{fontSize:"9px",color:"#888",display:"block",marginBottom:"2px"}}>{label}</label>
           <input type={type || 'text'}
             value={form[field] || ''}
             onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
@@ -1316,7 +1316,7 @@ function AssessField({ label, field, form, setForm, placeholder, multiline }) {
   const cls = 'w-full bg-grey-100 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-brazil-green/50 placeholder:text-grey-200';
   return (
     <div>
-      <label className="text-[9px] text-grey-100 block mb-0.5">{label}</label>
+      <label style={{fontSize:"9px",color:"#888",display:"block",marginBottom:"2px"}}>{label}</label>
       {multiline
         ? <textarea value={form[field] || ''} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))}
             placeholder={placeholder} rows={2} className={`${cls} resize-none`} />
@@ -1330,10 +1330,10 @@ function AssessField({ label, field, form, setForm, placeholder, multiline }) {
 function AssessmentCard({ assessment }) {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="card-dark">
-      <div className="flex items-center justify-between" onClick={() => setExpanded(!expanded)}>
+    <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}} onClick={() => setExpanded(!expanded)}>
         <div>
-          <p className="font-semibold text-sm">{fmtDate(assessment.assessment_date)}</p>
+          <p style={{fontWeight:600,fontSize:"0.875rem"}}>{fmtDate(assessment.assessment_date)}</p>
           <div className="flex gap-3 text-xs text-grey-100 mt-0.5">
             {assessment.weight_kg && <span>{assessment.weight_kg}kg</span>}
             {assessment.body_fat_pct && <span>{assessment.body_fat_pct}% BF</span>}
@@ -1341,7 +1341,7 @@ function AssessmentCard({ assessment }) {
           </div>
         </div>
         <button className="p-1.5 text-grey-100 hover:text-grey-200">
-          {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          {expanded ? <ChevronUp  /> : <ChevronDown  />}
         </button>
       </div>
       {expanded && (
@@ -1365,14 +1365,14 @@ function AssessmentCard({ assessment }) {
             ['VO₂ Max', assessment.cv_step_test_vo2, 'ml/kg/min'],
           ].map(([label, val, unit]) => val != null ? (
             <div key={label}>
-              <p className="text-grey-100">{label}</p>
+              <p style={{color:"#888"}}>{label}</p>
               <p className="text-black font-medium">{val}{unit}</p>
             </div>
           ) : null)}
           {assessment.notes && (
             <div className="col-span-2 mt-2 pt-2 border-t border-white/8">
-              <p className="text-grey-100 mb-0.5">Notes</p>
-              <p className="text-grey-200">{assessment.notes}</p>
+              <p style={{color:"#888",marginBottom:"2px"}}>Notes</p>
+              <p style={{color:"#606060"}}>{assessment.notes}</p>
             </div>
           )}
         </div>
@@ -1386,18 +1386,18 @@ function ProgrammeCardView({ card, onDelete }) {
   const parse = (str) => { try { return JSON.parse(str || '[]'); } catch { return []; } };
 
   return (
-    <div className="card-dark">
-      <div className="flex items-center justify-between">
+    <div style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div>
-          <p className="font-semibold text-sm">{card.title}</p>
-          <p className="text-xs text-grey-100">{fmtDate(card.card_date)}</p>
+          <p style={{fontWeight:600,fontSize:"0.875rem"}}>{card.title}</p>
+          <p style={{fontSize:"0.75rem",color:"#888"}}>{fmtDate(card.card_date)}</p>
         </div>
         <div className="flex gap-1.5">
           <button onClick={() => setExpanded(!expanded)} className="p-1.5 rounded-lg hover:bg-grey-100 text-grey-100">
-            {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {expanded ? <ChevronUp  /> : <ChevronDown  />}
           </button>
           <button onClick={() => onDelete(card.id)} className="p-1.5 rounded-lg hover:bg-red-500/20 text-grey-200 hover:text-red-400">
-            <X className="w-4 h-4" />
+            <X  />
           </button>
         </div>
       </div>
@@ -1414,7 +1414,7 @@ function ProgrammeCardView({ card, onDelete }) {
             <div key={title}>
               <p className="text-[10px] font-bold text-brazil-green uppercase mb-1.5">{title}</p>
               <div className="overflow-x-auto">
-                <table className="w-full text-xs">
+                <table style={{width:"100%",fontSize:"0.75rem"}}>
                   <thead>
                     <tr>{cols.map(c => <th key={c} className="text-left text-grey-100 font-normal pr-3 pb-1 whitespace-nowrap">{c}</th>)}</tr>
                   </thead>
@@ -1431,14 +1431,14 @@ function ProgrammeCardView({ card, onDelete }) {
           ))}
           {card.activities_away && (
             <div>
-              <p className="text-[10px] font-bold text-brazil-green uppercase mb-1">Away Activities</p>
-              <p className="text-xs text-grey-200">{card.activities_away}</p>
+              <p style={{fontSize:"10px",fontWeight:700,color:"#4CAF50",textTransform:"uppercase",marginBottom:"4px"}}>Away Activities</p>
+              <p style={{fontSize:"0.75rem",color:"#606060"}}>{card.activities_away}</p>
             </div>
           )}
           {card.session_notes && (
             <div>
-              <p className="text-[10px] font-bold text-brazil-green uppercase mb-1">Session Notes</p>
-              <p className="text-xs text-grey-200">{card.session_notes}</p>
+              <p style={{fontSize:"10px",fontWeight:700,color:"#4CAF50",textTransform:"uppercase",marginBottom:"4px"}}>Session Notes</p>
+              <p style={{fontSize:"0.75rem",color:"#606060"}}>{card.session_notes}</p>
             </div>
           )}
         </div>
@@ -1461,17 +1461,17 @@ function CardSectionEditor({ title, items, onChange, columns }) {
 
   return (
     <div className="bg-white/4 rounded-[8px] p-3">
-      <div className="flex items-center justify-between mb-2">
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"8px"}}>
         <p className="text-[10px] font-bold text-brazil-green uppercase">{title}</p>
         <button type="button" onClick={addRow}
           className="text-[10px] text-brazil-green hover:text-brazil-green/80 flex items-center gap-1 active:scale-95">
-          <Plus className="w-3 h-3" /> Add Row
+          <Plus  /> Add Row
         </button>
       </div>
       {items.length === 0 ? (
         <p className="text-xs text-grey-200 italic">No rows yet</p>
       ) : (
-        <div className="space-y-2">
+        <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
           {items.map((row, i) => (
             <div key={i} className="flex gap-1.5 items-start">
               <div className="grid grid-cols-2 gap-1.5 flex-1">
@@ -1485,7 +1485,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
               </div>
               <button type="button" onClick={() => removeRow(i)}
                 className="p-1.5 rounded-lg hover:bg-red-500/20 text-grey-200 hover:text-red-400 flex-shrink-0 mt-0.5">
-                <X className="w-3 h-3" />
+                <X  />
               </button>
             </div>
           ))}
