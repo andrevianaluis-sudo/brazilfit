@@ -38,6 +38,7 @@ import SuccessStories from './pages/client/SuccessStories';
 import ProUpgradePage from './pages/client/ProUpgradePage';
 import ClientWorkoutPlayer from './pages/client/ClientWorkoutPlayer';
 import TrainerProfile from './pages/client/TrainerProfile';
+import PrivacyPolicy from './pages/client/PrivacyPolicy';
 import PTAnalytics from './pages/pt/PTAnalytics';
 import PTExercises from './pages/pt/PTExercises';
 import PTWorkoutBuilder from './pages/pt/PTWorkoutBuilder';
@@ -132,6 +133,7 @@ function AppRoutes() {
         <Route path="badges" element={<ClientBadges />} />
         <Route path="profile" element={<ClientProfilePage />} />
         <Route path="trainer" element={<TrainerProfile />} />
+        <Route path="privacy" element={<PrivacyPolicy />} />
         <Route path="settings" element={<ClientSettings />} />
         <Route path="help" element={<ClientHelp />} />
       </Route>

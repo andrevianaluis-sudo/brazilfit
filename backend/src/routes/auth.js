@@ -225,3 +225,36 @@ router.delete('/users/:userId', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
+// GET /api/auth/export-data — export all client data (GDPR right to portability)
+router.get('/export-data', authenticateToken, (req, res) => {
+  const db = getDb();
+  const userId = req.user.id;
+  const clientId = req.user.clientId;
+
+  const user = db.prepare('SELECT id, name, email, username, role, created_at FROM users WHERE id = ?').get(userId);
+  const client = clientId ? db.prepare('SELECT * FROM clients WHERE id = ?').get(clientId) : null;
+  const sessions = clientId ? db.prepare('SELECT * FROM sessions WHERE client_id = ?').all(clientId) : [];
+  const checkins = clientId ? db.prepare('SELECT * FROM weekly_checkins WHERE client_id = ?').all(clientId) : [];
+  const progress = clientId ? db.prepare('SELECT * FROM progress_entries WHERE client_id = ?').all(clientId) : [];
+  const habits = clientId ? db.prepare('SELECT * FROM habit_logs WHERE client_id = ?').all(clientId) : [];
+  const messages = clientId ? db.prepare('SELECT * FROM messages WHERE client_id = ?').all(clientId) : [];
+  const diary = clientId ? db.prepare('SELECT * FROM food_mood_entries WHERE client_id = ?').all(clientId) : [];
+
+  const exportData = {
+    exported_at: new Date().toISOString(),
+    gdpr_notice: 'This export contains all personal data BrazilFit holds about you, as required by GDPR Article 20 (Right to Data Portability).',
+    personal_info: user,
+    client_profile: client,
+    sessions,
+    weekly_checkins: checkins,
+    progress_entries: progress,
+    habit_logs: habits,
+    messages,
+    food_diary: diary,
+  };
+
+  res.setHeader('Content-Disposition', `attachment; filename="brazilfit-data-export-${new Date().toISOString().split('T')[0]}.json"`);
+  res.setHeader('Content-Type', 'application/json');
+  res.json(exportData);
+});

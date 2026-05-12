@@ -540,18 +540,29 @@ export default function ClientSettings() {
       </div>
 
       {/* Section 2: Sessions */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>NOTIFICATIONS</p>
         <SettingButton label="Session Settings" onPress={() => setScreen('sessions')} />
         <SettingButton label="Notification Preferences" onPress={() => setScreen('notifications')} />
       </div>
 
       {/* Section 3: Privacy */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>PRIVACY & DATA</p>
-        <SettingButton label="Privacy" onPress={() => setScreen('privacy')} />
-        <SettingButton label="Data and Privacy" onPress={() => {}} />
-        <SettingButton label="Workout Info" onPress={() => {}} />
+        <SettingButton label="Privacy Policy" onPress={() => navigate('/client/privacy')} />
+        <SettingButton label="Export My Data" value="GDPR" onPress={async () => {
+          try {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const res = await fetch('/api/auth/export-data', { headers: { Authorization: `Bearer ${token}` } });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `brazilfit-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click(); URL.revokeObjectURL(url);
+            toast.success('Data export downloaded!');
+          } catch { toast.error('Failed to export data'); }
+        }} />
+        <SettingButton label="Delete Account" onPress={() => setScreen('deleteAccount')} />
       </div>
 
       {/* Section 4: App */}
