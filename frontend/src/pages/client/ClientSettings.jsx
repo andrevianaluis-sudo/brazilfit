@@ -6,6 +6,8 @@ import BackButton from '../../components/BackButton';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const S2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#888888';const ORANGE='#FF6B2B';const GREEN='#4CAF50';
+
 export default function ClientSettings() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -66,10 +68,10 @@ export default function ClientSettings() {
   };
 
   const ToggleButton = ({ label, value, onChange, context }) => (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', paddingTop: '16px', borderBottom: '1px solid #E8E8E8' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '16px', paddingTop: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
       <div style={{ flex: 1 }}>
-        <p style={{ fontSize: '15px', fontWeight: '600', color: '#333333', margin: 0 }}>{label}</p>
-        {context && <p style={{ fontSize: '12px', color: '#999999', marginTop: '4px', margin: '4px 0 0 0' }}>{context}</p>}
+        <p style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff', margin: 0 }}>{label}</p>
+        {context && <p style={{ fontSize: '12px', color: '#606060', marginTop: '4px', margin: '4px 0 0 0' }}>{context}</p>}
       </div>
       <button
         onClick={() => onChange(!value)}
@@ -77,7 +79,7 @@ export default function ClientSettings() {
           width: '48px',
           height: '28px',
           borderRadius: '14px',
-          backgroundColor: value ? '#27AE60' : '#E8E8E8',
+          backgroundColor: value ? '#4CAF50' : '#444',
           border: 'none',
           cursor: 'pointer',
           display: 'flex',
@@ -87,7 +89,7 @@ export default function ClientSettings() {
           transition: 'all 0.2s ease',
         }}
       >
-        <div style={{ width: '24px', height: '24px', borderRadius: '12px', backgroundColor: 'white' }} />
+        <div style={{ width: '24px', height: '24px', borderRadius: '12px', backgroundColor: '#1a1a1a' }} />
       </button>
     </div>
   );
@@ -95,20 +97,20 @@ export default function ClientSettings() {
   // About You screen
   if (screen === 'aboutyou') {
     return (
-      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white' }}>
+      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
         <div style={{ marginBottom: '24px' }}>
           <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#000', margin: 0 }}>About You</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', margin: 0 }}>About You</h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Profile Photo */}
-          <div style={{ textAlign: 'center', paddingBottom: '20px', borderBottom: '1px solid #E8E8E8' }}>
+          <div style={{ textAlign: 'center', paddingBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{
               width: '100px',
               height: '100px',
               borderRadius: '50%',
-              backgroundColor: '#E8E8E8',
+              backgroundColor: '#333',
               margin: '0 auto 12px',
               display: 'flex',
               alignItems: 'center',
@@ -135,7 +137,7 @@ export default function ClientSettings() {
                 📷
               </div>
             </div>
-            <p style={{ fontSize: '13px', color: '#999999', margin: 0 }}>Tap to upload photo</p>
+            <p style={{ fontSize: '13px', color: '#606060', margin: 0 }}>Tap to upload photo</p>
           </div>
 
           {/* Form Fields */}
@@ -145,7 +147,7 @@ export default function ClientSettings() {
             <FormField label="Date of Birth" type="date" value={settings.dateOfBirth || ''} onChange={(v) => updateSetting('dateOfBirth', v)} />
 
             <div>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: '#333333', display: 'block', marginBottom: '8px' }}>Gender</label>
+              <label style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'block', marginBottom: '8px' }}>Gender</label>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                 {['Male', 'Female', 'Prefer not to say'].map(opt => (
                   <button
@@ -154,8 +156,8 @@ export default function ClientSettings() {
                     style={{
                       padding: '12px',
                       border: settings.gender === opt ? 'none' : '1px solid #D0D0D0',
-                      backgroundColor: settings.gender === opt ? '#27AE60' : 'white',
-                      color: settings.gender === opt ? 'white' : '#333333',
+                      backgroundColor: settings.gender === opt ? '#4CAF50' : '#222',
+                      color: settings.gender === opt ? '#000' : '#ffffff',
                       borderRadius: '8px',
                       fontWeight: '600',
                       cursor: 'pointer',
@@ -180,7 +182,7 @@ export default function ClientSettings() {
 
             {/* Fitness Goals */}
             <div>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: '#333333', display: 'block', marginBottom: '12px' }}>Fitness Goals</label>
+              <label style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'block', marginBottom: '12px' }}>Fitness Goals</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {['Lose Weight', 'Build Muscle', 'Improve Fitness', 'Increase Flexibility', 'Reduce Stress', 'Train for Sport'].map(goal => (
                   <button
@@ -196,8 +198,8 @@ export default function ClientSettings() {
                     }}
                     style={{
                       padding: '10px 16px',
-                      backgroundColor: (settings.fitnessGoals || '').includes(goal) ? '#27AE60' : 'white',
-                      color: (settings.fitnessGoals || '').includes(goal) ? 'white' : '#333333',
+                      backgroundColor: (settings.fitnessGoals || '').includes(goal) ? '#4CAF50' : '#222',
+                      color: (settings.fitnessGoals || '').includes(goal) ? '#000' : '#ffffff',
                       border: (settings.fitnessGoals || '').includes(goal) ? 'none' : '1px solid #D0D0D0',
                       borderRadius: '20px',
                       fontWeight: '600',
@@ -214,7 +216,7 @@ export default function ClientSettings() {
 
             {/* Fitness Level */}
             <div>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: '#333333', display: 'block', marginBottom: '12px' }}>Fitness Level</label>
+              <label style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'block', marginBottom: '12px' }}>Fitness Level</label>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
                 {['Beginner', 'Intermediate', 'Advanced'].map(level => (
                   <button
@@ -222,8 +224,8 @@ export default function ClientSettings() {
                     onClick={() => updateSetting('fitnessLevel', level)}
                     style={{
                       padding: '16px',
-                      backgroundColor: settings.fitnessLevel === level ? '#27AE60' : 'white',
-                      color: settings.fitnessLevel === level ? 'white' : '#333333',
+                      backgroundColor: settings.fitnessLevel === level ? '#4CAF50' : '#222',
+                      color: settings.fitnessLevel === level ? '#000' : '#ffffff',
                       border: settings.fitnessLevel === level ? 'none' : '1px solid #D0D0D0',
                       borderRadius: '10px',
                       fontWeight: '600',
@@ -266,10 +268,10 @@ export default function ClientSettings() {
   // Units of Measure screen
   if (screen === 'units') {
     return (
-      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white' }}>
+      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
         <div style={{ marginBottom: '24px' }}>
           <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#000', margin: 0 }}>Units of Measure</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', margin: 0 }}>Units of Measure</h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -300,10 +302,10 @@ export default function ClientSettings() {
   // Session Settings screen
   if (screen === 'sessions') {
     return (
-      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white' }}>
+      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
         <div style={{ marginBottom: '24px' }}>
           <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#000', margin: 0 }}>Session Settings</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', margin: 0 }}>Session Settings</h2>
         </div>
 
         <div>
@@ -322,10 +324,10 @@ export default function ClientSettings() {
   // Privacy screen
   if (screen === 'privacy') {
     return (
-      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white' }}>
+      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
         <div style={{ marginBottom: '24px' }}>
           <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#000', margin: 0 }}>Privacy</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', margin: 0 }}>Privacy</h2>
         </div>
 
         <div style={{ paddingBottom: '20px', marginBottom: '20px', borderBottom: '2px solid #E8E8E8' }}>
@@ -358,7 +360,7 @@ export default function ClientSettings() {
           <button style={{
             width: '100%',
             padding: '12px',
-            backgroundColor: 'white',
+            backgroundColor: '#1a1a1a',
             color: '#EF4444',
             fontWeight: '600',
             border: '1px solid #EF4444',
@@ -373,10 +375,10 @@ export default function ClientSettings() {
   // Delete Account screen
   if (screen === 'deleteAccount') {
     return (
-      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white' }}>
+      <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
         <div style={{ marginBottom: '24px' }}>
           <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
-          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#000', margin: 0 }}>Delete Account</h2>
+          <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#ffffff', margin: 0 }}>Delete Account</h2>
         </div>
 
         <div style={{ backgroundColor: '#FEE3E3', border: '1px solid #EF4444', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
@@ -385,8 +387,8 @@ export default function ClientSettings() {
         </div>
 
         <div style={{ backgroundColor: '#F8F9FA', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
-          <p style={{ fontSize: '13px', fontWeight: '600', color: '#333333', marginBottom: '8px', margin: '0 0 8px 0' }}>Will be permanently deleted:</p>
-          <ul style={{ fontSize: '13px', color: '#666666', marginLeft: '20px', marginTop: '8px' }}>
+          <p style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff', marginBottom: '8px', margin: '0 0 8px 0' }}>Will be permanently deleted:</p>
+          <ul style={{ fontSize: '13px', color: '#888888', marginLeft: '20px', marginTop: '8px' }}>
             <li>All session history</li>
             <li>All progress data</li>
             <li>All messages</li>
@@ -395,7 +397,7 @@ export default function ClientSettings() {
         </div>
 
         <div style={{ marginBottom: '24px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '600', color: '#333333' }}>Type DELETE to confirm</label>
+          <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>Type DELETE to confirm</label>
           <input
             type="text"
             value={deleteConfirmation}
@@ -418,8 +420,8 @@ export default function ClientSettings() {
             style={{
               flex: 1,
               padding: '12px',
-              backgroundColor: '#E8E8E8',
-              color: '#666666',
+              backgroundColor: '#333',
+              color: '#888888',
               fontWeight: '600',
               border: 'none',
               borderRadius: '8px',
@@ -451,27 +453,27 @@ export default function ClientSettings() {
 
   // Main settings screen
   return (
-    <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: 'white', paddingBottom: '100px' }}>
+    <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f', paddingBottom: '100px' }}>
       <BackButton to="/client/home" />
-      <h1 style={{ fontSize: '28px', fontWeight: 300, color: '#000', marginBottom: '32px', margin: '0 0 32px 0' }}>Settings</h1>
+      <h1 style={{ fontSize: '28px', fontWeight: 300, color: '#ffffff', marginBottom: '32px', margin: '0 0 32px 0' }}>Settings</h1>
 
       {/* Section 1: Account */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#999999', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ACCOUNT</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ACCOUNT</p>
         <SettingButton label="About You" onPress={() => setScreen('aboutyou')} />
         <SettingButton label="Units of Measure" value="KG, CM, KM" onPress={() => setScreen('units')} />
       </div>
 
       {/* Section 2: Sessions */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#999999', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>NOTIFICATIONS</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>NOTIFICATIONS</p>
         <SettingButton label="Session Settings" onPress={() => setScreen('sessions')} />
         <SettingButton label="Notification Preferences" onPress={() => setScreen('notifications')} />
       </div>
 
       {/* Section 3: Privacy */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#999999', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>PRIVACY & DATA</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>PRIVACY & DATA</p>
         <SettingButton label="Privacy" onPress={() => setScreen('privacy')} />
         <SettingButton label="Data and Privacy" onPress={() => {}} />
         <SettingButton label="Workout Info" onPress={() => {}} />
@@ -479,7 +481,7 @@ export default function ClientSettings() {
 
       {/* Section 4: App */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#999999', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ABOUT</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ABOUT</p>
         <SettingButton label="Country/Region" value="🇬🇧 United Kingdom" onPress={() => {}} />
         <SettingButton label="Language" value="English" onPress={() => {}} />
         <SettingButton label="App Version" value="1.0.0" onPress={() => {}} />
@@ -487,7 +489,7 @@ export default function ClientSettings() {
 
       {/* Section 5: Legal */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#999999', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>LEGAL</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>LEGAL</p>
         <SettingButton label="Terms and Conditions" onPress={() => {}} />
         <SettingButton label="Privacy Policy" onPress={() => {}} />
         <SettingButton label="App FAQs" onPress={() => {}} />
@@ -501,8 +503,8 @@ export default function ClientSettings() {
           style={{
             width: '100%',
             padding: '14px',
-            backgroundColor: 'white',
-            color: '#333333',
+            backgroundColor: '#1a1a1a',
+            color: '#ffffff',
             fontWeight: '600',
             border: '1px solid #D0D0D0',
             borderRadius: '8px',
@@ -529,14 +531,14 @@ function SettingButton({ label, value, onPress }) {
         padding: '14px 0',
         backgroundColor: 'transparent',
         border: 'none',
-        borderBottom: '1px solid #E8E8E8',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
         cursor: 'pointer',
         fontSize: '15px',
       }}
     >
-      <span style={{ fontWeight: '600', color: '#333333' }}>{label}</span>
+      <span style={{ fontWeight: '600', color: '#ffffff' }}>{label}</span>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {value && <span style={{ fontSize: '13px', color: '#999999' }}>{value}</span>}
+        {value && <span style={{ fontSize: '13px', color: '#606060' }}>{value}</span>}
         <ChevronRight size={20} color="#CCCCCC" />
       </div>
     </button>
@@ -546,7 +548,7 @@ function SettingButton({ label, value, onPress }) {
 function FormField({ label, value, onChange, type = 'text', maxLength, helperText }) {
   return (
     <div>
-      <label style={{ fontSize: '14px', fontWeight: '600', color: '#333333', display: 'block', marginBottom: '8px' }}>{label}</label>
+      <label style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'block', marginBottom: '8px' }}>{label}</label>
       {type === 'textarea' ? (
         <textarea
           value={value}
@@ -581,7 +583,7 @@ function FormField({ label, value, onChange, type = 'text', maxLength, helperTex
           }}
         />
       )}
-      {helperText && <p style={{ fontSize: '12px', color: '#999999', textAlign: 'right', marginTop: '4px', margin: '4px 0 0 0' }}>{helperText}</p>}
+      {helperText && <p style={{ fontSize: '12px', color: '#606060', textAlign: 'right', marginTop: '4px', margin: '4px 0 0 0' }}>{helperText}</p>}
     </div>
   );
 }
@@ -590,8 +592,8 @@ function UnitToggle({ label, options, value, onChange, context }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <label style={{ fontSize: '15px', fontWeight: '600', color: '#333333' }}>{label}</label>
-        <span style={{ fontSize: '13px', color: '#999999' }}>{value}</span>
+        <label style={{ fontSize: '15px', fontWeight: '600', color: '#ffffff' }}>{label}</label>
+        <span style={{ fontSize: '13px', color: '#606060' }}>{value}</span>
       </div>
       <div style={{ display: 'flex', gap: '8px' }}>
         {options.map(opt => (
@@ -615,7 +617,7 @@ function UnitToggle({ label, options, value, onChange, context }) {
           </button>
         ))}
       </div>
-      {context && <p style={{ fontSize: '12px', color: '#999999', marginTop: '8px', margin: '8px 0 0 0' }}>{context}</p>}
+      {context && <p style={{ fontSize: '12px', color: '#606060', marginTop: '8px', margin: '8px 0 0 0' }}>{context}</p>}
     </div>
   );
 }

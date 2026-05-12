@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
-const BG='#141414';const SURFACE='#1e1e1e';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#707070';const GREEN='#4CAF50';const ORANGE='#FF6B2B';const YELLOW='#FFD600';
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#606060';const GREEN='#4CAF50';const ORANGE='#FF6B2B';const YELLOW='#FFD600';
 
 function StretchPlayer({ stretches, onClose }) {
   const [idx,setIdx]=useState(0);const [timeLeft,setTimeLeft]=useState(45);const [active,setActive]=useState(false);const [done,setDone]=useState(false);

@@ -1,186 +1,127 @@
 import { useState } from 'react';
-import { Search, ChevronDown, MessageCircle, AlertCircle } from 'lucide-react';
+import { Search, ChevronDown, MessageSquare, AlertCircle, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const S2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#fff';const MUTED='#606060';const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';
+
+const FAQS = [
+  { id:1,  cat:'Getting Started',      q:'How do I book a session?',           a:'Sessions are booked by your PT. Once booked they appear on your My Sessions page and dashboard. Contact your PT via Messages to request a specific time.' },
+  { id:2,  cat:'Getting Started',      q:'How do sessions work?',              a:'Sessions are 60-minute workouts with your PT. You\'ll see them in My Sessions. At 8pm each weekday, attended sessions are automatically marked and your block count updates.' },
+  { id:3,  cat:'Getting Started',      q:'What is a 10 session block?',        a:'A block is a package of 10 PT sessions. Once you pay for a block, your PT activates it and you\'ll see your session tracker update in real time.' },
+  { id:4,  cat:'Getting Started',      q:'How do I cancel a session?',         a:'Go to My Sessions, find the upcoming session, and tap Cancel. You have up to 24 hours before the session to cancel without penalty. Late cancellations are charged.' },
+  { id:5,  cat:'Billing & Payments',   q:'How do I pay for my block?',         a:'Payment is made directly to your PT\'s bank account (bank transfer). Once received, your PT will activate your new block in the app and your tracker will reset.' },
+  { id:6,  cat:'Billing & Payments',   q:'What is BrazilFit Pro?',             a:'Pro unlocks full progress photo history, advanced analytics, full nutrition library, and wellness content. Ask your PT about upgrading.' },
+  { id:7,  cat:'Billing & Payments',   q:'Can I get a refund?',                a:'Session blocks are non-refundable once activated. Unused sessions may be transferred to a new block at your PT\'s discretion.' },
+  { id:8,  cat:'Sessions & Tracking',  q:'Why did my session count change?',   a:'Sessions are auto-marked attended at 8pm on the day. Cancelled sessions are returned to your block. Contact your PT if you think there\'s an error.' },
+  { id:9,  cat:'Sessions & Tracking',  q:'What happens if I miss a session?',  a:'Missed sessions are deducted from your block. Your PT may offer a make-up depending on your agreement. You\'ll be notified when approaching your last session.' },
+  { id:10, cat:'Sessions & Tracking',  q:'What is the weekly check-in?',       a:'A short 9-question form covering your week — workouts, mood, sleep, stress, wins and goals. Your PT reads every answer and uses it to personalise your programme.' },
+  { id:11, cat:'Sessions & Tracking',  q:'What are habit streaks?',            a:'Your streak tracks consecutive weeks of completing your weekly check-in. The longer your streak, the more badges you unlock. Every check-in = +1 streak point.' },
+  { id:12, cat:'Technical',            q:'The app is not loading',             a:'Try: 1) Force-close and reopen the browser tab, 2) Check your internet connection, 3) Clear browser cache, 4) Try a different browser.' },
+  { id:13, cat:'Technical',            q:'I cannot log in',                    a:'Make sure you\'re using the correct username (not email). If you\'ve forgotten your password, contact your PT to reset it for you.' },
+  { id:14, cat:'Technical',            q:'How do I change my password?',       a:'Go to Settings and look for the Change Password option. If you\'re locked out, ask your PT to reset it from their dashboard.' },
+];
+
+const CATS = ['Getting Started','Billing & Payments','Sessions & Tracking','Technical'];
+const CAT_EMOJIS = { 'Getting Started':'🚀', 'Billing & Payments':'💳', 'Sessions & Tracking':'📊', 'Technical':'⚙️' };
 
 export default function ClientHelp() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [expandedId, setExpandedId] = useState(null);
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+  const [expanded, setExpanded] = useState(null);
 
-  const faqs = [
-    {
-      id: 1,
-      category: 'Getting Started',
-      question: 'How do I book a session?',
-      answer: `Open your calendar, select available time slots with your PT, and confirm. Sessions appear on your dashboard 24 hours after booking.`
-    },
-    {
-      id: 2,
-      category: 'Getting Started',
-      question: 'How do sessions work?',
-      answer: `Sessions are 60-minute workouts with your PT. You'll receive a reminder 24 hours before. Start the session in the app to access your workout plan and timer.`
-    },
-    {
-      id: 3,
-      category: 'Getting Started',
-      question: 'What is a 10 session block?',
-      answer: `A block is a package of sessions with your PT. After purchasing 10 sessions, you have flexibility to schedule them whenever works best for you.`
-    },
-    {
-      id: 4,
-      category: 'Getting Started',
-      question: 'How do I cancel a session?',
-      answer: `Go to your Sessions tab, find the session, and tap Cancel. You have up to 24 hours before the session to cancel without penalty.`
-    },
-    {
-      id: 5,
-      category: 'Billing & Payments',
-      question: 'How do I pay for my block?',
-      answer: `Tap the "Purchase Block" button to securely pay via Stripe. Blocks are prepaid and non-refundable, but you can transfer unused sessions.`
-    },
-    {
-      id: 6,
-      category: 'Billing & Payments',
-      question: 'What is BrazilFit Pro?',
-      answer: `Pro unlocks progress photos, advanced analytics, nutrition tracking, and challenges. Upgrade anytime for £4.99/month or £49.99/year.`
-    },
-    {
-      id: 7,
-      category: 'Billing & Payments',
-      question: 'How do I cancel Pro?',
-      answer: `Go to Settings > Subscription and tap "Cancel Pro". Your access continues through the end of your billing period.`
-    },
-    {
-      id: 8,
-      category: 'Billing & Payments',
-      question: 'Can I get a refund?',
-      answer: `Session blocks are non-refundable. Pro subscriptions can be canceled anytime and refunded within 30 days of purchase.`
-    },
-    {
-      id: 9,
-      category: 'Sessions & Tracking',
-      question: 'Why did my session count go down?',
-      answer: `Completed sessions count toward your history. If you cancel a session, the count decreases. Contact your PT if you think there's an error.`
-    },
-    {
-      id: 10,
-      category: 'Sessions & Tracking',
-      question: 'What happens if I miss a session?',
-      answer: `If you miss a scheduled session, you'll lose that session from your block. Your PT may offer a make-up option depending on your agreement.`
-    },
-    {
-      id: 11,
-      category: 'Sessions & Tracking',
-      question: 'How do I log a workout?',
-      answer: `After completing a session, tap "Complete Session" and answer the quick feedback. Your progress syncs to your activity history.`
-    },
-    {
-      id: 12,
-      category: 'Sessions & Tracking',
-      question: 'What are habit streaks?',
-      answer: `Streaks track consecutive days of logging habits (water, sleep, nutrition, etc.). The longer your streak, the more badges you unlock!`
-    },
-    {
-      id: 13,
-      category: 'Technical',
-      question: 'The app is not loading',
-      answer: `Try: 1) Force-close the app and reopen, 2) Check your internet connection, 3) Update to the latest version, 4) Clear app cache in Settings.`
-    },
-    {
-      id: 14,
-      category: 'Technical',
-      question: 'I cannot log in',
-      answer: `Ensure you're using the correct email/password. Tap "Forgot Password" to reset. If issues persist, contact your PT.`
-    },
-    {
-      id: 15,
-      category: 'Technical',
-      question: 'How do I connect my Apple Watch?',
-      answer: `Go to Settings > Connected Apps > Apple Health and follow the authorization flow. Data syncs automatically every hour.`
-    },
-    {
-      id: 16,
-      category: 'Technical',
-      question: 'How do I change my password?',
-      answer: `Go to Settings > Account > Change Password. Enter your current password and new password. Password must be 8+ characters.`
-    },
-  ];
-
-  const categories = ['Getting Started', 'Billing & Payments', 'Sessions & Tracking', 'Technical'];
-
-  const filteredFaqs = faqs.filter(faq =>
-    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    faq.answer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    faq.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const filtered = FAQS.filter(f =>
+    f.q.toLowerCase().includes(search.toLowerCase()) ||
+    f.a.toLowerCase().includes(search.toLowerCase()) ||
+    f.cat.toLowerCase().includes(search.toLowerCase())
   );
-
-  const groupedFaqs = categories.reduce((acc, cat) => {
-    acc[cat] = filteredFaqs.filter(f => f.category === cat);
-    return acc;
-  }, {});
+  const grouped = CATS.reduce((acc, cat) => { acc[cat] = filtered.filter(f => f.cat === cat); return acc; }, {});
 
   return (
-    <div className="w-full bg-white min-h-screen pb-24 animate-fade-in">
-      <div className="sticky top-0 bg-white z-40 border-b border-grey-100 px-5 py-4">
-        <h1 className="text-2xl font-black text-black uppercase mb-4">Help & FAQ</h1>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search topics..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-grey-300 rounded-[8px] px-4 py-2 pl-10 text-black text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brazil-green"
-          />
-        </div>
-      </div>
+    <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem', fontFamily:"'DM Sans',system-ui" }}>
+      <div style={{ maxWidth:'680px', margin:'0 auto', padding:'2rem 1.25rem' }}>
 
-      <div className="px-5 py-6 space-y-6">
-        {Object.entries(groupedFaqs).map(([category, items]) =>
-          items.length > 0 && (
-            <div key={category}>
-              <p className="text-grey-200 text-xs uppercase tracking-widest mb-3 font-bold">{category}</p>
-              <div className="space-y-2">
+        {/* Header */}
+        <div style={{ marginBottom:'2rem' }}>
+          <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:ORANGE, textTransform:'uppercase', margin:'0 0 6px' }}>Support</p>
+          <h1 style={{ fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.05em', margin:'0 0 4px', lineHeight:1 }}>Help & FAQ</h1>
+          <p style={{ fontSize:'0.82rem', color:MUTED, margin:0 }}>Everything you need to know about BrazilFit</p>
+        </div>
+
+        {/* Search */}
+        <div style={{ position:'relative', marginBottom:'1.5rem' }}>
+          <Search size={16} color={MUTED} style={{ position:'absolute', left:'14px', top:'50%', transform:'translateY(-50%)', pointerEvents:'none' }}/>
+          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search topics..."
+            style={{ width:'100%', padding:'0.875rem 0.875rem 0.875rem 42px', background:SURFACE, border:`1px solid ${BORDER}`, borderRadius:'12px', color:TEXT, fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', outline:'none', boxSizing:'border-box' }}
+            onFocus={e=>e.target.style.borderColor=ORANGE} onBlur={e=>e.target.style.borderColor=BORDER}/>
+        </div>
+
+        {/* FAQ groups */}
+        <div style={{ display:'flex', flexDirection:'column', gap:'1.5rem', marginBottom:'1.5rem' }}>
+          {Object.entries(grouped).map(([cat, items]) => items.length === 0 ? null : (
+            <div key={cat}>
+              <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'10px' }}>
+                <span style={{ fontSize:'1rem' }}>{CAT_EMOJIS[cat]}</span>
+                <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:0 }}>{cat}</p>
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
                 {items.map(faq => (
-                  <button
-                    key={faq.id}
-                    onClick={() => setExpandedId(expandedId === faq.id ? null : faq.id)}
-                    className="w-full bg-grey-300 rounded-[12px] p-4 text-left hover:bg-white transition"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-black font-bold text-sm flex-1">{faq.question}</p>
-                      <ChevronDown
-                        className={`w-5 h-5 text-grey-200 flex-shrink-0 transition transform ${
-                          expandedId === faq.id ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </div>
-                    {expandedId === faq.id && (
-                      <p className="text-grey-200 text-sm mt-3 leading-relaxed">{faq.answer}</p>
+                  <div key={faq.id} style={{ background:SURFACE, borderRadius:'12px', border:`1px solid ${expanded===faq.id?'rgba(255,107,43,0.3)':BORDER}`, overflow:'hidden', transition:'border-color 0.15s' }}>
+                    <button onClick={()=>setExpanded(expanded===faq.id?null:faq.id)} style={{
+                      width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px',
+                      padding:'1rem 1.25rem', background:'none', border:'none', cursor:'pointer', textAlign:'left', minHeight:'auto',
+                    }}>
+                      <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:600, color:TEXT, margin:0, flex:1 }}>{faq.q}</p>
+                      <ChevronDown size={16} color={MUTED} style={{ flexShrink:0, transform:expanded===faq.id?'rotate(180deg)':'rotate(0)', transition:'transform 0.2s' }}/>
+                    </button>
+                    {expanded===faq.id&&(
+                      <div style={{ padding:'0 1.25rem 1rem', borderTop:`1px solid ${BORDER}` }}>
+                        <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:'#c0c0c0', margin:'0.875rem 0 0', lineHeight:1.7 }}>{faq.a}</p>
+                      </div>
                     )}
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
-          )
-        )}
-
-        {filteredFaqs.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-grey-200 text-sm">No topics found. Try a different search.</p>
-          </div>
-        )}
-
-        {/* Contact Section */}
-        <div className="border-t border-grey-100 pt-6 space-y-3">
-          <p className="text-grey-200 text-xs uppercase tracking-widest font-bold">Can't find what you need?</p>
-          <button className="w-full flex items-center justify-center gap-2 bg-brazil-green rounded-[12px] p-4 text-black font-bold uppercase text-xs tracking-widest hover:bg-brazil-green-dark transition">
-            <MessageCircle className="w-4 h-4" />
-            Contact Your PT
-          </button>
-          <button className="w-full flex items-center justify-center gap-2 bg-grey-300 rounded-[12px] p-4 text-black font-bold uppercase text-xs tracking-widest hover:bg-white transition">
-            <AlertCircle className="w-4 h-4" />
-            Report a Problem
-          </button>
+          ))}
+          {filtered.length===0&&(
+            <div style={{ textAlign:'center', padding:'3rem', background:SURFACE, borderRadius:'16px', border:`1px solid ${BORDER}` }}>
+              <p style={{ fontSize:'1.5rem', margin:'0 0 8px' }}>🔍</p>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', color:MUTED, margin:0 }}>No results for "{search}"</p>
+            </div>
+          )}
         </div>
+
+        {/* Contact */}
+        <div style={{ background:'linear-gradient(135deg,#1a2a1a,#1a1a1a)', borderRadius:'16px', border:'1px solid rgba(76,175,80,0.2)', padding:'1.5rem' }}>
+          <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:GREEN, textTransform:'uppercase', margin:'0 0 1rem' }}>Can't find what you need?</p>
+          <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+            <button onClick={()=>navigate('/client/messages')} style={{
+              width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.9rem 1.25rem',
+              background:`linear-gradient(135deg,${ORANGE},${YELLOW})`, border:'none', borderRadius:'12px',
+              color:'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:800,
+              cursor:'pointer', minHeight:'auto', boxShadow:`0 4px 16px rgba(255,107,43,0.3)`,
+            }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+                <MessageSquare size={16}/>
+                <span>Message Your PT</span>
+              </div>
+              <ChevronRight size={14}/>
+            </button>
+            <button style={{
+              width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0.9rem 1.25rem',
+              background:S2, border:`1px solid ${BORDER}`, borderRadius:'12px',
+              color:TEXT, fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:600,
+              cursor:'pointer', minHeight:'auto',
+            }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+                <AlertCircle size={16} color={MUTED}/>
+                <span>Report a Problem</span>
+              </div>
+              <ChevronRight size={14} color={MUTED}/>
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
