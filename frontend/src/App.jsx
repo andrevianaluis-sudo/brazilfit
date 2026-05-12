@@ -45,7 +45,6 @@ import PTWorkoutBuilder from './pages/pt/PTWorkoutBuilder';
 import PTWorkouts from './pages/pt/PTWorkouts';
 import PTMediaManager from './pages/pt/PTMediaManager';
 
-import ClientVirtualSession from './pages/client/ClientVirtualSession';
 import PTAdvancedBlockManagement from './pages/pt/PTAdvancedBlockManagement';
 import ClientSettings from './pages/client/ClientSettings';
 import ClientHelp from './pages/client/ClientHelp';
@@ -135,10 +134,6 @@ function AppRoutes() {
         <Route path="profile" element={<ClientProfilePage />} />
         <Route path="search" element={<ClientSearch />} />
         <Route path="trainer" element={<TrainerProfile />} />
-        
-        <Route path="virtual-session" element={<ClientVirtualSession />} />
-     
-     
         <Route path="settings" element={<ClientSettings />} />
         <Route path="help" element={<ClientHelp />} />
       </Route>
