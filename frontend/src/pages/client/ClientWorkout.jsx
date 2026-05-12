@@ -22,7 +22,7 @@ function RestTimer({ seconds, onDone, videoId, exerciseName }) {
   const pct = ((seconds - remaining) / seconds) * 100;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white/97 backdrop-blur-sm overflow-y-auto">
+    <div style={{position:"fixed",inset:0,zIndex:50,display:"flex",flexDirection:"column",backgroundColor:"#0f0f0f",overflowY:"auto"}}>
       {/* Timer */}
       <div className="flex-shrink-0 flex flex-col items-center justify-center py-6">
         <p className="text-xs text-grey-100 font-bold uppercase tracking-widest mb-4">Rest Time</p>

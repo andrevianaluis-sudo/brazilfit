@@ -253,7 +253,7 @@ export default function ClientWorkoutPlayer() {
 
         {/* Exercise image placeholder */}
         <div className="w-full max-w-sm h-48 bg-grey-300 rounded-[12px] mb-8 flex items-center justify-center">
-          <p className="text-grey-200">Exercise Image</p>
+          <p style={{color:"#606060"}}>Exercise Image</p>
         </div>
 
         {/* Set counter */}

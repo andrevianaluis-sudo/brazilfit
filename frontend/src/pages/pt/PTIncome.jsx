@@ -1,32 +1,28 @@
 import { useState, useEffect } from 'react';
-import { DollarSign, TrendingUp, BookOpen, Crown } from 'lucide-react';
+import { DollarSign, TrendingUp, Users, Calendar } from 'lucide-react';
 import api from '../../utils/api';
-import toast from 'react-hot-toast';
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const S2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#fff';const MUTED='#606060';const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';const BLUE='#60a5fa';const RED='#ef4444';
 
-function formatGBP(pence) {
-  return `£${(pence / 100).toFixed(2)}`;
-}
-
-function formatGBPWhole(pounds) {
-  return `£${Number(pounds).toLocaleString('en-GB')}`;
-}
-
-function IncomeCard({ label, gross, tax, net, accent = 'green' }) {
-  const colors = {
-    green: 'text-brazil-green',
-    yellow: 'text-brazil-yellow',
-    purple: 'text-purple-400',
-    blue: 'text-blue-400',
-  };
+function SectionLabel({ children, color=ORANGE }) {
   return (
-    <div className="metric-card">
-      <p className={`text-lg font-black ${colors[accent]}`}>{formatGBPWhole(gross)}</p>
-      <p className="text-xs text-grey-200">{label}</p>
-      <div className="flex gap-3 mt-1 text-xs">
-        <span className="text-red-400/80">Tax: {formatGBPWhole(tax)}</span>
-        <span className="text-grey-200">Net: {formatGBPWhole(net)}</span>
+    <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'0.875rem' }}>
+      <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
+      <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color, textTransform:'uppercase', margin:0 }}>{children}</p>
+    </div>
+  );
+}
+
+function fmt(v) { return `£${Number(v||0).toLocaleString('en-GB')}`; }
+
+function IncomeCard({ label, gross, tax, net, color=GREEN }) {
+  return (
+    <div style={{ background:`linear-gradient(135deg,${color}10,${SURFACE})`, borderRadius:'14px', padding:'1.1rem', border:`1px solid ${color}20` }}>
+      <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.6rem', fontWeight:800, color, margin:'0 0 2px', letterSpacing:'-0.04em', lineHeight:1 }}>{fmt(gross)}</p>
+      <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', margin:'0 0 8px' }}>{label}</p>
+      <div style={{ display:'flex', gap:'12px' }}>
+        <span style={{ fontSize:'0.72rem', color:RED, fontWeight:600 }}>Tax: {fmt(tax)}</span>
+        <span style={{ fontSize:'0.72rem', color:MUTED, fontWeight:600 }}>Net: {fmt(net)}</span>
       </div>
     </div>
   );
@@ -35,183 +31,94 @@ function IncomeCard({ label, gross, tax, net, accent = 'green' }) {
 export default function PTIncome() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState('pt');
 
   useEffect(() => {
-    api.get('/pt/income').then(r => {
-      setData(r.data);
-      setLoading(false);
-    }).catch(() => {
-      toast.error('Failed to load income data');
-      setLoading(false);
-    });
+    api.get('/pt/income').then(r => setData(r.data)).catch(console.error).finally(() => setLoading(false));
   }, []);
 
   if (loading) return (
-    <div className="flex justify-center py-12">
-      <div className="w-8 h-8 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
+    <div style={{ display:'flex', justifyContent:'center', padding:'5rem', background:BG }}>
+      <div style={{ width:'24px', height:'24px', border:`2px solid ${ORANGE}`, borderTop:'2px solid transparent', borderRadius:'50%', animation:'spin 1s linear infinite' }}/>
     </div>
   );
 
-  const { ptIncome = [], classIncome = [], summary = {}, proIncome = [] } = data || {};
-
-  const proGross = proIncome.reduce((s, p) => s + p.total, 0) / 100;
-  const proNet = Math.round(proGross * 0.8);
-  const proTax = Math.round(proGross * 0.2);
+  const s = data?.summary || {};
 
   return (
-    <div className="px-4 py-4 animate-fade-in">
-      <h1 className="text-2xl font-black mb-1">Income & Tax</h1>
-      <p className="text-grey-200 text-sm mb-4">20% tax set aside automatically</p>
+    <div style={{ backgroundColor:BG, minHeight:'100vh', padding:'1.5rem 1.25rem', paddingBottom:'6rem', fontFamily:"'DM Sans',system-ui" }}>
+      <div style={{ maxWidth:'800px', margin:'0 auto' }}>
 
-      {/* Grand Total */}
-      <div className="rounded-[12px] p-4 mb-5 bg-gradient-to-br from-brazil-green/20 to-brazil-yellow/10 border border-brazil-green/30">
-        <p className="text-xs text-grey-200 mb-1">Total Gross Income</p>
-        <p className="text-4xl font-black text-brazil-green mb-1">{formatGBPWhole(summary.totalGross || 0)}</p>
-        <div className="flex gap-4 text-sm mt-3">
-          <div className="bg-red-500/20 rounded-[8px] px-3 py-2 flex-1 text-center">
-            <p className="text-red-400 font-bold">{formatGBPWhole(summary.totalTax || 0)}</p>
-            <p className="text-xs text-grey-200">Tax Pot (20%)</p>
-          </div>
-          <div className="bg-brazil-green/20 rounded-[8px] px-3 py-2 flex-1 text-center">
-            <p className="text-brazil-green font-bold">{formatGBPWhole(summary.totalNet || 0)}</p>
-            <p className="text-xs text-grey-200">Net Income</p>
-          </div>
+        <div style={{ marginBottom:'2rem' }}>
+          <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:ORANGE, textTransform:'uppercase', margin:'0 0 6px' }}>Finances</p>
+          <h1 style={{ fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.05em', margin:0, lineHeight:1 }}>Income</h1>
         </div>
-      </div>
 
-      {/* Breakdown cards */}
-      <div className="grid grid-cols-3 gap-2 mb-5">
-        <IncomeCard label="PT Sessions" gross={summary.ptGross || 0} tax={Math.round((summary.ptGross || 0) * 0.2)} net={Math.round((summary.ptGross || 0) * 0.8)} accent="green" />
-        <IncomeCard label="Classes" gross={summary.classGross || 0} tax={Math.round((summary.classGross || 0) * 0.2)} net={Math.round((summary.classGross || 0) * 0.8)} accent="yellow" />
-        <IncomeCard label="Pro Subs" gross={proGross} tax={proTax} net={proNet} accent="purple" />
-      </div>
-
-      {/* Tab selector */}
-      <div className="flex gap-2 mb-4">
-        {[
-          { key: 'pt', label: 'PT Clients', icon: TrendingUp },
-          { key: 'classes', label: 'Classes', icon: BookOpen },
-          { key: 'pro', label: 'BrazilFit Pro', icon: Crown },
-        ].map(t => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[8px] text-xs font-medium transition-all ${tab === t.key ? 'bg-brazil-green text-white' : 'bg-grey-100 text-grey-200'}`}
-          >
-            <t.icon className="w-3.5 h-3.5" />
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {tab === 'pt' && (
-        <div className="space-y-2">
-          {ptIncome.map(c => (
-            <div key={c.id} className="card-dark">
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold">{c.name}</p>
-                    <span className={`text-xs px-1.5 py-0.5 rounded-full ${c.client_type === 'Online' ? 'bg-blue-500/20 text-blue-400' : 'bg-grey-100 text-grey-200'}`}>{c.client_type}</span>
-                  </div>
-                  <p className="text-xs text-grey-200">{c.blocks_sold} block{c.blocks_sold !== 1 ? 's' : ''} · £{c.block_price}/block</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-brazil-green">{formatGBPWhole(c.total_earned)}</p>
-                  <p className="text-xs text-grey-100">Net: {formatGBPWhole(c.net)}</p>
-                </div>
-              </div>
-              <div className="flex gap-3 mt-1.5 text-xs text-grey-100">
-                <span>Tax: {formatGBPWhole(c.tax)}</span>
-              </div>
+        {/* Summary cards */}
+        <div style={{ marginBottom:'1.75rem' }}>
+          <SectionLabel color={GREEN}>Overall Summary</SectionLabel>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginBottom:'8px' }}>
+            <IncomeCard label="Total Gross" gross={s.totalGross} tax={s.totalTax} net={s.totalNet} color={GREEN}/>
+            <IncomeCard label="PT Sessions" gross={s.ptGross} tax={s.ptTax} net={s.ptNet} color={ORANGE}/>
+            <IncomeCard label="Classes" gross={s.classGross} tax={s.classTax} net={s.classNet} color={BLUE}/>
+            <div style={{ background:`linear-gradient(135deg,${YELLOW}10,${SURFACE})`, borderRadius:'14px', padding:'1.1rem', border:`1px solid ${YELLOW}20` }}>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.6rem', fontWeight:800, color:YELLOW, margin:'0 0 2px', letterSpacing:'-0.04em', lineHeight:1 }}>{fmt(s.totalNet)}</p>
+              <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.12em', color:MUTED, textTransform:'uppercase', margin:'0 0 8px' }}>Total Net (after 20% tax)</p>
+              <p style={{ fontSize:'0.72rem', color:RED, fontWeight:600 }}>Tax owed: {fmt(s.totalTax)}</p>
             </div>
-          ))}
-          {ptIncome.length === 0 && <p className="text-center text-grey-100 py-8">No PT income data</p>}
-        </div>
-      )}
-
-      {tab === 'classes' && (
-        <div className="space-y-2">
-          {classIncome.map(c => (
-            <div key={c.id} className="card-dark">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="font-semibold">{c.name}</p>
-                  <p className="text-xs text-grey-200">
-                    {DAY_NAMES[c.day_of_week]} {c.class_time} · {c.sessions_run} sessions run
-                    {c.payment_type === 'per_person' ? ` · £${c.per_person_fee}/person × ${c.max_people}` : ` · £${c.flat_fee}/session`}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-brazil-yellow">{formatGBPWhole(c.total_earned)}</p>
-                  <p className="text-xs text-grey-100">Net: {formatGBPWhole(c.net)}</p>
-                </div>
-              </div>
-              <div className="text-xs text-grey-100 mt-1">Tax set aside: {formatGBPWhole(c.tax)}</div>
-            </div>
-          ))}
-
-          {/* Thursday Pilates highlight */}
-          <div className="card-dark border border-brazil-yellow/20 mt-2">
-            <p className="text-xs text-brazil-yellow mb-1 font-semibold">Thursday Pilates — Per Person</p>
-            <p className="text-sm text-grey-200">12 people × £8 = <span className="text-brazil-yellow font-bold">£96/session</span></p>
           </div>
-
-          {classIncome.length === 0 && <p className="text-center text-grey-100 py-8">No class income data</p>}
         </div>
-      )}
 
-      {tab === 'pro' && (
-        <div className="space-y-3">
-          {/* Pro income breakdown */}
-          {proIncome.length > 0 ? (
-            <div className="card-dark">
-              {proIncome.map(p => (
-                <div key={p.plan} className="flex justify-between items-center py-2 border-b border-white/10 last:border-0">
-                  <div>
-                    <p className="font-semibold capitalize">{p.plan} Plan</p>
-                    <p className="text-xs text-grey-200">{p.count} subscriber{p.count !== 1 ? 's' : ''}</p>
+        {/* Per client */}
+        {data?.ptIncome?.length > 0 && (
+          <div style={{ marginBottom:'1.75rem' }}>
+            <SectionLabel color={ORANGE}>Per Client</SectionLabel>
+            <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+              {data.ptIncome.map((c,i) => (
+                <div key={c.id} style={{ background:SURFACE, borderRadius:'12px', padding:'0.875rem 1rem', border:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px' }}>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <p style={{ fontSize:'0.9rem', fontWeight:700, color:TEXT, margin:'0 0 2px', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{c.name}</p>
+                    <p style={{ fontSize:'0.7rem', color:MUTED, margin:0 }}>{c.blocks_sold} block{c.blocks_sold!==1?'s':''} · Net {fmt(c.net)}</p>
                   </div>
-                  <p className="font-bold text-purple-400">{formatGBP(p.total)}</p>
+                  <div style={{ textAlign:'right', flexShrink:0 }}>
+                    <p style={{ fontSize:'1.1rem', fontWeight:800, color:GREEN, margin:'0 0 2px', letterSpacing:'-0.02em' }}>{fmt(c.total_earned)}</p>
+                    <p style={{ fontSize:'0.65rem', color:RED }}>-{fmt(c.tax)} tax</p>
+                  </div>
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="card-dark text-center py-6">
-              <Crown className="w-8 h-8 text-grey-100 mx-auto mb-2" />
-              <p className="text-grey-200 text-sm">No Pro subscriptions yet</p>
-            </div>
-          )}
+          </div>
+        )}
 
-          {/* Revenue Projections */}
-          <div className="card-dark border border-brazil-yellow/20">
-            <div className="flex items-center gap-2 mb-3">
-              <Crown className="w-5 h-5 text-brazil-yellow" />
-              <p className="font-bold text-brazil-yellow">Revenue Projections</p>
-            </div>
-            <div className="space-y-2">
-              <ProjectionRow label="18 clients · Monthly" gross={18 * 9.99} />
-              <ProjectionRow label="18 clients · Annual" gross={18 * 79.99} />
-              <ProjectionRow label="50 clients · Monthly" gross={50 * 9.99} />
-              <ProjectionRow label="50 clients · Annual" gross={50 * 79.99} />
+        {/* Per class */}
+        {data?.classIncome?.length > 0 && (
+          <div>
+            <SectionLabel color={BLUE}>Per Class</SectionLabel>
+            <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+              {data.classIncome.map((c,i) => {
+                const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                return (
+                  <div key={c.id} style={{ background:SURFACE, borderRadius:'12px', padding:'0.875rem 1rem', border:`1px solid ${BORDER}`, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px' }}>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <p style={{ fontSize:'0.9rem', fontWeight:700, color:TEXT, margin:'0 0 2px', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{c.name}</p>
+                      <p style={{ fontSize:'0.7rem', color:MUTED, margin:0 }}>{days[c.day_of_week]} {c.class_time} · {c.sessions_run} sessions</p>
+                    </div>
+                    <div style={{ textAlign:'right', flexShrink:0 }}>
+                      <p style={{ fontSize:'1.1rem', fontWeight:800, color:BLUE, margin:'0 0 2px', letterSpacing:'-0.02em' }}>{fmt(c.total_earned)}</p>
+                      <p style={{ fontSize:'0.65rem', color:RED }}>-{fmt(c.tax)} tax</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-}
+        )}
 
-function ProjectionRow({ label, gross }) {
-  const net = gross * 0.8;
-  const tax = gross * 0.2;
-  return (
-    <div className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
-      <p className="text-sm text-grey-200">{label}</p>
-      <div className="text-right">
-        <p className="font-bold text-sm">£{gross.toFixed(2)}</p>
-        <p className="text-xs text-grey-100">Net: £{net.toFixed(2)}</p>
+        {!data && (
+          <div style={{ textAlign:'center', padding:'3rem', background:SURFACE, borderRadius:'16px', border:`1px solid ${BORDER}` }}>
+            <p style={{ fontSize:'2rem', margin:'0 0 8px' }}>💰</p>
+            <p style={{ fontSize:'0.875rem', color:MUTED, margin:0 }}>No income data yet</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ function ProgressBar({ step }) {
       </div>
       <div className="flex gap-1.5">
         {STEP_META.map((_, i) => (
-          <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? 'bg-brazil-green' : 'bg-white/15'}`} />
+          <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? 'bg-brazil-green' : 'rgba(255,255,255,0.1)'}`} />
         ))}
       </div>
       <div className="flex justify-between mt-3">
@@ -41,7 +41,7 @@ function ProgressBar({ step }) {
             <div key={i} className={`flex flex-col items-center gap-1 ${active ? 'opacity-100' : done ? 'opacity-70' : 'opacity-30'}`}>
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs
                 ${done ? 'bg-brazil-green' : active ? 'bg-brazil-green/30 border border-brazil-green' : 'bg-grey-100'}`}>
-                {done ? <CheckCircle className="w-4 h-4 text-black" /> : <Icon className="w-3.5 h-3.5" />}
+                {done ? <CheckCircle className="w-4 h-4 text-white" /> : <Icon className="w-3.5 h-3.5" />}
               </div>
             </div>
           );
@@ -63,7 +63,7 @@ function NavButtons({ onBack, onNext, nextLabel = 'Continue', saving = false, ca
       )}
       <button onClick={onNext} disabled={saving}
         className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-[8px] font-bold text-sm transition-all active:scale-95
-          ${saving ? 'bg-grey-100 text-grey-100' : 'bg-brazil-green text-black hover:bg-brazil-green/90'}`}>
+          ${saving ? 'bg-grey-100 text-grey-100' : 'bg-brazil-green text-white hover:bg-brazil-green/90'}`}>
         {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
         {nextLabel}
         {!saving && <ChevronRight className="w-4 h-4" />}
@@ -250,7 +250,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
       <div className="space-y-3">
         {PARQ_QUESTIONS.map((q, i) => (
           <div key={i} className={`card-dark border transition-all ${data[keys[i]] ? 'border-red-500/30 bg-red-500/5' : 'border-white/8'}`}>
-            <p className="text-sm text-black leading-relaxed mb-3">
+            <p className="text-sm text-white leading-relaxed mb-3">
               <span className="text-brazil-green font-bold">Q{i+1}. </span>{q}
             </p>
             <div className="flex gap-3">
@@ -385,9 +385,9 @@ function Step4({ data, onChange, onNext, onBack, clientName, existingSignature }
         <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-all border
           ${checked ? 'bg-brazil-green border-brazil-green' : 'border-white/30 bg-transparent'}`}
           onClick={() => setChecked(!checked)}>
-          {checked && <CheckCircle className="w-3.5 h-3.5 text-black" />}
+          {checked && <CheckCircle className="w-3.5 h-3.5 text-white" />}
         </div>
-        <p className="text-sm text-black">I have read and understood the above information and all my questions have been answered.</p>
+        <p className="text-sm text-white">I have read and understood the above information and all my questions have been answered.</p>
       </label>
 
       <div>
@@ -518,9 +518,9 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
         <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-all border
           ${agreed ? 'bg-brazil-green border-brazil-green' : 'border-white/30 bg-transparent'}`}
           onClick={() => setAgreed(!agreed)}>
-          {agreed && <CheckCircle className="w-3.5 h-3.5 text-black" />}
+          {agreed && <CheckCircle className="w-3.5 h-3.5 text-white" />}
         </div>
-        <p className="text-sm text-black">I agree to the above Terms and Conditions for the duration of my training with Andre Viana Personal Trainer.</p>
+        <p className="text-sm text-white">I agree to the above Terms and Conditions for the duration of my training with Andre Viana Personal Trainer.</p>
       </label>
 
       <div>
@@ -559,7 +559,7 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
 // ── Complete screen ───────────────────────────────────────────────────────────
 function CompletionScreen({ onGoHome }) {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+    <div style={{minHeight:"100vh",backgroundColor:"#0f0f0f",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"1.5rem",textAlign:"center"}}>
       <div className="w-20 h-20 bg-brazil-green/20 rounded-full flex items-center justify-center mb-6 animate-fade-in">
         <CheckCircle className="w-12 h-12 text-brazil-green" />
       </div>
@@ -595,7 +595,7 @@ function CompletionScreen({ onGoHome }) {
         </div>
       </div>
       <button onClick={onGoHome}
-        className="bg-brazil-green text-black font-bold px-8 py-4 rounded-[12px] text-sm active:scale-95 transition-transform animate-fade-in">
+        className="bg-brazil-green text-white font-bold px-8 py-4 rounded-[12px] text-sm active:scale-95 transition-transform animate-fade-in">
         Go to My Dashboard
       </button>
     </div>
@@ -619,7 +619,7 @@ function Field({ label, value, onChange, placeholder, type = 'text', multiline =
 function ToggleRow({ label, value, onChange }) {
   return (
     <div className="flex items-center justify-between">
-      <p className="text-sm text-black">{label}</p>
+      <p className="text-sm text-white">{label}</p>
       <div className="flex gap-2">
         {[false, true].map(v => (
           <button key={String(v)} type="button" onClick={() => onChange(v)}

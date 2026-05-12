@@ -221,7 +221,7 @@ export default function ClientWorkoutLog() {
         <div className="card-dark space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-bold">Session #{nextSessionNum}</p>
+              <p style={{fontWeight:700}}>Session #{nextSessionNum}</p>
               <p className="text-xs text-grey-100">{user?.name}</p>
             </div>
             <button onClick={() => { setShowForm(false); resetForm(); }}
