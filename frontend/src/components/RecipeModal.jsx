@@ -56,15 +56,17 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
             <h2 style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.3rem', fontWeight:800, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 4px', lineHeight:1.2 }}>{meal.name}</h2>
             {meal.description && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.8rem', color:MUTED, margin:0, lineHeight:1.55 }}>{meal.description}</p>}
           </div>
-          {meal.photo_url && (
-            <div style={{ width:'70px', height:'70px', borderRadius:'12px', overflow:'hidden', flexShrink:0, border:'1px solid rgba(255,255,255,0.08)' }}>
-              <img src={meal.photo_url} alt={meal.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} onError={e=>e.target.style.display='none'}/>
-            </div>
-          )}
           <button onClick={onClose} style={{ background:'rgba(255,255,255,0.08)', border:'none', borderRadius:'50%', width:'32px', height:'32px', cursor:'pointer', color:TEXT, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginLeft:'10px', minHeight:'auto', minWidth:'auto' }}>
             <X size={15}/>
           </button>
         </div>
+
+        {/* Full width photo */}
+        {meal.photo_url && (
+          <div style={{ margin:'16px 20px 0', borderRadius:'14px', overflow:'hidden', height:'200px', border:'1px solid rgba(255,255,255,0.08)' }}>
+            <img src={meal.photo_url} alt={meal.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} onError={e=>e.target.parentElement.style.display='none'}/>
+          </div>
+        )}
 
         {/* Scrollable body */}
         <div style={{ flex:1, overflowY:'auto', padding:'16px 20px 0' }}>

@@ -79,6 +79,7 @@ export function ShoppingListTab() {
   const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('PRODUCE');
+  const [activeFilter, setActiveFilter] = useState('ALL');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => { loadShoppingList(); }, []);
@@ -135,8 +136,9 @@ export function ShoppingListTab() {
 
   const checkedCount = items.filter(item => item.is_checked).length;
   const isComplete = items.length > 0 && checkedCount === items.length;
+  const displayItems = activeFilter === 'ALL' ? items : items.filter(item => item.category === activeFilter);
   const groupedItems = CATEGORIES.reduce((acc, cat) => {
-    acc[cat] = items.filter(item => item.category === cat);
+    acc[cat] = displayItems.filter(item => item.category === cat);
     return acc;
   }, {});
 
@@ -217,13 +219,23 @@ export function ShoppingListTab() {
           </button>
         </div>
 
-        {/* Category pills */}
+        {/* Category filter pills */}
         <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
+          {/* ALL tab */}
+          <button onClick={() => setActiveFilter('ALL')} style={{
+            flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px',
+            padding: '5px 10px', borderRadius: '6px',
+            border: `1px solid ${activeFilter === 'ALL' ? '#ffffff' : BORDER}`,
+            backgroundColor: activeFilter === 'ALL' ? 'rgba(255,255,255,0.1)' : 'transparent',
+            color: activeFilter === 'ALL' ? '#ffffff' : MUTED,
+            fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', fontWeight: 700,
+            cursor: 'pointer', transition: 'all 0.15s ease', minHeight: 'auto', whiteSpace: 'nowrap',
+          }}>All</button>
           {CATEGORIES.map(cat => {
             const config = CATEGORY_CONFIG[cat];
-            const isActive = selectedCategory === cat;
+            const isActive = activeFilter === cat;
             return (
-              <button key={cat} onClick={() => setSelectedCategory(cat)} style={{
+              <button key={cat} onClick={() => setActiveFilter(isActive ? 'ALL' : cat)} style={{
                 flexShrink: 0, display: 'flex', alignItems: 'center', gap: '4px',
                 padding: '5px 10px', borderRadius: '6px',
                 border: `1px solid ${isActive ? config.color : BORDER}`,
