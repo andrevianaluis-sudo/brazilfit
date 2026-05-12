@@ -1,25 +1,33 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Clock, Users, Award } from 'lucide-react';
+import { MessageSquare, ChevronRight } from 'lucide-react';
 
-const TRAINER_DATA = {
-  id: 1,
+const BG='#0f0f0f';const SURFACE='#1a1a1a';const S2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#fff';const MUTED='#606060';const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';
+
+const TRAINER = {
   name: 'Andre Viana',
-  title: 'Personal Trainer',
-  totalClients: 24,
+  title: 'Personal Trainer & Wellness Coach',
+  location: 'Newcastle, UK',
+  yearsExp: 6,
+  clients: 24,
   classesPerWeek: 8,
-  yearsExperience: 6,
-  bio: 'Certified personal trainer specializing in functional fitness and mobility work. Passionate about helping clients achieve their goals through personalized training and mindfulness.',
-  specialities: ['Pilates', 'Strength', 'Dance', 'Mobility', 'Meditation', 'Vision Support'],
+  bio: 'Certified personal trainer specialising in functional fitness, mobility and mindfulness. I combine strength training with movement quality to help clients build bodies that perform and last. Every programme is built around YOU — your goals, your lifestyle, your pace.',
+  specialities: [
+    { label: 'Strength Training', emoji: '💪', color: ORANGE },
+    { label: 'Mobility & Flexibility', emoji: '🧘', color: GREEN },
+    { label: 'Pilates', emoji: '⚡', color: '#60a5fa' },
+    { label: 'Dance Cardio', emoji: '💃', color: '#f472b6' },
+    { label: 'Meditation', emoji: '🌙', color: '#a78bfa' },
+    { label: 'Vision Support', emoji: '👁️', color: YELLOW },
+  ],
   classes: [
-    { id: 1, name: 'Morning Strength', day: 'MON', time: '07:00', type: 'STRENGTH' },
-    { id: 2, name: 'Pilates Flow', day: 'TUE', time: '18:00', type: 'PILATES' },
-    { id: 3, name: 'Yoga Stretch', day: 'WED', time: '09:00', type: 'YOGA' },
-    { id: 4, name: 'Dance Cardio', day: 'THU', time: '19:00', type: 'DANCE' },
-    { id: 5, name: 'Core Work', day: 'FRI', time: '17:00', type: 'STRENGTH' },
-    { id: 6, name: 'Weekend Mobility', day: 'SAT', time: '10:00', type: 'MOBILITY' },
-    { id: 7, name: 'Meditation Session', day: 'SUN', time: '18:00', type: 'MEDITATION' },
-    { id: 8, name: 'Evening Strength', day: 'WED', time: '20:00', type: 'STRENGTH' },
+    { name: 'Morning Strength', day: 'MON', time: '07:00', color: ORANGE },
+    { name: 'Pilates Flow',     day: 'TUE', time: '18:00', color: '#60a5fa' },
+    { name: 'Yoga Stretch',     day: 'WED', time: '09:00', color: GREEN },
+    { name: 'Dance Cardio',     day: 'THU', time: '19:00', color: '#f472b6' },
+    { name: 'Core Work',        day: 'FRI', time: '17:00', color: ORANGE },
+    { name: 'Weekend Mobility', day: 'SAT', time: '10:00', color: '#a78bfa' },
+    { name: 'Meditation',       day: 'SUN', time: '18:00', color: '#a78bfa' },
+    { name: 'Evening Strength', day: 'WED', time: '20:00', color: ORANGE },
   ],
 };
 
@@ -27,101 +35,94 @@ export default function TrainerProfile() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full bg-white min-h-screen pb-24 animate-fade-in">
-      {/* Hero Section with Photo */}
-      <div className="relative w-full h-64 overflow-hidden">
-        {/* Background image */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'url(/images/newcastle-62.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="absolute inset-0 bg-grey-1005" />
+    <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem', fontFamily:"'DM Sans',system-ui" }}>
+      <div style={{ maxWidth:'680px', margin:'0 auto', padding:'2rem 1.25rem' }}>
+
+        {/* Header */}
+        <div style={{ marginBottom:'2rem' }}>
+          <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:ORANGE, textTransform:'uppercase', margin:'0 0 6px' }}>Your Coach</p>
+          <h1 style={{ fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.05em', margin:0, lineHeight:1 }}>Trainer Profile</h1>
         </div>
 
-        {/* Back button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute top-6 left-6 p-2 hover:bg-grey-300 transition rounded-full z-10"
-        >
-          <ChevronLeft className="w-6 h-6 text-black" />
+        {/* Hero card */}
+        <div style={{ borderRadius:'20px', overflow:'hidden', marginBottom:'1.25rem', background:'linear-gradient(135deg,#1a1a0a,#0a1a1a)', border:'1px solid rgba(255,107,43,0.2)', position:'relative' }}>
+          <div style={{ height:'3px', background:`linear-gradient(90deg,${ORANGE},${YELLOW},${GREEN})` }}/>
+          <div style={{ padding:'1.75rem', display:'flex', alignItems:'flex-start', gap:'1.25rem' }}>
+            {/* Avatar */}
+            <div style={{ width:'72px', height:'72px', borderRadius:'50%', background:`linear-gradient(135deg,${ORANGE},${YELLOW})`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'1.8rem', fontWeight:800, color:'#000', flexShrink:0, boxShadow:`0 8px 24px ${ORANGE}44` }}>AV</div>
+            <div style={{ flex:1, minWidth:0 }}>
+              <h2 style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.4rem', fontWeight:800, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 3px' }}>{TRAINER.name}</h2>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:ORANGE, fontWeight:700, margin:'0 0 2px' }}>{TRAINER.title}</p>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', color:MUTED, margin:0 }}>📍 {TRAINER.location}</p>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', borderTop:'1px solid rgba(255,255,255,0.06)' }}>
+            {[
+              { v:TRAINER.yearsExp, l:'Years Exp', c:ORANGE },
+              { v:TRAINER.clients,  l:'Clients',   c:GREEN },
+              { v:TRAINER.classesPerWeek, l:'Classes/wk', c:YELLOW },
+            ].map((s,i)=>(
+              <div key={i} style={{ padding:'1rem', textAlign:'center', borderRight:i<2?'1px solid rgba(255,255,255,0.06)':'none' }}>
+                <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.8rem', fontWeight:800, color:s.c, margin:'0 0 2px', letterSpacing:'-0.04em' }}>{s.v}</p>
+                <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.1em', color:MUTED, textTransform:'uppercase', margin:0 }}>{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bio */}
+        <div style={{ background:SURFACE, borderRadius:'16px', border:`1px solid ${BORDER}`, padding:'1.25rem', marginBottom:'1.25rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'10px' }}>
+            <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${ORANGE},${ORANGE}88)` }}/>
+            <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:0 }}>About</p>
+          </div>
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', color:'#c0c0c0', margin:0, lineHeight:1.75 }}>{TRAINER.bio}</p>
+        </div>
+
+        {/* Specialities */}
+        <div style={{ marginBottom:'1.25rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'12px' }}>
+            <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${GREEN},${GREEN}88)` }}/>
+            <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:GREEN, textTransform:'uppercase', margin:0 }}>Specialities</p>
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
+            {TRAINER.specialities.map((s,i)=>(
+              <div key={i} style={{ background:`${s.color}10`, border:`1px solid ${s.color}25`, borderRadius:'12px', padding:'0.875rem 1rem', display:'flex', alignItems:'center', gap:'10px' }}>
+                <span style={{ fontSize:'1.2rem' }}>{s.emoji}</span>
+                <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:TEXT, margin:0 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Classes */}
+        <div style={{ marginBottom:'1.25rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'12px' }}>
+            <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${YELLOW},${YELLOW}88)` }}/>
+            <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:YELLOW, textTransform:'uppercase', margin:0 }}>Weekly Classes</p>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+            {TRAINER.classes.map((c,i)=>(
+              <div key={i} style={{ background:SURFACE, border:`1px solid ${BORDER}`, borderLeft:`3px solid ${c.color}`, borderRadius:'10px', padding:'0.875rem 1rem', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                  <span style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.62rem', fontWeight:800, color:c.color, background:`${c.color}15`, border:`1px solid ${c.color}25`, borderRadius:'6px', padding:'3px 8px', flexShrink:0 }}>{c.day}</span>
+                  <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:600, color:TEXT, margin:0 }}>{c.name}</p>
+                </div>
+                <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:MUTED, margin:0, fontWeight:600 }}>{c.time}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <button onClick={()=>navigate('/client/messages')} style={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:'8px', padding:'1rem', background:`linear-gradient(135deg,${ORANGE},${YELLOW})`, border:'none', borderRadius:'14px', color:'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.95rem', fontWeight:800, cursor:'pointer', boxShadow:`0 6px 24px ${ORANGE}44`, minHeight:'auto', letterSpacing:'0.01em' }}>
+          <MessageSquare size={18}/>
+          Message Your PT
+          <ChevronRight size={16}/>
         </button>
 
-        {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-end p-6">
-          <h1 className="text-4xl font-black text-black uppercase mb-1">{TRAINER_DATA.name}</h1>
-          <p className="text-brazil-green font-bold text-sm uppercase">{TRAINER_DATA.title}</p>
-        </div>
-      </div>
-
-      {/* Stats Row */}
-      <div className="px-5 py-6 grid grid-cols-3 gap-3 border-b border-grey-100">
-        {[
-          { label: 'Total Clients', value: TRAINER_DATA.totalClients, icon: Users },
-          { label: 'Classes/Week', value: TRAINER_DATA.classesPerWeek, icon: Clock },
-          { label: 'Experience', value: `${TRAINER_DATA.yearsExperience}y`, icon: Award },
-        ].map((stat, i) => {
-          const Icon = stat.icon;
-          return (
-            <div key={i} className="bg-grey-300 rounded-[12px] p-4 text-center">
-              <Icon className="w-5 h-5 text-brazil-green mx-auto mb-2" />
-              <p className="text-black text-2xl font-black">{stat.value}</p>
-              <p className="text-grey-200 text-xs mt-2">{stat.label}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* About Section */}
-      <div className="px-5 py-6 border-b border-grey-100">
-        <h3 className="text-black text-xs font-bold uppercase tracking-widest mb-3 text-grey-200">About</h3>
-        <p className="text-grey-200 text-sm leading-relaxed">{TRAINER_DATA.bio}</p>
-      </div>
-
-      {/* Specialities */}
-      <div className="px-5 py-6 border-b border-grey-100">
-        <h3 className="text-black text-xs font-bold uppercase tracking-widest mb-4 text-grey-200">Specialities</h3>
-        <div className="flex flex-wrap gap-2">
-          {TRAINER_DATA.specialities.map((spec, i) => (
-            <span key={i} className="badge-pro text-xs px-3 py-1.5">
-              {spec}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Classes Section */}
-      <div className="px-5 py-6 border-b border-grey-100">
-        <h3 className="text-black text-xs font-bold uppercase tracking-widest mb-4 text-grey-200">My Classes</h3>
-        <div className="space-y-3">
-          {TRAINER_DATA.classes.map((cls) => (
-            <div key={cls.id} className="flex items-center justify-between p-4 bg-grey-300 rounded-[12px]">
-              <div className="flex-1">
-                <p className="text-black font-bold text-sm">{cls.name}</p>
-                <p className="text-grey-200 text-xs mt-0.5">{cls.day} · {cls.time}</p>
-                <span className="badge-green text-[10px] mt-2 inline-block">{cls.type}</span>
-              </div>
-              <button className="bg-brazil-green hover:bg-brazil-green-dark text-black font-bold px-4 py-2 rounded-[6px] text-xs transition-all active:scale-95">
-                BOOK
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Available Sessions */}
-      <div className="px-5 py-6">
-        <h3 className="text-black text-xs font-bold uppercase tracking-widest mb-4 text-grey-200">My PT Sessions</h3>
-        <div className="bg-grey-300 rounded-[12px] p-6 text-center">
-          <p className="text-black text-2xl font-black mb-2">3</p>
-          <p className="text-grey-200 text-sm">Available slots for new clients</p>
-          <button className="w-full bg-brazil-green hover:bg-brazil-green-dark text-black font-bold py-3 rounded-[8px] mt-4 transition-all active:scale-95">
-            BOOK A SESSION
-          </button>
-        </div>
       </div>
     </div>
   );

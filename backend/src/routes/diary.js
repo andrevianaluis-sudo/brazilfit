@@ -265,3 +265,35 @@ router.get('/insights', authenticateToken, requirePro, (req, res) => {
 });
 
 module.exports = router;
+
+// ── Simple diary endpoints for ClientFoodDiary (no requirePro) ────────────────
+
+// GET /api/diary/:date — get entry for a specific date
+router.get('/:date', authenticateToken, (req, res) => {
+  const db = getDb();
+  const clientId = req.user.clientId;
+  if (!clientId) return res.status(403).json({ error: 'Clients only' });
+  const entry = db.prepare(`SELECT * FROM food_mood_entries WHERE client_id = ? AND entry_date = ? ORDER BY created_at DESC LIMIT 1`).get(clientId, req.params.date);
+  res.json(entry || null);
+});
+
+// POST /api/diary — save or update a full day diary entry
+router.post('/', authenticateToken, (req, res) => {
+  const db = getDb();
+  const clientId = req.user.clientId;
+  if (!clientId) return res.status(403).json({ error: 'Clients only' });
+  const { date, meals, water_glasses, mood_before, mood_after, notes } = req.body;
+  if (!date) return res.status(400).json({ error: 'date required' });
+  try {
+    const existing = db.prepare(`SELECT id FROM food_mood_entries WHERE client_id = ? AND entry_date = ?`).get(clientId, date);
+    if (existing) {
+      db.prepare(`UPDATE food_mood_entries SET food_description = ?, water_glasses = ?, mood_before_eating = ?, mood_after_eating = ?, reflection_notes = ?, updated_at = datetime('now') WHERE id = ?`)
+        .run(meals || null, water_glasses || 0, mood_before || null, mood_after || null, notes || null, existing.id);
+      res.json({ id: existing.id, message: 'Updated' });
+    } else {
+      const result = db.prepare(`INSERT INTO food_mood_entries (client_id, entry_date, food_description, water_glasses, mood_before_eating, mood_after_eating, reflection_notes) VALUES (?, ?, ?, ?, ?, ?, ?)`)
+        .run(clientId, date, meals || null, water_glasses || 0, mood_before || null, mood_after || null, notes || null);
+      res.json({ id: result.lastInsertRowid, message: 'Created' });
+    }
+  } catch(e) { res.status(500).json({ error: 'Failed to save' }); }
+});

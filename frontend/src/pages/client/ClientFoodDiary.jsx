@@ -88,7 +88,7 @@ export default function ClientFoodDiary(){
   const[saving,setSaving]=useState(false);
 
   useEffect(()=>{
-    api.get(`/food-diary/${ds(date)}`).then(r=>{
+    api.get(`/diary/${ds(date)}`).then(r=>{
       if(r.data){setEntry({meals:JSON.parse(r.data.meals||'[]'),water:r.data.water_glasses||0,mood_before:r.data.mood_before||3,mood_after:r.data.mood_after||3,notes:r.data.notes||''});}
       else{setEntry({meals:[],water:0,mood_before:3,mood_after:3,notes:''});}
     }).catch(()=>setEntry({meals:[],water:0,mood_before:3,mood_after:3,notes:''}));
@@ -101,7 +101,7 @@ export default function ClientFoodDiary(){
   };
 
   const save=async()=>{
-    try{setSaving(true);await api.post('/food-diary',{date:ds(date),meals:JSON.stringify(entry.meals),water_glasses:entry.water,mood_before:entry.mood_before,mood_after:entry.mood_after,notes:entry.notes});toast.success('Diary saved!');}
+    try{setSaving(true);await api.post('/diary',{date:ds(date),meals:JSON.stringify(entry.meals),water_glasses:entry.water,mood_before:entry.mood_before,mood_after:entry.mood_after,notes:entry.notes});toast.success('Diary saved!');}
     catch{toast.error('Failed to save');}finally{setSaving(false);}
   };
 

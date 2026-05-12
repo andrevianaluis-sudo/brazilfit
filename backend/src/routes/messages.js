@@ -253,13 +253,4 @@ router.put('/client-notifications/read-all', authenticateToken, (req, res) => {
   res.json({ message: 'All marked as read' });
 });
 
-// GET /api/messages/client-notifications
-router.get('/client-notifications', authenticateToken, (req, res) => {
-  const db = getDb();
-  const clientId = req.user.clientId;
-  if (!clientId) return res.status(403).json({ error: 'Clients only' });
-  const notifications = db.prepare('SELECT * FROM notifications WHERE client_id = ? ORDER BY created_at DESC LIMIT 20').all(clientId);
-  const unreadCount = db.prepare('SELECT COUNT(*) as count FROM notifications WHERE client_id = ? AND is_read = 0').get(clientId).count;
-  res.json({ notifications, unreadCount });
-});
 module.exports = router;
