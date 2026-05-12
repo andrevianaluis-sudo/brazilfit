@@ -451,6 +451,80 @@ export default function ClientSettings() {
     );
   }
 
+  // Change Password screen
+  if (screen === 'changePassword') {
+    const [currentPw, setCurrentPw] = useState('');
+    const [newPw, setNewPw] = useState('');
+    const [confirmPw, setConfirmPw] = useState('');
+    const [pwSaving, setPwSaving] = useState(false);
+
+    const handleChangePassword = async () => {
+      if (!currentPw || !newPw || !confirmPw) { toast.error('Please fill in all fields'); return; }
+      if (newPw.length < 8) { toast.error('New password must be at least 8 characters'); return; }
+      if (newPw !== confirmPw) { toast.error('New passwords do not match'); return; }
+      setPwSaving(true);
+      try {
+        await api.post('/auth/change-password', { currentPassword: currentPw, newPassword: newPw });
+        toast.success('Password changed successfully! 🎉');
+        setScreen('main');
+      } catch(e) {
+        toast.error(e.response?.data?.error || 'Failed to change password. Check your current password.');
+      } finally { setPwSaving(false); }
+    };
+
+    return (
+      <div style={{ padding:'24px 20px', minHeight:'100vh', backgroundColor:'#0f0f0f', paddingBottom:'100px', fontFamily:"'DM Sans',system-ui" }}>
+        <BackButton to="/client/settings" onBack={() => setScreen('main')} />
+        <div style={{ marginBottom:'2rem' }}>
+          <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:'#FF6B2B', textTransform:'uppercase', margin:'0 0 6px' }}>Security</p>
+          <h1 style={{ fontSize:'2rem', fontWeight:800, color:'#ffffff', letterSpacing:'-0.04em', margin:0, lineHeight:1 }}>Change Password</h1>
+          <p style={{ fontSize:'0.82rem', color:'#606060', margin:'6px 0 0' }}>Choose a strong password you'll remember</p>
+        </div>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
+          {[
+            { label:'Current Password', value:currentPw, onChange:setCurrentPw, placeholder:'Enter your current password' },
+            { label:'New Password', value:newPw, onChange:setNewPw, placeholder:'At least 8 characters' },
+            { label:'Confirm New Password', value:confirmPw, onChange:setConfirmPw, placeholder:'Type new password again' },
+          ].map((field, i) => (
+            <div key={i}>
+              <p style={{ fontSize:'0.75rem', fontWeight:700, color:'#888', textTransform:'uppercase', letterSpacing:'0.08em', margin:'0 0 8px' }}>{field.label}</p>
+              <input type="password" value={field.value} onChange={e => field.onChange(e.target.value)} placeholder={field.placeholder}
+                style={{ width:'100%', padding:'0.875rem 1rem', background:'#1a1a1a', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', color:'#fff', fontFamily:"'DM Sans',system-ui", fontSize:'0.9rem', outline:'none', boxSizing:'border-box' }}
+                onFocus={e=>e.target.style.borderColor='#FF6B2B'}
+                onBlur={e=>e.target.style.borderColor='rgba(255,255,255,0.08)'}/>
+            </div>
+          ))}
+
+          {newPw && confirmPw && newPw !== confirmPw && (
+            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}>⚠ Passwords don't match</p>
+          )}
+          {newPw && newPw.length < 8 && (
+            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}>⚠ Password must be at least 8 characters</p>
+          )}
+          {newPw && newPw === confirmPw && newPw.length >= 8 && (
+            <p style={{ fontSize:'0.78rem', color:'#4CAF50', margin:0 }}>✓ Passwords match</p>
+          )}
+
+          <button onClick={handleChangePassword} disabled={pwSaving} style={{
+            width:'100%', padding:'1rem', marginTop:'8px',
+            background: pwSaving ? '#222' : 'linear-gradient(135deg,#FF6B2B,#FFD600)',
+            border:'none', borderRadius:'14px', color: pwSaving ? '#606060' : '#000',
+            fontFamily:"'DM Sans',system-ui", fontSize:'0.95rem', fontWeight:800,
+            cursor: pwSaving ? 'not-allowed' : 'pointer', minHeight:'auto',
+            boxShadow: pwSaving ? 'none' : '0 4px 20px rgba(255,107,43,0.4)',
+          }}>
+            {pwSaving ? 'Changing Password...' : 'Change Password'}
+          </button>
+
+          <button onClick={() => setScreen('main')} style={{ background:'none', border:'none', color:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', cursor:'pointer', minHeight:'auto', padding:'8px' }}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // Main settings screen
   return (
     <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f', paddingBottom: '100px' }}>
@@ -458,9 +532,10 @@ export default function ClientSettings() {
       <h1 style={{ fontSize: '28px', fontWeight: 300, color: '#ffffff', marginBottom: '32px', margin: '0 0 32px 0' }}>Settings</h1>
 
       {/* Section 1: Account */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ACCOUNT</p>
         <SettingButton label="About You" onPress={() => setScreen('aboutyou')} />
+        <SettingButton label="Change Password" onPress={() => setScreen('changePassword')} />
         <SettingButton label="Units of Measure" value="KG, CM, KM" onPress={() => setScreen('units')} />
       </div>
 
