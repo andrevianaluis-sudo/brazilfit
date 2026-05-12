@@ -161,6 +161,19 @@ router.post('/reset-password', async (req, res) => {
   res.json({ message: 'Password reset successfully' });
 });
 
+// POST /api/auth/pt-reset-password — PT resets a client's password
+router.post('/pt-reset-password', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const { username, newPassword } = req.body;
+  if (!username || !newPassword) return res.status(400).json({ error: 'username and newPassword required' });
+  const db = getDb();
+  const user = db.prepare('SELECT id FROM users WHERE username = ?').get(username);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  const hash = await bcrypt.hash(newPassword, 10);
+  db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, user.id);
+  res.json({ message: `Password reset for ${username}` });
+});
+
 // Delete user account
 router.delete('/users/:userId', authenticateToken, (req, res) => {
   const db = getDb();
