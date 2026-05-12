@@ -4,7 +4,7 @@ import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, BarChart3, Calendar, TrendingUp, Apple, Heart, MessageSquare,
-  CheckSquare, Settings, LogOut, Bell, Home, ChevronRight, Dumbbell
+  CheckSquare, Settings, LogOut, Bell, Home, ChevronRight, Dumbbell, Watch
 } from 'lucide-react';
 import ProfileModal from '../../components/ProfileModal';
 
@@ -19,6 +19,7 @@ const navigationItems = [
   { icon: CheckSquare,   label: 'Check-in',   to: '/client/checkin'                },
   { icon: BarChart3,     label: 'Habits',     to: '/client/habits'                 },
   { icon: Zap,           label: 'Stretches',  to: '/client/exercises'              },
+  { icon: Watch,         label: 'Wearables',  to: '/client/wearables'              },
 ];
 
 export default function ClientLayout() {

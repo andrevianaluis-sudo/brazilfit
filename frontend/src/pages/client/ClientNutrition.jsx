@@ -5,6 +5,7 @@ import { Crown, Heart, ChevronDown, ChevronUp } from 'lucide-react';
 import BackButton from '../../components/BackButton';
 import { RecipeModal } from '../../components/RecipeModal';
 import { ShoppingListTab } from '../../components/ShoppingListTab';
+import ClientFoodDiary from './ClientFoodDiary';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
@@ -278,7 +279,7 @@ export default function ClientNutrition() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem' }}>
-          {['tips', 'meals', 'shopping'].map(tabName => (
+          {['tips', 'meals', 'shopping', 'diary'].map(tabName => (
             <button key={tabName} onClick={() => setTab(tabName)} style={{
               padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600, minHeight: 'auto',
               background: tab === tabName ? 'rgba(255,107,43,0.18)' : 'rgba(255,255,255,0.04)',
@@ -289,6 +290,7 @@ export default function ClientNutrition() {
               {tabName === 'tips' && `🥗 Tips (${tips.length})`}
               {tabName === 'meals' && <>{`🍽️ Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW}/>}</>}
               {tabName === 'shopping' && '🛒 Shopping'}
+              {tabName === 'diary' && '📔 Diary'}
             </button>
           ))}
         </div>
@@ -372,6 +374,11 @@ export default function ClientNutrition() {
           <div style={{ backgroundColor: SURFACE, borderRadius: '12px', border: `1px solid ${BORDER}`, overflow: 'hidden' }}>
             <ShoppingListTab />
           </div>
+        )}
+
+        {/* DIARY TAB */}
+        {tab === 'diary' && (
+          <ClientFoodDiary />
         )}
       </div>
 
