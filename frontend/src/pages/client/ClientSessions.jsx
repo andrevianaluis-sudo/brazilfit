@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, ArrowRight, Zap, Calendar } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, ArrowRight, Zap, Calendar, MessageSquare } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import BackButton from '../../components/BackButton';
@@ -214,6 +214,17 @@ export default function ClientSessions(){
               <ArrowRight size={14} color={YELLOW}/>
             </div>
           )}
+        </div>
+
+        {/* Request Session */}
+        <div style={{marginBottom:'1.25rem'}}>
+          <button onClick={()=>navigate('/client/messages')} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',padding:'0.9rem',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)',border:'1px solid rgba(255,107,43,0.25)',borderRadius:'14px',color:ORANGE,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:'pointer',minHeight:'auto',transition:'all 0.15s'}}
+            onMouseEnter={e=>{e.currentTarget.style.background=`rgba(255,107,43,0.08)`;}}
+            onMouseLeave={e=>{e.currentTarget.style.background='linear-gradient(135deg,#1a1a1a,#1e1a0a)';}}>
+            <MessageSquare size={16}/>
+            Request a Session from your PT
+            <ArrowRight size={14}/>
+          </button>
         </div>
 
         {/* Upcoming */}

@@ -33,8 +33,6 @@ const assignedWorkoutsRoutes = require('./routes/assigned-workouts');
 const onboardingRoutes = require('./routes/onboarding');
 const mediaRoutes = require('./routes/media');
 const settingsRoutes = require('./routes/settings');
-const leaderboardRoutes = require('./routes/leaderboard');
-const achievementsRoutes = require('./routes/achievements');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -118,8 +116,6 @@ app.use('/api/assigned-workouts', assignedWorkoutsRoutes);
 app.use('/api/onboarding', onboardingRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/settings', settingsRoutes);
-app.use('/api/leaderboard', leaderboardRoutes);
-app.use('/api/achievements', achievementsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
