@@ -2,18 +2,19 @@
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
-  BookOpen, Dumbbell, ChevronRight
+  BookOpen, Dumbbell, ChevronRight, Package, PlayCircle
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import api from '../../utils/api';
 
 const navigationItems = [
-  { icon: Calendar, label: 'Schedule',        to: '/pt',           exact: true },
-  { icon: Users,    label: 'Clients',          to: '/pt/clients'                },
-  { icon: Dumbbell, label: 'Workouts',         to: '/pt/workouts'               },
-  { icon: DollarSign, label: 'Income',         to: '/pt/income'                 },
-  { icon: BarChart3,  label: 'Analytics',      to: '/pt/analytics'              },
-
+  { icon: Calendar,    label: 'Schedule',   to: '/pt',            exact: true },
+  { icon: Users,       label: 'Clients',    to: '/pt/clients'                 },
+  { icon: Dumbbell,    label: 'Workouts',   to: '/pt/workouts'                },
+  { icon: Package,     label: 'Blocks',     to: '/pt/blocks'                  },
+  { icon: PlayCircle,  label: 'Classes',    to: '/pt/classes'                 },
+  { icon: DollarSign,  label: 'Income',     to: '/pt/income'                  },
+  { icon: BarChart3,   label: 'Analytics',  to: '/pt/analytics'               },
 ];
 
 export default function PTLayout() {
