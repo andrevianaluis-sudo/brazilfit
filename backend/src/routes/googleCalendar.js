@@ -214,3 +214,37 @@ router.delete('/disconnect', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
+// GET /api/google-calendar/debug — show raw calendar events for today
+router.get('/debug', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const user = db.prepare("SELECT google_access_token FROM users WHERE id = ?").get(req.user.id);
+  if (!user?.google_access_token) return res.status(400).json({ error: 'Not connected' });
+  
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 7);
+  
+  const params = new URLSearchParams({
+    timeMin: today.toISOString(),
+    timeMax: tomorrow.toISOString(),
+    singleEvents: 'true',
+    orderBy: 'startTime',
+    maxResults: '50',
+  });
+  
+  const r = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`, {
+    headers: { Authorization: `Bearer ${user.google_access_token}` },
+  });
+  const data = await r.json();
+  
+  // Return simplified view of events
+  const events = (data.items || []).map(e => ({
+    title: e.summary,
+    start: e.start?.dateTime || e.start?.date,
+    id: e.id,
+  }));
+  
+  res.json({ count: events.length, events });
+});
