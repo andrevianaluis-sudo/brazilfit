@@ -258,3 +258,29 @@ router.get('/export-data', authenticateToken, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.json(exportData);
 });
+
+// POST /api/auth/reset-client-data — PT only, wipes all data for a client (temp admin tool)
+router.post('/reset-client-data', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ error: 'username required' });
+  const db = getDb();
+  const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  const client = db.prepare("SELECT id FROM clients WHERE user_id = ?").get(user.id);
+  if (!client) return res.status(404).json({ error: 'Client not found' });
+  const clientId = client.id;
+  db.prepare("DELETE FROM sessions WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM weekly_checkins WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM habit_logs WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM progress_entries WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM progress_photos WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM messages WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM food_mood_entries WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM shopping_list_items WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM client_routines WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM notifications WHERE client_id = ?").run(clientId);
+  db.prepare("DELETE FROM blocks WHERE client_id = ?").run(clientId);
+  db.prepare(`UPDATE clients SET sessions_used=0, sessions_remaining=0, current_block_number=0, last_payment_date=NULL, block_start_date=NULL WHERE id=?`).run(clientId);
+  res.json({ message: `All data reset for ${username} — account intact` });
+});
