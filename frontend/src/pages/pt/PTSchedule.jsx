@@ -447,6 +447,16 @@ export default function PTSchedule() {
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
               🗑 Wipe & Re-sync
             </button>
+            <button onClick={async()=>{
+              try{
+                await api.delete('/google-calendar/disconnect');
+                setGcalConnected(false);
+                setSyncResult(null);
+                toast.success('Disconnected');
+              } catch{ toast.error('Failed to disconnect'); }
+            }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(255,255,255,0.1)', background:'transparent', color:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:600, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+              Disconnect
+            </button>
           </div>
         </div>
       )}
