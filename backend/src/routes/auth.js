@@ -224,8 +224,6 @@ router.delete('/users/:userId', authenticateToken, (req, res) => {
   }
 });
 
-module.exports = router;
-
 // GET /api/auth/export-data — export all client data (GDPR right to portability)
 router.get('/export-data', authenticateToken, (req, res) => {
   const db = getDb();
@@ -277,3 +275,18 @@ router.post('/reset-client-data', authenticateToken, async (req, res) => {
   try { db.prepare(`UPDATE clients SET sessions_used=0, sessions_remaining=0, current_block_number=0, last_payment_date=NULL, block_start_date=NULL WHERE id=?`).run(clientId); } catch(e) {}
   res.json({ message: `All data reset for ${username} — account intact` });
 });
+
+// POST /api/auth/update-client-name — PT only
+router.post('/update-client-name', authenticateToken, (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const { username, name } = req.body;
+  if (!username || !name) return res.status(400).json({ error: 'username and name required' });
+  const db = getDb();
+  const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  db.prepare("UPDATE users SET name = ? WHERE id = ?").run(name, user.id);
+  db.prepare("UPDATE clients SET name = ? WHERE user_id = ?").run(name, user.id);
+  res.json({ message: `Name updated to ${name}` });
+});
+
+module.exports = router;
