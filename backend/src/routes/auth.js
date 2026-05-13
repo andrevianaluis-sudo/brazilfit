@@ -285,7 +285,6 @@ router.post('/update-client-name', authenticateToken, (req, res) => {
   const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
   if (!user) return res.status(404).json({ error: 'User not found' });
   db.prepare("UPDATE users SET name = ? WHERE id = ?").run(name, user.id);
-  db.prepare("UPDATE clients SET name = ? WHERE user_id = ?").run(name, user.id);
   res.json({ message: `Name updated to ${name}` });
 });
 
