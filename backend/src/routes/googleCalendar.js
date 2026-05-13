@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/auth');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://brazilfit.co.uk/api/google-calendar/callback';
+const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://brazilfit-production.up.railway.app/api/google-calendar/callback';
 
 function getOAuthUrl() {
   const params = new URLSearchParams({
