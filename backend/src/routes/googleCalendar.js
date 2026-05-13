@@ -56,7 +56,6 @@ async function fetchCalendarEvents(accessToken) {
     singleEvents: 'true',
     orderBy: 'startTime',
     maxResults: '500',
-    q: 'PT',
   });
 
   const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`, {
@@ -135,15 +134,16 @@ router.post('/sync', authenticateToken, async (req, res) => {
 
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
+    const existingClasses = db.prepare("SELECT id, name FROM classes WHERE is_active = 1").all();
 
-    let created = 0, skipped = 0, unmatched = [];
+    // Class keywords to detect group classes
+    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp'];
+
+    let created = 0, skipped = 0, classesCreated = 0, unmatched = [];
 
     for (const event of allEvents) {
-      const title = event.summary || '';
-      if (!title.toLowerCase().includes('pt') && !title.toLowerCase().includes('session')) { skipped++; continue; }
-
-      const client = matchClientFromTitle(title, clients);
-      if (!client) { unmatched.push(title); skipped++; continue; }
+      const title = (event.summary || '').toLowerCase();
+      const originalTitle = event.summary || '';
 
       const startDateTime = event.start?.dateTime || event.start?.date;
       const endDateTime = event.end?.dateTime || event.end?.date;
@@ -151,20 +151,45 @@ router.post('/sync', authenticateToken, async (req, res) => {
 
       const date = startDateTime.split('T')[0];
       const time = startDateTime.includes('T') ? startDateTime.split('T')[1].substring(0, 5) : '09:00';
+      const dayOfWeek = new Date(date + 'T12:00:00').getDay();
+
+      // Check if it's a class
+      const isClass = CLASS_KEYWORDS.some(k => title.includes(k));
+
+      if (isClass) {
+        // Find matching class by name
+        const matchedClass = existingClasses.find(c => title.includes(c.name.toLowerCase()));
+        if (!matchedClass) {
+          // Create the class if it doesn't exist
+          try {
+            const result = db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`)
+              .run(originalTitle.trim(), dayOfWeek, time);
+            existingClasses.push({ id: result.lastInsertRowid, name: originalTitle.trim() });
+            classesCreated++;
+          } catch(e) { skipped++; }
+        } else { skipped++; }
+        continue;
+      }
+
+      // Must have PT in title to be a PT session
+      if (!title.includes('pt') && !title.includes('session') && !title.includes('1:1') && !title.includes('1-1')) {
+        skipped++; continue;
+      }
+
+      const client = matchClientFromTitle(originalTitle, clients);
+      if (!client) { unmatched.push(originalTitle); skipped++; continue; }
 
       // Check if session already exists
       const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
         .get(client.id, date, time);
       if (existing) { skipped++; continue; }
 
-      // Create the session
-      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id)
-        VALUES (?, ?, ?, 'upcoming', ?)`)
+      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
         .run(client.id, date, time, event.id || null);
       created++;
     }
 
-    res.json({ created, skipped, unmatched: [...new Set(unmatched)], total: allEvents.length });
+    res.json({ created, classesCreated, skipped, unmatched: [...new Set(unmatched)], total: allEvents.length });
   } catch(e) {
     console.error('Sync error:', e);
     res.status(500).json({ error: 'Sync failed: ' + e.message });

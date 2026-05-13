@@ -375,7 +375,7 @@ export default function PTSchedule() {
             <span style={{ fontSize:'1.2rem' }}>📅</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.created} imported · {syncResult.skipped} skipped{syncResult.unmatched?.length > 0 ? ` · ${syncResult.unmatched.length} unmatched` : ''}</p>}
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.created} sessions · {syncResult.classesCreated||0} classes · {syncResult.skipped} skipped{syncResult.unmatched?.length > 0 ? ` · ${syncResult.unmatched.length} unmatched` : ''}</p>}
             </div>
           </div>
           <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
@@ -474,10 +474,43 @@ export default function PTSchedule() {
           )}
         </>
       ) : (
-        <WeekView data={weekData} />
+        <>
+          {/* Week navigation */}
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1rem' }}>
+            <button onClick={() => {
+              const d = new Date(selectedDate + 'T12:00:00');
+              d.setDate(d.getDate() - 7);
+              setSelectedDate(d.toISOString().split('T')[0]);
+            }} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid ${BORDER}`, background:SURFACE, color:TEXT, cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto' }}>
+              ← Prev Week
+            </button>
+            <button onClick={() => setSelectedDate(new Date().toISOString().split('T')[0])} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid rgba(255,107,43,0.3)`, background:'rgba(255,107,43,0.08)', color:ORANGE, cursor:'pointer', fontSize:'0.82rem', fontWeight:700, minHeight:'auto' }}>
+              This Week
+            </button>
+            <button onClick={() => {
+              const d = new Date(selectedDate + 'T12:00:00');
+              d.setDate(d.getDate() + 7);
+              setSelectedDate(d.toISOString().split('T')[0]);
+            }} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid ${BORDER}`, background:SURFACE, color:TEXT, cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto' }}>
+              Next Week →
+            </button>
+          </div>
+          <WeekView data={weekData} />
+        </>
       )}
 
-      {notesSession && <PTNotesModal session={notesSession} onClose={() => setNotesSession(null)} />}
+      {/* Unmatched events after sync */}
+      {syncResult?.unmatched?.length > 0 && (
+        <div style={{ marginTop:'1rem', background:'rgba(255,214,0,0.08)', border:'1px solid rgba(255,214,0,0.2)', borderRadius:'12px', padding:'1rem' }}>
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, color:YELLOW, textTransform:'uppercase', letterSpacing:'0.1em', margin:'0 0 8px' }}>⚠ {syncResult.unmatched.length} Unmatched Events</p>
+          <p style={{ fontSize:'0.72rem', color:MUTED, margin:'0 0 8px' }}>These calendar events couldn't be matched to a client — add these clients to BrazilFit or they're classes:</p>
+          <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
+            {syncResult.unmatched.map((name, i) => (
+              <p key={i} style={{ fontSize:'0.78rem', color:'#c0c0c0', margin:0, padding:'4px 8px', background:'rgba(255,255,255,0.04)', borderRadius:'6px' }}>{name}</p>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
