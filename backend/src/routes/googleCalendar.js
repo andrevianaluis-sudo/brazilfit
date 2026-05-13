@@ -158,9 +158,9 @@ router.post('/sync', authenticateToken, async (req, res) => {
       if (existing) { skipped++; continue; }
 
       // Create the session
-      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, duration_minutes, status, google_event_id)
-        VALUES (?, ?, ?, ?, 'upcoming', ?) ON CONFLICT DO NOTHING`)
-        .run(client.id, date, time, 60, event.id || null);
+      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id)
+        VALUES (?, ?, ?, 'upcoming', ?)`)
+        .run(client.id, date, time, event.id || null);
       created++;
     }
 
