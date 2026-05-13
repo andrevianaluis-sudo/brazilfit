@@ -241,6 +241,40 @@ export default function PTSchedule() {
   const [view, setView] = useState('day');
   const [loading, setLoading] = useState(true);
   const [notesSession, setNotesSession] = useState(null);
+  const [gcalConnected, setGcalConnected] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState(null);
+
+  useEffect(() => {
+    api.get('/google-calendar/status').then(r => setGcalConnected(r.data.connected)).catch(() => {});
+    // Check for calendar connection success/error in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('calendar') === 'connected') {
+      setGcalConnected(true);
+      toast.success('Google Calendar connected! 🎉');
+      window.history.replaceState({}, '', '/pt');
+    } else if (params.get('calendar') === 'error') {
+      toast.error('Failed to connect Google Calendar');
+      window.history.replaceState({}, '', '/pt');
+    }
+  }, []);
+
+  const handleGcalConnect = async () => {
+    const res = await api.get('/google-calendar/auth');
+    window.location.href = res.data.url;
+  };
+
+  const handleGcalSync = async () => {
+    setSyncing(true); setSyncResult(null);
+    try {
+      const res = await api.post('/google-calendar/sync');
+      setSyncResult(res.data);
+      toast.success(`Synced! ${res.data.created} sessions imported`);
+      loadDaySchedule();
+    } catch(e) {
+      toast.error(e.response?.data?.error || 'Sync failed');
+    } finally { setSyncing(false); }
+  };
 
   useEffect(() => { view === 'day' ? loadDaySchedule() : loadWeekSchedule(); }, [selectedDate, view]);
 
@@ -320,6 +354,35 @@ export default function PTSchedule() {
           ))}
         </div>
       </div>
+
+      {/* Google Calendar sync banner */}
+      {!gcalConnected ? (
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(66,133,244,0.08)', border:'1px solid rgba(66,133,244,0.25)', borderRadius:'12px', marginBottom:'1rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+            <span style={{ fontSize:'1.2rem' }}>📅</span>
+            <div>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#fff', margin:'0 0 2px' }}>Connect Google Calendar</p>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>Import your PT sessions automatically</p>
+            </div>
+          </div>
+          <button onClick={handleGcalConnect} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:'#4285F4', color:'#fff', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+            Connect
+          </button>
+        </div>
+      ) : (
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(76,175,80,0.08)', border:'1px solid rgba(76,175,80,0.2)', borderRadius:'12px', marginBottom:'1rem' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+            <span style={{ fontSize:'1.2rem' }}>📅</span>
+            <div>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.created} imported · {syncResult.skipped} skipped{syncResult.unmatched?.length > 0 ? ` · ${syncResult.unmatched.length} unmatched` : ''}</p>}
+            </div>
+          </div>
+          <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+            {syncing ? 'Syncing...' : '🔄 Sync Now'}
+          </button>
+        </div>
+      )}
 
       {/* Date nav */}
       {view === 'day' && (

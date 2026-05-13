@@ -395,6 +395,10 @@ try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER"); } c
   try { db.exec('ALTER TABLE sessions ADD COLUMN cancelled_by TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE sessions ADD COLUMN pt_override_note TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE sessions ADD COLUMN session_carried_over INTEGER DEFAULT 0'); } catch(e) {}
+  try { db.exec('ALTER TABLE sessions ADD COLUMN google_event_id TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE users ADD COLUMN google_access_token TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE users ADD COLUMN google_refresh_token TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE users ADD COLUMN google_calendar_connected INTEGER DEFAULT 0'); } catch(e) {}
   try { db.exec('ALTER TABLE clients ADD COLUMN ow_user_id TEXT'); } catch(e) {}
   try { db.exec(`CREATE TABLE IF NOT EXISTS client_routines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
