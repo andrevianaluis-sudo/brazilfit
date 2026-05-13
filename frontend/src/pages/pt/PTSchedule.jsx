@@ -110,9 +110,43 @@ function PTNotesModal({ session, onClose }) {
 // ── Session Slot ──────────────────────────────────────────────────────────────
 function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate }) {
   const isClass = entry.entryType === 'class';
+  const isGcalClass = entry.entryType === 'gcal-class';
+  const isGcalPt = entry.entryType === 'gcal-pt';
+  const isGcalOther = entry.entryType === 'gcal-other';
   const isCancelled = entry.status === 'cancelled';
   const borderColor = isClass ? '#f472b6' : getStatusBorder(entry.status);
   const renewalStatus = !isClass && !isCancelled ? getRenewalStatus(entry.sessions_remaining) : null;
+
+  // Google Calendar events that aren't matched to real sessions
+  if (isGcalClass) return (
+    <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <div>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#a78bfa', margin:'0 0 2px' }}>{entry.title}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} · Group Class</p>
+      </div>
+      <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#a78bfa', background:'rgba(167,139,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Class</span>
+    </div>
+  );
+
+  if (isGcalPt) return (
+    <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(96,165,250,0.1)', border:'1px solid rgba(96,165,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <div>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#60a5fa', margin:'0 0 2px' }}>{entry.title}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} · From Google Calendar</p>
+      </div>
+      <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#60a5fa', background:'rgba(96,165,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>PT</span>
+    </div>
+  );
+
+  if (isGcalOther) return (
+    <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <div>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#c0c0c0', margin:'0 0 2px' }}>{entry.title}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{entry.start_time}</p>
+      </div>
+      <span style={{ fontSize:'0.6rem', fontWeight:700, color:MUTED, background:'rgba(255,255,255,0.06)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Event</span>
+    </div>
+  );
 
   if (isClass) return (
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(244,114,182,0.1)', border:'1px solid rgba(244,114,182,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
@@ -280,8 +314,13 @@ export default function PTSchedule() {
 
   const loadDaySchedule = async () => {
     setLoading(true);
-    try { const res = await api.get(`/pt/schedule/today?date=${selectedDate}`); setScheduleData(res.data); }
-    catch { toast.error('Failed to load schedule'); } finally { setLoading(false); }
+    try {
+      const [schedRes, calRes] = await Promise.all([
+        api.get(`/pt/schedule/today?date=${selectedDate}`),
+        api.get(`/google-calendar/events?date=${selectedDate}`).catch(() => ({ data: [] })),
+      ]);
+      setScheduleData({ ...schedRes.data, calendarEvents: calRes.data || [] });
+    } catch { toast.error('Failed to load schedule'); } finally { setLoading(false); }
   };
 
   const loadWeekSchedule = async () => {
@@ -291,8 +330,12 @@ export default function PTSchedule() {
       const day = d.getDay();
       const monday = new Date(d);
       monday.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
-      const res = await api.get(`/pt/schedule/week?weekStart=${monday.toISOString().split('T')[0]}`);
-      setWeekData(res.data);
+      const weekStart = monday.toISOString().split('T')[0];
+      const [schedRes, calRes] = await Promise.all([
+        api.get(`/pt/schedule/week?weekStart=${weekStart}`),
+        api.get(`/google-calendar/events?weekStart=${weekStart}`).catch(() => ({ data: [] })),
+      ]);
+      setWeekData({ ...schedRes.data, calendarEvents: calRes.data || [] });
     } catch { toast.error('Failed to load week'); } finally { setLoading(false); }
   };
 
@@ -323,9 +366,21 @@ export default function PTSchedule() {
   const buildTimeline = () => {
     const sessions = scheduleData?.ptSessions || [];
     const classes = scheduleData?.classes || [];
+    const calEvents = scheduleData?.calendarEvents || [];
     const timeMap = {};
     sessions.forEach(s => { const k = s.scheduled_time.substring(0,5); if (!timeMap[k]) timeMap[k]=[]; timeMap[k].push({...s, entryType:'pt'}); });
     classes.forEach(c => { const k = c.scheduled_time.substring(0,5); if (!timeMap[k]) timeMap[k]=[]; timeMap[k].push({...c, entryType:'class'}); });
+    // Add calendar events that aren't already in sessions/classes
+    calEvents.forEach(e => {
+      const k = e.start_time.substring(0,5);
+      // Don't duplicate PT sessions already shown
+      const alreadyShown = sessions.some(s => s.scheduled_time.substring(0,5) === k) ||
+                           classes.some(c => c.scheduled_time?.substring(0,5) === k);
+      if (!alreadyShown) {
+        if (!timeMap[k]) timeMap[k] = [];
+        timeMap[k].push({ ...e, entryType: e.event_type === 'class' ? 'gcal-class' : e.event_type === 'pt' ? 'gcal-pt' : 'gcal-other', scheduled_time: e.start_time, client_name: e.title });
+      }
+    });
     const dow = dateObj.getDay();
     return Array.from({length:14}, (_,i) => {
       const h = i + 7;

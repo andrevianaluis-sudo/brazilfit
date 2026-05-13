@@ -114,7 +114,7 @@ router.get('/status', authenticateToken, (req, res) => {
   res.json({ connected: !!(user?.google_calendar_connected) });
 });
 
-// POST /api/google-calendar/sync — sync calendar events to sessions
+// POST /api/google-calendar/sync — sync ALL calendar events to sessions/classes
 router.post('/sync', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -123,84 +123,70 @@ router.post('/sync', authenticateToken, async (req, res) => {
 
   let accessToken = user.google_access_token;
 
-  // Try to refresh token if needed
   try {
-    const events = await fetchCalendarEvents(accessToken);
+    let events = await fetchCalendarEvents(accessToken);
+
+    // Refresh token if expired
     if (events.error?.code === 401 && user.google_refresh_token) {
       const refreshed = await refreshAccessToken(user.google_refresh_token);
       accessToken = refreshed.access_token;
       db.prepare("UPDATE users SET google_access_token = ? WHERE id = ?").run(accessToken, req.user.id);
+      events = await fetchCalendarEvents(accessToken);
     }
 
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
-    const existingClasses = db.prepare("SELECT id, name FROM classes WHERE is_active = 1").all();
 
-    // Class keywords to detect group classes
-    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp'];
+    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group'];
 
-    let created = 0, skipped = 0, classesCreated = 0, unmatched = [];
+    let sessionsCreated = 0, classesCreated = 0, skipped = 0;
 
     for (const event of allEvents) {
-      const title = (event.summary || '').toLowerCase();
-      const originalTitle = event.summary || '';
+      const title = event.summary || 'Unnamed Event';
+      const titleLower = title.toLowerCase();
 
       const startDateTime = event.start?.dateTime || event.start?.date;
       if (!startDateTime) { skipped++; continue; }
 
-      // Parse date and time in UK timezone
+      // Parse time in UK timezone
       let date, time;
       if (startDateTime.includes('T')) {
         const d = new Date(startDateTime);
-        // Convert to UK local time
         const ukTime = d.toLocaleString('en-GB', { timeZone: 'Europe/London', hour12: false });
         const parts = ukTime.split(', ');
         const dateParts = parts[0].split('/');
         date = `${dateParts[2]}-${dateParts[1].padStart(2,'0')}-${dateParts[0].padStart(2,'0')}`;
         time = parts[1].substring(0, 5);
+        if (time === '24:00') time = '00:00';
       } else {
         date = startDateTime;
         time = '09:00';
       }
       const dayOfWeek = new Date(date + 'T12:00:00').getDay();
 
-      // Check if it's a class
-      const isClass = CLASS_KEYWORDS.some(k => title.includes(k));
+      // Try to match to a client
+      const client = matchClientFromTitle(title, clients);
 
-      if (isClass) {
-        // Find matching class by name
-        const matchedClass = existingClasses.find(c => title.includes(c.name.toLowerCase()));
-        if (!matchedClass) {
-          // Create the class if it doesn't exist
-          try {
-            const result = db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`)
-              .run(originalTitle.trim(), dayOfWeek, time);
-            existingClasses.push({ id: result.lastInsertRowid, name: originalTitle.trim() });
-            classesCreated++;
-          } catch(e) { skipped++; }
-        } else { skipped++; }
-        continue;
+      if (client) {
+        // It's a PT session — create as session
+        const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
+          .get(client.id, date, time);
+        if (existing) { skipped++; continue; }
+        db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
+          .run(client.id, date, time, event.id || null);
+        sessionsCreated++;
+      } else {
+        // Not matched to client — create as a class using exact calendar title
+        const existing = db.prepare("SELECT id FROM classes WHERE name = ? AND day_of_week = ? AND class_time = ?")
+          .get(title, dayOfWeek, time);
+        if (existing) { skipped++; continue; }
+        db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`)
+          .run(title, dayOfWeek, time);
+        classesCreated++;
       }
-
-      // Must have PT in title to be a PT session
-      if (!title.includes('pt') && !title.includes('session') && !title.includes('1:1') && !title.includes('1-1')) {
-        skipped++; continue;
-      }
-
-      const client = matchClientFromTitle(originalTitle, clients);
-      if (!client) { unmatched.push(originalTitle); skipped++; continue; }
-
-      // Check if session already exists
-      const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
-        .get(client.id, date, time);
-      if (existing) { skipped++; continue; }
-
-      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
-        .run(client.id, date, time, event.id || null);
-      created++;
     }
 
-    res.json({ created, classesCreated, skipped, unmatched: [...new Set(unmatched)], total: allEvents.length });
+    res.json({ sessionsCreated, classesCreated, skipped, total: allEvents.length });
   } catch(e) {
     console.error('Sync error:', e);
     res.status(500).json({ error: 'Sync failed: ' + e.message });
