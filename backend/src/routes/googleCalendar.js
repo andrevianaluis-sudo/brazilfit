@@ -175,8 +175,11 @@ router.post('/sync', authenticateToken, async (req, res) => {
         db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
           .run(client.id, date, time, event.id || null);
         sessionsCreated++;
+      } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
+        // Has PT in name but no client match — skip it, don't create as class
+        skipped++;
       } else {
-        // Not matched to client — create as a class using exact calendar title
+        // No PT in name — treat as a group class with exact calendar title
         const existing = db.prepare("SELECT id FROM classes WHERE name = ? AND day_of_week = ? AND class_time = ?")
           .get(title, dayOfWeek, time);
         if (existing) { skipped++; continue; }
