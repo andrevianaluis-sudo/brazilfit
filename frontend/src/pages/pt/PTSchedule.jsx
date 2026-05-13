@@ -438,10 +438,14 @@ export default function PTSchedule() {
               {syncing ? 'Syncing...' : '🔄 Sync Now'}
             </button>
             <button onClick={async()=>{
-              try{const r=await api.post('/google-calendar/cleanup');toast.success(`Cleaned up ${r.data.deleted} unmatched sessions`);}
-              catch{toast.error('Cleanup failed');}
+              try{
+                if(!window.confirm('Wipe ALL imported sessions and re-sync from scratch?')) return;
+                await api.delete('/google-calendar/wipe');
+                toast.success('Wiped — syncing fresh...');
+                await handleGcalSync();
+              } catch{ toast.error('Wipe failed'); }
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              🗑 Clean Up
+              🗑 Wipe & Re-sync
             </button>
           </div>
         </div>
