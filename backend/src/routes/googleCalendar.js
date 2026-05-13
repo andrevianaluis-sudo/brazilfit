@@ -193,6 +193,15 @@ router.post('/sync', authenticateToken, async (req, res) => {
   }
 });
 
+// DELETE /api/google-calendar/wipe — wipe all Google-imported sessions and classes
+router.delete('/wipe', authenticateToken, (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const r1 = db.prepare("DELETE FROM sessions WHERE google_event_id IS NOT NULL").run();
+  const r2 = db.prepare("DELETE FROM classes").run();
+  res.json({ sessionsDeleted: r1.changes, classesDeleted: r2.changes });
+});
+
 // DELETE /api/google-calendar/disconnect
 router.delete('/disconnect', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });

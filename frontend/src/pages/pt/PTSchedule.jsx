@@ -430,7 +430,7 @@ export default function PTSchedule() {
             <span style={{ fontSize:'1.2rem' }}>📅</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.created} sessions · {syncResult.classesCreated||0} classes · {syncResult.skipped} skipped{syncResult.unmatched?.length > 0 ? ` · ${syncResult.unmatched.length} unmatched` : ''}</p>}
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions · {syncResult.classesCreated} classes · {syncResult.skipped} skipped</p>}
             </div>
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
