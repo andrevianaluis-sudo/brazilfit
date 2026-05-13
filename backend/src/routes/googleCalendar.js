@@ -56,6 +56,7 @@ async function fetchCalendarEvents(accessToken) {
     singleEvents: 'true',
     orderBy: 'startTime',
     maxResults: '500',
+    q: 'PT',
   });
 
   const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`, {
@@ -64,13 +65,31 @@ async function fetchCalendarEvents(accessToken) {
   return res.json();
 }
 
+// Name aliases — maps calendar name fragments to real client name fragments
+const NAME_ALIASES = {
+  'filo': 'filomena',
+  'lyin': 'lynne',
+  'lyn pt1': 'lynne',
+  'filomena': 'filomena',
+};
+
 function matchClientFromTitle(title, clients) {
   if (!title) return null;
   const titleLower = title.toLowerCase();
+
+  // Apply aliases first
+  let searchTitle = titleLower;
+  for (const [alias, real] of Object.entries(NAME_ALIASES)) {
+    if (titleLower.includes(alias)) {
+      searchTitle = titleLower.replace(alias, real);
+      break;
+    }
+  }
+
   for (const client of clients) {
     const nameParts = client.name.toLowerCase().split(' ');
     for (const part of nameParts) {
-      if (part.length > 2 && titleLower.includes(part)) return client;
+      if (part.length > 2 && searchTitle.includes(part)) return client;
     }
   }
   return null;
@@ -134,16 +153,15 @@ router.post('/sync', authenticateToken, async (req, res) => {
 
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
-    const existingClasses = db.prepare("SELECT id, name FROM classes WHERE is_active = 1").all();
 
-    // Class keywords to detect group classes
-    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp'];
-
-    let created = 0, skipped = 0, classesCreated = 0, unmatched = [];
+    let created = 0, skipped = 0, unmatched = [];
 
     for (const event of allEvents) {
-      const title = (event.summary || '').toLowerCase();
-      const originalTitle = event.summary || '';
+      const title = event.summary || '';
+      if (!title.toLowerCase().includes('pt') && !title.toLowerCase().includes('session')) { skipped++; continue; }
+
+      const client = matchClientFromTitle(title, clients);
+      if (!client) { unmatched.push(title); skipped++; continue; }
 
       const startDateTime = event.start?.dateTime || event.start?.date;
       const endDateTime = event.end?.dateTime || event.end?.date;
@@ -151,45 +169,20 @@ router.post('/sync', authenticateToken, async (req, res) => {
 
       const date = startDateTime.split('T')[0];
       const time = startDateTime.includes('T') ? startDateTime.split('T')[1].substring(0, 5) : '09:00';
-      const dayOfWeek = new Date(date + 'T12:00:00').getDay();
-
-      // Check if it's a class
-      const isClass = CLASS_KEYWORDS.some(k => title.includes(k));
-
-      if (isClass) {
-        // Find matching class by name
-        const matchedClass = existingClasses.find(c => title.includes(c.name.toLowerCase()));
-        if (!matchedClass) {
-          // Create the class if it doesn't exist
-          try {
-            const result = db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`)
-              .run(originalTitle.trim(), dayOfWeek, time);
-            existingClasses.push({ id: result.lastInsertRowid, name: originalTitle.trim() });
-            classesCreated++;
-          } catch(e) { skipped++; }
-        } else { skipped++; }
-        continue;
-      }
-
-      // Must have PT in title to be a PT session
-      if (!title.includes('pt') && !title.includes('session') && !title.includes('1:1') && !title.includes('1-1')) {
-        skipped++; continue;
-      }
-
-      const client = matchClientFromTitle(originalTitle, clients);
-      if (!client) { unmatched.push(originalTitle); skipped++; continue; }
 
       // Check if session already exists
       const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
         .get(client.id, date, time);
       if (existing) { skipped++; continue; }
 
-      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
+      // Create the session
+      db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id)
+        VALUES (?, ?, ?, 'upcoming', ?)`)
         .run(client.id, date, time, event.id || null);
       created++;
     }
 
-    res.json({ created, classesCreated, skipped, unmatched: [...new Set(unmatched)], total: allEvents.length });
+    res.json({ created, skipped, unmatched: [...new Set(unmatched)], total: allEvents.length });
   } catch(e) {
     console.error('Sync error:', e);
     res.status(500).json({ error: 'Sync failed: ' + e.message });
@@ -202,6 +195,41 @@ router.delete('/disconnect', authenticateToken, (req, res) => {
   const db = getDb();
   db.prepare("UPDATE users SET google_access_token = NULL, google_refresh_token = NULL, google_calendar_connected = 0 WHERE id = ?").run(req.user.id);
   res.json({ message: 'Disconnected' });
+});
+
+// POST /api/google-calendar/cleanup — delete sessions imported for non-existent clients
+router.post('/cleanup', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+
+  // Delete sessions where google_event_id exists but client doesn't match any real client
+  // We'll delete sessions that were created from these specific name patterns
+  const NAMES_TO_DELETE = ['dorothy', 'poppy', 'john egan', 'henghameh', 'hanghemeh', 'frances', 'natalia', 'laure', 'gillian', 'dan pt', 'david pt', 'rathish', 'lyin pt1', 'laure pt1', 'john pt4'];
+
+  let deleted = 0;
+  const sessions = db.prepare("SELECT s.id, s.google_event_id FROM sessions s WHERE s.google_event_id IS NOT NULL").all();
+
+  // Get all google events to cross-reference titles
+  const user = db.prepare("SELECT google_access_token, google_refresh_token FROM users WHERE id = ?").get(req.user.id);
+  if (!user?.google_access_token) return res.status(400).json({ error: 'Google Calendar not connected' });
+
+  try {
+    const events = await fetchCalendarEvents(user.google_access_token);
+    const eventMap = {};
+    for (const e of (events.items || [])) { eventMap[e.id] = (e.summary || '').toLowerCase(); }
+
+    for (const session of sessions) {
+      const title = eventMap[session.google_event_id] || '';
+      const shouldDelete = NAMES_TO_DELETE.some(name => title.includes(name));
+      if (shouldDelete) {
+        db.prepare("DELETE FROM sessions WHERE id = ?").run(session.id);
+        deleted++;
+      }
+    }
+    res.json({ deleted, message: `Deleted ${deleted} unmatched sessions` });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 module.exports = router;

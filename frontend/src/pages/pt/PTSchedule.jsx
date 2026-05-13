@@ -378,9 +378,17 @@ export default function PTSchedule() {
               {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.created} sessions · {syncResult.classesCreated||0} classes · {syncResult.skipped} skipped{syncResult.unmatched?.length > 0 ? ` · ${syncResult.unmatched.length} unmatched` : ''}</p>}
             </div>
           </div>
-          <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-            {syncing ? 'Syncing...' : '🔄 Sync Now'}
-          </button>
+          <div style={{ display:'flex', gap:'8px' }}>
+            <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+              {syncing ? 'Syncing...' : '🔄 Sync Now'}
+            </button>
+            <button onClick={async()=>{
+              try{const r=await api.post('/google-calendar/cleanup');toast.success(`Cleaned up ${r.data.deleted} unmatched sessions`);}
+              catch{toast.error('Cleanup failed');}
+            }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+              🗑 Clean Up
+            </button>
+          </div>
         </div>
       )}
 
