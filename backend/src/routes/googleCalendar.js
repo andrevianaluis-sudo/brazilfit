@@ -64,13 +64,60 @@ async function fetchCalendarEvents(accessToken) {
   return res.json();
 }
 
+// Manual overrides — calendar name fragment → BrazilFit client name fragment
+const NAME_ALIASES = {
+  'filo': 'filomena',
+  'lyin': 'lynne',
+  'chrissie': 'chrissie',
+  'christine': 'chrissie',
+  'jaquetta': 'jaquetta',
+  'hilary': 'hilary',
+  'sharon l': 'sharon langridge',
+  'sharon p': 'sharon langridge',
+  'michelle p': 'michelle pegg',
+  'lucy c': 'lucy clarke',
+  'lucy pt': 'lucy',
+  'chris s': 'chris siddle',
+  'andy d': 'andy devlin',
+  'sue c': 'sue crawley',
+  'clare m': 'clare moody',
+};
+
+// Events to completely ignore
+const IGNORE_EVENTS = ['martial arts', 'sofia martial', 'hong le', 'appointment', 'school holiday', 'spring', 'corpo', 'sofia&papai', 'papai', 'freeman'];
+
+// Special pair sessions — calendar title → combined display name
+const PAIR_SESSIONS = {
+  'laura/james': 'Laura & James',
+  'james/laura': 'Laura & James',
+};
+
 function matchClientFromTitle(title, clients) {
   if (!title) return null;
-  const titleLower = title.toLowerCase();
+  const titleLower = title.toLowerCase().trim();
+
+  // Check for pair sessions first — match to Laura's account
+  for (const [pair, display] of Object.entries(PAIR_SESSIONS)) {
+    if (titleLower.includes(pair)) {
+      const client = clients.find(c => c.name.toLowerCase().includes('laura'));
+      if (client) return { ...client, display_name: display };
+    }
+  }
+
+  // Apply aliases
+  let searchTitle = titleLower;
+  for (const [alias, real] of Object.entries(NAME_ALIASES)) {
+    if (titleLower.includes(alias)) {
+      searchTitle = real;
+      break;
+    }
+  }
+
+  // Try exact first name match
   for (const client of clients) {
     const nameParts = client.name.toLowerCase().split(' ');
     for (const part of nameParts) {
-      if (part.length > 2 && titleLower.includes(part)) return client;
+      if (part.length > 2 && searchTitle.includes(part)) return client;
     }
   }
   return null;
@@ -137,10 +184,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
 
-    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group', 'breakfast club', 'fusion'];
-
-    // Events to completely ignore (old clients, personal events etc)
-    const IGNORE_KEYWORDS = ['martial arts', 'sofia martial'];
+    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group', 'breakfast club', 'fusion', 'newcastle vision'];
 
     let sessionsCreated = 0, classesCreated = 0, skipped = 0;
 
@@ -168,7 +212,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
       const dayOfWeek = new Date(date + 'T12:00:00').getDay();
 
       // Skip ignored events
-      if (IGNORE_KEYWORDS.some(k => titleLower.includes(k))) { skipped++; continue; }
+      if (IGNORE_EVENTS.some(k => titleLower.includes(k))) { skipped++; continue; }
 
       // Try to match to a client
       const client = matchClientFromTitle(title, clients);
@@ -178,8 +222,8 @@ router.post('/sync', authenticateToken, async (req, res) => {
         const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
           .get(client.id, date, time);
         if (existing) { skipped++; continue; }
-        db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id) VALUES (?, ?, ?, 'upcoming', ?)`)
-          .run(client.id, date, time, event.id || null);
+        db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
+          .run(client.id, date, time, event.id || null, client.display_name ? `pair:${client.display_name}` : null);
         sessionsCreated++;
       } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
         // Has PT in name but no client match — skip it, don't create as class

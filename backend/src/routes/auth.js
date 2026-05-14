@@ -320,6 +320,11 @@ router.post('/seed-clients', authenticateToken, async (req, res) => {
     { name: 'Lucy Clarke',      username: 'lucy.clarke',      email: 'lucy.clarke@brazilfit.app' },
     { name: 'Sharon Langridge', username: 'sharon.langridge', email: 'sharon.langridge@brazilfit.app' },
     { name: 'Chris Siddle',     username: 'chris.siddle',     email: 'chris.siddle@brazilfit.app' },
+    { name: 'Hilary Clixby',    username: 'hilary',           email: 'hilary@brazilfit.app' },
+    { name: 'Lynne Campbell',   username: 'lynne',            email: 'lynne@brazilfit.app' },
+    { name: 'Andy Devlin',      username: 'andy.devlin',      email: 'andy.devlin@brazilfit.app' },
+    { name: 'Sue Crawley',      username: 'sue.crawley',      email: 'sue.crawley@brazilfit.app' },
+    { name: 'Clare Moody',      username: 'clare.moody',      email: 'clare.moody@brazilfit.app' },
   ];
 
   let created = 0, skipped = 0, errors = [];

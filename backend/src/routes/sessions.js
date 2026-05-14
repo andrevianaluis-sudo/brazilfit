@@ -6,6 +6,18 @@ const { authenticateToken, requirePT } = require('../middleware/auth');
 router.use(authenticateToken);
 
 // Mark session as attended/missed (PT only)
+// PUT /api/sessions/:id/reschedule — PT reschedules a session to new date/time
+router.put('/:id/reschedule', requirePT, (req, res) => {
+  const db = getDb();
+  const { new_date, new_time } = req.body;
+  if (!new_date || !new_time) return res.status(400).json({ error: 'new_date and new_time required' });
+  const session = db.prepare('SELECT * FROM sessions WHERE id = ?').get(req.params.id);
+  if (!session) return res.status(404).json({ error: 'Session not found' });
+  db.prepare('UPDATE sessions SET scheduled_date = ?, scheduled_time = ?, status = ? WHERE id = ?')
+    .run(new_date, new_time, 'upcoming', req.params.id);
+  res.json({ message: 'Session rescheduled', new_date, new_time });
+});
+
 router.put('/:id/status', requirePT, (req, res) => {
   const db = getDb();
   const { status } = req.body; // 'attended', 'missed', 'upcoming'

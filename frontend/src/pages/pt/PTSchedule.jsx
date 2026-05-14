@@ -108,7 +108,7 @@ function PTNotesModal({ session, onClose }) {
 }
 
 // ── Session Slot ──────────────────────────────────────────────────────────────
-function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate }) {
+function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate, onReschedule }) {
   const isClass = entry.entryType === 'class';
   const isGcalClass = entry.entryType === 'gcal-class';
   const isGcalPt = entry.entryType === 'gcal-pt';
@@ -187,7 +187,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px' }}>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ display:'flex', alignItems:'center', gap:'6px', flexWrap:'wrap', marginBottom:'3px' }}>
-            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:entry.status==='upcoming'?GREEN:TEXT, margin:0 }}>{entry.client_name}</p>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:entry.status==='upcoming'?GREEN:TEXT, margin:0 }}>{entry.notes?.startsWith('pair:') ? entry.notes.replace('pair:','') : entry.client_name}</p>
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
@@ -215,6 +215,11 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
           )}
           {entry.status !== 'missed' && entry.status !== 'attended' && (
             <button onClick={onMarkMissed} style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto', color:'#ef4444', fontWeight:400, fontSize:'0.85rem' }}>✕</button>
+          )}
+          {entry.status !== 'attended' && (
+            <button onClick={() => onReschedule && onReschedule(entry)} title="Reschedule" style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(96,165,250,0.12)', border:'1px solid rgba(96,165,250,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto' }}>
+              <span style={{ fontSize:'0.75rem' }}>📅</span>
+            </button>
           )}
         </div>
       </div>
@@ -275,6 +280,10 @@ export default function PTSchedule() {
   const [view, setView] = useState('day');
   const [loading, setLoading] = useState(true);
   const [notesSession, setNotesSession] = useState(null);
+  const [rescheduleSession, setRescheduleSession] = useState(null);
+  const [rescheduleDate, setRescheduleDate] = useState('');
+  const [rescheduleTime, setRescheduleTime] = useState('');
+  const [rescheduling, setRescheduling] = useState(false);
   const [gcalConnected, setGcalConnected] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState(null);
@@ -525,7 +534,8 @@ export default function PTSchedule() {
                           onMarkMissed={() => markSession(entry.id, 'missed')}
                           onMarkUpcoming={() => markSession(entry.id, 'upcoming')}
                           onNotes={setNotesSession}
-                          onReinstate={() => reinstateSession(entry.id)} />
+                          onReinstate={() => reinstateSession(entry.id)}
+                          onReschedule={(s) => { setRescheduleSession(s); setRescheduleDate(s.scheduled_date); setRescheduleTime(s.scheduled_time); }} />
                       ))}
                     </div>
                   )}
@@ -585,6 +595,47 @@ export default function PTSchedule() {
             {syncResult.unmatched.map((name, i) => (
               <p key={i} style={{ fontSize:'0.78rem', color:'#c0c0c0', margin:0, padding:'4px 8px', background:'rgba(255,255,255,0.04)', borderRadius:'6px' }}>{name}</p>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Reschedule Modal */}
+      {rescheduleSession && (
+        <div onClick={()=>setRescheduleSession(null)} style={{position:'fixed',inset:0,zIndex:50,background:'rgba(0,0,0,0.85)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem',backdropFilter:'blur(4px)'}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:'#111',borderRadius:'20px',border:'1px solid rgba(96,165,250,0.2)',padding:'1.75rem',maxWidth:'380px',width:'100%'}}>
+            <h3 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:800,color:'#fff',margin:'0 0 4px',letterSpacing:'-0.02em'}}>Reschedule Session</h3>
+            <p style={{fontSize:'0.82rem',color:'#888',margin:'0 0 1.25rem'}}>Moving <strong style={{color:'#60a5fa'}}>{rescheduleSession.client_name}</strong> from {rescheduleSession.scheduled_date} at {rescheduleSession.scheduled_time}</p>
+            <div style={{display:'flex',flexDirection:'column',gap:'12px',marginBottom:'1.25rem'}}>
+              <div>
+                <p style={{fontSize:'0.72rem',fontWeight:700,color:'#888',textTransform:'uppercase',letterSpacing:'0.08em',margin:'0 0 6px'}}>New Date</p>
+                <input type="date" value={rescheduleDate} onChange={e=>setRescheduleDate(e.target.value)}
+                  style={{width:'100%',padding:'0.875rem 1rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}
+                  onFocus={e=>e.target.style.borderColor='#60a5fa'} onBlur={e=>e.target.style.borderColor='rgba(255,255,255,0.08)'}/>
+              </div>
+              <div>
+                <p style={{fontSize:'0.72rem',fontWeight:700,color:'#888',textTransform:'uppercase',letterSpacing:'0.08em',margin:'0 0 6px'}}>New Time</p>
+                <input type="time" value={rescheduleTime} onChange={e=>setRescheduleTime(e.target.value)}
+                  style={{width:'100%',padding:'0.875rem 1rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}
+                  onFocus={e=>e.target.style.borderColor='#60a5fa'} onBlur={e=>e.target.style.borderColor='rgba(255,255,255,0.08)'}/>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:'8px'}}>
+              <button onClick={()=>setRescheduleSession(null)} style={{flex:1,padding:'0.875rem',background:'#222',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'12px',color:'#888',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>
+                Cancel
+              </button>
+              <button disabled={!rescheduleDate||!rescheduleTime||rescheduling} onClick={async()=>{
+                setRescheduling(true);
+                try{
+                  await api.put(`/sessions/${rescheduleSession.id}/reschedule`,{new_date:rescheduleDate,new_time:rescheduleTime});
+                  toast.success(`${rescheduleSession.client_name} moved to ${rescheduleDate} at ${rescheduleTime}`);
+                  setRescheduleSession(null);
+                  loadDaySchedule();
+                }catch{toast.error('Failed to reschedule');}
+                finally{setRescheduling(false);}
+              }} style={{flex:1,padding:'0.875rem',background:rescheduleDate&&rescheduleTime?'linear-gradient(135deg,#60a5fa,#a78bfa)':'#222',border:'none',borderRadius:'12px',color:rescheduleDate&&rescheduleTime?'#fff':'#606060',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:800,cursor:rescheduleDate&&rescheduleTime?'pointer':'not-allowed',minHeight:'auto'}}>
+                {rescheduling?'Moving...':'Reschedule'}
+              </button>
+            </div>
           </div>
         </div>
       )}
