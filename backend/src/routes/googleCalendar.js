@@ -137,7 +137,10 @@ router.post('/sync', authenticateToken, async (req, res) => {
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
 
-    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group'];
+    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group', 'breakfast club', 'fusion'];
+
+    // Events to completely ignore (old clients, personal events etc)
+    const IGNORE_KEYWORDS = ['martial arts', 'sofia martial'];
 
     let sessionsCreated = 0, classesCreated = 0, skipped = 0;
 
@@ -163,6 +166,9 @@ router.post('/sync', authenticateToken, async (req, res) => {
         time = '09:00';
       }
       const dayOfWeek = new Date(date + 'T12:00:00').getDay();
+
+      // Skip ignored events
+      if (IGNORE_KEYWORDS.some(k => titleLower.includes(k))) { skipped++; continue; }
 
       // Try to match to a client
       const client = matchClientFromTitle(title, clients);

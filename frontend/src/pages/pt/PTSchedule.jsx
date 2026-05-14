@@ -34,7 +34,7 @@ function getStatusBorder(status) {
   if (status === 'attended') return GREEN;
   if (status === 'missed') return '#ef4444';
   if (status === 'cancelled') return BORDER;
-  return ORANGE;
+  return GREEN; // upcoming = green
 }
 
 // ── Notes Modal ───────────────────────────────────────────────────────────────
@@ -187,7 +187,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px' }}>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ display:'flex', alignItems:'center', gap:'6px', flexWrap:'wrap', marginBottom:'3px' }}>
-            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>{entry.client_name}</p>
+            <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:700, color:entry.status==='upcoming'?GREEN:TEXT, margin:0 }}>{entry.client_name}</p>
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
