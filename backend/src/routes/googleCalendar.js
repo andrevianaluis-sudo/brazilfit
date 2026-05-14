@@ -72,6 +72,7 @@ const NAME_ALIASES = {
   'christine': 'chrissie',
   'jaquetta': 'jaquetta',
   'hilary': 'hilary',
+  'vivien': 'vivien',
   'sharon l': 'sharon langridge',
   'sharon p': 'sharon langridge',
   'michelle p': 'michelle pegg',
@@ -84,7 +85,11 @@ const NAME_ALIASES = {
 };
 
 // Events to completely ignore
-const IGNORE_EVENTS = ['martial arts', 'sofia martial', 'hong le', 'appointment', 'school holiday', 'spring', 'corpo', 'sofia&papai', 'papai', 'freeman'];
+const IGNORE_EVENTS = [
+  'martial arts', 'sofia martial', 'hong le', 'appointment', 'school holiday',
+  'spring', 'corpo', 'sofia&papai', 'papai', 'freeman', 'first aid', 'foot clinic',
+  'saturday foot', 'sofia pick', 'pick up school', 'breakfast club',
+];
 
 // Special pair sessions — calendar title → combined display name
 const PAIR_SESSIONS = {
@@ -229,11 +234,17 @@ router.post('/sync', authenticateToken, async (req, res) => {
         skipped++;
       } else {
         // No PT in name — treat as a group class with exact calendar title
+        // Normalise class names
+        let className = title.trim();
+        if (className.toLowerCase().includes('newcastle vision support')) className = 'Vision Support';
+        if (className.toLowerCase().includes('dance fusion')) className = 'Dance Fusion';
+        if (className.toLowerCase().includes('hot pilates')) className = 'Hot Pilates';
+
         const existing = db.prepare("SELECT id FROM classes WHERE name = ? AND day_of_week = ? AND class_time = ?")
-          .get(title, dayOfWeek, time);
+          .get(className, dayOfWeek, time);
         if (existing) { skipped++; continue; }
         db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`)
-          .run(title, dayOfWeek, time);
+          .run(className, dayOfWeek, time);
         classesCreated++;
       }
     }

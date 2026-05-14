@@ -395,7 +395,12 @@ export default function PTSchedule() {
       const h = i + 7;
       const timeKey = `${String(h).padStart(2,'0')}:00`;
       const entries = [...(timeMap[timeKey]||[])];
-      ['15','30','45'].forEach(min => { const k=`${String(h).padStart(2,'0')}:${min}`; if(timeMap[k]){entries.push(...timeMap[k]);} });
+      // Check all possible minute values in this hour
+      Object.keys(timeMap).forEach(k => {
+        if (k.startsWith(`${String(h).padStart(2,'0')}:`) && k !== timeKey) {
+          entries.push(...timeMap[k]);
+        }
+      });
       return { hour:h, timeKey, entries, isWorking: isInWorkingHours(h, dow) };
     });
   };
