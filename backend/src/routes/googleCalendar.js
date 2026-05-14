@@ -196,15 +196,14 @@ router.post('/sync', authenticateToken, async (req, res) => {
       if (!startDateTime) { skipped++; continue; }
 
       // Parse time in UK timezone
+      // Google sends times like "2026-05-14T09:00:00+01:00" - extract time directly
       let date, time;
       if (startDateTime.includes('T')) {
-        const d = new Date(startDateTime);
-        const ukTime = d.toLocaleString('en-GB', { timeZone: 'Europe/London', hour12: false });
-        const parts = ukTime.split(', ');
-        const dateParts = parts[0].split('/');
-        date = `${dateParts[2]}-${dateParts[1].padStart(2,'0')}-${dateParts[0].padStart(2,'0')}`;
-        time = parts[1].substring(0, 5);
-        if (time === '24:00') time = '00:00';
+        // Extract the local time part before any timezone offset
+        // "2026-05-14T09:00:00+01:00" → date="2026-05-14", time="09:00"
+        const withoutOffset = startDateTime.replace(/([+-]\d{2}:\d{2}|Z)$/, '');
+        date = withoutOffset.split('T')[0];
+        time = withoutOffset.split('T')[1].substring(0, 5);
       } else {
         date = startDateTime;
         time = '09:00';
