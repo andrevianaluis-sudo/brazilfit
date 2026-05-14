@@ -329,7 +329,7 @@ router.post('/seed-clients', authenticateToken, async (req, res) => {
       const existing = db.prepare("SELECT id FROM users WHERE username = ?").get(client.username);
       if (existing) { skipped++; continue; }
       const userResult = db.prepare(`INSERT INTO users (email, username, password_hash, role, name) VALUES (?, ?, ?, 'client', ?)`).run(client.email, client.username, defaultPassword, client.name);
-      db.prepare(`INSERT INTO clients (user_id, client_type, block_price, sessions_used, sessions_remaining, is_pro) VALUES (?, 'F2F', 500, 0, 0, 1)`).run(userResult.lastInsertRowid);
+      db.prepare(`INSERT INTO clients (user_id, client_type, block_price, sessions_used, is_pro) VALUES (?, 'F2F', 500, 0, 1)`).run(userResult.lastInsertRowid);
       created++;
     } catch(e) { errors.push(`${client.name}: ${e.message}`); }
   }
