@@ -139,13 +139,21 @@ export default function ClientCheckin(){
 
   const upd=(k,v)=>setFd(f=>({...f,[k]:v}));
 
+  const [streak, setStreak] = useState(0);
+
   const load=async()=>{
     try{
       setLoading(true);
       const r=await api.get('/checkins/current');
       setWeek(r.data.currentWeek);
       setMonday(r.data.mondayDate);
-      if(r.data.checkin){setCheckin(r.data.checkin);setSubmitted(true);}
+      if(r.data.checkin){
+        setCheckin(r.data.checkin);
+        setSubmitted(true);
+        // Load real streak
+        const sr = await api.get('/checkins/streak').catch(()=>({data:{streak:0}}));
+        setStreak(sr.data.streak||0);
+      }
     }catch(e){toast.error('Failed to load');}
     finally{setLoading(false);}
   };
@@ -200,7 +208,7 @@ export default function ClientCheckin(){
           <div style={{background:`linear-gradient(135deg,${ORANGE}28,${YELLOW}14)`,border:`1px solid ${ORANGE}44`,borderRadius:'16px',padding:'1.5rem',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1.5rem'}}>
             <div style={{textAlign:'center',flexShrink:0}}>
               <div style={{fontSize:'2rem',marginBottom:'4px'}}>🔥</div>
-              <div style={{fontFamily:"'DM Sans',system-ui",fontSize:'3rem',fontWeight:900,color:ORANGE,lineHeight:1}}>{checkin.streak||0}</div>
+              <div style={{fontFamily:"'DM Sans',system-ui",fontSize:'3rem',fontWeight:900,color:ORANGE,lineHeight:1}}>{streak}</div>
               <div style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.14em',textTransform:'uppercase',color:MUTED,marginTop:'4px'}}>Week Streak</div>
             </div>
             <div style={{flex:1}}>
