@@ -326,10 +326,19 @@ router.post('/seed-clients', authenticateToken, async (req, res) => {
 
   for (const client of clients) {
     try {
+      let userId;
       const existing = db.prepare("SELECT id FROM users WHERE username = ?").get(client.username);
-      if (existing) { skipped++; continue; }
-      const userResult = db.prepare(`INSERT INTO users (email, username, password_hash, role, name) VALUES (?, ?, ?, 'client', ?)`).run(client.email, client.username, defaultPassword, client.name);
-      db.prepare(`INSERT INTO clients (user_id, client_type, block_price, sessions_used, is_pro) VALUES (?, 'F2F', 500, 0, 1)`).run(userResult.lastInsertRowid);
+      if (existing) {
+        userId = existing.id;
+        // Check if client profile exists
+        const existingClient = db.prepare("SELECT id FROM clients WHERE user_id = ?").get(userId);
+        if (existingClient) { skipped++; continue; }
+        // User exists but no client profile — create it
+      } else {
+        const userResult = db.prepare(`INSERT INTO users (email, username, password_hash, role, name) VALUES (?, ?, ?, 'client', ?)`).run(client.email, client.username, defaultPassword, client.name);
+        userId = userResult.lastInsertRowid;
+      }
+      db.prepare(`INSERT INTO clients (user_id, client_type, block_price, sessions_used, is_pro) VALUES (?, 'F2F', 500, 0, 1)`).run(userId);
       created++;
     } catch(e) { errors.push(`${client.name}: ${e.message}`); }
   }
