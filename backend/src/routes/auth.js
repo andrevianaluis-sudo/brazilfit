@@ -289,3 +289,50 @@ router.post('/update-client-name', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
+// POST /api/auth/seed-clients — PT only, one-time client seeding
+router.post('/seed-clients', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const defaultPassword = await bcrypt.hash('BrazilFit2026!', 10);
+
+  const clients = [
+    { name: 'Sofia',            username: 'sofia',            email: 'sofia@brazilfit.app' },
+    { name: 'Jaquetta',         username: 'jaquetta',         email: 'jaquetta@brazilfit.app' },
+    { name: 'Chrissie',         username: 'chrissie',         email: 'chrissie@brazilfit.app' },
+    { name: 'Clare',            username: 'clare',            email: 'clare@brazilfit.app' },
+    { name: 'Andy',             username: 'andy',             email: 'andy@brazilfit.app' },
+    { name: 'Sharon',           username: 'sharon',           email: 'sharon@brazilfit.app' },
+    { name: 'Laura',            username: 'laura',            email: 'laura@brazilfit.app' },
+    { name: 'James',            username: 'james',            email: 'james@brazilfit.app' },
+    { name: 'Michelle',         username: 'michelle',         email: 'michelle@brazilfit.app' },
+    { name: 'Louise',           username: 'louise',           email: 'louise@brazilfit.app' },
+    { name: 'Noah',             username: 'noah',             email: 'noah@brazilfit.app' },
+    { name: 'Puja',             username: 'puja',             email: 'puja@brazilfit.app' },
+    { name: 'Lucy',             username: 'lucy',             email: 'lucy@brazilfit.app' },
+    { name: 'Neil',             username: 'neil',             email: 'neil@brazilfit.app' },
+    { name: 'Sue',              username: 'sue',              email: 'sue@brazilfit.app' },
+    { name: 'Craig',            username: 'craig',            email: 'craig@brazilfit.app' },
+    { name: 'Chris',            username: 'chris',            email: 'chris@brazilfit.app' },
+    { name: 'Louisa',           username: 'louisa',           email: 'louisa@brazilfit.app' },
+    { name: 'Filomena Saulino', username: 'filomena',         email: 'filomena@brazilfit.app' },
+    { name: 'Michelle Pegg',    username: 'michelle.pegg',    email: 'michelle.pegg@brazilfit.app' },
+    { name: 'Lucy Clarke',      username: 'lucy.clarke',      email: 'lucy.clarke@brazilfit.app' },
+    { name: 'Sharon Langridge', username: 'sharon.langridge', email: 'sharon.langridge@brazilfit.app' },
+    { name: 'Chris Siddle',     username: 'chris.siddle',     email: 'chris.siddle@brazilfit.app' },
+  ];
+
+  let created = 0, skipped = 0, errors = [];
+
+  for (const client of clients) {
+    try {
+      const existing = db.prepare("SELECT id FROM users WHERE username = ?").get(client.username);
+      if (existing) { skipped++; continue; }
+      const userResult = db.prepare(`INSERT INTO users (email, username, password_hash, role, name) VALUES (?, ?, ?, 'client', ?)`).run(client.email, client.username, defaultPassword, client.name);
+      db.prepare(`INSERT INTO clients (user_id, client_type, block_price, sessions_used, sessions_remaining, is_pro) VALUES (?, 'F2F', 500, 0, 0, 1)`).run(userResult.lastInsertRowid);
+      created++;
+    } catch(e) { errors.push(`${client.name}: ${e.message}`); }
+  }
+
+  res.json({ created, skipped, errors });
+});
