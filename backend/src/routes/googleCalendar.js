@@ -310,3 +310,124 @@ router.get('/debug', authenticateToken, async (req, res) => {
   
   res.json({ count: events.length, events });
 });
+
+// ── Google Calendar Webhook (Push Notifications) ──────────────────────────────
+
+// POST /api/google-calendar/webhook — receives push notifications from Google
+router.post('/webhook', async (req, res) => {
+  // Google sends a ping — we verify and trigger a sync
+  const channelId = req.headers['x-goog-channel-id'];
+  const resourceState = req.headers['x-goog-resource-state'];
+
+  // Always respond 200 immediately to Google
+  res.status(200).send('OK');
+
+  // Ignore sync/initial messages
+  if (resourceState === 'sync') return;
+
+  try {
+    const db = getDb();
+    // Get PT user's tokens
+    const ptUser = db.prepare("SELECT id, google_access_token, google_refresh_token FROM users WHERE role = 'pt' AND google_calendar_connected = 1 LIMIT 1").get();
+    if (!ptUser?.google_access_token) return;
+
+    let accessToken = ptUser.google_access_token;
+
+    // Refresh token if needed
+    let events = await fetchCalendarEvents(accessToken);
+    if (events.error?.code === 401 && ptUser.google_refresh_token) {
+      const refreshed = await refreshAccessToken(ptUser.google_refresh_token);
+      accessToken = refreshed.access_token;
+      db.prepare("UPDATE users SET google_access_token = ? WHERE id = ?").run(accessToken, ptUser.id);
+      events = await fetchCalendarEvents(accessToken);
+    }
+
+    // Full wipe and re-sync
+    db.exec('PRAGMA foreign_keys = OFF');
+    db.prepare("DELETE FROM sessions").run();
+    db.prepare("DELETE FROM classes").run();
+    db.exec('PRAGMA foreign_keys = ON');
+
+    const allEvents = events.items || [];
+    const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
+
+    for (const event of allEvents) {
+      const title = event.summary || '';
+      const titleLower = title.toLowerCase().trim();
+      const startDateTime = event.start?.dateTime || event.start?.date;
+      if (!startDateTime) continue;
+
+      if (IGNORE_EVENTS.some(k => titleLower.includes(k))) continue;
+
+      let date, time;
+      if (startDateTime.includes('T')) {
+        const withoutOffset = startDateTime.replace(/([+-]\d{2}:\d{2}|Z)$/, '');
+        date = withoutOffset.split('T')[0];
+        time = withoutOffset.split('T')[1].substring(0, 5);
+      } else {
+        date = startDateTime;
+        time = '09:00';
+      }
+      const dayOfWeek = new Date(date + 'T12:00:00').getDay();
+      const client = matchClientFromTitle(title, clients);
+
+      if (client) {
+        try {
+          db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
+            .run(client.id, date, time, event.id || null, client.display_name ? `pair:${client.display_name}` : null);
+        } catch(e) {}
+      } else if (!titleLower.includes('pt') && !titleLower.includes('1:1') && !titleLower.includes('1-1')) {
+        let className = title.trim();
+        if (className.toLowerCase().includes('newcastle vision support')) className = 'Vision Support';
+        if (className.toLowerCase().includes('dance fusion')) className = 'Dance Fusion';
+        if (className.toLowerCase().includes('hot pilates')) className = 'Hot Pilates';
+        try {
+          const existing = db.prepare("SELECT id FROM classes WHERE name = ? AND day_of_week = ? AND class_time = ?").get(className, dayOfWeek, time);
+          if (!existing) db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, ?, 'flat', 0, 1)`).run(className, dayOfWeek, time);
+        } catch(e) {}
+      }
+    }
+    console.log(`✅ Webhook auto-sync complete: ${allEvents.length} events processed`);
+  } catch(e) {
+    console.error('Webhook sync error:', e.message);
+  }
+});
+
+// POST /api/google-calendar/register-webhook — register webhook with Google
+router.post('/register-webhook', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const user = db.prepare("SELECT google_access_token FROM users WHERE id = ?").get(req.user.id);
+  if (!user?.google_access_token) return res.status(400).json({ error: 'Google Calendar not connected' });
+
+  const webhookUrl = `${process.env.RAILWAY_PUBLIC_URL || 'https://brazilfit-production.up.railway.app'}/api/google-calendar/webhook`;
+  const channelId = `brazilfit-${Date.now()}`;
+  const expiration = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 days
+
+  try {
+    const r = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events/watch', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${user.google_access_token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: channelId,
+        type: 'web_hook',
+        address: webhookUrl,
+        expiration: expiration.toString(),
+      }),
+    });
+    const data = await r.json();
+    if (data.error) return res.status(400).json({ error: data.error.message });
+
+    // Store webhook details for renewal
+    try { db.exec(`ALTER TABLE users ADD COLUMN webhook_channel_id TEXT`); } catch(e) {}
+    try { db.exec(`ALTER TABLE users ADD COLUMN webhook_expiry INTEGER`); } catch(e) {}
+    db.prepare("UPDATE users SET webhook_channel_id = ?, webhook_expiry = ? WHERE id = ?").run(channelId, expiration, req.user.id);
+
+    res.json({ message: 'Webhook registered — auto-sync is now active!', expiry: new Date(expiration).toISOString() });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});

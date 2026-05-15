@@ -285,6 +285,7 @@ export default function PTSchedule() {
   const [rescheduleTime, setRescheduleTime] = useState('');
   const [rescheduling, setRescheduling] = useState(false);
   const [gcalConnected, setGcalConnected] = useState(false);
+  const [webhookActive, setWebhookActive] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState(null);
 
@@ -444,7 +445,7 @@ export default function PTSchedule() {
             <span style={{ fontSize:'1.2rem' }}>📅</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions · {syncResult.classesCreated} classes · {syncResult.skipped} skipped</p>}
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions · {syncResult.classesCreated} classes · {syncResult.skipped} skipped{webhookActive ? ' · 🔄 Auto-sync ON' : ''}</p>}
             </div>
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
@@ -460,6 +461,15 @@ export default function PTSchedule() {
               } catch{ toast.error('Wipe failed'); }
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
               🗑 Wipe & Re-sync
+            </button>
+            <button onClick={async()=>{
+              try{
+                await api.post('/google-calendar/register-webhook');
+                setWebhookActive(true);
+                toast.success('Auto-sync enabled! 🎉');
+              } catch{ toast.error('Failed to enable auto-sync'); }
+            }} style={{ padding:'8px 12px', borderRadius:'8px', border:`1px solid ${webhookActive?'rgba(76,175,80,0.3)':'rgba(255,255,255,0.1)'}`, background:webhookActive?'rgba(76,175,80,0.1)':'transparent', color:webhookActive?GREEN:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
+              {webhookActive ? '✅ Auto' : '⚡ Auto-sync'}
             </button>
             <button onClick={async()=>{
               try{
