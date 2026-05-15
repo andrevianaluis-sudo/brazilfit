@@ -260,8 +260,10 @@ router.post('/sync', authenticateToken, async (req, res) => {
 router.delete('/wipe', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
+  db.exec('PRAGMA foreign_keys = OFF');
   const r1 = db.prepare("DELETE FROM sessions").run();
   const r2 = db.prepare("DELETE FROM classes").run();
+  db.exec('PRAGMA foreign_keys = ON');
   res.json({ sessionsDeleted: r1.changes, classesDeleted: r2.changes });
 });
 
