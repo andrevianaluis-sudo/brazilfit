@@ -15,7 +15,7 @@ router.get('/schedule/today', (req, res) => {
   const ptSessions = db.prepare(`
     SELECT s.id, s.scheduled_time, s.status, s.session_type, s.scheduled_date,
            s.cancelled_at, s.cancellation_notice_hours, s.session_carried_over,
-           s.cancelled_by, s.pt_override_note,
+           s.cancelled_by, s.pt_override_note, s.notes, s.google_event_id,
            u.name as client_name, c.id as client_id, c.client_type,
            c.sessions_used,
            (10 - c.sessions_used) as sessions_remaining,
@@ -655,6 +655,21 @@ router.get('/dashboard/pro-metrics', (req, res) => {
 });
 
 // GET /pt/dashboard/checkins - All client check-ins for current week
+// GET /api/pt/sessions-debug — check what sessions exist for a date range
+router.get('/sessions-debug', (req, res) => {
+  const db = getDb();
+  const today = new Date().toISOString().split('T')[0];
+  const sessions = db.prepare(`
+    SELECT s.scheduled_date, s.scheduled_time, u.name as client_name, s.google_event_id
+    FROM sessions s
+    JOIN clients c ON s.client_id = c.id
+    JOIN users u ON c.user_id = u.id
+    WHERE s.scheduled_date >= ? AND s.scheduled_date <= date(?, '+3 days')
+    ORDER BY s.scheduled_date, s.scheduled_time
+  `).all(today, today);
+  res.json({ today, count: sessions.length, sessions });
+});
+
 router.get('/dashboard/checkins', (req, res) => {
   const db = getDb();
 
