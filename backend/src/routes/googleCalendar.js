@@ -45,17 +45,17 @@ async function refreshAccessToken(refreshToken) {
 
 async function fetchCalendarEvents(accessToken) {
   const now = new Date();
-  const sixMonthsAgo = new Date(now);
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  // Start from beginning of today to catch all of today's events
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sixMonthsAhead = new Date(now);
   sixMonthsAhead.setMonth(sixMonthsAhead.getMonth() + 6);
 
   const params = new URLSearchParams({
-    timeMin: sixMonthsAgo.toISOString(),
+    timeMin: todayStart.toISOString(),
     timeMax: sixMonthsAhead.toISOString(),
     singleEvents: 'true',
     orderBy: 'startTime',
-    maxResults: '500',
+    maxResults: '2500',
   });
 
   const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`, {
