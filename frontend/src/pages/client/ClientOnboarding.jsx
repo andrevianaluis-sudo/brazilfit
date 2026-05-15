@@ -22,17 +22,17 @@ const STEP_META = [
 // ── Progress Bar ──────────────────────────────────────────────────────────────
 function ProgressBar({ step }) {
   return (
-    <div className="px-4 pt-5 pb-4 bg-grey-300 border-b border-grey-100">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs text-grey-200">Step {step} of {TOTAL_STEPS}</p>
-        <p className="text-xs font-semibold text-brazil-green">{STEP_META[step-1].label}</p>
+    <div style={{padding:"1.25rem 1rem 1rem",backgroundColor:"#0f0f0f",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"12px"}}>
+        <p style={{fontSize:"0.75rem",color:"#606060"}}>Step {step} of {TOTAL_STEPS}</p>
+        <p style={{fontSize:"0.75rem",fontWeight:600,color:"#4CAF50"}}>{STEP_META[step-1].label}</p>
       </div>
-      <div className="flex gap-1.5">
+      <div style={{display:"flex",gap:"6px"}}>
         {STEP_META.map((_, i) => (
           <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${i < step ? 'bg-brazil-green' : 'rgba(255,255,255,0.1)'}`} />
         ))}
       </div>
-      <div className="flex justify-between mt-3">
+      <div style={{display:"flex",justifyContent:"space-between",marginTop:"12px"}}>
         {STEP_META.map((s, i) => {
           const Icon = s.icon;
           const done = i < step - 1;
@@ -40,7 +40,7 @@ function ProgressBar({ step }) {
           return (
             <div key={i} className={`flex flex-col items-center gap-1 ${active ? 'opacity-100' : done ? 'opacity-70' : 'opacity-30'}`}>
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs
-                ${done ? 'bg-brazil-green' : active ? 'bg-brazil-green/30 border border-brazil-green' : 'bg-grey-100'}`}>
+                ${done ? 'bg-brazil-green' : active ? 'bg-brazil-green/30 border border-brazil-green' : '#1a1a1a'}`}>
                 {done ? <CheckCircle className="w-4 h-4 text-white" /> : <Icon className="w-3.5 h-3.5" />}
               </div>
             </div>
@@ -54,16 +54,16 @@ function ProgressBar({ step }) {
 // ── Nav Buttons ───────────────────────────────────────────────────────────────
 function NavButtons({ onBack, onNext, nextLabel = 'Continue', saving = false, canGoBack = true }) {
   return (
-    <div className="flex gap-3 px-4 pt-4 pb-6">
+    <div style={{display:"flex",gap:"12px",padding:"1rem 1rem 1.5rem"}}>
       {canGoBack && (
         <button onClick={onBack}
-          className="flex items-center gap-1.5 px-4 py-3 rounded-[8px] bg-grey-100 text-grey-200 text-sm font-medium hover:bg-white/12 active:scale-95 transition-all">
+          className="flex items-center gap-1.5 px-4 py-3 rounded-[8px] #1a1a1a #606060 text-sm font-medium hover:rgba(255,255,255,0.08) active:scale-95 transition-all">
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
       )}
       <button onClick={onNext} disabled={saving}
         className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-[8px] font-bold text-sm transition-all active:scale-95
-          ${saving ? 'bg-grey-100 text-grey-100' : 'bg-brazil-green text-white hover:bg-brazil-green/90'}`}>
+          ${saving ? '#1a1a1a #888' : 'bg-brazil-green text-white hover:bg-brazil-green/90'}`}>
         {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
         {nextLabel}
         {!saving && <ChevronRight className="w-4 h-4" />}
@@ -86,23 +86,23 @@ function Step1({ data, onChange, onNext }) {
   };
 
   return (
-    <div className="px-4 py-4 space-y-4">
+    <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"16px"}}>
       <div>
-        <h2 className="text-xl font-black mb-1">Personal Details</h2>
-        <p className="text-sm text-grey-200">This information is collected once and used across all your documents.</p>
+        <h2 style={{fontSize:"1.25rem",fontWeight:800,color:"#fff",marginBottom:"4px"}}>Personal Details</h2>
+        <p style={{fontSize:"0.875rem",color:"#606060"}}>This information is collected once and used across all your documents.</p>
       </div>
 
       <Field label="Full Name *" value={data.full_name} onChange={v => set('full_name', v)} placeholder="Your full legal name" />
       <Field label="Date of Birth *" type="date" value={data.dob} onChange={v => set('dob', v)} />
 
       <div>
-        <label className="text-xs text-grey-100 mb-1.5 block">Gender *</label>
+        <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"6px",display:"block"}}>Gender *</label>
         <div className="grid grid-cols-2 gap-3">
           {['Male', 'Female'].map(g => (
             <button key={g} type="button"
               onClick={() => set('gender', g)}
               className={`py-3 rounded-[8px] text-sm font-medium border transition-all active:scale-95
-                ${data.gender === g ? 'border-brazil-green bg-brazil-green/20 text-brazil-green' : 'border-white/15 bg-grey-100 text-grey-200'}`}>
+                ${data.gender === g ? 'border-brazil-green bg-brazil-green/20 text-brazil-green' : 'border-white/15 #1a1a1a #606060'}`}>
               {g}
             </button>
           ))}
@@ -115,7 +115,7 @@ function Step1({ data, onChange, onNext }) {
       <Field label="Occupation" value={data.occupation} onChange={v => set('occupation', v)} placeholder="Your job title or role" />
 
       <div className="card-dark space-y-3">
-        <p className="text-xs font-bold text-grey-200 uppercase tracking-wide">Emergency Contact</p>
+        <p className="text-xs font-bold #606060 uppercase tracking-wide">Emergency Contact</p>
         <Field label="Contact Name *" value={data.emergency_contact_name} onChange={v => set('emergency_contact_name', v)} placeholder="Full name" />
         <Field label="Contact Phone *" value={data.emergency_contact_phone} onChange={v => set('emergency_contact_phone', v)} placeholder="+44 7700 000000" type="tel" />
       </div>
@@ -136,10 +136,10 @@ function Step2({ data, onChange, onNext, onBack }) {
   };
 
   return (
-    <div className="px-4 py-4 space-y-4">
+    <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"16px"}}>
       <div>
-        <h2 className="text-xl font-black mb-1">Lifestyle & Goals</h2>
-        <p className="text-sm text-grey-200">Help your trainer understand you better.</p>
+        <h2 style={{fontSize:"1.25rem",fontWeight:800,color:"#fff",marginBottom:"4px"}}>Lifestyle & Goals</h2>
+        <p style={{fontSize:"0.875rem",color:"#606060"}}>Help your trainer understand you better.</p>
       </div>
 
       <Field label="Describe your lifestyle — occupation, working hours, hobbies, family commitments, time available to exercise"
@@ -178,7 +178,7 @@ function Step2({ data, onChange, onNext, onBack }) {
 
       {/* FITT */}
       <div className="card-dark space-y-3">
-        <p className="text-xs font-bold text-grey-200 uppercase tracking-wide">Current Exercise — FITT Principle</p>
+        <p className="text-xs font-bold #606060 uppercase tracking-wide">Current Exercise — FITT Principle</p>
         <Field label="Frequency (how often per week?)" value={data.fitt_frequency} onChange={v => set('fitt_frequency', v)} placeholder="e.g. 2 times per week" />
         <Field label="Intensity (how hard do you exercise?)" value={data.fitt_intensity} onChange={v => set('fitt_intensity', v)} placeholder="e.g. Moderate, I break a sweat but can talk" />
         <Field label="Type (what do you currently do?)" value={data.fitt_type} onChange={v => set('fitt_type', v)} placeholder="e.g. Walking, occasional gym, yoga" />
@@ -195,7 +195,7 @@ function Step2({ data, onChange, onNext, onBack }) {
 
       {/* SMART Goals */}
       <div className="card-dark space-y-3">
-        <p className="text-xs font-bold text-grey-200 uppercase tracking-wide">SMART Goals</p>
+        <p className="text-xs font-bold #606060 uppercase tracking-wide">SMART Goals</p>
         <Field label="Short-term goal (0-3 months) *"
           value={data.goal_short} onChange={v => set('goal_short', v)} multiline rows={2}
           placeholder="e.g. Complete 3 sessions per week consistently for 8 weeks" />
@@ -233,21 +233,21 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
   const anyYes = keys.some(k => data[k]);
 
   return (
-    <div className="px-4 py-4 space-y-4">
+    <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"16px"}}>
       <div>
-        <h2 className="text-xl font-black mb-1">PAR-Q Health Questionnaire</h2>
-        <p className="text-sm text-grey-200">Physical Activity Readiness Questionnaire</p>
+        <h2 style={{fontSize:"1.25rem",fontWeight:800,color:"#fff",marginBottom:"4px"}}>PAR-Q Health Questionnaire</h2>
+        <p style={{fontSize:"0.875rem",color:"#606060"}}>Physical Activity Readiness Questionnaire</p>
       </div>
 
-      <div className="bg-grey-100 rounded-[8px] px-4 py-3 flex gap-3">
+      <div className="#1a1a1a rounded-[8px] px-4 py-3 flex gap-3">
         <User className="w-4 h-4 text-brazil-green mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-semibold">{clientName}</p>
-          <p className="text-xs text-grey-100">Please answer each question honestly</p>
+          <p className="text-xs #888">Please answer each question honestly</p>
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
         {PARQ_QUESTIONS.map((q, i) => (
           <div key={i} className={`card-dark border transition-all ${data[keys[i]] ? 'border-red-500/30 bg-red-500/5' : 'border-white/8'}`}>
             <p className="text-sm text-white leading-relaxed mb-3">
@@ -260,7 +260,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
                   className={`flex-1 py-2.5 rounded-[8px] text-sm font-bold border transition-all active:scale-95
                     ${data[keys[i]] === val
                       ? val ? 'border-red-500/60 bg-red-500/20 text-red-400' : 'border-brazil-green/60 bg-brazil-green/20 text-brazil-green'
-                      : 'border-white/15 bg-grey-100 text-grey-200 hover:bg-grey-300'
+                      : 'border-white/15 #1a1a1a #606060 hover:#0f0f0f'
                     }`}>
                   {val ? 'YES' : 'NO'}
                 </button>
@@ -280,7 +280,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
           <AlertTriangle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-bold text-yellow-400 mb-1">Medical Consultation Recommended</p>
-            <p className="text-xs text-grey-200">You have answered YES to one or more questions. Please consult your doctor before starting your programme. Your trainer has been notified.</p>
+            <p style={{fontSize:"0.75rem",color:"#606060"}}>You have answered YES to one or more questions. Please consult your doctor before starting your programme. Your trainer has been notified.</p>
           </div>
         </div>
       ) : (
@@ -289,7 +289,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
             <CheckCircle className="w-5 h-5 text-brazil-green flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-bold text-brazil-green mb-1">You are ready to start!</p>
-              <p className="text-xs text-grey-200">Great — you answered NO to all questions. You are cleared to begin your fitness journey!</p>
+              <p style={{fontSize:"0.75rem",color:"#606060"}}>Great — you answered NO to all questions. You are cleared to begin your fitness journey!</p>
             </div>
           </div>
         )
@@ -368,31 +368,31 @@ function Step4({ data, onChange, onNext, onBack, clientName, existingSignature }
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
-    <div className="px-4 py-4 space-y-4">
+    <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"16px"}}>
       <div>
-        <h2 className="text-xl font-black mb-1">Informed Consent</h2>
-        <p className="text-sm text-grey-200">Please read the full document before signing.</p>
+        <h2 style={{fontSize:"1.25rem",fontWeight:800,color:"#fff",marginBottom:"4px"}}>Informed Consent</h2>
+        <p style={{fontSize:"0.875rem",color:"#606060"}}>Please read the full document before signing.</p>
       </div>
 
       <div className="card-dark max-h-64 overflow-y-auto">
         <p className="text-xs font-bold text-brazil-green mb-3 uppercase tracking-wide">
           Informed Consent for Physical Fitness Programme — BrazilFit
         </p>
-        <p className="text-xs text-grey-200 whitespace-pre-line leading-relaxed">{INFORMED_CONSENT_TEXT}</p>
+        <p className="text-xs #606060 whitespace-pre-line leading-relaxed">{INFORMED_CONSENT_TEXT}</p>
       </div>
 
-      <label className="flex gap-3 p-4 bg-grey-100 rounded-[8px] border border-grey-100 cursor-pointer active:bg-grey-100">
+      <label className="flex gap-3 p-4 #1a1a1a rounded-[8px] border border-white/10 cursor-pointer active:#1a1a1a">
         <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-all border
           ${checked ? 'bg-brazil-green border-brazil-green' : 'border-white/30 bg-transparent'}`}
           onClick={() => setChecked(!checked)}>
           {checked && <CheckCircle className="w-3.5 h-3.5 text-white" />}
         </div>
-        <p className="text-sm text-white">I have read and understood the above information and all my questions have been answered.</p>
+        <p style={{fontSize:"0.875rem",color:"#fff"}}>I have read and understood the above information and all my questions have been answered.</p>
       </label>
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="text-xs text-grey-100">Signature *</label>
+          <label className="text-xs #888">Signature *</label>
           {existingSignature && !signed && (
             <button type="button" onClick={handleUseExisting}
               className="text-xs text-brazil-green hover:underline">
@@ -404,12 +404,12 @@ function Step4({ data, onChange, onNext, onBack, clientName, existingSignature }
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-grey-100 rounded-[8px] px-3 py-2.5">
-          <p className="text-[10px] text-grey-100 mb-0.5">Name</p>
+        <div className="#1a1a1a rounded-[8px] px-3 py-2.5">
+          <p className="text-[10px] #888 mb-0.5">Name</p>
           <p className="text-sm font-medium">{clientName}</p>
         </div>
-        <div className="bg-grey-100 rounded-[8px] px-3 py-2.5">
-          <p className="text-[10px] text-grey-100 mb-0.5">Date</p>
+        <div className="#1a1a1a rounded-[8px] px-3 py-2.5">
+          <p className="text-[10px] #888 mb-0.5">Date</p>
           <p className="text-sm font-medium">{today}</p>
         </div>
       </div>
@@ -497,10 +497,10 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
-    <div className="px-4 py-4 space-y-4">
+    <div style={{padding:"1rem",display:"flex",flexDirection:"column",gap:"16px"}}>
       <div>
-        <h2 className="text-xl font-black mb-1">Terms & Conditions</h2>
-        <p className="text-sm text-grey-200">Please read all terms before signing.</p>
+        <h2 style={{fontSize:"1.25rem",fontWeight:800,color:"#fff",marginBottom:"4px"}}>Terms & Conditions</h2>
+        <p style={{fontSize:"0.875rem",color:"#606060"}}>Please read all terms before signing.</p>
       </div>
 
       <div className="card-dark max-h-72 overflow-y-auto space-y-4">
@@ -509,23 +509,23 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
             <p className="text-xs font-bold text-brazil-green uppercase mb-1">
               {t.num}. {t.title}
             </p>
-            <p className="text-xs text-grey-200 leading-relaxed">{t.text}</p>
+            <p className="text-xs #606060 leading-relaxed">{t.text}</p>
           </div>
         ))}
       </div>
 
-      <label className="flex gap-3 p-4 bg-grey-100 rounded-[8px] border border-grey-100 cursor-pointer active:bg-grey-100">
+      <label className="flex gap-3 p-4 #1a1a1a rounded-[8px] border border-white/10 cursor-pointer active:#1a1a1a">
         <div className={`w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-all border
           ${agreed ? 'bg-brazil-green border-brazil-green' : 'border-white/30 bg-transparent'}`}
           onClick={() => setAgreed(!agreed)}>
           {agreed && <CheckCircle className="w-3.5 h-3.5 text-white" />}
         </div>
-        <p className="text-sm text-white">I agree to the above Terms and Conditions for the duration of my training with Andre Viana Personal Trainer.</p>
+        <p style={{fontSize:"0.875rem",color:"#fff"}}>I agree to the above Terms and Conditions for the duration of my training with Andre Viana Personal Trainer.</p>
       </label>
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="text-xs text-grey-100">Signature *</label>
+          <label className="text-xs #888">Signature *</label>
           {consentSignature && !signed && (
             <button type="button" onClick={handleUseConsent}
               className="text-xs text-brazil-green hover:underline">
@@ -537,16 +537,16 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
       </div>
 
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-grey-100 rounded-[8px] px-3 py-2.5 col-span-2">
-          <p className="text-[10px] text-grey-100 mb-0.5">Client name</p>
+        <div className="#1a1a1a rounded-[8px] px-3 py-2.5 col-span-2">
+          <p className="text-[10px] #888 mb-0.5">Client name</p>
           <p className="text-sm font-medium">{clientName}</p>
         </div>
-        <div className="bg-grey-100 rounded-[8px] px-3 py-2.5">
-          <p className="text-[10px] text-grey-100 mb-0.5">Date</p>
+        <div className="#1a1a1a rounded-[8px] px-3 py-2.5">
+          <p className="text-[10px] #888 mb-0.5">Date</p>
           <p className="text-sm font-medium">{today}</p>
         </div>
-        <div className="bg-grey-100 rounded-[8px] px-3 py-2.5 col-span-3">
-          <p className="text-[10px] text-grey-100 mb-0.5">Trainer</p>
+        <div className="#1a1a1a rounded-[8px] px-3 py-2.5 col-span-3">
+          <p className="text-[10px] #888 mb-0.5">Trainer</p>
           <p className="text-sm font-medium">Andre Viana</p>
         </div>
       </div>
@@ -566,32 +566,32 @@ function CompletionScreen({ onGoHome }) {
       <h1 className="text-3xl font-black mb-2 animate-fade-in">
         Welcome to <span className="text-brazil-green">Brazil</span><span className="text-brazil-yellow">Fit</span>!
       </h1>
-      <p className="text-grey-200 mb-2 max-w-xs animate-fade-in">
+      <p className="#606060 mb-2 max-w-xs animate-fade-in">
         Your documents have been signed and saved.
       </p>
-      <p className="text-grey-100 text-sm mb-8 max-w-xs animate-fade-in">
+      <p className="#888 text-sm mb-8 max-w-xs animate-fade-in">
         Andre will be in touch shortly to get you started on your fitness journey.
       </p>
-      <div className="bg-grey-100 rounded-[12px] px-6 py-4 mb-8 border border-grey-100 w-full max-w-xs animate-fade-in">
+      <div className="#1a1a1a rounded-[12px] px-6 py-4 mb-8 border border-white/10 w-full max-w-xs animate-fade-in">
         <div className="flex items-center gap-3 mb-3">
           <CheckCircle className="w-4 h-4 text-brazil-green" />
-          <p className="text-sm">Personal details saved</p>
+          <p style={{fontSize:"0.875rem"}}>Personal details saved</p>
         </div>
         <div className="flex items-center gap-3 mb-3">
           <CheckCircle className="w-4 h-4 text-brazil-green" />
-          <p className="text-sm">Lifestyle & goals recorded</p>
+          <p style={{fontSize:"0.875rem"}}>Lifestyle & goals recorded</p>
         </div>
         <div className="flex items-center gap-3 mb-3">
           <CheckCircle className="w-4 h-4 text-brazil-green" />
-          <p className="text-sm">PAR-Q health questionnaire complete</p>
+          <p style={{fontSize:"0.875rem"}}>PAR-Q health questionnaire complete</p>
         </div>
         <div className="flex items-center gap-3 mb-3">
           <CheckCircle className="w-4 h-4 text-brazil-green" />
-          <p className="text-sm">Informed Consent signed</p>
+          <p style={{fontSize:"0.875rem"}}>Informed Consent signed</p>
         </div>
         <div className="flex items-center gap-3">
           <CheckCircle className="w-4 h-4 text-brazil-green" />
-          <p className="text-sm">Terms & Conditions signed</p>
+          <p style={{fontSize:"0.875rem"}}>Terms & Conditions signed</p>
         </div>
       </div>
       <button onClick={onGoHome}
@@ -604,10 +604,10 @@ function CompletionScreen({ onGoHome }) {
 
 // ── Shared form components ────────────────────────────────────────────────────
 function Field({ label, value, onChange, placeholder, type = 'text', multiline = false, rows = 3 }) {
-  const cls = 'w-full bg-grey-100 border border-grey-100 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none focus:border-brazil-green/50 placeholder:text-grey-200';
+  const cls = 'w-full #1a1a1a border border-white/10 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none focus:border-brazil-green/50 placeholder:#606060';
   return (
     <div>
-      <label className="text-xs text-grey-100 mb-1.5 block">{label}</label>
+      <label style={{fontSize:"0.75rem",color:"#888",marginBottom:"6px",display:"block"}}>{label}</label>
       {multiline
         ? <textarea value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={rows} className={`${cls} resize-none`} />
         : <input value={value || ''} onChange={e => onChange(e.target.value)} placeholder={placeholder} type={type} className={cls} />
@@ -618,15 +618,15 @@ function Field({ label, value, onChange, placeholder, type = 'text', multiline =
 
 function ToggleRow({ label, value, onChange }) {
   return (
-    <div className="flex items-center justify-between">
-      <p className="text-sm text-white">{label}</p>
-      <div className="flex gap-2">
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <p style={{fontSize:"0.875rem",color:"#fff"}}>{label}</p>
+      <div style={{display:"flex",gap:"8px"}}>
         {[false, true].map(v => (
           <button key={String(v)} type="button" onClick={() => onChange(v)}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-bold border transition-all active:scale-95
               ${value === v
                 ? v ? 'border-red-500/60 bg-red-500/20 text-red-400' : 'border-brazil-green/60 bg-brazil-green/20 text-brazil-green'
-                : 'border-white/15 bg-grey-100 text-grey-200'}`}>
+                : 'border-white/15 #1a1a1a #606060'}`}>
             {v ? 'Yes' : 'No'}
           </button>
         ))}
@@ -716,10 +716,10 @@ export default function ClientOnboarding() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-4 border-brazil-green border-t-transparent rounded-full animate-spin" />
-        <p className="text-grey-200 text-sm">Loading your onboarding...</p>
+    <div style={{minHeight:"100vh",backgroundColor:"#0f0f0f",display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"16px"}}>
+        <div style={{width:"40px",height:"40px",border:"2px solid #4CAF50",borderTop:"2px solid transparent",borderRadius:"50%",animation:"spin 1s linear infinite"}} />
+        <p style={{color:"#606060",fontSize:"0.875rem"}}>Loading your onboarding...</p>
       </div>
     </div>
   );
@@ -727,9 +727,9 @@ export default function ClientOnboarding() {
   if (completed) return <CompletionScreen onGoHome={() => navigate('/client')} />;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div style={{minHeight:"100vh",backgroundColor:"#0f0f0f",display:"flex",flexDirection:"column"}}>
       <ProgressBar step={step} />
-      <div className="flex-1 overflow-auto pb-4 max-w-lg mx-auto w-full">
+      <div style={{flex:1,overflowY:"auto",paddingBottom:"1rem",maxWidth:"512px",margin:"0 auto",width:"100%"}}>
         {step === 1 && <Step1 data={step1} onChange={setStep1} onNext={() => saveStep(1, step1)} />}
         {step === 2 && <Step2 data={step2} onChange={setStep2} onBack={() => setStep(1)} onNext={() => saveStep(2, step2)} />}
         {step === 3 && <Step3 data={step3} onChange={setStep3} onBack={() => setStep(2)} onNext={() => saveStep(3, step3)} clientName={step1.full_name} />}
