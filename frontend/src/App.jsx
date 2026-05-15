@@ -18,7 +18,6 @@ import ClientLayout from './pages/client/ClientLayout';
 import ClientHome from './pages/client/ClientHome';
 import ClientSessions from './pages/client/ClientSessions';
 import ClientProgress from './pages/client/ClientProgress';
-import ClientBadges from './pages/client/ClientBadges';
 import ClientProfilePage from './pages/client/ClientProfilePage';
 import ClientNutrition from './pages/client/ClientNutrition';
 import ClientHabits from './pages/client/ClientHabits';
@@ -130,7 +129,6 @@ function AppRoutes() {
         <Route path="stories" element={<SuccessStories />} />
         <Route path="upgrade" element={<ProUpgradePage />} />
         <Route path="pro-success" element={<ProUpgradePage success />} />
-        <Route path="badges" element={<ClientBadges />} />
         <Route path="profile" element={<ClientProfilePage />} />
         <Route path="trainer" element={<TrainerProfile />} />
         <Route path="privacy" element={<PrivacyPolicy />} />

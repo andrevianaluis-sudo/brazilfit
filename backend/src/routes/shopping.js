@@ -84,8 +84,9 @@ router.post('/add-meal/:mealId', (req, res) => {
       'sauce': 'PANTRY',
     };
 
-    const stmt = db.prepare(`
-      INSERT OR IGNORE INTO shopping_list_items (client_id, name, quantity, category, created_at, updated_at)
+    const checkStmt = db.prepare(`SELECT id FROM shopping_list_items WHERE client_id = ? AND LOWER(name) = LOWER(?)`);
+    const insertStmt = db.prepare(`
+      INSERT INTO shopping_list_items (client_id, name, quantity, category, created_at, updated_at)
       VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))
     `);
 
@@ -94,13 +95,14 @@ router.post('/add-meal/:mealId', (req, res) => {
       let category = 'PANTRY';
       const ingredientLower = String(ingredient).toLowerCase();
       for (const [key, cat] of Object.entries(categories)) {
-        if (ingredientLower.includes(key)) {
-          category = cat;
-          break;
-        }
+        if (ingredientLower.includes(key)) { category = cat; break; }
       }
-      const result = stmt.run(clientId, ingredient, '', category);
-      if (result.changes > 0) addedCount++;
+      // Only add if not already in the list
+      const existing = checkStmt.get(clientId, ingredient);
+      if (!existing) {
+        insertStmt.run(clientId, ingredient, '', category);
+        addedCount++;
+      }
     });
 
     res.json({ success: true, added: addedCount, mealName: meal.name });

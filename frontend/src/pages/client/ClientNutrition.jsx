@@ -148,21 +148,33 @@ function MealCard({ meal, onFavorite, onRecipe, isPro }) {
 
 // ── Pro Gate ──────────────────────────────────────────────────────────────────
 function ProGate({ count, type, onUpgrade }) {
+  const perks = type === 'Meals'
+    ? ['Full recipe library with photos', 'Macro breakdowns per meal', 'Add ingredients to shopping list', 'Filter by goal (muscle gain, weight loss)']
+    : ['All nutrition tips & guides', 'Personalised to your goals', 'Save your favourites', 'New content added weekly'];
   return (
-    <div style={{ backgroundColor: SURFACE, border: `1px solid rgba(255,214,0,0.2)`, borderRadius: '12px', padding: '2rem', textAlign: 'center', marginTop: '1rem' }}>
-      <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(255,214,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
-        <Crown size={20} color={YELLOW} />
+    <div style={{ background: `linear-gradient(135deg, rgba(255,214,0,0.06), rgba(255,107,43,0.06))`, border: `1px solid rgba(255,214,0,0.25)`, borderRadius: '16px', padding: '1.5rem', textAlign: 'center', marginTop: '1rem' }}>
+      <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: `0 4px 16px rgba(255,214,0,0.3)` }}>
+        <Crown size={22} color="#000" />
       </div>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.4rem' }}>Unlock Full {type} Library</p>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: MUTED, margin: '0 0 1.25rem', lineHeight: 1.6 }}>
-        Get access to all {count} {type.toLowerCase()} with BrazilFit Pro
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.15rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 6px' }}>Unlock {type} with Pro</p>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: MUTED, margin: '0 0 1.25rem', lineHeight: 1.6 }}>
+        {count} {type.toLowerCase()} waiting for you
       </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.25rem', textAlign: 'left' }}>
+        {perks.map((p, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: '#4CAF50', fontSize: '0.875rem', flexShrink: 0 }}>✓</span>
+            <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#c0c0c0' }}>{p}</span>
+          </div>
+        ))}
+      </div>
       <button onClick={onUpgrade} style={{
-        padding: '0.8rem 2rem', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
-        border: 'none', borderRadius: '8px', color: '#000',
-        fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 800,
-        cursor: 'pointer', minHeight: 'auto',
-      }}>Upgrade to Pro</button>
+        width: '100%', padding: '0.9rem', background: `linear-gradient(135deg, ${ORANGE}, ${YELLOW})`,
+        border: 'none', borderRadius: '12px', color: '#000',
+        fontFamily: "'DM Sans', system-ui", fontSize: '0.95rem', fontWeight: 800,
+        cursor: 'pointer', minHeight: 'auto', boxShadow: `0 4px 20px rgba(255,107,43,0.4)`,
+      }}>Get BrazilFit Pro ✦</button>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, margin: '8px 0 0' }}>One-time payment · Yours forever</p>
     </div>
   );
 }
