@@ -527,64 +527,60 @@ export default function ClientSettings() {
 
   // Main settings screen
   return (
-    <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f', paddingBottom: '100px' }}>
+    <div style={{ padding: '24px 20px', minHeight: '100vh', backgroundColor: '#0f0f0f', paddingBottom: '100px', fontFamily:"'DM Sans',system-ui" }}>
       <BackButton to="/client/home" />
-      <h1 style={{ fontSize: '28px', fontWeight: 300, color: '#ffffff', marginBottom: '32px', margin: '0 0 32px 0' }}>Settings</h1>
+      <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#ffffff', margin: '0 0 32px 0', letterSpacing:'-0.04em' }}>Settings</h1>
 
       {/* Section 1: Account */}
       <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ACCOUNT</p>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 12px 0' }}>ACCOUNT</p>
         <SettingButton label="About You" onPress={() => setScreen('aboutyou')} />
         <SettingButton label="Change Password" onPress={() => setScreen('changePassword')} />
         <SettingButton label="Units of Measure" value="KG, CM, KM" onPress={() => setScreen('units')} />
       </div>
 
-      {/* Section 2: Sessions */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>NOTIFICATIONS</p>
+      {/* Section 2: Notifications */}
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 12px 0' }}>NOTIFICATIONS</p>
         <SettingButton label="Session Settings" onPress={() => setScreen('sessions')} />
-        <SettingButton label="Notification Preferences" onPress={() => setScreen('notifications')} />
       </div>
 
-      {/* Section 3: Privacy */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>PRIVACY & DATA</p>
-        <SettingButton label="Privacy" onPress={() => setScreen('privacy')} />
-        <SettingButton label="Data and Privacy" onPress={() => {}} />
-        <SettingButton label="Workout Info" onPress={() => {}} />
+      {/* Section 3: Privacy & Data */}
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 12px 0' }}>PRIVACY & DATA</p>
+        <SettingButton label="Privacy Policy" onPress={() => navigate('/client/privacy')} />
+        <SettingButton label="Export My Data" value="GDPR" onPress={async () => {
+          try {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            const res = await fetch('/api/auth/export-data', { headers: { Authorization: `Bearer ${token}` } });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `brazilfit-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click(); URL.revokeObjectURL(url);
+            toast.success('Data export downloaded!');
+          } catch { toast.error('Failed to export data'); }
+        }} />
+        <SettingButton label="Delete Account" onPress={() => setScreen('deleteAccount')} />
       </div>
 
-      {/* Section 4: App */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>ABOUT</p>
-        <SettingButton label="Country/Region" value="🇬🇧 United Kingdom" onPress={() => {}} />
-        <SettingButton label="Language" value="English" onPress={() => {}} />
+      {/* Section 4: Legal */}
+      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', margin: '0 0 12px 0' }}>LEGAL</p>
+        <SettingButton label="Terms & Conditions" onPress={() => navigate('/client/onboarding')} />
+        <SettingButton label="Help & FAQs" onPress={() => navigate('/client/help')} />
+        <SettingButton label="Contact Your PT" onPress={() => navigate('/client/messages')} />
         <SettingButton label="App Version" value="1.0.0" onPress={() => {}} />
       </div>
 
-      {/* Section 5: Legal */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
-        <p style={{ fontSize: '12px', fontWeight: '600', color: '#606060', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', margin: '0 0 12px 0' }}>LEGAL</p>
-        <SettingButton label="Terms and Conditions" onPress={() => {}} />
-        <SettingButton label="Privacy Policy" onPress={() => {}} />
-        <SettingButton label="App FAQs" onPress={() => {}} />
-        <SettingButton label="Contact Your PT" onPress={() => navigate('/client/messages')} />
-      </div>
-
-      {/* Section 6: Actions */}
-      <div style={{ marginBottom: '24px', paddingBottom: '24px', borderBottom: '2px solid #E8E8E8' }}>
+      {/* Sign Out */}
+      <div style={{ marginBottom: '24px' }}>
         <button
           onClick={handleLogout}
           style={{
-            width: '100%',
-            padding: '14px',
-            backgroundColor: '#1a1a1a',
-            color: '#ffffff',
-            fontWeight: '600',
-            border: '1px solid #D0D0D0',
-            borderRadius: '8px',
-            fontSize: '14px',
-            cursor: 'pointer',
+            width: '100%', padding: '14px', backgroundColor: '#1a1a1a',
+            color: '#ffffff', fontWeight: '600', border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '12px', fontSize: '14px', cursor: 'pointer', fontFamily:"'DM Sans',system-ui",
           }}
         >
           Sign Out

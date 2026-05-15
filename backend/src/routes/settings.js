@@ -10,7 +10,7 @@ router.get('/:clientId', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -38,7 +38,7 @@ router.put('/:clientId', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -103,7 +103,7 @@ router.get('/:clientId/download-data', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -141,7 +141,7 @@ router.get('/:clientId/notifications', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -185,7 +185,7 @@ router.put('/:clientId/notifications', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -236,7 +236,7 @@ router.get('/:clientId/privacy', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -264,7 +264,7 @@ router.put('/:clientId/privacy', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
@@ -320,7 +320,7 @@ router.get('/:clientId/units', (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
 
-  if (req.user.role === 'client' && req.user.clientId !== clientId) {
+  if (req.user.role === 'client' && parseInt(req.user.clientId) !== clientId) {
     return res.status(403).json({ error: 'Access denied' });
   }
 
