@@ -303,6 +303,41 @@ function generateFutureSessions(startDate, schedule, count) {
 }
 
 // Income overview
+// GET /api/pt/classes — list all classes
+router.get('/classes', (req, res) => {
+  const db = getDb();
+  const classes = db.prepare('SELECT * FROM classes WHERE is_active = 1 ORDER BY day_of_week, class_time').all();
+  res.json(classes);
+});
+
+// POST /api/pt/classes/:id/sessions — log income for a class session
+router.post('/classes/:id/sessions', (req, res) => {
+  const db = getDb();
+  const { date, amount_earned, attendees, notes } = req.body;
+  if (!date || amount_earned === undefined) return res.status(400).json({ error: 'date and amount_earned required' });
+  try {
+    db.prepare(`INSERT INTO class_sessions (class_id, session_date, total_earned, attendee_count, notes) VALUES (?, ?, ?, ?, ?)`)
+      .run(req.params.id, date, amount_earned, attendees || 1, notes || null);
+    res.json({ message: 'Income logged' });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /api/pt/classes/one-off — add a one-off class and log its income
+router.post('/classes/one-off', (req, res) => {
+  const db = getDb();
+  const { name, date, amount_earned, attendees } = req.body;
+  if (!name || !date || amount_earned === undefined) return res.status(400).json({ error: 'name, date and amount_earned required' });
+  try {
+    // Get day of week from date
+    const dow = new Date(date + 'T12:00:00').getDay();
+    const classResult = db.prepare(`INSERT INTO classes (name, day_of_week, class_time, payment_type, flat_fee, is_active) VALUES (?, ?, '00:00', 'flat', ?, 0)`)
+      .run(name, dow, amount_earned);
+    db.prepare(`INSERT INTO class_sessions (class_id, session_date, total_earned, attendee_count) VALUES (?, ?, ?, ?)`)
+      .run(classResult.lastInsertRowid, date, amount_earned, attendees || 1);
+    res.json({ message: 'One-off class added' });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
 router.get('/income', (req, res) => {
   const db = getDb();
 
