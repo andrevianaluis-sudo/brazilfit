@@ -196,6 +196,64 @@ cron.schedule('0 20 * * 1-5', async () => {
   }
 });
 
+// Auto-renew Google Calendar webhook daily at 06:00
+cron.schedule('0 6 * * *', async () => {
+  console.log('[CRON] Checking Google Calendar webhook renewal...');
+  try {
+    const db = getDb();
+    const ptUser = db.prepare("SELECT id, google_access_token, google_refresh_token, webhook_expiry FROM users WHERE role = 'pt' AND google_calendar_connected = 1 LIMIT 1").get();
+    if (!ptUser?.google_access_token) return;
+
+    // Renew if expiring within 2 days
+    const twoDaysFromNow = Date.now() + (2 * 24 * 60 * 60 * 1000);
+    if (!ptUser.webhook_expiry || ptUser.webhook_expiry < twoDaysFromNow) {
+      console.log('[CRON] Webhook expiring soon — renewing...');
+
+      // Refresh access token if needed
+      let accessToken = ptUser.google_access_token;
+      if (ptUser.google_refresh_token) {
+        const r = await fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET,
+            refresh_token: ptUser.google_refresh_token,
+            grant_type: 'refresh_token',
+          }),
+        });
+        const tokens = await r.json();
+        if (tokens.access_token) {
+          accessToken = tokens.access_token;
+          db.prepare("UPDATE users SET google_access_token = ? WHERE id = ?").run(accessToken, ptUser.id);
+        }
+      }
+
+      // Register new webhook
+      const webhookUrl = `${process.env.RAILWAY_PUBLIC_URL || 'https://brazilfit-production.up.railway.app'}/api/google-calendar/webhook`;
+      const channelId = `brazilfit-${Date.now()}`;
+      const expiration = Date.now() + (7 * 24 * 60 * 60 * 1000);
+
+      const res = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events/watch', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: channelId, type: 'web_hook', address: webhookUrl, expiration: expiration.toString() }),
+      });
+      const data = await res.json();
+      if (!data.error) {
+        db.prepare("UPDATE users SET webhook_channel_id = ?, webhook_expiry = ? WHERE id = ?").run(channelId, expiration, ptUser.id);
+        console.log('[CRON] ✅ Webhook renewed until', new Date(expiration).toISOString());
+      } else {
+        console.error('[CRON] Webhook renewal failed:', data.error.message);
+      }
+    } else {
+      console.log('[CRON] Webhook still valid — no renewal needed');
+    }
+  } catch(e) {
+    console.error('[CRON] Webhook renewal error:', e.message);
+  }
+});
+
 // SPA fallback - route all non-API requests to index.html
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
