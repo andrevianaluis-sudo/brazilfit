@@ -122,8 +122,8 @@ export default function PrivacyPolicy() {
       <div style={{ maxWidth:'680px', margin:'0 auto', padding:'2rem 1.25rem' }}>
 
         {/* Header */}
-        <button onClick={()=>navigate(-1)} style={{ display:'flex', alignItems:'center', gap:'6px', background:'none', border:'none', color:MUTED, cursor:'pointer', fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:600, padding:0, minHeight:'auto', marginBottom:'1.5rem' }}>
-          <ChevronLeft size={18}/> Back
+        <button onClick={()=>navigate('/client/settings')} style={{ display:'flex', alignItems:'center', gap:'6px', background:'none', border:'none', color:'#27AE60', cursor:'pointer', fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', fontWeight:500, padding:'16px 16px 16px 0', marginBottom:'12px', minHeight:'auto' }}>
+          <ChevronLeft size={20} color="#27AE60" strokeWidth={2.5}/> Back to Settings
         </button>
 
         <div style={{ marginBottom:'2rem' }}>

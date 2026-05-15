@@ -474,7 +474,7 @@ export default function ClientSettings() {
 
     return (
       <div style={{ padding:'24px 20px', minHeight:'100vh', backgroundColor:'#0f0f0f', paddingBottom:'100px', fontFamily:"'DM Sans',system-ui" }}>
-        <BackButton to="/client/settings" onBack={() => setScreen('main')} />
+        <BackButton onClick={() => setScreen('main')} label="Back to Settings" />
         <div style={{ marginBottom:'2rem' }}>
           <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color:'#FF6B2B', textTransform:'uppercase', margin:'0 0 6px' }}>Security</p>
           <h1 style={{ fontSize:'2rem', fontWeight:800, color:'#ffffff', letterSpacing:'-0.04em', margin:0, lineHeight:1 }}>Change Password</h1>
