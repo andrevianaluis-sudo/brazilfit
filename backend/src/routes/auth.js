@@ -268,7 +268,7 @@ router.post('/reset-client-data', authenticateToken, async (req, res) => {
   const client = db.prepare("SELECT id FROM clients WHERE user_id = ?").get(user.id);
   if (!client) return res.status(404).json({ error: 'Client not found' });
   const clientId = client.id;
-  const tables = ['sessions','weekly_checkins','habit_logs','progress_entries','progress_photos','messages','food_mood_entries','shopping_list_items','client_routines','notifications','blocks','assigned_workouts'];
+  const tables = ['sessions','weekly_checkins','habit_logs','progress_entries','progress_photos','pt_messages','food_mood_entries','shopping_list_items','client_routines','notifications','blocks','assigned_workouts'];
   for (const table of tables) {
     try { db.prepare(`DELETE FROM ${table} WHERE client_id = ?`).run(clientId); } catch(e) {}
   }
