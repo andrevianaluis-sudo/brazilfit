@@ -255,6 +255,7 @@ cron.schedule('0 6 * * *', async () => {
 });
 app.get('/api/cleanup-duplicates', (req, res) => {
   try {
+    const db = getDb();
     const usernames = ['andy.devlin','chris.siddle','clare.moody','filomena','hilary','james','jaquetta','laura','louisa','louise','lucy','lucy.clarke','lynne','michelle.pegg','noah','puja','sharon.langridge','sharon','sue.crawley','andy','chris','chrissie','clare','craig','michelle','neil','sofia','sue'];
     let deleted = 0;
     for (const u of usernames) {
