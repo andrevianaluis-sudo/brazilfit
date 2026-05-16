@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -64,7 +64,7 @@ async function fetchCalendarEvents(accessToken) {
   return res.json();
 }
 
-// Manual overrides — calendar name fragment → BrazilFit client name fragment
+// Manual overrides â€” calendar name fragment â†’ BrazilFit client name fragment
 const NAME_ALIASES = {
   'filo': 'filomena',
   'lyin': 'lynne',
@@ -91,7 +91,7 @@ const IGNORE_EVENTS = [
   'saturday foot', 'sofia pick', 'pick up school', 'breakfast club',
 ];
 
-// Special pair sessions — calendar title → combined display name
+// Special pair sessions â€” calendar title â†’ combined display name
 const PAIR_SESSIONS = {
   'laura/james': 'Laura & James',
   'james/laura': 'Laura & James',
@@ -101,7 +101,7 @@ function matchClientFromTitle(title, clients) {
   if (!title) return null;
   const titleLower = title.toLowerCase().trim();
 
-  // Check for pair sessions first — match to Laura's account
+  // Check for pair sessions first â€” match to Laura's account
   for (const [pair, display] of Object.entries(PAIR_SESSIONS)) {
     if (titleLower.includes(pair)) {
       const client = clients.find(c => c.name.toLowerCase().includes('laura'));
@@ -128,13 +128,13 @@ function matchClientFromTitle(title, clients) {
   return null;
 }
 
-// GET /api/google-calendar/auth — start OAuth flow
+// GET /api/google-calendar/auth â€” start OAuth flow
 router.get('/auth', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   res.json({ url: getOAuthUrl() });
 });
 
-// GET /api/google-calendar/callback — handle OAuth callback
+// GET /api/google-calendar/callback â€” handle OAuth callback
 router.get('/callback', async (req, res) => {
   const { code } = req.query;
   if (!code) return res.redirect('/pt?calendar=error');
@@ -158,7 +158,7 @@ router.get('/callback', async (req, res) => {
   }
 });
 
-// GET /api/google-calendar/status — check if connected
+// GET /api/google-calendar/status â€” check if connected
 router.get('/status', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -166,7 +166,7 @@ router.get('/status', authenticateToken, (req, res) => {
   res.json({ connected: !!(user?.google_calendar_connected) });
 });
 
-// POST /api/google-calendar/sync — sync ALL calendar events to sessions/classes
+// POST /api/google-calendar/sync â€” sync ALL calendar events to sessions/classes
 router.post('/sync', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -205,7 +205,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
       let date, time;
       if (startDateTime.includes('T')) {
         // Extract the local time part before any timezone offset
-        // "2026-05-14T09:00:00+01:00" → date="2026-05-14", time="09:00"
+        // "2026-05-14T09:00:00+01:00" â†’ date="2026-05-14", time="09:00"
         const withoutOffset = startDateTime.replace(/([+-]\d{2}:\d{2}|Z)$/, '');
         date = withoutOffset.split('T')[0];
         time = withoutOffset.split('T')[1].substring(0, 5);
@@ -222,7 +222,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
       const client = matchClientFromTitle(title, clients);
 
       if (client) {
-        // It's a PT session — create as session
+        // It's a PT session â€” create as session
         const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
           .get(client.id, date, time);
         if (existing) { skipped++; continue; }
@@ -230,10 +230,10 @@ router.post('/sync', authenticateToken, async (req, res) => {
           .run(client.id, date, time, event.id || null, client.display_name ? `pair:${client.display_name}` : null);
         sessionsCreated++;
       } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
-        // Has PT in name but no client match — skip it, don't create as class
+        // Has PT in name but no client match â€” skip it, don't create as class
         skipped++;
       } else {
-        // No PT in name — treat as a group class with exact calendar title
+        // No PT in name â€” treat as a group class with exact calendar title
         // Normalise class names
         let className = title.trim();
         if (className.toLowerCase().includes('newcastle vision support')) className = 'Vision Support';
@@ -256,7 +256,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
   }
 });
 
-// DELETE /api/google-calendar/wipe — wipe all Google-imported sessions and classes
+// DELETE /api/google-calendar/wipe â€” wipe all Google-imported sessions and classes
 router.delete('/wipe', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -277,7 +277,7 @@ router.delete('/disconnect', authenticateToken, (req, res) => {
 
 module.exports = router;
 
-// GET /api/google-calendar/debug — show raw calendar events for today
+// GET /api/google-calendar/debug â€” show raw calendar events for today
 router.get('/debug', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -311,11 +311,11 @@ router.get('/debug', authenticateToken, async (req, res) => {
   res.json({ count: events.length, events });
 });
 
-// ── Google Calendar Webhook (Push Notifications) ──────────────────────────────
+// â”€â”€ Google Calendar Webhook (Push Notifications) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// POST /api/google-calendar/webhook — receives push notifications from Google
+// POST /api/google-calendar/webhook â€” receives push notifications from Google
 router.post('/webhook', async (req, res) => {
-  // Google sends a ping — we verify and trigger a sync
+  // Google sends a ping â€” we verify and trigger a sync
   const channelId = req.headers['x-goog-channel-id'];
   const resourceState = req.headers['x-goog-resource-state'];
 
@@ -342,10 +342,10 @@ router.post('/webhook', async (req, res) => {
       events = await fetchCalendarEvents(accessToken);
     }
 
-    // Full wipe and re-sync
+    // Only wipe FUTURE upcoming sessions — preserve history
+    const today = new Date().toISOString().split('T')[0];
     db.exec('PRAGMA foreign_keys = OFF');
-    db.prepare("DELETE FROM sessions").run();
-    db.prepare("DELETE FROM classes").run();
+    db.prepare("DELETE FROM sessions WHERE scheduled_date >= ? AND status = 'upcoming'").run(today);
     db.exec('PRAGMA foreign_keys = ON');
 
     const allEvents = events.items || [];
@@ -387,13 +387,13 @@ router.post('/webhook', async (req, res) => {
         } catch(e) {}
       }
     }
-    console.log(`✅ Webhook auto-sync complete: ${allEvents.length} events processed`);
+    console.log(`âœ… Webhook auto-sync complete: ${allEvents.length} events processed`);
   } catch(e) {
     console.error('Webhook sync error:', e.message);
   }
 });
 
-// POST /api/google-calendar/register-webhook — register webhook with Google
+// POST /api/google-calendar/register-webhook â€” register webhook with Google
 router.post('/register-webhook', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -426,8 +426,9 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     try { db.exec(`ALTER TABLE users ADD COLUMN webhook_expiry INTEGER`); } catch(e) {}
     db.prepare("UPDATE users SET webhook_channel_id = ?, webhook_expiry = ? WHERE id = ?").run(channelId, expiration, req.user.id);
 
-    res.json({ message: 'Webhook registered — auto-sync is now active!', expiry: new Date(expiration).toISOString() });
+    res.json({ message: 'Webhook registered â€” auto-sync is now active!', expiry: new Date(expiration).toISOString() });
   } catch(e) {
     res.status(500).json({ error: e.message });
   }
 });
+
