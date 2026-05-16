@@ -282,23 +282,12 @@ PORT, '0.0.0.0', () => {
   console.log('   GET  /api/pt/income');
   console.log('');
 });
-
 // ONE-TIME CLEANUP ROUTE
 app.get('/api/cleanup-duplicates', (req, res) => {
   try {
-    const duplicates = [
-      'andy.devlin@brazilfit.app','chris.siddle@brazilfit.app','clare.moody@brazilfit.app',
-      'filomena@brazilfit.app','hilary@brazilfit.app','james@brazilfit.app',
-      'jaquetta@brazilfit.app','laura@brazilfit.app','louisa@brazilfit.app',
-      'louise@brazilfit.app','lucy@brazilfit.app','lucy.clarke@brazilfit.app',
-      'lynne@brazilfit.app','michelle.pegg@brazilfit.app','noah@brazilfit.app',
-      'puja@brazilfit.app','sharon.langridge@brazilfit.app','sharon@brazilfit.app',
-      'sue.crawley@brazilfit.app','andy@brazilfit.app','chris@brazilfit.app',
-      'chrissie@brazilfit.app','clare@brazilfit.app','craig@brazilfit.app',
-      'michelle@brazilfit.app','neil@brazilfit.app','sofia@brazilfit.app','sue@brazilfit.app',
-    ];
+    const dupes = ['andy.devlin','chris.siddle','clare.moody','filomena','hilary','james','jaquetta','laura','louisa','louise','lucy','lucy.clarke','lynne','michelle.pegg','noah','puja','sharon.langridge','sharon','sue.crawley','andy','chris','chrissie','clare','craig','michelle','neil','sofia','sue'].map(u => u + '@brazilfit.app');
     let deleted = 0;
-    for (const email of duplicates) {
+    for (const email of dupes) {
       const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
       if (!user) continue;
       const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id);
@@ -316,8 +305,3 @@ app.get('/api/cleanup-duplicates', (req, res) => {
     res.json({ message: 'Done', deleted });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
-
-module.exports = app;
-
-
-
