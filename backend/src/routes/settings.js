@@ -198,34 +198,20 @@ router.put('/:clientId/notifications', (req, res) => {
     const { allNotifications } = req.body;
 
     // If master toggle is off, disable all notifications
+    const notifCols = db.prepare('PRAGMA table_info(client_settings)').all().map(c => c.name);
     if (allNotifications === false) {
-      db.prepare(`
-        UPDATE client_settings SET
-          sessionReminder1h = 0,
-          sessionReminder24h = 0,
-          sessionCompleted = 0,
-          missedSession = 0,
-          blockReminder1 = 0,
-          blockReminder2 = 0,
-          weeklyCheckInReminder = 0,
-          habitStreakReminders = 0,
-          dailyHabitReminder = 0,
-          newChallengeNotification = 0,
-          challengeCompletedNotification = 0,
-          leaderboardUpdateNotification = 0,
-          newMessageNotification = 0,
-          ptRepliedNotification = 0,
-          badgeEarnedNotification = 0,
-          milestoneReachedNotification = 0,
-          allNotifications = 0
-        WHERE client_id = ?
-      `).run(clientId);
-    } else {
-      db.prepare(`
-        UPDATE client_settings SET
-          allNotifications = 1
-        WHERE client_id = ?
-      `).run(clientId);
+      const offFields = [
+        'sessionReminder1h','sessionReminder24h','sessionCompleted','missedSession',
+        'blockReminder1','blockReminder2','weeklyCheckInReminder','habitStreakReminders',
+        'dailyHabitReminder','newChallengeNotification','challengeCompletedNotification',
+        'leaderboardUpdateNotification','newMessageNotification','ptRepliedNotification',
+        'badgeEarnedNotification','milestoneReachedNotification','allNotifications'
+      ].filter(f => notifCols.includes(f));
+      if (offFields.length > 0) {
+        db.prepare(`UPDATE client_settings SET ${offFields.map(f => f + ' = 0').join(', ')} WHERE client_id = ?`).run(clientId);
+      }
+    } else if (notifCols.includes('allNotifications')) {
+      db.prepare('UPDATE client_settings SET allNotifications = 1 WHERE client_id = ?').run(clientId);
     }
 
     const updated = db.prepare('SELECT * FROM client_settings WHERE client_id = ?').get(clientId);
@@ -342,5 +328,6 @@ router.get('/:clientId/units', (req, res) => {
 });
 
 module.exports = router;
+
 
 
