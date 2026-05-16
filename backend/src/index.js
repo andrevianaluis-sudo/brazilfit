@@ -254,7 +254,6 @@ cron.schedule('0 6 * * *', async () => {
     console.error('[CRON] Webhook renewal error:', e.message);
   }
 });
-});
 
 module.exports = app;
 
