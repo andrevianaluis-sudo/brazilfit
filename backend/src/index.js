@@ -1,4 +1,5 @@
 ﻿const express = require('express');
+
 const cors = require('cors');
 const cron = require('node-cron');
 const path = require('path');
@@ -253,83 +254,6 @@ cron.schedule('0 6 * * *', async () => {
     console.error('[CRON] Webhook renewal error:', e.message);
   }
 });
-app.get('/api/cleanup-duplicates', (req, res) => {
-  try {
-    const db = getDb();
-    const usernames = ['andy.devlin','chris.siddle','clare.moody','filomena','hilary','james','jaquetta','laura','louisa','louise','lucy','lucy.clarke','lynne','michelle.pegg','noah','puja','sharon.langridge','sharon','sue.crawley','andy','chris','chrissie','clare','craig','michelle','neil','sofia','sue'];
-    let deleted = 0;
-    for (const u of usernames) {
-      const email = u + '@brazilfit.app';
-      const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-      if (!user) continue;
-      const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id);
-      if (client) {
-        db.prepare('DELETE FROM blocks WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM client_settings WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM sessions WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM clients WHERE id = ?').run(client.id);
-      }
-      db.prepare('DELETE FROM users WHERE id = ?').run(user.id);
-      deleted++;
-    }
-    db.prepare("UPDATE clients SET block_price = 400 WHERE client_type = 'F2F' AND block_price = 500").run();
-    db.prepare("UPDATE clients SET block_price = 350 WHERE client_type = 'Online'").run();
-    res.json({ message: 'Done', deleted });
-  } catch(e) { res.status(500).json({ error: e.message }); }
-});
-
-// SPA fallback - route all non-API requests to index.html
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../frontend-dist/index.html'));
-  } else {
-    // API request that didn't match any route - return 404
-    res.status(404).json({ error: 'API endpoint not found' });
-  }
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal server error' });
-});
-
-
-app.get('/api/cleanup-duplicates', (req, res) => {
-  try {
-    const usernames = ['andy.devlin','chris.siddle','clare.moody','filomena','hilary','james','jaquetta','laura','louisa','louise','lucy','lucy.clarke','lynne','michelle.pegg','noah','puja','sharon.langridge','sharon','sue.crawley','andy','chris','chrissie','clare','craig','michelle','neil','sofia','sue'];
-    let deleted = 0;
-    for (const u of usernames) {
-      const email = u + '@brazilfit.app';
-      const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-      if (!user) continue;
-      const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id);
-      if (client) {
-        db.prepare('DELETE FROM blocks WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM client_settings WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM sessions WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM clients WHERE id = ?').run(client.id);
-      }
-      db.prepare('DELETE FROM users WHERE id = ?').run(user.id);
-      deleted++;
-    }
-    db.prepare("UPDATE clients SET block_price = 400 WHERE client_type = 'F2F' AND block_price = 500").run();
-    db.prepare("UPDATE clients SET block_price = 350 WHERE client_type = 'Online'").run();
-    res.json({ message: 'Done', deleted });
-  } catch(e) { res.status(500).json({ error: e.message }); }
-});
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('');
-  console.log('âš¡ BrazilFit API running on http://0.0.0.0:' + PORT + ' (accessible at http://192.168.1.74:' + PORT + ')');
-  console.log('ðŸ‹ï¸  Train smarter. Live better.');
-  console.log('');
-  console.log('ðŸ“š API Endpoints:');
-  console.log('   POST /api/auth/login');
-  console.log('   GET  /api/pt/schedule/today');
-  console.log('   GET  /api/pt/blocks');
-  console.log('   GET  /api/pt/income');
-  console.log('');
 });
 
 module.exports = app;
