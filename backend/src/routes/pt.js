@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken, requirePT } = require('../middleware/auth');
@@ -198,13 +198,18 @@ router.post('/clients/:id/notes', (req, res) => {
 // Update client info
 router.put('/clients/:id', (req, res) => {
   const db = getDb();
-  const { phone, email, sessions_used } = req.body;
-  if (phone) db.prepare('UPDATE clients SET phone = ? WHERE id = ?').run(phone, req.params.id);
-  if (email) {
-    const client = db.prepare('SELECT user_id FROM clients WHERE id = ?').get(req.params.id);
-    db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, client.user_id);
-  }
-  if (sessions_used !== undefined) db.prepare('UPDATE clients SET sessions_used = ? WHERE id = ?').run(sessions_used, req.params.id);
+  const { phone, email, sessions_used, current_block_number, block_start_date, block_price, client_type } = req.body;
+  const client = db.prepare('SELECT id, user_id FROM clients WHERE id = ?').get(req.params.id);
+  if (!client) return res.status(404).json({ error: 'Client not found' });
+  if (email) db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, client.user_id);
+  const fields = []; const values = [];
+  if (phone !== undefined)                { fields.push('phone = ?');                values.push(phone); }
+  if (sessions_used !== undefined)        { fields.push('sessions_used = ?');        values.push(parseInt(sessions_used) || 0); }
+  if (current_block_number !== undefined) { fields.push('current_block_number = ?'); values.push(parseInt(current_block_number) || 1); }
+  if (block_start_date !== undefined)     { fields.push('block_start_date = ?');     values.push(block_start_date); }
+  if (block_price !== undefined)          { fields.push('block_price = ?');          values.push(parseInt(block_price) || 0); }
+  if (client_type !== undefined)          { fields.push('client_type = ?');          values.push(client_type); }
+  if (fields.length > 0) { values.push(req.params.id); db.prepare('UPDATE clients SET ' + fields.join(', ') + ' WHERE id = ?').run(...values); }
   res.json({ message: 'Client updated' });
 });
 
@@ -303,14 +308,14 @@ function generateFutureSessions(startDate, schedule, count) {
 }
 
 // Income overview
-// GET /api/pt/classes — list all classes
+// GET /api/pt/classes â€” list all classes
 router.get('/classes', (req, res) => {
   const db = getDb();
   const classes = db.prepare('SELECT * FROM classes WHERE is_active = 1 ORDER BY day_of_week, class_time').all();
   res.json(classes);
 });
 
-// POST /api/pt/classes/:id/sessions — log income for a class session
+// POST /api/pt/classes/:id/sessions â€” log income for a class session
 router.post('/classes/:id/sessions', (req, res) => {
   const db = getDb();
   const { date, amount_earned, attendees, notes } = req.body;
@@ -322,7 +327,7 @@ router.post('/classes/:id/sessions', (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// POST /api/pt/classes/one-off — add a one-off class and log its income
+// POST /api/pt/classes/one-off â€” add a one-off class and log its income
 router.post('/classes/one-off', (req, res) => {
   const db = getDb();
   const { name, date, amount_earned, attendees } = req.body;
@@ -448,7 +453,7 @@ router.post('/wellness/meals', (req, res) => {
   const { name, calories, goal, emoji, description } = req.body;
   const result = db.prepare(`
     INSERT INTO meal_ideas (name, calories, goal, emoji, description) VALUES (?, ?, ?, ?, ?)
-  `).run(name, calories, goal, emoji || '🥗', description);
+  `).run(name, calories, goal, emoji || 'ðŸ¥—', description);
   res.json({ id: result.lastInsertRowid, message: 'Meal added' });
 });
 
@@ -612,9 +617,9 @@ router.get('/challenges', (req, res) => {
   res.json(challenges);
 });
 
-// ── Notifications ─────────────────────────────────────────────────────────────
+// â”€â”€ Notifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// GET /pt/notifications — all notifications for the PT (newest first)
+// GET /pt/notifications â€” all notifications for the PT (newest first)
 router.get('/notifications', (req, res) => {
   const db = getDb();
   const notifications = db.prepare(`
@@ -629,21 +634,21 @@ router.get('/notifications', (req, res) => {
   res.json({ notifications, unreadCount });
 });
 
-// PUT /pt/notifications/read-all — mark all notifications as read (must be before /:id/read)
+// PUT /pt/notifications/read-all â€” mark all notifications as read (must be before /:id/read)
 router.put('/notifications/read-all', (req, res) => {
   const db = getDb();
   db.prepare('UPDATE notifications SET is_read = 1').run();
   res.json({ message: 'All marked as read' });
 });
 
-// PUT /pt/notifications/:id/read — mark one notification as read
+// PUT /pt/notifications/:id/read â€” mark one notification as read
 router.put('/notifications/:id/read', (req, res) => {
   const db = getDb();
   db.prepare('UPDATE notifications SET is_read = 1 WHERE id = ?').run(req.params.id);
   res.json({ message: 'Marked as read' });
 });
 
-// ── PRO TIER DASHBOARD ─────────────────────────────────────────────────────────
+// â”€â”€ PRO TIER DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // GET /pt/dashboard/pro-metrics - Pro subscription metrics
 router.get('/dashboard/pro-metrics', (req, res) => {
@@ -690,7 +695,7 @@ router.get('/dashboard/pro-metrics', (req, res) => {
 });
 
 // GET /pt/dashboard/checkins - All client check-ins for current week
-// GET /api/pt/sessions-debug — check what sessions exist for a date range
+// GET /api/pt/sessions-debug â€” check what sessions exist for a date range
 router.get('/sessions-debug', (req, res) => {
   const db = getDb();
   const today = new Date().toISOString().split('T')[0];
@@ -871,7 +876,7 @@ router.post("/clients/:id/schedule", (req, res) => {
 
 
 
-// GET /pt/client-notifications — notifications for a specific client
+// GET /pt/client-notifications â€” notifications for a specific client
 router.get('/client-notifications', (req, res) => {
   const db = getDb();
   const clientId = req.user.clientId;
@@ -886,7 +891,7 @@ router.get('/client-notifications', (req, res) => {
   res.json({ notifications, unreadCount });
 });
 
-// PUT /pt/client-notifications/read-all — client marks all their notifications as read
+// PUT /pt/client-notifications/read-all â€” client marks all their notifications as read
 router.put('/client-notifications/read-all', (req, res) => {
   const db = getDb();
   const clientId = req.user.clientId;

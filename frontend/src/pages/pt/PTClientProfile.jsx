@@ -376,7 +376,7 @@ export default function PTClientProfile() {
         sessions_used: parseInt(editForm.sessions_used) || 0,
         current_block_number: parseInt(editForm.block_number) || 1,
         block_start_date: editForm.block_start_date,
-        block_price: Math.round(parseFloat(editForm.block_price) * 100),
+        block_price: parseInt(editForm.block_price) || 0,
         client_type: editForm.client_type,
       });
       toast.success('Client updated ✅');
@@ -438,7 +438,7 @@ export default function PTClientProfile() {
                 {client.client_type}
               </span>
               {client.is_pro === 1 && <span className="badge-pro">PRO</span>}
-              <button onClick={() => { setEditForm({ email: client.email||'', phone: client.phone||'', sessions_used: client.sessions_used??0, block_number: client.current_block_number??1, block_start_date: client.block_start_date||new Date().toISOString().split('T')[0], block_price: client.block_price?(client.block_price/100).toFixed(0):'500', client_type: client.client_type||'F2F' }); setShowEditClient(true); }} style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:'4px',padding:'4px 10px',background:'rgba(255,107,43,0.12)',border:'1px solid rgba(255,107,43,0.3)',borderRadius:'8px',color:'#FF6B2B',fontSize:'0.75rem',fontWeight:600,cursor:'pointer'}}>
+              <button onClick={() => { setEditForm({ email: client.email||'', phone: client.phone||'', sessions_used: client.sessions_used??0, block_number: client.current_block_number??1, block_start_date: client.block_start_date||new Date().toISOString().split('T')[0], block_price: client.block_price||500, client_type: client.client_type||'F2F' }); setShowEditClient(true); }} style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:'4px',padding:'4px 10px',background:'rgba(255,107,43,0.12)',border:'1px solid rgba(255,107,43,0.3)',borderRadius:'8px',color:'#FF6B2B',fontSize:'0.75rem',fontWeight:600,cursor:'pointer'}}>
                 ✏️ Edit
               </button>
             </div>
@@ -1612,5 +1612,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
+
 
 
