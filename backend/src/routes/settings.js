@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -53,7 +53,10 @@ router.put('/:clientId', (req, res) => {
     const fields = [];
     const values = [];
 
-    // Whitelist allowed fields
+    // Get actual columns in the live DB
+    const existingCols = db.prepare('PRAGMA table_info(client_settings)').all().map(c => c.name);
+
+    // Whitelist allowed fields — only ones that exist in the live DB
     const allowedFields = [
       'firstName', 'lastName', 'dateOfBirth', 'gender', 'hometown', 'bio',
       'fitnessGoals', 'fitnessLevel',
@@ -68,7 +71,7 @@ router.put('/:clientId', (req, res) => {
       'badgeEarnedNotification', 'milestoneReachedNotification',
       'allNotifications',
       'country', 'language'
-    ];
+    ].filter(f => existingCols.includes(f));
 
     for (const [key, value] of Object.entries(updates)) {
       if (allowedFields.includes(key)) {
@@ -81,8 +84,10 @@ router.put('/:clientId', (req, res) => {
       return res.json({ message: 'No valid fields to update' });
     }
 
-    fields.push('updated_at = ?');
-    values.push(new Date().toISOString());
+    if (existingCols.includes('updated_at')) {
+      fields.push('updated_at = ?');
+      values.push(new Date().toISOString());
+    }
 
     const query = `UPDATE client_settings SET ${fields.join(', ')} WHERE client_id = ?`;
     values.push(clientId);
@@ -337,3 +342,4 @@ router.get('/:clientId/units', (req, res) => {
 });
 
 module.exports = router;
+
