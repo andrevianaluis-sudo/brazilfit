@@ -320,13 +320,14 @@ router.post('/webhook', async (req, res) => {
   const resourceState = req.headers['x-goog-resource-state'];
 
   // Always respond 200 immediately to Google
-  res.status(200).send('OK');
+ res.status(200).send('OK');
 
   // Ignore sync/initial messages
   if (resourceState === 'sync') return;
 
-  // Run sync in background - never crash the server
-  setImmediate(async () => { try {
+  // Run async so it never crashes the server
+  setImmediate(async () => {
+  try {
     const db = getDb();
     // Get PT user's tokens
     const ptUser = db.prepare("SELECT id, google_access_token, google_refresh_token FROM users WHERE role = 'pt' AND google_calendar_connected = 1 LIMIT 1").get();
@@ -389,9 +390,10 @@ router.post('/webhook', async (req, res) => {
       }
     }
     console.log(`âœ… Webhook auto-sync complete: ${allEvents.length} events processed`);
-  } catch(e) {
+ } catch(e) {
     console.error('Webhook sync error:', e.message);
   }
+  }); // end setImmediate
 });
 
 // POST /api/google-calendar/register-webhook â€” register webhook with Google
