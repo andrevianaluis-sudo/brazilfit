@@ -270,7 +270,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('');
   console.log('âš¡ BrazilFit API running on http://0.0.0.0:' + PORT + ' (accessible at http://192.168.1.74:' + PORT + ')');
   console.log('ðŸ‹ï¸  Train smarter. Live better.');
