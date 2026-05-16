@@ -76,7 +76,8 @@ router.put('/:clientId', (req, res) => {
     for (const [key, value] of Object.entries(updates)) {
       if (allowedFields.includes(key)) {
         fields.push(`${key} = ?`);
-        values.push(value);
+        // Convert booleans to integers for SQLite
+        values.push(typeof value === 'boolean' ? (value ? 1 : 0) : value);
       }
     }
 
@@ -328,6 +329,7 @@ router.get('/:clientId/units', (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
