@@ -1,3 +1,36 @@
+﻿// ONE-TIME CLEANUP ROUTE — remove after use
+app.get('/api/cleanup-duplicates', (req, res) => {
+  const { getDb } = require('./db/database');
+  const db = getDb();
+  const duplicates = [
+    'andy.devlin@brazilfit.app','chris.siddle@brazilfit.app','clare.moody@brazilfit.app',
+    'filomena@brazilfit.app','hilary@brazilfit.app','james@brazilfit.app',
+    'jaquetta@brazilfit.app','laura@brazilfit.app','louisa@brazilfit.app',
+    'louise@brazilfit.app','lucy@brazilfit.app','lucy.clarke@brazilfit.app',
+    'lynne@brazilfit.app','michelle.pegg@brazilfit.app','noah@brazilfit.app',
+    'puja@brazilfit.app','sharon.langridge@brazilfit.app','sharon@brazilfit.app',
+    'sue.crawley@brazilfit.app','andy@brazilfit.app','chris@brazilfit.app',
+    'chrissie@brazilfit.app','clare@brazilfit.app','craig@brazilfit.app',
+    'michelle@brazilfit.app','neil@brazilfit.app','sofia@brazilfit.app','sue@brazilfit.app',
+  ];
+  let deleted = 0;
+  for (const email of duplicates) {
+    const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (!user) continue;
+    const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id);
+    if (client) {
+      db.prepare('DELETE FROM blocks WHERE client_id = ?').run(client.id);
+      db.prepare('DELETE FROM client_settings WHERE client_id = ?').run(client.id);
+      db.prepare('DELETE FROM sessions WHERE client_id = ?').run(client.id);
+      db.prepare('DELETE FROM clients WHERE id = ?').run(client.id);
+    }
+    db.prepare('DELETE FROM users WHERE id = ?').run(user.id);
+    deleted++;
+  }
+  db.prepare("UPDATE clients SET block_price = 400 WHERE client_type = 'F2F' AND block_price = 500").run();
+  db.prepare("UPDATE clients SET block_price = 350 WHERE client_type = 'Online'").run();
+  res.json({ message: 'Done', deleted });
+});
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
@@ -171,8 +204,8 @@ cron.schedule('0 20 * * 1-5', async () => {
           db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
             .run(
               'renewal',
-              '1 session remaining 🔔',
-              `You're on your 9th session — just 1 left in your block. Your PT will be in touch to arrange renewal. Keep going ${clientUser?.name || ''}!`,
+              '1 session remaining ðŸ””',
+              `You're on your 9th session â€” just 1 left in your block. Your PT will be in touch to arrange renewal. Keep going ${clientUser?.name || ''}!`,
               client_id
             );
           console.log('[CRON] Low session alert sent to client ' + client_id);
@@ -185,8 +218,8 @@ cron.schedule('0 20 * * 1-5', async () => {
           db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
             .run(
               'renewal',
-              'Block complete! 🏆',
-              `Amazing — you've completed all 10 sessions! Contact your PT to start your next block and keep your momentum.`,
+              'Block complete! ðŸ†',
+              `Amazing â€” you've completed all 10 sessions! Contact your PT to start your next block and keep your momentum.`,
               client_id
             );
         } catch(e) { console.error('[CRON] Block complete notification error:', e.message); }
@@ -207,7 +240,7 @@ cron.schedule('0 6 * * *', async () => {
     // Renew if expiring within 2 days
     const twoDaysFromNow = Date.now() + (2 * 24 * 60 * 60 * 1000);
     if (!ptUser.webhook_expiry || ptUser.webhook_expiry < twoDaysFromNow) {
-      console.log('[CRON] Webhook expiring soon — renewing...');
+      console.log('[CRON] Webhook expiring soon â€” renewing...');
 
       // Refresh access token if needed
       let accessToken = ptUser.google_access_token;
@@ -242,12 +275,12 @@ cron.schedule('0 6 * * *', async () => {
       const data = await res.json();
       if (!data.error) {
         db.prepare("UPDATE users SET webhook_channel_id = ?, webhook_expiry = ? WHERE id = ?").run(channelId, expiration, ptUser.id);
-        console.log('[CRON] ✅ Webhook renewed until', new Date(expiration).toISOString());
+        console.log('[CRON] âœ… Webhook renewed until', new Date(expiration).toISOString());
       } else {
         console.error('[CRON] Webhook renewal failed:', data.error.message);
       }
     } else {
-      console.log('[CRON] Webhook still valid — no renewal needed');
+      console.log('[CRON] Webhook still valid â€” no renewal needed');
     }
   } catch(e) {
     console.error('[CRON] Webhook renewal error:', e.message);
@@ -270,12 +303,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+PORT, '0.0.0.0', () => {
   console.log('');
-  console.log('⚡ BrazilFit API running on http://0.0.0.0:' + PORT + ' (accessible at http://192.168.1.74:' + PORT + ')');
-  console.log('🏋️  Train smarter. Live better.');
+  console.log('âš¡ BrazilFit API running on http://0.0.0.0:' + PORT + ' (accessible at http://192.168.1.74:' + PORT + ')');
+  console.log('ðŸ‹ï¸  Train smarter. Live better.');
   console.log('');
-  console.log('📚 API Endpoints:');
+  console.log('ðŸ“š API Endpoints:');
   console.log('   POST /api/auth/login');
   console.log('   GET  /api/pt/schedule/today');
   console.log('   GET  /api/pt/blocks');
@@ -284,3 +317,5 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 module.exports = app;
+
+
