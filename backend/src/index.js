@@ -282,28 +282,5 @@ PORT, '0.0.0.0', () => {
   console.log('   GET  /api/pt/income');
   console.log('');
 });
-// ONE-TIME CLEANUP ROUTE
-app.get('/api/cleanup-duplicates', (req, res) => {
-  try {
-    const dupes = ['andy.devlin','chris.siddle','clare.moody','filomena','hilary','james','jaquetta','laura','louisa','louise','lucy','lucy.clarke','lynne','michelle.pegg','noah','puja','sharon.langridge','sharon','sue.crawley','andy','chris','chrissie','clare','craig','michelle','neil','sofia','sue'].map(u => u + '@brazilfit.app');
-    let deleted = 0;
-    for (const email of dupes) {
-      const user = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-      if (!user) continue;
-      const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id);
-      if (client) {
-        db.prepare('DELETE FROM blocks WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM client_settings WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM sessions WHERE client_id = ?').run(client.id);
-        db.prepare('DELETE FROM clients WHERE id = ?').run(client.id);
-      }
-      db.prepare('DELETE FROM users WHERE id = ?').run(user.id);
-      deleted++;
-    }
-    db.prepare("UPDATE clients SET block_price = 400 WHERE client_type = 'F2F' AND block_price = 500").run();
-    db.prepare("UPDATE clients SET block_price = 350 WHERE client_type = 'Online'").run();
-    res.json({ message: 'Done', deleted });
-  } catch(e) { res.status(500).json({ error: e.message }); }
-});
 
 module.exports = app;
