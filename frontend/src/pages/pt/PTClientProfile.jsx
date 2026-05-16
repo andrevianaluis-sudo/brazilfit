@@ -153,6 +153,9 @@ export default function PTClientProfile() {
   const [showNewCard, setShowNewCard] = useState(false);
   const [cardForm, setCardForm] = useState({ title: 'Programme Card', card_date: new Date().toISOString().split('T')[0], session_notes: '', activities_away: '', resistance: [], cardio: [], warm_up_pulse: [], warm_up_stretches: [], cool_down_cv: [], cool_down_stretches: [] });
   const [cardSaving, setCardSaving] = useState(false);
+  const [showEditClient, setShowEditClient] = useState(false);
+  const [editForm, setEditForm] = useState({});
+  const [editSaving, setEditSaving] = useState(false);
   // Messages tab state
   const [messages, setMessages] = useState([]);
   const [messagesLoading, setMessagesLoading] = useState(false);
@@ -364,6 +367,26 @@ export default function PTClientProfile() {
     } finally { setResettingPassword(false); }
   };
 
+  const saveEditClient = async () => {
+    setEditSaving(true);
+    try {
+      await api.put(`/pt/clients/${id}`, {
+        email: editForm.email,
+        phone: editForm.phone,
+        sessions_used: parseInt(editForm.sessions_used) || 0,
+        current_block_number: parseInt(editForm.block_number) || 1,
+        block_start_date: editForm.block_start_date,
+        block_price: Math.round(parseFloat(editForm.block_price) * 100),
+        client_type: editForm.client_type,
+      });
+      toast.success('Client updated ✅');
+      setShowEditClient(false);
+      loadClient();
+    } catch(e) {
+      toast.error(e.response?.data?.error || 'Failed to save changes');
+    } finally { setEditSaving(false); }
+  };
+
   const handleReinstate = async (sessionId) => {
     if (!window.confirm('Reinstate this cancelled session? It will become upcoming again.')) return;
     try {
@@ -415,6 +438,9 @@ export default function PTClientProfile() {
                 {client.client_type}
               </span>
               {client.is_pro === 1 && <span className="badge-pro">PRO</span>}
+              <button onClick={() => { setEditForm({ email: client.email||'', phone: client.phone||'', sessions_used: client.sessions_used??0, block_number: client.current_block_number??1, block_start_date: client.block_start_date||new Date().toISOString().split('T')[0], block_price: client.block_price?(client.block_price/100).toFixed(0):'500', client_type: client.client_type||'F2F' }); setShowEditClient(true); }} style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:'4px',padding:'4px 10px',background:'rgba(255,107,43,0.12)',border:'1px solid rgba(255,107,43,0.3)',borderRadius:'8px',color:'#FF6B2B',fontSize:'0.75rem',fontWeight:600,cursor:'pointer'}}>
+                ✏️ Edit
+              </button>
             </div>
             <div className="flex items-center gap-3 mt-1 text-sm text-grey-200">
               {client.email && <span className="flex items-center gap-1"><Mail  />{client.email}</span>}
@@ -549,6 +575,44 @@ export default function PTClientProfile() {
                 <button onClick={()=>setShowResetPassword(true)} style={{padding:"8px 16px",borderRadius:"8px",border:"1px solid rgba(255,107,43,0.3)",background:"rgba(255,107,43,0.08)",color:"#FF6B2B",fontFamily:"'DM Sans',system-ui",fontSize:"0.78rem",fontWeight:700,cursor:"pointer",minHeight:"auto",whiteSpace:"nowrap",flexShrink:0}}>
                   Reset Password
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showEditClient && (
+          <div onClick={()=>setShowEditClient(false)} style={{position:'fixed',inset:0,zIndex:50,background:'rgba(0,0,0,0.85)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem',backdropFilter:'blur(4px)'}}>
+            <div onClick={e=>e.stopPropagation()} style={{background:'#111',borderRadius:'20px',border:'1px solid rgba(255,107,43,0.2)',padding:'1.75rem',maxWidth:'420px',width:'100%',maxHeight:'90vh',overflowY:'auto'}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'1.25rem'}}>
+                <h3 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:800,color:'#fff',margin:0}}>Edit Client</h3>
+                <button onClick={()=>setShowEditClient(false)} style={{background:'none',border:'none',color:'#888',cursor:'pointer',fontSize:'1.2rem'}}>✕</button>
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+                <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Email</label>
+                  <input value={editForm.email||''} onChange={e=>setEditForm(f=>({...f,email:e.target.value}))} type="email" style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Phone</label>
+                  <input value={editForm.phone||''} onChange={e=>setEditForm(f=>({...f,phone:e.target.value}))} style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px'}}>
+                  <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Sessions Used</label>
+                    <input value={editForm.sessions_used??0} onChange={e=>setEditForm(f=>({...f,sessions_used:e.target.value}))} type="number" min="0" max="10" style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                  <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Block Number</label>
+                    <input value={editForm.block_number??1} onChange={e=>setEditForm(f=>({...f,block_number:e.target.value}))} type="number" min="1" style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px'}}>
+                  <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Block Started</label>
+                    <input value={editForm.block_start_date||''} onChange={e=>setEditForm(f=>({...f,block_start_date:e.target.value}))} type="date" style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                  <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Block Price (£)</label>
+                    <input value={editForm.block_price||''} onChange={e=>setEditForm(f=>({...f,block_price:e.target.value}))} type="number" style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}/></div>
+                </div>
+                <div><label style={{fontSize:'0.72rem',color:'#888',display:'block',marginBottom:'4px'}}>Client Type</label>
+                  <select value={editForm.client_type||'F2F'} onChange={e=>setEditForm(f=>({...f,client_type:e.target.value}))} style={{width:'100%',padding:'0.75rem',background:'#1a1a1a',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',color:'#fff',fontSize:'0.875rem',outline:'none',boxSizing:'border-box'}}>
+                    <option value="F2F">F2F</option>
+                    <option value="Online">Online</option>
+                  </select></div>
+              </div>
+              <div style={{display:'flex',gap:'8px',marginTop:'1.5rem'}}>
+                <button onClick={()=>setShowEditClient(false)} style={{flex:1,padding:'0.875rem',background:'#222',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'12px',color:'#888',fontSize:'0.875rem',fontWeight:600,cursor:'pointer'}}>Cancel</button>
+                <button onClick={saveEditClient} disabled={editSaving} style={{flex:2,padding:'0.875rem',background:'linear-gradient(135deg,#FF6B2B,#FFD600)',border:'none',borderRadius:'12px',color:'#000',fontSize:'0.875rem',fontWeight:800,cursor:'pointer'}}>{editSaving?'Saving…':'Save Changes'}</button>
               </div>
             </div>
           </div>
@@ -1548,3 +1612,5 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
+
