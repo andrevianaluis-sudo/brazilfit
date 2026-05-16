@@ -305,3 +305,5 @@ app.get('/api/cleanup-duplicates', (req, res) => {
     res.json({ message: 'Done', deleted });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
+
+module.exports = app;
