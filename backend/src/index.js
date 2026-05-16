@@ -254,6 +254,9 @@ cron.schedule('0 6 * * *', async () => {
     console.error('[CRON] Webhook renewal error:', e.message);
   }
 });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log('BrazilFit API running on port ' + PORT);
+});
 
 module.exports = app;
 
