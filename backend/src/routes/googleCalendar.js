@@ -325,7 +325,8 @@ router.post('/webhook', async (req, res) => {
   // Ignore sync/initial messages
   if (resourceState === 'sync') return;
 
-  try {
+  // Run sync in background - never crash the server
+  setImmediate(async () => { try {
     const db = getDb();
     // Get PT user's tokens
     const ptUser = db.prepare("SELECT id, google_access_token, google_refresh_token FROM users WHERE role = 'pt' AND google_calendar_connected = 1 LIMIT 1").get();
@@ -431,4 +432,5 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
