@@ -1366,7 +1366,7 @@ export default function PTClientProfile() {
                 <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
                   {clientPlans.map(plan => (
                     <div key={plan.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",gap:"12px"}}>
-                      <div className="w-10 h-10 rounded-[8px] bg-brazil-orange/20 flex items-center justify-center text-lg flex-shrink-0">??</div>
+                      <div className="w-10 h-10 rounded-[8px] bg-brazil-orange/20 flex items-center justify-center flex-shrink-0"><Dumbbell size={18} color="#FF6B2B"/></div>
                       <div style={{flex:1,minWidth:0}}>
                         <p style={{fontWeight:700,fontSize:"0.875rem"}}>{plan.name}</p>
                         {plan.description && <p style={{fontSize:"0.75rem",color:"#606060",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{plan.description}</p>}
@@ -1392,7 +1392,7 @@ export default function PTClientProfile() {
                     const isAssigned = clientPlans.some(p => p.id === plan.id);
                     return (
                       <div key={plan.id} style={{background:"#222",borderRadius:"12px",padding:"1rem",border:"1px solid rgba(255,255,255,0.08)",display:"flex",alignItems:"center",gap:"12px"}}>
-                        <div className="w-10 h-10 rounded-[8px] bg-grey-100 flex items-center justify-center text-lg flex-shrink-0">??</div>
+                        <div className="w-10 h-10 rounded-[8px] bg-grey-100 flex items-center justify-center flex-shrink-0"><Dumbbell size={18} color="#FF6B2B"/></div>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{fontWeight:700,fontSize:"0.875rem"}}>{plan.name}</p>
                           {plan.description && <p style={{fontSize:"0.75rem",color:"#606060",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{plan.description}</p>}
@@ -1637,6 +1637,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
