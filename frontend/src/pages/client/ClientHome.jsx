@@ -96,11 +96,11 @@ export default function ClientHome(){
                     {new Date(nextSession.scheduled_date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
                   </p>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.88rem',fontWeight:600,color:'rgba(0,0,0,0.6)',margin:0}}>
-                    {nextSession.scheduled_time} · {nextSession.session_type||'PT Session'}
+                    {nextSession.scheduled_time}  {nextSession.session_type||'PT Session'}
                   </p>
                 </>
               ):(
-                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:'rgba(0,0,0,0.7)',margin:0}}>No session booked yet â€” contact your PT</p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:'rgba(0,0,0,0.7)',margin:0}}>No session booked yet  contact your PT</p>
               )}
             </div>
             <div style={{width:'36px',height:'36px',borderRadius:'50%',background:'rgba(0,0,0,0.15)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -146,8 +146,8 @@ export default function ClientHome(){
           </div>
           {rem<=3&&rem>0&&(
             <div style={{marginTop:'0.875rem',display:'flex',alignItems:'center',gap:'8px'}}>
-              <span style={{fontSize:'0.8rem'}}>ðŸ””</span>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,fontWeight:600,margin:0}}>{rem} session{rem!==1?'s':''} left â€” time to renew your block</p>
+              <span style={{fontSize:'0.8rem'}}></span>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,fontWeight:600,margin:0}}>{rem} session{rem!==1?'s':''} left  time to renew your block</p>
             </div>
           )}
         </div>
@@ -191,15 +191,16 @@ export default function ClientHome(){
         {/* Motivation */}
         <div style={{borderRadius:'20px',padding:'1.5rem',background:'linear-gradient(135deg,#1a1a2e,#1a1a1a)',border:'1px solid rgba(167,139,250,0.2)',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',top:'-20px',right:'-20px',width:'80px',height:'80px',borderRadius:'50%',background:'#a78bfa',opacity:0.06,pointerEvents:'none'}}/>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'#a78bfa',textTransform:'uppercase',margin:'0 0 0.875rem'}}>ðŸ’œ Daily Motivation</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'#a78bfa',textTransform:'uppercase',margin:'0 0 0.875rem'}}> Daily Motivation</p>
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',color:'#c0c0c0',lineHeight:1.7,margin:'0 0 0.75rem',fontStyle:'italic',fontWeight:300}}>"{quote.text}"</p>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,color:'#a78bfa',margin:0}}>â€” {quote.author}</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,color:'#a78bfa',margin:0}}> {quote.author}</p>
         </div>
 
       </div>
     </div>
   );
 }
+
 
 
 
