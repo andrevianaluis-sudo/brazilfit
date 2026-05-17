@@ -891,6 +891,11 @@ export default function PTClientProfile() {
               </div>
             ) : (
               <>
+                {messages.length > 0 && (
+                  <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'4px'}}>
+                    <button onClick={async()=>{if(!window.confirm('Clear all messages with this client?'))return;try{await api.delete(`/messages/pt/client/${id}/all`);loadMessages();toast.success('Messages cleared');}catch{toast.error('Failed to clear');}}} style={{fontSize:'0.72rem',color:'#ef4444',background:'rgba(239,68,68,0.08)',border:'1px solid rgba(239,68,68,0.2)',borderRadius:'8px',padding:'4px 12px',cursor:'pointer'}}>Clear messages</button>
+                  </div>
+                )}
                 {/* Messages list */}
                 <div className="flex-1 overflow-y-auto space-y-2 pb-3">
                   {messages.length === 0 ? (
@@ -1637,6 +1642,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
