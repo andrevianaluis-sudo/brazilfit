@@ -981,7 +981,7 @@ export default function PTClientProfile() {
                       <span style={{fontSize:'0.72rem',fontWeight:700,color: b.is_current ? '#4CAF50' : '#888'}}>{attended} / {total}</span>
                     </div>
                     <div style={{height:'6px',borderRadius:'99px',background:'rgba(255,255,255,0.08)',overflow:'hidden'}}>
-                      <div style={{height:'100%',width:${pct}%,borderRadius:'99px',background: b.is_current ? 'linear-gradient(90deg,#4CAF50,#8BC34A)' : '#555'}} />
+                      <div style={{height:'100%',width:`%,borderRadius:'99px',background: b.is_current ? 'linear-gradient(90deg,#4CAF50,#8BC34A)' : '#555'}} />
                     </div>
                   </div>
                   <div style={{display:'flex',gap:'8px'}}>
@@ -1638,6 +1638,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
