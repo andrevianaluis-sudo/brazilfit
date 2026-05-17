@@ -950,7 +950,8 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Blocks ── */        {activeTab === 'blocks' && (
+        {/* ── Blocks ── */}
+        {activeTab === 'blocks' && (
           <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
             {!client.blocks?.length ? (
               <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No block history yet</p>
@@ -1637,6 +1638,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
