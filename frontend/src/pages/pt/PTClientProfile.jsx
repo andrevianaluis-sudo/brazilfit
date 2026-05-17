@@ -729,7 +729,6 @@ export default function PTClientProfile() {
             ))}
           </div>
         )}
-        )}
 
         {/* ── Cancellations ── */}
         {activeTab === 'cancellations' && (
