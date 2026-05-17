@@ -258,6 +258,7 @@ cron.schedule('0 6 * * *', async () => {
 const frontendDist = path.join(__dirname, '../frontend-dist');
 app.use(express.static(frontendDist));
 app.get('*', (req, res) => {
+app.get('/api/fix-charlotte2', (req, res) => { try { const { getDb } = require('./db/database'); const bcrypt = require('bcryptjs'); const db = getDb(); const hash = bcrypt.hashSync('BrazilFit2026!', 10); db.prepare("UPDATE users SET password_hash = ?, username = 'charlotte.blyth' WHERE email = 'charlotteblyth@hotmail.com'").run(hash); res.json({ done: true }); } catch(e) { res.status(500).json({ error: e.message }); } });
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(frontendDist, 'index.html'));
   } else {
