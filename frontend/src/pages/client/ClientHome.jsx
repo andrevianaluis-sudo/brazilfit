@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Activity, Zap, ChevronRight } from 'lucide-react';
@@ -25,7 +25,7 @@ const QUOTES=[
 
 export default function ClientHome(){
   const{user}=useAuth();const navigate=useNavigate();
-  const[sessions,setSessions]=useState(null);const[streak,setStreak]=useState(0);const[unreadMessages,setUnreadMessages]=useState(0);const[loading,setLoading]=useState(true);
+  const[sessions,setSessions]=useState(null);const[lastCheckinDate,setLastCheckinDate]=useState(null);const[unreadMessages,setUnreadMessages]=useState(0);const[loading,setLoading]=useState(true);
   const[quote]=useState(QUOTES[Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000)%QUOTES.length]);
 
   useEffect(()=>{
@@ -36,7 +36,7 @@ export default function ClientHome(){
       api.get('/messages/unread-count').catch(()=>null),
     ]).then(([sessRes,habitsRes,msgRes])=>{
       if(sessRes)setSessions(sessRes.data);
-      if(habitsRes)setStreak(habitsRes.data.streak||0);
+      if(habitsRes)setLastCheckinDate(habitsRes.data.lastCheckinDate||null);
       if(msgRes)setUnreadMessages(msgRes.data.unreadCount||0);
     }).finally(()=>setLoading(false));
   },[user]);
@@ -64,7 +64,7 @@ export default function ClientHome(){
     {label:'Messages',    sub:'Chat with PT',        to:'/client/messages',  ic:MessageSquare, color:GREEN,           bg:'rgba(76,175,80,0.1)',   border:'rgba(76,175,80,0.2)',  badge:unreadMessages},
     {label:'Check-in',    sub:'Weekly review',       to:'/client/checkin',   ic:ClipboardList, color:YELLOW,          bg:'rgba(255,214,0,0.1)',   border:'rgba(255,214,0,0.2)'},
     {label:'Workouts',    sub:'Browse library',      to:'/client/workouts',  ic:Dumbbell,      color:ORANGE,          bg:'rgba(255,107,43,0.1)',  border:'rgba(255,107,43,0.2)'},
-    {label:'Stretches',   sub:'Routines & library',  to:'/client/exercises', ic:Zap,           color:GREEN,           bg:'rgba(76,175,80,0.1)',   border:'rgba(76,175,80,0.2)'},
+    {label:'Stretches',   sub:'Pro feature',          to:'/client/exercises', ic:Zap,           color:GREEN,           bg:'rgba(76,175,80,0.1)',   border:'rgba(76,175,80,0.2)', pro:true},
   ];
 
   return(
@@ -89,18 +89,18 @@ export default function ClientHome(){
           <div style={{position:'absolute',bottom:'-30px',left:'30%',width:'80px',height:'80px',borderRadius:'50%',background:'rgba(255,255,255,0.06)',pointerEvents:'none'}}/>
           <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}>
             <div style={{flex:1}}>
-              <p style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'rgba(0,0,0,0.5)',textTransform:'uppercase',margin:'0 0 8px'}}>⚡ Next Session</p>
+              <p style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'rgba(0,0,0,0.5)',textTransform:'uppercase',margin:'0 0 8px'}}>âš¡ Next Session</p>
               {nextSession?(
                 <>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.3rem',fontWeight:800,color:'#000',letterSpacing:'-0.03em',margin:'0 0 4px',lineHeight:1.1}}>
                     {new Date(nextSession.scheduled_date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
                   </p>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.88rem',fontWeight:600,color:'rgba(0,0,0,0.6)',margin:0}}>
-                    {nextSession.scheduled_time} · {nextSession.session_type||'PT Session'}
+                    {nextSession.scheduled_time} Â· {nextSession.session_type||'PT Session'}
                   </p>
                 </>
               ):(
-                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:'rgba(0,0,0,0.7)',margin:0}}>No session booked yet — contact your PT</p>
+                <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',fontWeight:700,color:'rgba(0,0,0,0.7)',margin:0}}>No session booked yet â€” contact your PT</p>
               )}
             </div>
             <div style={{width:'36px',height:'36px',borderRadius:'50%',background:'rgba(0,0,0,0.15)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -112,13 +112,13 @@ export default function ClientHome(){
         {/* Stats row */}
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
-            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:'📦'},
-            {v:streak, l:'Check-in Streak', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'🔥'},
-            {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:'✅'},
+            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:'ðŸ“¦'},
+            {v:streak, l:'Check-in Streak', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'ðŸ”¥'},
+            {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:'âœ…'},
           ].map((s,i)=>(
             <div key={i} style={{borderRadius:'16px',padding:'1rem 0.75rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>
               <p style={{fontSize:'1rem',margin:'0 0 3px'}}>{s.icon}</p>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'2rem',fontWeight:800,color:s.c,letterSpacing:'-0.05em',lineHeight:1,margin:'0 0 4px'}}>{s.v}</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:s.v==='lastCheckin'?'0.85rem':'2rem',fontWeight:800,color:s.c,letterSpacing:'-0.03em',lineHeight:1,margin:'0 0 4px'}}>{s.v}</p>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.56rem',fontWeight:700,letterSpacing:'0.12em',color:s.c,textTransform:'uppercase',margin:0,opacity:0.8}}>{s.l}</p>
             </div>
           ))}
@@ -146,8 +146,8 @@ export default function ClientHome(){
           </div>
           {rem<=3&&rem>0&&(
             <div style={{marginTop:'0.875rem',display:'flex',alignItems:'center',gap:'8px'}}>
-              <span style={{fontSize:'0.8rem'}}>🔔</span>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,fontWeight:600,margin:0}}>{rem} session{rem!==1?'s':''} left — time to renew your block</p>
+              <span style={{fontSize:'0.8rem'}}>ðŸ””</span>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:YELLOW,fontWeight:600,margin:0}}>{rem} session{rem!==1?'s':''} left â€” time to renew your block</p>
             </div>
           )}
         </div>
@@ -191,12 +191,13 @@ export default function ClientHome(){
         {/* Motivation */}
         <div style={{borderRadius:'20px',padding:'1.5rem',background:'linear-gradient(135deg,#1a1a2e,#1a1a1a)',border:'1px solid rgba(167,139,250,0.2)',position:'relative',overflow:'hidden'}}>
           <div style={{position:'absolute',top:'-20px',right:'-20px',width:'80px',height:'80px',borderRadius:'50%',background:'#a78bfa',opacity:0.06,pointerEvents:'none'}}/>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'#a78bfa',textTransform:'uppercase',margin:'0 0 0.875rem'}}>💜 Daily Motivation</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'#a78bfa',textTransform:'uppercase',margin:'0 0 0.875rem'}}>ðŸ’œ Daily Motivation</p>
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1rem',color:'#c0c0c0',lineHeight:1.7,margin:'0 0 0.75rem',fontStyle:'italic',fontWeight:300}}>"{quote.text}"</p>
-          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,color:'#a78bfa',margin:0}}>— {quote.author}</p>
+          <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',fontWeight:700,color:'#a78bfa',margin:0}}>â€” {quote.author}</p>
         </div>
 
       </div>
     </div>
   );
 }
+
