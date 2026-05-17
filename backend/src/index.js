@@ -254,6 +254,7 @@ cron.schedule('0 6 * * *', async () => {
     console.error('[CRON] Webhook renewal error:', e.message);
   }
 });
+app.get('/api/clear-vivien-messages', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare("SELECT id FROM users WHERE username = 'vivien'").get(); const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id); const result = db.prepare('DELETE FROM pt_messages WHERE client_id = ?').run(client.id); res.json({ deleted: result.changes }); } catch(e) { res.status(500).json({ error: e.message }); } });
 // Serve frontend
 const frontendDist = path.join(__dirname, '../frontend-dist');
 app.use(express.static(frontendDist));
@@ -270,6 +271,7 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 module.exports = app;
+
 
 
 
