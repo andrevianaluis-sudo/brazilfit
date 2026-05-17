@@ -253,4 +253,12 @@ router.put('/client-notifications/read-all', authenticateToken, (req, res) => {
   res.json({ message: 'All marked as read' });
 });
 
+router.delete('/pt/client/:clientId/all', authenticateToken, (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const db = getDb();
+  const result = db.prepare('DELETE FROM pt_messages WHERE client_id = ?').run(req.params.clientId);
+  res.json({ deleted: result.changes });
+});
+
 module.exports = router;
+
