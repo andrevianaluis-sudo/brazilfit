@@ -1,5 +1,12 @@
 ﻿const express = require('express');
 
+
+
+app.get('/api/delete-sofia', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare("SELECT id FROM users WHERE username = 'sofia'").get(); if (!user) return res.json({ error: 'Not found' }); const client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id); if (client) { db.prepare('DELETE FROM blocks WHERE client_id = ?').run(client.id); db.prepare('DELETE FROM client_settings WHERE client_id = ?').run(client.id); db.prepare('DELETE FROM sessions WHERE client_id = ?').run(client.id); db.prepare('DELETE FROM clients WHERE id = ?').run(client.id); } db.prepare('DELETE FROM users WHERE id = ?').run(user.id); res.json({ deleted: true }); } catch(e) { res.status(500).json({ error: e.message }); } });
+
+
+const express = require('express');
+
 const cors = require('cors');
 const cron = require('node-cron');
 const path = require('path');
