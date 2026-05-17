@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
@@ -18,14 +18,14 @@ const YELLOW = '#FFD600';
 const GREEN = '#4CAF50';
 
 const MOODS = [
-  { emoji: '😔', label: 'Exhausted' },
-  { emoji: '😐', label: 'Tired' },
-  { emoji: '🙂', label: 'Okay' },
-  { emoji: '😊', label: 'Good' },
-  { emoji: '🤩', label: 'Great' },
+  { emoji: '', label: 'Exhausted' },
+  { emoji: '', label: 'Tired' },
+  { emoji: '', label: 'Okay' },
+  { emoji: '', label: 'Good' },
+  { emoji: '', label: 'Great' },
 ];
 
-const ENERGY_EMOJIS = ['😴','😴','😕','😕','😊','😊','💪','💪','🔥','🔥'];
+const ENERGY_EMOJIS = ['','','','','','','','','',''];
 
 function Label({ children }) {
   return <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: MUTED, textTransform: 'uppercase', margin: '0 0 0.4rem' }}>{children}</p>;
@@ -62,7 +62,7 @@ function NumberField({ icon, label, hint, value, onChange, min, max, unit, color
         <label style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 600, color: '#c0c0c0' }}>{label}</label>
       </div>
       {hint && <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, fontStyle: 'italic', margin: '0 0 0.6rem' }}>{hint}</p>}
-      <input type="number" min={min} max={max} value={value || ''} placeholder={`${min}–${max} ${unit}`}
+      <input type="number" min={min} max={max} value={value || ''} placeholder={`${min}${max} ${unit}`}
         onChange={e => onChange(e.target.value ? parseInt(e.target.value) : null)}
         style={{
           width: '100%', padding: '0.7rem 1rem', border: `1px solid ${BORDER}`, borderRadius: '8px',
@@ -150,7 +150,7 @@ export default function ClientHabits() {
     setSaving(true);
     try {
       await api.post('/habits', { ...form, alcohol_free: form.alcohol_free ? 1 : 0 });
-      toast.success('Health metrics logged! 🎉');
+      toast.success('Health metrics logged! ');
       const res = await api.get(`/habits/${user.clientId}`);
       setHabitData(res.data);
     } catch { toast.error('Failed to save habits'); } finally { setSaving(false); }
@@ -188,10 +188,10 @@ export default function ClientHabits() {
 
   const insights = [];
   if (weekAvg) {
-    if (parseFloat(weekAvg.sleep) >= 7.5) insights.push({ text: `Great sleep! Avg ${weekAvg.sleep}h this week 🌙`, type: 'positive' });
-    else if (parseFloat(weekAvg.sleep) < 6) insights.push({ text: `Try to sleep more — averaging ${weekAvg.sleep}h 😴`, type: 'warn' });
-    if (form.energy_score >= 7) insights.push({ text: 'Your energy is high today — keep it up! 💪', type: 'positive' });
-    if (parseInt(weekAvg.steps) >= 8000) insights.push({ text: `Excellent activity! ${Math.round(parseInt(weekAvg.steps)/1000)}k steps this week 🎯`, type: 'positive' });
+    if (parseFloat(weekAvg.sleep) >= 7.5) insights.push({ text: `Great sleep! Avg ${weekAvg.sleep}h this week `, type: 'positive' });
+    else if (parseFloat(weekAvg.sleep) < 6) insights.push({ text: `Try to sleep more  averaging ${weekAvg.sleep}h `, type: 'warn' });
+    if (form.energy_score >= 7) insights.push({ text: 'Your energy is high today  keep it up! ', type: 'positive' });
+    if (parseInt(weekAvg.steps) >= 8000) insights.push({ text: `Excellent activity! ${Math.round(parseInt(weekAvg.steps)/1000)}k steps this week `, type: 'positive' });
   }
 
   return (
@@ -224,7 +224,7 @@ export default function ClientHabits() {
             </div>
             <div style={{ textAlign: 'left' }}>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.9rem', fontWeight: 700, color: wellnessColor, margin: '0 0 4px' }}>
-                {wellnessScore >= 70 ? '🟢 Excellent' : wellnessScore >= 40 ? '🟡 Good' : '🔴 Needs attention'}
+                {wellnessScore >= 70 ? ' Excellent' : wellnessScore >= 40 ? ' Good' : ' Needs attention'}
               </p>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, maxWidth: '200px' }}>
                 {wellnessScore >= 70 ? 'Keep up your healthy habits!' : 'Focus on sleep and movement today'}
@@ -248,7 +248,7 @@ export default function ClientHabits() {
         <Card style={{ marginBottom: '1rem', background: `linear-gradient(135deg, ${ORANGE}18, ${YELLOW}08)`, borderColor: `${ORANGE}33` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
-              <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}>🔥</div>
+              <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}></div>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Check-in Streak</p>
             </div>
@@ -266,9 +266,9 @@ export default function ClientHabits() {
               </div>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: '#c0c0c0', fontStyle: 'italic', textAlign: 'center', margin: 0 }}>
                 {streak === 0 ? 'Every journey starts with a single step' :
-                 streak <= 6 ? 'Building momentum — keep going!' :
-                 streak <= 13 ? 'One week strong — real habits forming' :
-                 'Elite consistency — you are unstoppable 🏆'}
+                 streak <= 6 ? 'Building momentum  keep going!' :
+                 streak <= 13 ? 'One week strong  real habits forming' :
+                 'Elite consistency  you are unstoppable '}
               </p>
             </div>
           </div>
@@ -279,12 +279,12 @@ export default function ClientHabits() {
           <div style={{ marginBottom: '1rem' }}>
             <Label>Weekly Averages</Label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '8px' }}>
-              <MetricCard icon="💧" label="Water" value={weekAvg.water} unit="glasses" color="#60a5fa" />
-              <MetricCard icon="😴" label="Sleep" value={weekAvg.sleep} unit="h" color="#a78bfa" />
-              <MetricCard icon="👟" label="Steps" value={Math.round(weekAvg.steps/1000)} unit="k" color={YELLOW} />
-              <MetricCard icon="🥗" label="Veg" value={weekAvg.veg} unit="portions" color={GREEN} />
-              <MetricCard icon="❤️" label="Resting HR" value={weekAvg.heartRate} unit="bpm" color="#ef4444" />
-              <MetricCard icon="⚡" label="Energy" value={weekAvg.energy} unit="/10" color={ORANGE} />
+              <MetricCard icon="" label="Water" value={weekAvg.water} unit="glasses" color="#60a5fa" />
+              <MetricCard icon="" label="Sleep" value={weekAvg.sleep} unit="h" color="#a78bfa" />
+              <MetricCard icon="" label="Steps" value={Math.round(weekAvg.steps/1000)} unit="k" color={YELLOW} />
+              <MetricCard icon="" label="Veg" value={weekAvg.veg} unit="portions" color={GREEN} />
+              <MetricCard icon="" label="Resting HR" value={weekAvg.heartRate} unit="bpm" color="#ef4444" />
+              <MetricCard icon="" label="Energy" value={weekAvg.energy} unit="/10" color={ORANGE} />
             </div>
           </div>
         )}
@@ -346,21 +346,21 @@ export default function ClientHabits() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <SliderField icon="💧" label="Water" hint="Staying hydrated boosts energy and recovery" value={form.water_glasses} onChange={v => setForm(f => ({...f, water_glasses: v}))} min={0} max={12} step={1} unit="glasses" color="#60a5fa" />
-            <SliderField icon="😴" label="Sleep" hint="Quality sleep is when your body repairs" value={form.sleep_hours} onChange={v => setForm(f => ({...f, sleep_hours: v}))} min={0} max={12} step={0.5} unit="hours" color="#a78bfa" />
-            <SliderField icon="👟" label="Steps" hint="Daily movement accelerates results" value={form.steps} onChange={v => setForm(f => ({...f, steps: v}))} min={0} max={20000} step={500} unit="" color={YELLOW} />
-            <SliderField icon="🥗" label="Vegetables" hint="Micronutrients from veg fuel your body" value={form.veg_portions} onChange={v => setForm(f => ({...f, veg_portions: v}))} min={0} max={10} step={1} unit="portions" color={GREEN} />
+            <SliderField icon="" label="Water" hint="Staying hydrated boosts energy and recovery" value={form.water_glasses} onChange={v => setForm(f => ({...f, water_glasses: v}))} min={0} max={12} step={1} unit="glasses" color="#60a5fa" />
+            <SliderField icon="" label="Sleep" hint="Quality sleep is when your body repairs" value={form.sleep_hours} onChange={v => setForm(f => ({...f, sleep_hours: v}))} min={0} max={12} step={0.5} unit="hours" color="#a78bfa" />
+            <SliderField icon="" label="Steps" hint="Daily movement accelerates results" value={form.steps} onChange={v => setForm(f => ({...f, steps: v}))} min={0} max={20000} step={500} unit="" color={YELLOW} />
+            <SliderField icon="" label="Vegetables" hint="Micronutrients from veg fuel your body" value={form.veg_portions} onChange={v => setForm(f => ({...f, veg_portions: v}))} min={0} max={10} step={1} unit="portions" color={GREEN} />
 
             <div style={{ height: '1px', backgroundColor: BORDER }} />
             <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Advanced Metrics</p>
 
-            <NumberField icon="❤️" label="Resting Heart Rate" hint="Lower is generally better (60–100 bpm)" value={form.resting_heart_rate} onChange={v => setForm(f => ({...f, resting_heart_rate: v}))} min={40} max={120} unit="bpm" color="#ef4444" />
-            <NumberField icon="💓" label="Heart Rate Variability" hint="Higher HRV = better recovery (20–120 ms)" value={form.hrv} onChange={v => setForm(f => ({...f, hrv: v}))} min={20} max={120} unit="ms" color="#ef4444" />
-            <SliderField icon="⚡" label="Energy / Recovery" hint="How recovered and energized do you feel?" value={form.energy_score} onChange={v => setForm(f => ({...f, energy_score: v}))} min={1} max={10} step={1} unit="/10" color={ORANGE} emoji={ENERGY_EMOJIS[Math.max(0, Math.min(form.energy_score-1, 9))]} />
-            <NumberField icon="🩸" label="Blood Oxygen (SpO2)" hint="Normal range is 95–100%" value={form.blood_oxygen} onChange={v => setForm(f => ({...f, blood_oxygen: v}))} min={90} max={100} unit="%" color="#60a5fa" />
-            <SliderField icon="😌" label="Stress Level" hint="1 = very calm, 10 = very stressed" value={form.stress_level} onChange={v => setForm(f => ({...f, stress_level: v}))} min={1} max={10} step={1} unit="/10" color={YELLOW} />
-            <NumberField icon="🏃" label="Active Minutes" hint="Minutes of intentional movement today" value={form.active_minutes} onChange={v => setForm(f => ({...f, active_minutes: v}))} min={0} max={300} unit="mins" color={GREEN} />
-            <SliderField icon="🍎" label="Nutrition Score" hint="How well did you eat today?" value={form.nutrition_score} onChange={v => setForm(f => ({...f, nutrition_score: v}))} min={1} max={10} step={1} unit="/10" color={GREEN} />
+            <NumberField icon="" label="Resting Heart Rate" hint="Lower is generally better (60100 bpm)" value={form.resting_heart_rate} onChange={v => setForm(f => ({...f, resting_heart_rate: v}))} min={40} max={120} unit="bpm" color="#ef4444" />
+            <NumberField icon="" label="Heart Rate Variability" hint="Higher HRV = better recovery (20120 ms)" value={form.hrv} onChange={v => setForm(f => ({...f, hrv: v}))} min={20} max={120} unit="ms" color="#ef4444" />
+            <SliderField icon="" label="Energy / Recovery" hint="How recovered and energized do you feel?" value={form.energy_score} onChange={v => setForm(f => ({...f, energy_score: v}))} min={1} max={10} step={1} unit="/10" color={ORANGE} emoji={ENERGY_EMOJIS[Math.max(0, Math.min(form.energy_score-1, 9))]} />
+            <NumberField icon="" label="Blood Oxygen (SpO2)" hint="Normal range is 95100%" value={form.blood_oxygen} onChange={v => setForm(f => ({...f, blood_oxygen: v}))} min={90} max={100} unit="%" color="#60a5fa" />
+            <SliderField icon="" label="Stress Level" hint="1 = very calm, 10 = very stressed" value={form.stress_level} onChange={v => setForm(f => ({...f, stress_level: v}))} min={1} max={10} step={1} unit="/10" color={YELLOW} />
+            <NumberField icon="" label="Active Minutes" hint="Minutes of intentional movement today" value={form.active_minutes} onChange={v => setForm(f => ({...f, active_minutes: v}))} min={0} max={300} unit="mins" color={GREEN} />
+            <SliderField icon="" label="Nutrition Score" hint="How well did you eat today?" value={form.nutrition_score} onChange={v => setForm(f => ({...f, nutrition_score: v}))} min={1} max={10} step={1} unit="/10" color={GREEN} />
 
             <div style={{ height: '1px', backgroundColor: BORDER }} />
 
@@ -375,7 +375,7 @@ export default function ClientHabits() {
               gap: '8px', transition: 'all 0.15s ease', minHeight: 'auto',
             }}>
               {form.alcohol_free && <Check size={16} />}
-              {form.alcohol_free ? 'Alcohol free today ✓' : 'Tap to confirm alcohol free'}
+              {form.alcohol_free ? 'Alcohol free today ' : 'Tap to confirm alcohol free'}
             </button>
 
             {/* Mood */}
@@ -429,7 +429,7 @@ export default function ClientHabits() {
               ['Your PT uses this data', 'The more complete your data, the better your programme'],
             ].map(([title, desc], i) => (
               <div key={i} style={{ display: 'flex', gap: '10px' }}>
-                <span style={{ color: ORANGE, fontWeight: 700, flexShrink: 0, marginTop: '2px' }}>✓</span>
+                <span style={{ color: ORANGE, fontWeight: 700, flexShrink: 0, marginTop: '2px' }}></span>
                 <div>
                   <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: TEXT, margin: '0 0 2px' }}>{title}</p>
                   <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{desc}</p>
@@ -442,3 +442,4 @@ export default function ClientHabits() {
     </div>
   );
 }
+
