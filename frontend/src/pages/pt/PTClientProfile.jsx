@@ -646,6 +646,8 @@ export default function PTClientProfile() {
             </div>
           </div>
         )}
+
+        {activeTab === 'sessions' && (
           <div style={{display:"flex",flexDirection:"column",gap:"8px"}}>
             {/* Upcoming sessions with override option */}
             {upcomingSessions.length > 0 && (
@@ -726,6 +728,7 @@ export default function PTClientProfile() {
               </div>
             ))}
           </div>
+        )}
         )}
 
         {/* ── Cancellations ── */}
@@ -1612,6 +1615,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
