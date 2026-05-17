@@ -113,7 +113,7 @@ export default function ClientHome(){
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
             {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:'ðŸ“¦'},
-            {v:streak, l:'Check-in Streak', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'ðŸ”¥'},
+            {v:lastCheckinDate?Math.floor((new Date()-new Date(lastCheckinDate))/(1000*60*60*24))+'d ago':'Never', l:'Check-in Streak', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'ðŸ”¥'},
             {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:'âœ…'},
           ].map((s,i)=>(
             <div key={i} style={{borderRadius:'16px',padding:'1rem 0.75rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>
@@ -200,4 +200,5 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
