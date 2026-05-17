@@ -89,7 +89,7 @@ export default function ClientHome(){
           <div style={{position:'absolute',bottom:'-30px',left:'30%',width:'80px',height:'80px',borderRadius:'50%',background:'rgba(255,255,255,0.06)',pointerEvents:'none'}}/>
           <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}>
             <div style={{flex:1}}>
-              <p style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'rgba(0,0,0,0.5)',textTransform:'uppercase',margin:'0 0 8px'}}>âš¡ Next Session</p>
+              <p style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:'rgba(0,0,0,0.5)',textTransform:'uppercase',margin:'0 0 8px'}}>NEXT SESSION</p>
               {nextSession?(
                 <>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.3rem',fontWeight:800,color:'#000',letterSpacing:'-0.03em',margin:'0 0 4px',lineHeight:1.1}}>
@@ -112,7 +112,7 @@ export default function ClientHome(){
         {/* Stats row */}
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
-            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:''},
+            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`, icon:''},
             {v:lastCheckinDate?Math.floor((new Date()-new Date(lastCheckinDate))/(1000*60*60*24))+'d ago':'Never', l:'Last Check-in', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:''},
             {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:''},
           ].map((s,i)=>(
@@ -200,6 +200,7 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
 
 
