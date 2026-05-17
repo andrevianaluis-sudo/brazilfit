@@ -256,10 +256,10 @@ cron.schedule('0 6 * * *', async () => {
 });
 // Serve frontend
 const frontendDist = path.join(__dirname, '../frontend-dist');
+app.get('/api/fix-schedule', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const today = new Date().toISOString().split('T')[0]; db.prepare("DELETE FROM sessions WHERE scheduled_date >= ? AND status = 'upcoming' AND client_id IS NULL").run(today); db.prepare("DELETE FROM classes WHERE name IN ('Pilates Fusion','Pilates')").run(); res.json({ done: true }); } catch(e) { res.status(500).json({ error: e.message }); } });
 app.use(express.static(frontendDist));
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-app.get('/api/fix-schedule', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const today = new Date().toISOString().split('T')[0]; db.prepare("DELETE FROM sessions WHERE scheduled_date >= ? AND status = 'upcoming' AND client_id IS NULL").run(today); db.prepare("DELETE FROM classes WHERE name IN ('Pilates Fusion','Pilates')").run(); res.json({ done: true }); } catch(e) { res.status(500).json({ error: e.message }); } });
     res.sendFile(path.join(frontendDist, 'index.html'));
   } else {
     res.status(404).json({ error: 'API endpoint not found' });
