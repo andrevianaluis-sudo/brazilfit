@@ -254,6 +254,17 @@ cron.schedule('0 6 * * *', async () => {
     console.error('[CRON] Webhook renewal error:', e.message);
   }
 });
+// Serve frontend
+const frontendDist = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDist));
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  } else {
+    res.status(404).json({ error: 'API endpoint not found' });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log('BrazilFit API running on port ' + PORT);
 });
