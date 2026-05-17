@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+﻿import { useState, useRef } from 'react';
 import { X, LogOut, Zap, Camera, Crown, ChevronRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -201,14 +201,9 @@ export default function ProfileModal({ isOpen, onClose }) {
                 </span>
               </div>
             )}
-
-            {/* Member since */}
-            <p style={{ fontSize: '12px', color: MUTED, marginTop: '8px', fontFamily: "'DM Sans', system-ui" }}>
-              Member since {memberSinceDate}
-            </p>
           </div>
 
-          {/* Pro upgrade card — only for free */}
+          {/* Pro upgrade card â€” only for free */}
           {!isPro && (
             <div style={{ padding: '16px 20px 0' }}>
               <button
@@ -292,3 +287,4 @@ export default function ProfileModal({ isOpen, onClose }) {
     </>
   );
 }
+
