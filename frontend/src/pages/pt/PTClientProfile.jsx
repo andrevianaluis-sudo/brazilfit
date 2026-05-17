@@ -413,7 +413,8 @@ export default function PTClientProfile() {
   const genNotes = client.notes?.filter(n => !n.is_progress_note) || [];
   const latestProgress = client.progress?.[0];
 
-  const upcomingSessions = client.sessions?.filter(s => s.status === 'upcoming') || [];
+  const upcomingSessions = (client.sessions?.filter(s => s.status === 'upcoming') || [])
+    .sort((a,b) => new Date(a.scheduled_date + 'T' + a.scheduled_time) - new Date(b.scheduled_date + 'T' + b.scheduled_time));
   const cancelledSessions = client.sessions?.filter(s => s.status === 'cancelled') || [];
 
   const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'checkins', 'onboarding', 'assessment', 'programme', 'workouts'];
@@ -662,7 +663,7 @@ export default function PTClientProfile() {
                       <div key={s.id} className="flex items-center gap-3 rounded-[8px] px-3 py-2.5 bg-grey-100 border border-white/10">
                         <div className="w-5 h-5 rounded-full border-2 border-white/20 flex-shrink-0" />
                         <div style={{flex:1}}>
-                          <p style={{fontSize:"0.875rem",fontWeight:500}}>{s.scheduled_date} at {s.scheduled_time}</p>
+                          <p style={{fontSize:"0.875rem",fontWeight:500}}>{new Date(s.scheduled_date + 'T12:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric'})} at {s.scheduled_time}</p>
                           <p style={{fontSize:"0.75rem",color:"#888"}}>
                             {isWithin24
                               ? <span style={{color:"#FF6B2B"}}>Within 24hrs — client cannot cancel</span>
@@ -1614,6 +1615,8 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
+
 
 
 
