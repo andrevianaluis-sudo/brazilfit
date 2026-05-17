@@ -255,7 +255,7 @@ cron.schedule('0 6 * * *', async () => {
   }
 });
 // Serve frontend
-const frontendDist = path.join(__dirname, '../frontend/dist');
+const frontendDist = path.join(__dirname, '../frontend-dist');
 app.use(express.static(frontendDist));
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
@@ -270,4 +270,5 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 module.exports = app;
+
 
