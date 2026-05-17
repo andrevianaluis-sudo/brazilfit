@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Check, Plus, ArrowRight, Lock, Calendar } from 'lucide-react';
@@ -140,6 +140,7 @@ export default function ClientCheckin(){
   const upd=(k,v)=>setFd(f=>({...f,[k]:v}));
 
   const [streak, setStreak] = useState(0);
+  const [lastCheckinDate, setLastCheckinDate] = useState(null);
 
   const load=async()=>{
     try{
@@ -153,6 +154,7 @@ export default function ClientCheckin(){
         // Load real streak
         const sr = await api.get('/checkins/streak').catch(()=>({data:{streak:0}}));
         setStreak(sr.data.streak||0);
+        setLastCheckinDate(sr.data.lastCheckinDate||null);
       }
     }catch(e){toast.error('Failed to load');}
     finally{setLoading(false);}
@@ -198,7 +200,7 @@ export default function ClientCheckin(){
         <div style={{maxWidth:'600px',margin:'0 auto'}}>
           <div style={{textAlign:'center',padding:'2rem 0 2rem'}}>
             <div style={{width:'90px',height:'90px',margin:'0 auto 1.25rem',background:`linear-gradient(135deg,${ORANGE},${YELLOW})`,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:`0 0 0 12px ${ORANGE}18,0 8px 40px ${ORANGE}55`}}>
-              <span style={{fontSize:'2.2rem'}}>✅</span>
+              <span style={{fontSize:'2.2rem'}}>âœ…</span>
             </div>
             <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.85rem',fontWeight:800,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 0.5rem'}}>Check-in Submitted!</h2>
             <p style={{fontSize:'0.95rem',color:ORANGE,fontWeight:700,margin:'0 0 0.35rem'}}>Great work this week</p>
@@ -207,25 +209,25 @@ export default function ClientCheckin(){
 
           <div style={{background:`linear-gradient(135deg,${ORANGE}28,${YELLOW}14)`,border:`1px solid ${ORANGE}44`,borderRadius:'16px',padding:'1.5rem',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'1.5rem'}}>
             <div style={{textAlign:'center',flexShrink:0}}>
-              <div style={{fontSize:'2rem',marginBottom:'4px'}}>🔥</div>
+              <div style={{fontSize:'2rem',marginBottom:'4px'}}>ðŸ”¥</div>
               <div style={{fontFamily:"'DM Sans',system-ui",fontSize:'3rem',fontWeight:900,color:ORANGE,lineHeight:1}}>{streak}</div>
               <div style={{fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.14em',textTransform:'uppercase',color:MUTED,marginTop:'4px'}}>Week Streak</div>
             </div>
             <div style={{flex:1}}>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.92rem',fontWeight:700,color:TEXT,margin:'0 0 6px'}}>Keep it up — you're building something special</p>
-              <p style={{fontSize:'0.78rem',color:MUTED,margin:'0 0 10px'}}>Your PT can see your consistency — it matters</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.92rem',fontWeight:700,color:TEXT,margin:'0 0 6px'}}>Keep it up â€” you're building something special</p>
+              <p style={{fontSize:'0.78rem',color:MUTED,margin:'0 0 10px'}}>Your PT can see your consistency â€” it matters</p>
               <div style={{display:'inline-flex',alignItems:'center',gap:'6px',background:`${ORANGE}20`,border:`1px solid ${ORANGE}35`,borderRadius:'20px',padding:'4px 12px'}}>
-                <span style={{fontSize:'0.8rem'}}>⚡</span>
+                <span style={{fontSize:'0.8rem'}}>âš¡</span>
                 <span style={{fontSize:'0.72rem',fontWeight:700,color:ORANGE}}>+1 streak point earned!</span>
               </div>
             </div>
           </div>
 
           {[
-            {icon:'🔥',color:ORANGE,bg:`${ORANGE}15`,border:`${ORANGE}30`,text:'Every check-in adds +1 to your streak — keep the chain going'},
-            {icon:'📊',color:'#60a5fa',bg:'rgba(96,165,250,0.12)',border:'rgba(96,165,250,0.25)',text:'Clients who check in weekly see 3× better results — research backed'},
-            {icon:'🎯',color:GREEN,bg:'rgba(76,175,80,0.12)',border:'rgba(76,175,80,0.25)',text:"Your PT uses your answers to personalise next week's programme"},
-            {icon:'🏆',color:'#c084fc',bg:'rgba(192,132,252,0.12)',border:'rgba(192,132,252,0.25)',text:'Every check-in brings you closer to your next achievement badge'},
+            {icon:'ðŸ”¥',color:ORANGE,bg:`${ORANGE}15`,border:`${ORANGE}30`,text:'Every check-in adds +1 to your streak â€” keep the chain going'},
+            {icon:'ðŸ“Š',color:'#60a5fa',bg:'rgba(96,165,250,0.12)',border:'rgba(96,165,250,0.25)',text:'Clients who check in weekly see 3Ã— better results â€” research backed'},
+            {icon:'ðŸŽ¯',color:GREEN,bg:'rgba(76,175,80,0.12)',border:'rgba(76,175,80,0.25)',text:"Your PT uses your answers to personalise next week's programme"},
+            {icon:'ðŸ†',color:'#c084fc',bg:'rgba(192,132,252,0.12)',border:'rgba(192,132,252,0.25)',text:'Every check-in brings you closer to your next achievement badge'},
           ].map((item,i)=>(
             <div key={i} style={{display:'flex',alignItems:'flex-start',gap:'14px',padding:'14px 16px',borderRadius:'12px',marginBottom:'8px',background:item.bg,border:`1px solid ${item.border}`}}>
               <span style={{fontSize:'1.3rem',flexShrink:0}}>{item.icon}</span>
@@ -251,7 +253,7 @@ export default function ClientCheckin(){
 
         {checkin&&(
           <div style={{background:'rgba(76,175,80,0.1)',border:'1px solid rgba(76,175,80,0.25)',borderRadius:'14px',padding:'1rem 1.25rem',marginBottom:'1.5rem',display:'flex',alignItems:'center',gap:'12px'}}>
-            <span style={{fontSize:'1.3rem'}}>✅</span>
+            <span style={{fontSize:'1.3rem'}}>âœ…</span>
             <div style={{flex:1}}>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',fontWeight:700,color:GREEN,margin:'0 0 2px'}}>Already submitted this week</p>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,margin:0}}>Viewing your answers</p>
@@ -263,7 +265,7 @@ export default function ClientCheckin(){
         <div style={{margin:'0 0 2rem'}}>
           <p style={{fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 6px'}}>Weekly Review</p>
           <h1 style={{fontFamily:"'DM Sans',system-ui",fontSize:'2.5rem',fontWeight:800,color:TEXT,letterSpacing:'-0.05em',margin:'0 0 6px',lineHeight:1}}>Weekly Check-in</h1>
-          <p style={{fontSize:'0.82rem',color:MUTED,margin:'0 0 0.75rem'}}>Takes about 5 minutes · Helps your PT support you better</p>
+          <p style={{fontSize:'0.82rem',color:MUTED,margin:'0 0 0.75rem'}}>Takes about 5 minutes Â· Helps your PT support you better</p>
           {monday&&(
             <div style={{display:'inline-flex',alignItems:'center',gap:'6px',background:'rgba(76,175,80,0.1)',border:'1px solid rgba(76,175,80,0.2)',borderRadius:'20px',padding:'4px 12px'}}>
               <Calendar size={12} color={GREEN}/>
@@ -274,38 +276,38 @@ export default function ClientCheckin(){
 
         <form onSubmit={submit} style={{display:'flex',flexDirection:'column',gap:'14px'}}>
 
-          <Card step={1} total={T} emoji="🎯" label="Goal Review" title="Did you achieve your goals last week?" sub="Be honest — your PT is here to help, not judge">
+          <Card step={1} total={T} emoji="ðŸŽ¯" label="Goal Review" title="Did you achieve your goals last week?" sub="Be honest â€” your PT is here to help, not judge">
             <Choices selected={fd.goals_achieved} onChange={v=>upd('goals_achieved',v)} options={[
-              {value:'YES',label:'Yes, nailed it!',emoji:'✅',color:GREEN},
-              {value:'NO',label:'Not quite',emoji:'❌',color:'#ef4444'},
+              {value:'YES',label:'Yes, nailed it!',emoji:'âœ…',color:GREEN},
+              {value:'NO',label:'Not quite',emoji:'âŒ',color:'#ef4444'},
             ]}/>
             {fd.goals_achieved==='NO'&&(
               <textarea value={fd.goals_barrier} onChange={e=>upd('goals_barrier',e.target.value)} placeholder="What got in the way? Your PT reads every answer." rows={3} style={{...ta(),marginTop:'12px'}} onFocus={e=>e.target.style.borderColor=ORANGE} onBlur={e=>e.target.style.borderColor=BORDER}/>
             )}
           </Card>
 
-          <Card step={2} total={T} emoji="💪" label="Workouts" title="How many assigned workouts did you complete?">
+          <Card step={2} total={T} emoji="ðŸ’ª" label="Workouts" title="How many assigned workouts did you complete?">
             <Choices selected={fd.workouts_completed} onChange={v=>upd('workouts_completed',v)} options={[
-              {value:'All of them',label:'All of them',emoji:'🔥',color:GREEN},
-              {value:'Most of them',label:'Most of them',emoji:'💪',color:'#60a5fa'},
-              {value:'Some of them',label:'Some of them',emoji:'😅',color:YELLOW},
-              {value:'None of them',label:'None of them',emoji:'😔',color:'#ef4444'},
+              {value:'All of them',label:'All of them',emoji:'ðŸ”¥',color:GREEN},
+              {value:'Most of them',label:'Most of them',emoji:'ðŸ’ª',color:'#60a5fa'},
+              {value:'Some of them',label:'Some of them',emoji:'ðŸ˜…',color:YELLOW},
+              {value:'None of them',label:'None of them',emoji:'ðŸ˜”',color:'#ef4444'},
             ]}/>
-            <textarea value={fd.workouts_notes} onChange={e=>upd('workouts_notes',e.target.value)} placeholder="Tell us more — what got in the way if you missed any?" rows={2} style={{...ta(),marginTop:'12px'}} onFocus={e=>e.target.style.borderColor=ORANGE} onBlur={e=>e.target.style.borderColor=BORDER}/>
+            <textarea value={fd.workouts_notes} onChange={e=>upd('workouts_notes',e.target.value)} placeholder="Tell us more â€” what got in the way if you missed any?" rows={2} style={{...ta(),marginTop:'12px'}} onFocus={e=>e.target.style.borderColor=ORANGE} onBlur={e=>e.target.style.borderColor=BORDER}/>
           </Card>
 
-          <Card step={3} total={T} emoji="⚡" label="Workout Feel" title="How did your workouts feel this week?">
-            <Emojis list={['😫','😕','😊','💪','🔥']} labels={['Tough','Meh','Good','Strong','On Fire!']} selected={fd.workouts_felt} onChange={v=>upd('workouts_felt',v)}/>
+          <Card step={3} total={T} emoji="âš¡" label="Workout Feel" title="How did your workouts feel this week?">
+            <Emojis list={['ðŸ˜«','ðŸ˜•','ðŸ˜Š','ðŸ’ª','ðŸ”¥']} labels={['Tough','Meh','Good','Strong','On Fire!']} selected={fd.workouts_felt} onChange={v=>upd('workouts_felt',v)}/>
           </Card>
 
-          <Card step={4} total={T} emoji="🌙" label="Lifestyle" title="How were your daily habits?" sub="Use the sliders to show your average this week">
+          <Card step={4} total={T} emoji="ðŸŒ™" label="Lifestyle" title="How were your daily habits?" sub="Use the sliders to show your average this week">
             <div style={{display:'flex',flexDirection:'column',gap:'1.5rem',marginBottom:'1.25rem'}}>
               <Slide label="Sleep per night" value={fd.sleep_hours} min={0} max={12} step={0.5} unit="h" fmt={v=>v} color={ORANGE} onChange={v=>upd('sleep_hours',v)}/>
               <Slide label="Water glasses" value={fd.water_glasses} min={0} max={15} step={1} unit=" glasses" fmt={v=>v} color="#60a5fa" onChange={v=>upd('water_glasses',v)}/>
               <Slide label="Daily steps" value={fd.daily_steps} min={0} max={20000} step={500} unit="k" fmt={v=>(v/1000).toFixed(0)} color={GREEN} onChange={v=>upd('daily_steps',v)}/>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-              {[{k:'alcohol_free',l:'Alcohol-free most days',e:'🍷'},{k:'ate_breakfast',l:'Ate breakfast daily',e:'🥣'},{k:'limited_processed',l:'Limited processed food',e:'🥗'}].map(item=>(
+              {[{k:'alcohol_free',l:'Alcohol-free most days',e:'ðŸ·'},{k:'ate_breakfast',l:'Ate breakfast daily',e:'ðŸ¥£'},{k:'limited_processed',l:'Limited processed food',e:'ðŸ¥—'}].map(item=>(
                 <div key={item.k} onClick={()=>upd(item.k,!fd[item.k])} style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer',padding:'10px 12px',background:fd[item.k]?'rgba(76,175,80,0.08)':S2,borderRadius:'10px',border:`1px solid ${fd[item.k]?'rgba(76,175,80,0.3)':BORDER}`,transition:'all 0.15s'}}>
                   <span style={{fontSize:'1.1rem'}}>{item.e}</span>
                   <span style={{flex:1,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:fd[item.k]?TEXT:'#a0a0a0',fontWeight:fd[item.k]?600:400}}>{item.l}</span>
@@ -317,28 +319,28 @@ export default function ClientCheckin(){
             </div>
           </Card>
 
-          <Card step={5} total={T} emoji="🧠" label="Mindset" title="Rate your motivation and stress levels" sub="1 = Low · 10 = High">
+          <Card step={5} total={T} emoji="ðŸ§ " label="Mindset" title="Rate your motivation and stress levels" sub="1 = Low Â· 10 = High">
             <div style={{display:'flex',flexDirection:'column',gap:'1.75rem'}}>
               <Scale label="Motivation" value={fd.motivation_score} onChange={v=>upd('motivation_score',v)} color={GREEN}/>
               <Scale label="Stress" value={fd.stress_score} onChange={v=>upd('stress_score',v)} color={YELLOW}/>
             </div>
           </Card>
 
-          <Card step={6} total={T} emoji="😊" label="Mood" title="What's your overall mood this week?">
-            <Emojis list={['😔','😐','🙂','😄','🤩']} labels={['Down','Neutral','Happy','Very Happy','Amazing!']} selected={fd.overall_mood} onChange={v=>upd('overall_mood',v)}/>
+          <Card step={6} total={T} emoji="ðŸ˜Š" label="Mood" title="What's your overall mood this week?">
+            <Emojis list={['ðŸ˜”','ðŸ˜','ðŸ™‚','ðŸ˜„','ðŸ¤©']} labels={['Down','Neutral','Happy','Very Happy','Amazing!']} selected={fd.overall_mood} onChange={v=>upd('overall_mood',v)}/>
           </Card>
 
-          <Card step={7} total={T} emoji="💭" label="Insight" title="What contributed to your motivation or stress?" sub="Your PT reads every word — be specific">
+          <Card step={7} total={T} emoji="ðŸ’­" label="Insight" title="What contributed to your motivation or stress?" sub="Your PT reads every word â€” be specific">
             <textarea value={fd.motivation_factors} onChange={e=>upd('motivation_factors',e.target.value)} placeholder="Share what helped you stay motivated or what caused stress..." rows={4} style={ta()} onFocus={e=>e.target.style.borderColor=ORANGE} onBlur={e=>e.target.style.borderColor=BORDER}/>
             <p style={{fontSize:'0.68rem',color:MUTED,margin:'6px 0 0',textAlign:'right'}}>{fd.motivation_factors.length}/500</p>
           </Card>
 
-          <Card step={8} total={T} emoji="🏆" label="Celebrate" title="List your wins from this week" sub="Big or small — every win counts">
-            <List items={fd.wins} setItems={v=>upd('wins',v)} placeholder="I completed all my sessions" emoji="🏆" maxItems={5} addLabel="Add another win"/>
+          <Card step={8} total={T} emoji="ðŸ†" label="Celebrate" title="List your wins from this week" sub="Big or small â€” every win counts">
+            <List items={fd.wins} setItems={v=>upd('wins',v)} placeholder="I completed all my sessions" emoji="ðŸ†" maxItems={5} addLabel="Add another win"/>
           </Card>
 
-          <Card step={9} total={T} emoji="🚀" label="Looking Ahead" title="What are your goals for next week?" sub="Writing them down makes you 3x more likely to achieve them">
-            <List items={fd.next_week_goals} setItems={v=>upd('next_week_goals',v)} placeholder="I will complete all 3 sessions" emoji="🎯" maxItems={5} addLabel="Add another goal"/>
+          <Card step={9} total={T} emoji="ðŸš€" label="Looking Ahead" title="What are your goals for next week?" sub="Writing them down makes you 3x more likely to achieve them">
+            <List items={fd.next_week_goals} setItems={v=>upd('next_week_goals',v)} placeholder="I will complete all 3 sessions" emoji="ðŸŽ¯" maxItems={5} addLabel="Add another goal"/>
           </Card>
 
           <div style={{marginTop:'8px'}}>
@@ -347,7 +349,7 @@ export default function ClientCheckin(){
             </button>
             <div style={{display:'flex',alignItems:'center',gap:'6px',marginTop:'12px',justifyContent:'center'}}>
               <Lock size={11} color={MUTED}/>
-              <p style={{fontSize:'0.7rem',color:MUTED,margin:0}}>Private — shared only with your PT</p>
+              <p style={{fontSize:'0.7rem',color:MUTED,margin:0}}>Private â€” shared only with your PT</p>
             </div>
           </div>
 
@@ -356,3 +358,4 @@ export default function ClientCheckin(){
     </div>
   );
 }
+

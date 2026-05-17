@@ -236,6 +236,7 @@ export default function ClientNutrition() {
     try {
       const res = await api.post(`/wellness/meals/${mealId}/favorite`);
       setMeals(meals.map(m => m.id === mealId ? { ...m, isFavorite: res.data.favorited } : m));
+      toast.success(res.data.favorited ? 'Saved to favourites' : 'Removed from favourites');
     } catch { toast.error('Failed to update favourite'); }
   };
 
@@ -400,3 +401,4 @@ export default function ClientNutrition() {
     </div>
   );
 }
+
