@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+﻿import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -36,7 +36,7 @@ import ClientWorkouts from './pages/client/ClientWorkouts';
 import SuccessStories from './pages/client/SuccessStories';
 import ProUpgradePage from './pages/client/ProUpgradePage';
 import ClientWorkoutPlayer from './pages/client/ClientWorkoutPlayer';
-import TrainerProfile from './pages/client/TrainerProfile';
+
 import PrivacyPolicy from './pages/client/PrivacyPolicy';
 import PTAnalytics from './pages/pt/PTAnalytics';
 import PTExercises from './pages/pt/PTExercises';
@@ -130,7 +130,7 @@ function AppRoutes() {
         <Route path="upgrade" element={<ProUpgradePage />} />
         <Route path="pro-success" element={<ProUpgradePage success />} />
         <Route path="profile" element={<ClientProfilePage />} />
-        <Route path="trainer" element={<TrainerProfile />} />
+
         <Route path="privacy" element={<PrivacyPolicy />} />
         <Route path="settings" element={<ClientSettings />} />
         <Route path="help" element={<ClientHelp />} />
@@ -170,3 +170,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+
