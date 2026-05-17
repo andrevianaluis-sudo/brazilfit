@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Zap, Check, Gift, ChevronLeft, Lock } from 'lucide-react';
@@ -16,14 +16,14 @@ const TEXT = '#ffffff';
 const MUTED = '#888888';
 
 const PRO_BENEFITS = [
-  { emoji: '🏋️', text: 'Unlimited workout plans & exercise library' },
-  { emoji: '🥗', text: '85+ healthy meals with recipes & shopping lists' },
-  { emoji: '💡', text: '200+ expert nutrition tips across all categories' },
-  { emoji: '📊', text: 'Full progress tracking with charts & measurements' },
-  { emoji: '🔥', text: 'Complete habit tracker — water, sleep, steps & mood' },
-  { emoji: '⌚', text: 'Wearable sync — Apple Watch, Garmin & Oura Ring' },
-  { emoji: '🏆', text: 'Leaderboard, challenges & PT priority support' },
-  { emoji: '📄', text: 'PDF progress reports & transformation tracking' },
+  { emoji: '', text: 'Unlimited workout plans & exercise library' },
+  { emoji: '', text: '85+ healthy meals with recipes & shopping lists' },
+  { emoji: '', text: '200+ expert nutrition tips across all categories' },
+  { emoji: '', text: 'Full progress tracking with charts & measurements' },
+  { emoji: '', text: 'Complete habit tracker  water, sleep, steps & mood' },
+  { emoji: '', text: 'Wearable sync  Apple Watch, Garmin & Oura Ring' },
+  { emoji: '', text: 'Leaderboard, challenges & PT priority support' },
+  { emoji: '', text: 'PDF progress reports & transformation tracking' },
 ];
 
 export default function ProUpgradePage() {
@@ -40,7 +40,7 @@ export default function ProUpgradePage() {
 
   useEffect(() => {
     if (success && user?.isPro) {
-      toast.success('Welcome to BrazilFit Pro! 🎉');
+      toast.success('Welcome to BrazilFit Pro! ');
       setTimeout(() => navigate('/client'), 2000);
     }
   }, [success, user]);
@@ -69,7 +69,7 @@ export default function ProUpgradePage() {
     setLoading(true);
     try {
       await api.post('/subscriptions/trial');
-      toast.success('7-day free trial activated! 🎉');
+      toast.success('7-day free trial activated! ');
       await refreshUser();
       navigate('/client');
     } catch (e) {
@@ -82,7 +82,7 @@ export default function ProUpgradePage() {
   if (user?.isPro && !success) {
     return (
       <div style={{ backgroundColor: BG, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-        <div style={{ fontSize: 64, marginBottom: 16 }}>⚡</div>
+        <div style={{ fontSize: 64, marginBottom: 16 }}></div>
         <h1 style={{ color: YELLOW, fontSize: '1.8rem', fontWeight: 800, margin: '0 0 8px' }}>You're Pro!</h1>
         <p style={{ color: MUTED, marginBottom: 24 }}>You already have full access to all features.</p>
         <button onClick={() => navigate('/client')} style={{ background: ORANGE, color: '#fff', border: 'none', borderRadius: 12, padding: '14px 32px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
@@ -131,7 +131,7 @@ export default function ProUpgradePage() {
           Train smarter. Eat better. Track everything.
         </p>
         <p style={{ fontSize: '14px', color: MUTED, margin: 0 }}>
-          Everything you need to reach your goals — all in one place.
+          Everything you need to reach your goals  all in one place.
         </p>
       </div>
 
@@ -154,7 +154,7 @@ export default function ProUpgradePage() {
             Start 7-Day Free Trial
           </button>
           <p style={{ textAlign: 'center', fontSize: 12, color: MUTED, marginTop: 8 }}>
-            No credit card required · Cancel anytime
+            No credit card required  Cancel anytime
           </p>
         </div>
       )}
@@ -198,7 +198,7 @@ export default function ProUpgradePage() {
             }}
           >
             <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Monthly</span>
-            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>£9.99</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>9.99</span>
             <span style={{ fontSize: 12, color: MUTED }}>per month</span>
           </button>
 
@@ -224,8 +224,8 @@ export default function ProUpgradePage() {
               BEST VALUE
             </div>
             <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Annual</span>
-            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>£29.99</span>
-            <span style={{ fontSize: 12, color: GREEN, fontWeight: 700 }}>Save 75% · £{annualMonthly}/mo</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>29.99</span>
+            <span style={{ fontSize: 12, color: GREEN, fontWeight: 700 }}>Save 75%  {annualMonthly}/mo</span>
           </button>
         </div>
       </div>
@@ -245,15 +245,16 @@ export default function ProUpgradePage() {
             boxShadow: loading ? 'none' : `0 4px 24px ${ORANGE}44`,
           }}
         >
-          {loading ? 'Processing...' : selectedPlan === 'annual' ? 'Get Pro — £29.99/year' : 'Get Pro — £9.99/month'}
+          {loading ? 'Processing...' : selectedPlan === 'annual' ? 'Get Pro  29.99/year' : 'Get Pro  9.99/month'}
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10 }}>
           <Lock size={12} color={MUTED} />
-          <span style={{ fontSize: 12, color: MUTED }}>Secure payment via Stripe · Cancel anytime</span>
+          <span style={{ fontSize: 12, color: MUTED }}>Secure payment via Stripe  Cancel anytime</span>
         </div>
       </div>
 
     </div>
   );
 }
+
