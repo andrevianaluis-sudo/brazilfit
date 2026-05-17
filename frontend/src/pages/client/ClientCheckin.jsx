@@ -51,9 +51,9 @@ function Emojis({list,labels,selected,onChange}){
   return(
     <div style={{display:'flex',gap:'8px'}}>
       {list.map((e,i)=>{
-        const sel=selected===e;
+        const sel=selected===labels[i];
         return(
-          <button key={i} type="button" onClick={()=>onChange(e)} style={{flex:1,padding:'12px 4px',borderRadius:'14px',cursor:'pointer',minHeight:'auto',border:`1px solid ${sel?ORANGE:BORDER}`,background:sel?`${ORANGE}18`:S2,display:'flex',flexDirection:'column',alignItems:'center',gap:'6px',transition:'all 0.15s',transform:sel?'scale(1.06)':'scale(1)'}}>
+          <button key={i} type="button" onClick={()=>onChange(labels[i])} style={{flex:1,padding:'12px 4px',borderRadius:'14px',cursor:'pointer',minHeight:'auto',border:`1px solid ${sel?ORANGE:BORDER}`,background:sel?`${ORANGE}18`:S2,display:'flex',flexDirection:'column',alignItems:'center',gap:'6px',transition:'all 0.15s',transform:sel?'scale(1.06)':'scale(1)'}}>
             <span style={{fontSize:'1.8rem'}}>{e}</span>
             <span style={{fontSize:'0.6rem',fontWeight:700,color:sel?ORANGE:MUTED,textAlign:'center'}}>{labels[i]}</span>
           </button>
@@ -358,6 +358,7 @@ export default function ClientCheckin(){
     </div>
   );
 }
+
 
 
 
