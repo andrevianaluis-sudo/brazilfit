@@ -96,7 +96,7 @@ export default function ClientHome(){
                     {new Date(nextSession.scheduled_date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
                   </p>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.88rem',fontWeight:600,color:'rgba(0,0,0,0.6)',margin:0}}>
-                    {nextSession.scheduled_time} Â· {nextSession.session_type||'PT Session'}
+                    {nextSession.scheduled_time} · {nextSession.session_type||'PT Session'}
                   </p>
                 </>
               ):(
@@ -112,9 +112,9 @@ export default function ClientHome(){
         {/* Stats row */}
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
-            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:'ðŸ“¦'},
-            {v:lastCheckinDate?Math.floor((new Date()-new Date(lastCheckinDate))/(1000*60*60*24))+'d ago':'Never', l:'Last Check-in', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:'ðŸ”¥'},
-            {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:'âœ…'},
+            {v:rem,    l:'Sessions Left', c:sc,     bg:`${sc}15`,     border:`${sc}30`,     icon:''},
+            {v:lastCheckinDate?Math.floor((new Date()-new Date(lastCheckinDate))/(1000*60*60*24))+'d ago':'Never', l:'Last Check-in', c:ORANGE,  bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)', icon:''},
+            {v:used,   l:'Completed',     c:YELLOW,  bg:'rgba(255,214,0,0.1)', border:'rgba(255,214,0,0.2)', icon:''},
           ].map((s,i)=>(
             <div key={i} style={{borderRadius:'16px',padding:'1rem 0.75rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>
               <p style={{fontSize:'1rem',margin:'0 0 3px'}}>{s.icon}</p>
@@ -200,6 +200,7 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
 
 
