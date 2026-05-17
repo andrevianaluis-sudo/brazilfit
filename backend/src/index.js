@@ -257,6 +257,7 @@ cron.schedule('0 6 * * *', async () => {
 // Serve frontend
 const frontendDist = path.join(__dirname, '../frontend-dist');
 app.use(express.static(frontendDist));
+app.get('/api/fix-charlotte-client', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare("SELECT id FROM users WHERE username = 'charlotte.blyth'").get(); if (!user) return res.json({ error: 'Not found' }); let client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id); if (!client) { db.prepare("INSERT INTO clients (user_id, client_type, block_price, pt_id, sessions_used) VALUES (?, 'F2F', 400, 1, 0)").run(user.id); client = db.prepare('SELECT id FROM clients WHERE user_id = ?').get(user.id); } res.json({ done: true, clientId: client.id }); } catch(e) { res.status(500).json({ error: e.message }); } });
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(frontendDist, 'index.html'));
