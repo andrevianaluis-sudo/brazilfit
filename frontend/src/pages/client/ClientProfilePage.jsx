@@ -1,9 +1,9 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Crown, QrCode, Settings, MessageSquare } from 'lucide-react';
 import EditProfileScreen from './EditProfileScreen';
-import DigitalMembershipCard from './DigitalMembershipCard';
+
 
 export default function ClientProfilePage() {
   const { user } = useAuth();
@@ -25,7 +25,7 @@ export default function ClientProfilePage() {
   if (screen === 'membershipCard') {
     return (
       <div className="w-full bg-black min-h-screen pb-24 animate-fade-in flex items-center justify-center">
-        <DigitalMembershipCard />
+
       </div>
     );
   }
@@ -109,3 +109,4 @@ export default function ClientProfilePage() {
     </div>
   );
 }
+
