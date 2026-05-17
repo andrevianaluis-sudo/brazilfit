@@ -103,10 +103,11 @@ export default function ClientProfilePage() {
       {/* Member since band */}
       <div className="mt-8 bg-grey-300 px-5 py-4 text-center">
         <p className="text-grey-200 text-sm">
-          Member Since <span className="text-black font-bold">Jan 15, 2026</span>
+          Member Since <span className="text-black font-bold">{user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '—'}</span>
         </p>
       </div>
     </div>
   );
 }
+
 
