@@ -950,34 +950,56 @@ export default function PTClientProfile() {
           </div>
         )}
 
-        {/* ── Blocks ── */}
-        {activeTab === 'blocks' && (
+        {/* ── Blocks ── */        {activeTab === 'blocks' && (
           <div style={{display:"flex",flexDirection:"column",gap:"12px"}}>
-            {client.blocks?.length === 0 ? (
-              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No block history</p>
-            ) : client.blocks?.map(b => (
-              <div key={b.id} className={`card-dark border ${b.is_current ? 'border-brazil-green/30' : 'border-white/5'}`}>
-                <div className="flex justify-between items-start mb-2">
+            {!client.blocks?.length ? (
+              <p style={{textAlign:"center",color:"#888",padding:"2rem 0"}}>No block history yet</p>
+            ) : client.blocks?.map(b => {
+              const attended = b.sessions_attended || 0;
+              const total = 10;
+              const pct = Math.min(100, Math.round((attended / total) * 100));
+              const startDate = b.start_date ? new Date(b.start_date + 'T12:00:00').toLocaleDateString('en-GB') : '-';
+              return (
+                <div key={b.id} style={{background: b.is_current ? 'rgba(76,175,80,0.06)' : '#1a1a1a', borderRadius:'16px', border: b.is_current ? '1px solid rgba(76,175,80,0.25)' : '1px solid rgba(255,255,255,0.06)', padding:'1.1rem', display:'flex', flexDirection:'column', gap:'12px'}}>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+                      <div style={{width:'36px',height:'36px',borderRadius:'10px',background: b.is_current ? 'rgba(76,175,80,0.15)' : 'rgba(255,255,255,0.06)',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:'1rem',color: b.is_current ? '#4CAF50' : '#888'}}>{b.block_number}</div>
+                      <div>
+                        <p style={{fontWeight:700,fontSize:'0.95rem',margin:0,color:'#fff'}}>Block {b.block_number}</p>
+                        <p style={{fontSize:'0.72rem',color:'#606060',margin:0}}>Started {startDate}</p>
+                      </div>
+                    </div>
+                    <div style={{textAlign:'right'}}>
+                      <p style={{fontWeight:800,fontSize:'1.1rem',color:'#FFD600',margin:0}}>£{b.amount_paid || 0}</p>
+                      {b.is_current ? <span style={{fontSize:'0.65rem',background:'rgba(76,175,80,0.15)',color:'#4CAF50',padding:'2px 8px',borderRadius:'20px',fontWeight:700}}>CURRENT</span> : <span style={{fontSize:'0.65rem',color:'#555',fontWeight:600}}>COMPLETED</span>}
+                    </div>
+                  </div>
                   <div>
-                    <p style={{fontWeight:600}}>Block {b.block_number}</p>
-                    <p style={{fontSize:"0.75rem",color:"#606060"}}>Started {b.start_date}</p>
+                    <div style={{display:'flex',justifyContent:'space-between',marginBottom:'6px'}}>
+                      <span style={{fontSize:'0.72rem',color:'#888'}}>Sessions attended</span>
+                      <span style={{fontSize:'0.72rem',fontWeight:700,color: b.is_current ? '#4CAF50' : '#888'}}>{attended} / {total}</span>
+                    </div>
+                    <div style={{height:'6px',borderRadius:'99px',background:'rgba(255,255,255,0.08)',overflow:'hidden'}}>
+                      <div style={{height:'100%',width:${pct}%,borderRadius:'99px',background: b.is_current ? 'linear-gradient(90deg,#4CAF50,#8BC34A)' : '#555'}} />
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-brazil-yellow">£{b.amount_paid}</p>
-                    {b.is_current ? <span className="badge-green text-[10px]">Current</span> : <span style={{fontSize:"0.75rem",color:"#888"}}>Completed</span>}
+                  <div style={{display:'flex',gap:'8px'}}>
+                    <div style={{flex:1,background:'rgba(76,175,80,0.08)',borderRadius:'10px',padding:'8px 12px',textAlign:'center'}}>
+                      <p style={{fontSize:'1.1rem',fontWeight:800,color:'#4CAF50',margin:0}}>{attended}</p>
+                      <p style={{fontSize:'0.65rem',color:'#888',margin:0}}>Attended</p>
+                    </div>
+                    <div style={{flex:1,background:'rgba(255,255,255,0.04)',borderRadius:'10px',padding:'8px 12px',textAlign:'center'}}>
+                      <p style={{fontSize:'1.1rem',fontWeight:800,color:'#888',margin:0}}>{total - attended}</p>
+                      <p style={{fontSize:'0.65rem',color:'#888',margin:0}}>Remaining</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-4 text-sm">
-                  <span style={{color:"#4CAF50"}}>✓ {b.sessions_attended} attended</span>
-                  {b.sessions_missed > 0 && <span style={{color:"#ef4444"}}>✕ {b.sessions_missed} missed</span>}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
-
-        {/* -- Checkins -- */}
+        {/*ckins -- */}
         {activeTab === 'checkins' && <CheckinsTab clientId={id} />}
 
         {/* ── Onboarding ── */}
@@ -1615,6 +1637,7 @@ function CardSectionEditor({ title, items, onChange, columns }) {
     </div>
   );
 }
+
 
 
 
