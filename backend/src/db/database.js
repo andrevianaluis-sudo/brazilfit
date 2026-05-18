@@ -400,6 +400,14 @@ try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER"); } c
   try { db.exec('ALTER TABLE users ADD COLUMN google_refresh_token TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE users ADD COLUMN google_calendar_connected INTEGER DEFAULT 0'); } catch(e) {}
   try { db.exec('ALTER TABLE clients ADD COLUMN ow_user_id TEXT'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN resting_heart_rate INTEGER'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN hrv INTEGER'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN energy_score INTEGER DEFAULT 5'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN blood_oxygen INTEGER'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN stress_level INTEGER DEFAULT 5'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN active_minutes INTEGER DEFAULT 0'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN nutrition_score INTEGER DEFAULT 5'); } catch(e) {}
+  try { db.exec('ALTER TABLE habit_logs ADD COLUMN wellness_score REAL'); } catch(e) {}
   try { db.exec(`CREATE TABLE IF NOT EXISTS client_routines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INTEGER NOT NULL REFERENCES clients(id),
@@ -1883,3 +1891,4 @@ function seedNutritionData() {
 }
 
 module.exports = { getDb };
+
