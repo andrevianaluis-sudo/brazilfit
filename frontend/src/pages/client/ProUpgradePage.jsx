@@ -92,7 +92,7 @@ export default function ProUpgradePage() {
     );
   }
 
-  const annualMonthly = (29.99 / 12).toFixed(2);
+  const annualMonthly = (24.99 / 12).toFixed(2);
 
   return (
     <div style={{ backgroundColor: BG, minHeight: '100vh', color: TEXT, fontFamily: 'system-ui, sans-serif', paddingBottom: 60 }}>
@@ -245,7 +245,7 @@ export default function ProUpgradePage() {
             boxShadow: loading ? 'none' : `0 4px 24px ${ORANGE}44`,
           }}
         >
-          {loading ? 'Processing...' : selectedPlan === 'annual' ? 'Get Pro  29.99/year' : 'Get Pro  9.99/month'}
+          {loading ? 'Processing...' : selectedPlan === 'annual' ? 'Get Pro - £24.99/year' : 'Get Pro - £9.99/month'}
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10 }}>
@@ -257,6 +257,7 @@ export default function ProUpgradePage() {
     </div>
   );
 }
+
 
 
 
