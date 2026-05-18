@@ -224,8 +224,8 @@ export default function ProUpgradePage() {
               BEST VALUE
             </div>
             <span style={{ fontSize: 11, fontWeight: 700, color: MUTED, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Annual</span>
-            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>29.99</span>
-            <span style={{ fontSize: 12, color: GREEN, fontWeight: 700 }}>Save 75%  {annualMonthly}/mo</span>
+            <span style={{ fontSize: '1.8rem', fontWeight: 800, color: TEXT, letterSpacing: '-0.03em' }}>24.99</span>
+            <span style={{ fontSize: 12, color: GREEN, fontWeight: 700 }}>Save 79% - £2.08/mo</span>
           </button>
         </div>
       </div>
@@ -257,5 +257,6 @@ export default function ProUpgradePage() {
     </div>
   );
 }
+
 
 
