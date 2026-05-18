@@ -1,4 +1,6 @@
 ﻿import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
@@ -13,6 +15,18 @@ function StretchPlayer({ stretches, onClose }) {
 }
 
 export default function ClientExercises() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  if (!user?.isPro) {
+    return (
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'70vh',padding:'2rem',textAlign:'center'}}>
+        <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:800,color:'#fff',margin:'0 0 8px'}}>Stretches is a Pro feature</h2>
+        <p style={{color:'#606060',fontSize:'0.875rem',margin:'0 0 1.5rem'}}>Unlock 400+ stretching exercises with BrazilFit Pro.</p>
+        <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.875rem 2rem',background:'linear-gradient(135deg,#FF6B2B,#FFD600)',border:'none',borderRadius:'12px',color:'#000',fontSize:'0.875rem',fontWeight:800,cursor:'pointer'}}>Upgrade to Pro</button>
+        <button onClick={()=>navigate(-1)} style={{marginTop:'12px',background:'none',border:'none',color:'#606060',cursor:'pointer'}}>Go back</button>
+      </div>
+    );
+  }
   const [stretches,setStretches]=useState([]);const [loading,setLoading]=useState(true);const [group,setGroup]=useState('All');const [search,setSearch]=useState('');const [groups,setGroups]=useState(['All']);const [selected,setSelected]=useState(null);const [tab,setTab]=useState('browse');const [routineMode,setRoutineMode]=useState(false);const [picked,setPicked]=useState([]);const [routineName,setRoutineName]=useState('');const [myRoutines,setMyRoutines]=useState([]);const [player,setPlayer]=useState(null);
   useEffect(()=>{
     api.get('/stretches').then(r=>{
@@ -215,4 +229,5 @@ export default function ClientExercises() {
     </div>
   );
 }
+
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+﻿import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import BackButton from '../../components/BackButton';
@@ -19,19 +19,19 @@ const TYPES = [
 ];
 
 const SECTION_INFO = {
-  mindfulness:     { emoji: '🧘', text: 'Guided meditation sessions to sharpen focus and aid recovery' },
-  breathing:       { emoji: '💨', text: 'Breathing techniques for pre-workout energy and post-workout calm' },
-  rest_day:        { emoji: '🌿', text: 'Stretching routines and foam rolling guides for active recovery' },
-  mental_wellness: { emoji: '💚', text: 'Tips and insights to build a stronger, healthier mindset' },
-  stress:          { emoji: '🌊', text: 'Strategies to manage stress and protect your training progress' },
+  mindfulness:     { emoji: 'ðŸ§˜', text: 'Guided meditation sessions to sharpen focus and aid recovery' },
+  breathing:       { emoji: 'ðŸ’¨', text: 'Breathing techniques for pre-workout energy and post-workout calm' },
+  rest_day:        { emoji: 'ðŸŒ¿', text: 'Stretching routines and foam rolling guides for active recovery' },
+  mental_wellness: { emoji: 'ðŸ’š', text: 'Tips and insights to build a stronger, healthier mindset' },
+  stress:          { emoji: 'ðŸŒŠ', text: 'Strategies to manage stress and protect your training progress' },
 };
 
 const FALLBACK_MUSIC_TRACKS = [
-  { id:'tibetan', name:'Tibetan Bowls', artist:'DesiFreeMuzic', emoji:'🎵', url:'https://cdn.pixabay.com/download/audio/2025/07/04/audio_56496453ec.mp3?filename=desifreemusic-minimalistic-meditation-soundscape-with-tibetan-singing-bowls-369761.mp3', attribution:'Tibetan Bowls by DesiFreeMuzic (Pixabay)' },
-  { id:'piano',   name:'Peaceful Piano',artist:'HarumachiMusic',emoji:'🎹', url:'https://cdn.pixabay.com/download/audio/2022/05/28/audio_b79a40aa49.mp3?filename=harumachimusic-peaceful-garden-healing-light-piano-for-meditation-zen-landscapes-112199.mp3', attribution:'Peaceful Piano by HarumachiMusic (Pixabay)' },
-  { id:'flute',   name:'Nature & Flute',artist:'Siarhei_Korbut',emoji:'🌿', url:'https://cdn.pixabay.com/download/audio/2025/08/10/audio_d7b8695825.mp3?filename=siarhei_korbut-elven-flute-meditation-nature-remix-387545.mp3', attribution:'Nature & Flute by Siarhei_Korbut (Pixabay)' },
-  { id:'om',      name:'Deep Om',      artist:'kalsstockmedia', emoji:'🕉️', url:'https://cdn.pixabay.com/download/audio/2024/08/04/audio_6729bddbf2.mp3?filename=kalsstockmedia-deep-om-chants-with-reverb-229614.mp3', attribution:'Deep Om by kalsstockmedia (Pixabay)' },
-  { id:'binaural',name:'Binaural Beats',artist:'CHAKONG',       emoji:'🔮', url:'https://cdn.pixabay.com/download/audio/2023/12/19/audio_1a5566c7ca.mp3?filename=chakong-binaural-beats-alpha-sinewaves-meditation-focus-relax-7-hz-182096.mp3', attribution:'Binaural Beats by CHAKONG (Pixabay)' },
+  { id:'tibetan', name:'Tibetan Bowls', artist:'DesiFreeMuzic', emoji:'ðŸŽµ', url:'https://cdn.pixabay.com/download/audio/2025/07/04/audio_56496453ec.mp3?filename=desifreemusic-minimalistic-meditation-soundscape-with-tibetan-singing-bowls-369761.mp3', attribution:'Tibetan Bowls by DesiFreeMuzic (Pixabay)' },
+  { id:'piano',   name:'Peaceful Piano',artist:'HarumachiMusic',emoji:'ðŸŽ¹', url:'https://cdn.pixabay.com/download/audio/2022/05/28/audio_b79a40aa49.mp3?filename=harumachimusic-peaceful-garden-healing-light-piano-for-meditation-zen-landscapes-112199.mp3', attribution:'Peaceful Piano by HarumachiMusic (Pixabay)' },
+  { id:'flute',   name:'Nature & Flute',artist:'Siarhei_Korbut',emoji:'ðŸŒ¿', url:'https://cdn.pixabay.com/download/audio/2025/08/10/audio_d7b8695825.mp3?filename=siarhei_korbut-elven-flute-meditation-nature-remix-387545.mp3', attribution:'Nature & Flute by Siarhei_Korbut (Pixabay)' },
+  { id:'om',      name:'Deep Om',      artist:'kalsstockmedia', emoji:'ðŸ•‰ï¸', url:'https://cdn.pixabay.com/download/audio/2024/08/04/audio_6729bddbf2.mp3?filename=kalsstockmedia-deep-om-chants-with-reverb-229614.mp3', attribution:'Deep Om by kalsstockmedia (Pixabay)' },
+  { id:'binaural',name:'Binaural Beats',artist:'CHAKONG',       emoji:'ðŸ”®', url:'https://cdn.pixabay.com/download/audio/2023/12/19/audio_1a5566c7ca.mp3?filename=chakong-binaural-beats-alpha-sinewaves-meditation-focus-relax-7-hz-182096.mp3', attribution:'Binaural Beats by CHAKONG (Pixabay)' },
 ];
 
 const PREF_TRACK_KEY = 'bf_music_track';
@@ -39,9 +39,9 @@ const PREF_VOL_KEY   = 'bf_music_vol';
 const PREF_LOOP_KEY  = 'bf_music_loop';
 const PREF_SHUFFLE_KEY = 'bf_music_shuffle';
 const AMBIENT_OPTIONS = [
-  { key:'silence', label:'Silence', emoji:'🔇' },
-  { key:'rain',    label:'Rain',    emoji:'🌧️' },
-  { key:'forest',  label:'Forest',  emoji:'🌿' },
+  { key:'silence', label:'Silence', emoji:'ðŸ”‡' },
+  { key:'rain',    label:'Rain',    emoji:'ðŸŒ§ï¸' },
+  { key:'forest',  label:'Forest',  emoji:'ðŸŒ¿' },
 ];
 
 const BG='#0f0f0f', SURFACE='#1a1a1a', SURFACE2='#222', BORDER='rgba(255,255,255,0.08)', TEXT='#fff', MUTED='#606060', ORANGE='#FF6B2B', YELLOW='#FFD600', GREEN='#4CAF50';
@@ -91,13 +91,13 @@ function MusicSelector({ music }) {
   return (
     <div style={{display:'flex',flexDirection:'column',gap:'12px',width:'100%'}}>
       <div style={{display:'flex',alignItems:'center',gap:'10px',background:'rgba(255,255,255,0.05)',borderRadius:14,padding:'12px 14px',border:'1px solid rgba(255,255,255,0.08)'}}>
-        <div style={{width:40,height:40,borderRadius:10,background:`linear-gradient(135deg,${ORANGE},#FFD600)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.2rem',flexShrink:0}}>{track?.emoji||'🎵'}</div>
+        <div style={{width:40,height:40,borderRadius:10,background:`linear-gradient(135deg,${ORANGE},#FFD600)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.2rem',flexShrink:0}}>{track?.emoji||'ðŸŽµ'}</div>
         <div style={{flex:1,minWidth:0}}>
           <p style={{fontSize:'0.85rem',fontWeight:400,color:TEXT,margin:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{track?.name||'Select track'}</p>
           <p style={{fontSize:'0.7rem',color:MUTED,margin:'2px 0 0'}}>{track?.artist||''}</p>
         </div>
         <button onClick={music.isPlaying?music.stop:music.play} style={{width:44,height:44,borderRadius:22,border:'none',background:music.isPlaying?`${ORANGE}33`:ORANGE,color:music.isPlaying?ORANGE:'#000',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'1rem'}}>
-          {music.isPlaying?'⏸':'▶'}
+          {music.isPlaying?'â¸':'â–¶'}
         </button>
       </div>
       <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
@@ -108,7 +108,7 @@ function MusicSelector({ music }) {
       <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:6}}>
         {music.tracks.slice(0,10).map(t=>{const sel=music.selectedId===t.id;return(
           <button key={t.id} onClick={()=>music.setTrack(t.id)} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4,padding:'8px 4px',borderRadius:10,border:`1px solid ${sel?ORANGE:'rgba(255,255,255,0.08)'}`,background:sel?`${ORANGE}22`:'rgba(255,255,255,0.03)',cursor:'pointer',minHeight:'auto',transition:'all 0.2s'}}>
-            <span style={{fontSize:'1.5rem'}}>{t.emoji||'🎵'}</span>
+            <span style={{fontSize:'1.5rem'}}>{t.emoji||'ðŸŽµ'}</span>
             <span style={{fontSize:'0.52rem',color:sel?ORANGE:MUTED,fontWeight:600,textAlign:'center',lineHeight:1.6,width:'100%',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.name.split(' ')[0]}</span>
           </button>
         );})}
@@ -210,7 +210,7 @@ function BreathingPlayer({ exercise, onClose }) {
   const isDone=elapsed>=totalDur;
   const round=Math.min(Math.floor(elapsed/cycleDur)+1,totalRounds);
   const getPhase=(t)=>{const pos=t%cycleDur,i=pattern.inhale||0,h=pattern.hold_in||0,e=pattern.exhale||0;if(pos<i)return{label:'Breathe in',rem:i-pos,scale:1.35};if(pos<i+h)return{label:'Hold',rem:i+h-pos,scale:1.35};if(pos<i+h+e)return{label:'Breathe out',rem:i+h+e-pos,scale:1.0};return{label:'Hold',rem:cycleDur-pos,scale:1.0};};
-  const phase=isDone?{label:'✓',rem:0,scale:1.0}:getPhase(elapsed);
+  const phase=isDone?{label:'âœ“',rem:0,scale:1.0}:getPhase(elapsed);
   useEffect(()=>{if(isActive&&!isDone){intervalRef.current=setInterval(()=>setElapsed(p=>p+1),1000);}return()=>clearInterval(intervalRef.current);},[isActive,isDone]);
   useEffect(()=>{if(isDone)music.stop();},[isDone]);// eslint-disable-line
   useEffect(()=>()=>{music.cleanup();},[]);// eslint-disable-line
@@ -242,7 +242,7 @@ function BreathingPlayer({ exercise, onClose }) {
         </div>
       ):(
         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,margin:'0 0 1.25rem',textAlign:'center'}}>
-          {[pattern.inhale&&`${pattern.inhale}s inhale`,pattern.hold_in&&`${pattern.hold_in}s hold`,pattern.exhale&&`${pattern.exhale}s exhale`,pattern.hold_out&&`${pattern.hold_out}s hold`].filter(Boolean).join(' · ')}
+          {[pattern.inhale&&`${pattern.inhale}s inhale`,pattern.hold_in&&`${pattern.hold_in}s hold`,pattern.exhale&&`${pattern.exhale}s exhale`,pattern.hold_out&&`${pattern.hold_out}s hold`].filter(Boolean).join(' Â· ')}
         </p>
       )}
       <div style={{display:'flex',gap:'10px',width:'100%',maxWidth:'300px'}}>
@@ -334,7 +334,7 @@ function ExpandedDetail({ item }) {
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.78rem',fontWeight:400,color:TEXT,margin:'0 0 0.5rem'}}>Key Takeaways</p>
           {keyPoints.map((kp,i)=>(
             <div key={i} style={{display:'flex',alignItems:'flex-start',gap:'8px',marginBottom:'6px'}}>
-              <span style={{color:ORANGE,flexShrink:0,marginTop:'2px'}}>›</span>
+              <span style={{color:ORANGE,flexShrink:0,marginTop:'2px'}}>â€º</span>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:'#b0b0b0',margin:0,lineHeight:1.6}}>{kp}</p>
             </div>
           ))}
@@ -560,7 +560,7 @@ function StretchRoutinePlayer({ item, onClose }) {
 
   if (isDone) return (
     <div style={{position:"fixed",inset:0,zIndex:50,background:"linear-gradient(180deg,#0d0d0d,#0a1a0a)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"2rem"}}>
-      <div style={{fontSize:64,marginBottom:24}}>🌿</div>
+      <div style={{fontSize:64,marginBottom:24}}>ðŸŒ¿</div>
       <p style={{fontSize:"0.65rem",fontWeight:400,letterSpacing:"0.2em",color:"#4CAF50",textTransform:"uppercase",margin:"0 0 12px"}}>Complete</p>
       <h2 style={{fontSize:"2rem",fontWeight:300,color:"#fff",letterSpacing:"-0.03em",margin:"0 0 24px",textAlign:"center"}}>{item.title}</h2>
       <div style={{background:"rgba(76,175,80,0.1)",border:"1px solid rgba(76,175,80,0.2)",borderRadius:16,padding:"1.5rem",maxWidth:340,marginBottom:32,textAlign:"center"}}>
@@ -580,7 +580,7 @@ function StretchRoutinePlayer({ item, onClose }) {
           <p style={{fontSize:"0.6rem",fontWeight:400,letterSpacing:"0.18em",color:"#4CAF50",textTransform:"uppercase",margin:0}}>{item.title}</p>
           <p style={{fontSize:"0.8rem",color:"rgba(255,255,255,0.4)",margin:"2px 0 0"}}>{currentIdx + 1} of {stretches.length}</p>
         </div>
-        <button onClick={onClose} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:"50%",width:36,height:36,cursor:"pointer",color:"rgba(255,255,255,0.6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem"}}>✕</button>
+        <button onClick={onClose} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:"50%",width:36,height:36,cursor:"pointer",color:"rgba(255,255,255,0.6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem"}}>âœ•</button>
       </div>
       <div style={{height:2,background:"rgba(255,255,255,0.08)",flexShrink:0}}>
         <div style={{height:"100%",background:"#4CAF50",width:progress+"%",transition:"width 0.5s ease"}}/>
@@ -627,7 +627,7 @@ function StretchRoutinePlayer({ item, onClose }) {
   );
 }
 
-// Player for curated routines — fetches stretches by muscle group keywords
+// Player for curated routines â€” fetches stretches by muscle group keywords
 function CuratedRoutinePlayer({ routine, onClose }) {
   const [stretches, setStretches] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -676,7 +676,7 @@ function CuratedRoutinePlayer({ routine, onClose }) {
 
   if (isDone) return (
     <div style={{position:'fixed',inset:0,zIndex:50,background:'linear-gradient(180deg,#0d0d0d,#0a1a0a)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'2rem'}}>
-      <div style={{fontSize:64,marginBottom:24}}>🌿</div>
+      <div style={{fontSize:64,marginBottom:24}}>ðŸŒ¿</div>
       <p style={{fontSize:'0.65rem',letterSpacing:'0.2em',color:'#4CAF50',textTransform:'uppercase',margin:'0 0 12px'}}>Complete</p>
       <h2 style={{fontSize:'2rem',fontWeight:300,color:'#fff',letterSpacing:'-0.03em',margin:'0 0 24px',textAlign:'center'}}>{routine.title}</h2>
       <div style={{background:'rgba(76,175,80,0.1)',border:'1px solid rgba(76,175,80,0.2)',borderRadius:16,padding:'1.5rem',maxWidth:340,marginBottom:32,textAlign:'center'}}>
@@ -696,7 +696,7 @@ function CuratedRoutinePlayer({ routine, onClose }) {
           <p style={{fontSize:'0.6rem',letterSpacing:'0.18em',color:'#4CAF50',textTransform:'uppercase',margin:0}}>{routine.title}</p>
           <p style={{fontSize:'0.8rem',color:'rgba(255,255,255,0.4)',margin:'2px 0 0'}}>{currentIdx + 1} of {stretches.length}</p>
         </div>
-        <button onClick={onClose} style={{background:'rgba(255,255,255,0.08)',border:'none',borderRadius:'50%',width:36,height:36,cursor:'pointer',color:'rgba(255,255,255,0.6)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.1rem'}}>✕</button>
+        <button onClick={onClose} style={{background:'rgba(255,255,255,0.08)',border:'none',borderRadius:'50%',width:36,height:36,cursor:'pointer',color:'rgba(255,255,255,0.6)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.1rem'}}>âœ•</button>
       </div>
       <div style={{height:2,background:'rgba(255,255,255,0.08)',flexShrink:0}}>
         <div style={{height:'100%',background:'linear-gradient(90deg,#4CAF50,#FFD600)',width:progress+'%',transition:'width 0.5s ease'}}/>
@@ -743,6 +743,16 @@ export default function ClientWellness() {
   const { user }=useAuth();
   const navigate=useNavigate();
   const isPro=user?.isPro;
+  if (!isPro) {
+    return (
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'70vh',padding:'2rem',textAlign:'center'}}>
+        <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:800,color:'#fff',margin:'0 0 8px'}}>Wellness is a Pro feature</h2>
+        <p style={{color:'#606060',fontSize:'0.875rem',margin:'0 0 1.5rem'}}>Unlock mindfulness, breathing and rest day routines with BrazilFit Pro.</p>
+        <button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.875rem 2rem',background:'linear-gradient(135deg,#FF6B2B,#FFD600)',border:'none',borderRadius:'12px',color:'#000',fontSize:'0.875rem',fontWeight:800,cursor:'pointer'}}>Upgrade to Pro</button>
+        <button onClick={()=>navigate(-1)} style={{marginTop:'12px',background:'none',border:'none',color:'#606060',cursor:'pointer'}}>Go back</button>
+      </div>
+    );
+  }
   const [tab,setTab]=useState('mindfulness');
   const [content,setContent]=useState([]);
   const [isLimited,setIsLimited]=useState(false);
@@ -866,11 +876,11 @@ export default function ClientWellness() {
               {/* Decorative glow */}
               <div style={{position:'absolute',top:'-40px',right:'-40px',width:'160px',height:'160px',borderRadius:'50%',background:GREEN,opacity:0.06,pointerEvents:'none'}}/>
               <div style={{position:'absolute',bottom:'-30px',left:'-20px',width:'120px',height:'120px',borderRadius:'50%',background:ORANGE,opacity:0.05,pointerEvents:'none'}}/>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:GREEN,textTransform:'uppercase',margin:'0 0 8px'}}>🌿 REST DAY</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color:GREEN,textTransform:'uppercase',margin:'0 0 8px'}}>ðŸŒ¿ REST DAY</p>
               <h2 style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.5rem',fontWeight:800,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 8px',lineHeight:1.2}}>Active Recovery Day</h2>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:'#a0a0a0',margin:'0 0 1.25rem',lineHeight:1.6}}>This is where your gains are made. Rest isn't weakness — it's the secret weapon of every elite athlete.</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:'#a0a0a0',margin:'0 0 1.25rem',lineHeight:1.6}}>This is where your gains are made. Rest isn't weakness â€” it's the secret weapon of every elite athlete.</p>
               <div style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
-                {[{icon:'💪',label:'Mobility'},{icon:'🧘',label:'Recovery'},{icon:'🔥',label:'Stay Active'}].map((b,i)=>(
+                {[{icon:'ðŸ’ª',label:'Mobility'},{icon:'ðŸ§˜',label:'Recovery'},{icon:'ðŸ”¥',label:'Stay Active'}].map((b,i)=>(
                   <div key={i} style={{display:'flex',alignItems:'center',gap:'6px',padding:'5px 12px',borderRadius:'20px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)'}}>
                     <span style={{fontSize:'0.85rem'}}>{b.icon}</span>
                     <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',fontWeight:600,color:'#c0c0c0'}}>{b.label}</span>
@@ -884,7 +894,7 @@ export default function ClientWellness() {
               <>
                 <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}}>
                   <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,rgba(76,175,80,0.4),transparent)'}}/>
-                  <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:GREEN,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>⚡ Your PT's Routines</p>
+                  <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:GREEN,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>âš¡ Your PT's Routines</p>
                   <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,transparent,rgba(76,175,80,0.4))'}}/>
                 </div>
                 <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:"1.5rem"}}>
@@ -902,17 +912,17 @@ export default function ClientWellness() {
             {/* Curated routines section */}
             <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'12px'}}>
               <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,rgba(255,107,43,0.4),transparent)'}}/>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>🌿 Curated Routines</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:ORANGE,textTransform:'uppercase',margin:0,whiteSpace:'nowrap'}}>ðŸŒ¿ Curated Routines</p>
               <div style={{flex:1,height:'1px',background:'linear-gradient(90deg,transparent,rgba(255,107,43,0.4))'}}/>
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[
-                { emoji:'☀️', title:'Morning Wake-Up Flow', tag:'10 min', level:'Beginner', color:YELLOW, bg:'rgba(255,214,0,0.08)', border:'rgba(255,214,0,0.2)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Neck rolls, spinal twist, quad stretch, forward fold.', keywords:['neck','back','spine','hip','hamstring'] },
-                { emoji:'🦵', title:'Hip Flexor & Lower Back', tag:'12 min', level:'All Levels', color:ORANGE, bg:'rgba(255,107,43,0.08)', border:'rgba(255,107,43,0.2)', desc:'Targets the two areas that tighten most from training and sitting. Pigeon pose, supine twist, glute bridge, child\'s pose.', keywords:['hip','glute','lower back','hamstring','quad'] },
-                { emoji:'🧘', title:'Post-Workout Cool Down', tag:'15 min', level:'All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.08)', border:'rgba(96,165,250,0.2)', desc:'The perfect session finisher. Hamstring stretch, figure-four, chest opener, shoulder stretch, savasana.', keywords:['chest','shoulder','hamstring','calf','back'] },
-                { emoji:'🌙', title:'Evening Wind-Down', tag:'8 min', level:'Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.08)', border:'rgba(192,132,252,0.2)', desc:'Calm your nervous system before bed. Legs up the wall, knee hug, reclined butterfly, slow breathing.', keywords:['hip','glute','spine','neck','shoulder'] },
-                { emoji:'💪', title:'Upper Body & Shoulder Reset', tag:'10 min', level:'All Levels', color:GREEN, bg:'rgba(76,175,80,0.08)', border:'rgba(76,175,80,0.2)', desc:'Undoes tightness from pressing and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend.', keywords:['shoulder','chest','tricep','lat','back'] },
+                { emoji:'â˜€ï¸', title:'Morning Wake-Up Flow', tag:'10 min', level:'Beginner', color:YELLOW, bg:'rgba(255,214,0,0.08)', border:'rgba(255,214,0,0.2)', desc:'Gentle head-to-toe movement to ease your body out of sleep. Neck rolls, spinal twist, quad stretch, forward fold.', keywords:['neck','back','spine','hip','hamstring'] },
+                { emoji:'ðŸ¦µ', title:'Hip Flexor & Lower Back', tag:'12 min', level:'All Levels', color:ORANGE, bg:'rgba(255,107,43,0.08)', border:'rgba(255,107,43,0.2)', desc:'Targets the two areas that tighten most from training and sitting. Pigeon pose, supine twist, glute bridge, child\'s pose.', keywords:['hip','glute','lower back','hamstring','quad'] },
+                { emoji:'ðŸ§˜', title:'Post-Workout Cool Down', tag:'15 min', level:'All Levels', color:'#60a5fa', bg:'rgba(96,165,250,0.08)', border:'rgba(96,165,250,0.2)', desc:'The perfect session finisher. Hamstring stretch, figure-four, chest opener, shoulder stretch, savasana.', keywords:['chest','shoulder','hamstring','calf','back'] },
+                { emoji:'ðŸŒ™', title:'Evening Wind-Down', tag:'8 min', level:'Beginner', color:'#c084fc', bg:'rgba(192,132,252,0.08)', border:'rgba(192,132,252,0.2)', desc:'Calm your nervous system before bed. Legs up the wall, knee hug, reclined butterfly, slow breathing.', keywords:['hip','glute','spine','neck','shoulder'] },
+                { emoji:'ðŸ’ª', title:'Upper Body & Shoulder Reset', tag:'10 min', level:'All Levels', color:GREEN, bg:'rgba(76,175,80,0.08)', border:'rgba(76,175,80,0.2)', desc:'Undoes tightness from pressing and desk work. Cross-body shoulder, tricep overhead, chest expansion, lat side bend.', keywords:['shoulder','chest','tricep','lat','back'] },
               ].map((r,i)=>(
                 <div key={i} style={{
                   borderRadius:'16px', overflow:'hidden',
@@ -933,7 +943,7 @@ export default function ClientWellness() {
                       <div style={{flex:1,minWidth:0}}>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.97rem',fontWeight:800,color:TEXT,margin:'0 0 5px',letterSpacing:'-0.01em'}}>{r.title}</p>
                         <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
-                          <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:700,color:r.color,background:r.bg,border:`1px solid ${r.border}`,borderRadius:'20px',padding:'2px 9px'}}>⏱ {r.tag}</span>
+                          <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:700,color:r.color,background:r.bg,border:`1px solid ${r.border}`,borderRadius:'20px',padding:'2px 9px'}}>â± {r.tag}</span>
                           <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.62rem',fontWeight:600,color:'#888',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'20px',padding:'2px 9px'}}>{r.level}</span>
                         </div>
                       </div>
@@ -956,7 +966,7 @@ export default function ClientWellness() {
           </div>
         ):tabContent.length===0?(
           <div style={{borderRadius:'20px',padding:'3rem',textAlign:'center',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)',border:'1px solid rgba(255,107,43,0.15)'}}>
-            <p style={{fontSize:'2rem',margin:'0 0 8px'}}>🧘</p>
+            <p style={{fontSize:'2rem',margin:'0 0 8px'}}>ðŸ§˜</p>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',color:MUTED,margin:0}}>No content available yet</p>
           </div>
         ):(
@@ -986,3 +996,4 @@ export default function ClientWellness() {
     </div>
   );
 }
+
