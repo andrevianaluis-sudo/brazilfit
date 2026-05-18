@@ -90,7 +90,7 @@ function ChartCard({ title, color, children }) {
     <div style={{ background:'#1a1a1a', borderRadius: '16px', padding: '1.25rem', border: `1px solid rgba(255,255,255,0.08)` }}>
       <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1rem' }}>
         <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
-        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: 0 }}>{title}</p>
+        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color, textTransform: 'uppercase', margin: 0, wordBreak: 'break-word' }}>{title}</p>
       </div>
       {children}
     </div>
@@ -219,7 +219,7 @@ export default function ClientHabits() {
               </svg>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.75rem', fontWeight: 800, color: wellnessColor, margin: 0, lineHeight: 1 }}>{wellnessScore}</p>
-                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', color: MUTED, margin: 0 }}>/ 100</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', color: MUTED, margin: 0, wordBreak: 'break-word' }}>/ 100</p>
               </div>
             </div>
             <div style={{ textAlign: 'left' }}>
@@ -238,7 +238,7 @@ export default function ClientHabits() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem' }}>
             {insights.map((ins, i) => (
               <div key={i} style={{ backgroundColor: ins.type === 'positive' ? `${GREEN}12` : `${ORANGE}12`, borderLeft: `3px solid ${ins.type === 'positive' ? GREEN : ORANGE}`, borderRadius: '8px', padding: '0.75rem 1rem' }}>
-                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#c0c0c0', margin: 0 }}>{ins.text}</p>
+                <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#c0c0c0', margin: 0, wordBreak: 'break-word' }}>{ins.text}</p>
               </div>
             ))}
           </div>
@@ -246,13 +246,12 @@ export default function ClientHabits() {
 
         {/* Streak */}
         <Card style={{ marginBottom: '1rem', background: `linear-gradient(135deg, ${ORANGE}18, ${YELLOW}08)`, borderColor: `${ORANGE}33` }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <div style={{ textAlign: 'center', flexShrink: 0 }}>
-              <div style={{ fontSize: '1.75rem', marginBottom: '4px' }}></div>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '2.5rem', fontWeight: 800, color: ORANGE, margin: 0, lineHeight: 1 }}>{streak}</p>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em', color: MUTED, textTransform: 'uppercase', margin: '4px 0 0' }}>Check-in Streak</p>
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', justifyContent: 'center' }}>
                 {last7.map(({ date, hasLog, isToday }) => (
                   <div key={date} style={{
@@ -264,7 +263,7 @@ export default function ClientHabits() {
                   }} />
                 ))}
               </div>
-              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: '#c0c0c0', fontStyle: 'italic', textAlign: 'center', margin: 0 }}>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', color: '#c0c0c0', fontStyle: 'italic', textAlign: 'center', margin: 0, wordBreak: 'break-word' }}>
                 {streak === 0 ? 'Every journey starts with a single step' :
                  streak <= 6 ? 'Building momentum  keep going!' :
                  streak <= 13 ? 'One week strong  real habits forming' :
@@ -340,9 +339,9 @@ export default function ClientHabits() {
         {/* Today's log */}
         <Card style={{ marginBottom: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Today</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: ORANGE, textTransform: 'uppercase', margin: 0, wordBreak: 'break-word' }}>Today</p>
             <div style={{ flex: 1, height: '1px', background: `linear-gradient(90deg, ${ORANGE}, transparent)` }} />
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', color: MUTED, margin: 0 }}>{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' })}</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.75rem', color: MUTED, margin: 0, wordBreak: 'break-word' }}>{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' })}</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -352,7 +351,7 @@ export default function ClientHabits() {
             <SliderField icon="" label="Vegetables" hint="Micronutrients from veg fuel your body" value={form.veg_portions} onChange={v => setForm(f => ({...f, veg_portions: v}))} min={0} max={10} step={1} unit="portions" color={GREEN} />
 
             <div style={{ height: '1px', backgroundColor: BORDER }} />
-            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: ORANGE, textTransform: 'uppercase', margin: 0 }}>Advanced Metrics</p>
+            <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.16em', color: ORANGE, textTransform: 'uppercase', margin: 0, wordBreak: 'break-word' }}>Advanced Metrics</p>
 
             <NumberField icon="" label="Resting Heart Rate" hint="Lower is generally better (60100 bpm)" value={form.resting_heart_rate} onChange={v => setForm(f => ({...f, resting_heart_rate: v}))} min={40} max={120} unit="bpm" color="#ef4444" />
             <NumberField icon="" label="Heart Rate Variability" hint="Higher HRV = better recovery (20120 ms)" value={form.hrv} onChange={v => setForm(f => ({...f, hrv: v}))} min={20} max={120} unit="ms" color="#ef4444" />
@@ -432,7 +431,7 @@ export default function ClientHabits() {
                 <span style={{ color: ORANGE, fontWeight: 700, flexShrink: 0, marginTop: '2px' }}></span>
                 <div>
                   <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: TEXT, margin: '0 0 2px' }}>{title}</p>
-                  <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0 }}>{desc}</p>
+                  <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.78rem', color: MUTED, margin: 0, wordBreak: 'break-word' }}>{desc}</p>
                 </div>
               </div>
             ))}
@@ -442,6 +441,7 @@ export default function ClientHabits() {
     </div>
   );
 }
+
 
 
 
