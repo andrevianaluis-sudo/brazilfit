@@ -196,7 +196,7 @@ export default function ClientHabits() {
 
   return (
     <div style={{ backgroundColor: BG, minHeight: '100vh', paddingBottom: '6rem' }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1.25rem' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1.25rem', overflowX: 'hidden' }}>
         <BackButton to="/client" />
 
         {/* Header */}
@@ -290,7 +290,7 @@ export default function ClientHabits() {
         )}
 
         {/* Charts */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
           <ChartCard title="Sleep (hours)" color="#a78bfa">
             <ResponsiveContainer width="100%" height={160}>
               <BarChart data={chartData}>
@@ -442,5 +442,6 @@ export default function ClientHabits() {
     </div>
   );
 }
+
 
 
