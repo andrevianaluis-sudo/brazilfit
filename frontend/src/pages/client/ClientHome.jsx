@@ -32,7 +32,7 @@ export default function ClientHome(){
     if(!user?.clientId)return;
     Promise.all([
       api.get(`/sessions/client/${user.clientId}`).catch(()=>null),
-      api.get('/checkins/streak').catch(()=>({data:{streak:0,lastCheckinDate:null}})),
+      api.get('/checkins/last-date').catch(()=>({data:{lastCheckinDate:null}})),
       api.get('/messages/unread-count').catch(()=>null),
     ]).then(([sessRes,habitsRes,msgRes])=>{
       if(sessRes)setSessions(sessRes.data);
@@ -200,6 +200,7 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
 
 
