@@ -62,7 +62,7 @@ export default function ClientHome(){
     {label:'Wellness',    sub:'Mind & recovery',     to:'/client/wellness',  ic:Heart,         color:'#a78bfa',       bg:'rgba(167,139,250,0.1)', border:'rgba(167,139,250,0.2)'},
     {label:'Nutrition',   sub:'Food & shopping',     to:'/client/nutrition', ic:Activity,      color:'#60a5fa',       bg:'rgba(96,165,250,0.1)',  border:'rgba(96,165,250,0.2)'},
     {label:'Messages',    sub:'Chat with PT',        to:'/client/messages',  ic:MessageSquare, color:GREEN,           bg:'rgba(76,175,80,0.1)',   border:'rgba(76,175,80,0.2)',  badge:unreadMessages},
-    {label:'Check-in',    sub:'Weekly review',       to:'/client/checkin',   ic:ClipboardList, color:YELLOW,          bg:'rgba(255,214,0,0.1)',   border:'rgba(255,214,0,0.2)'},
+    ? 'Today'
     {label:'Workouts',    sub:'Browse library',      to:'/client/workouts',  ic:Dumbbell,      color:ORANGE,          bg:'rgba(255,107,43,0.1)',  border:'rgba(255,107,43,0.2)'},
     {label:'Stretches',   sub:'Pro feature',          to:'/client/exercises', ic:Zap,           color:GREEN,           bg:'rgba(76,175,80,0.1)',   border:'rgba(76,175,80,0.2)', pro:true},
   ];
