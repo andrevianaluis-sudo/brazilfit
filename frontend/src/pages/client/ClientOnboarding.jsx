@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -19,7 +19,7 @@ const STEP_META = [
   { label: 'Terms & Conditions', icon: Pen },
 ];
 
-// ── Progress Bar ──────────────────────────────────────────────────────────────
+//  Progress Bar 
 function ProgressBar({ step }) {
   return (
     <div className="px-4 pt-5 pb-4 bg-grey-300 border-b border-grey-100">
@@ -51,7 +51,7 @@ function ProgressBar({ step }) {
   );
 }
 
-// ── Nav Buttons ───────────────────────────────────────────────────────────────
+//  Nav Buttons 
 function NavButtons({ onBack, onNext, nextLabel = 'Continue', saving = false, canGoBack = true }) {
   return (
     <div className="flex gap-3 px-4 pt-4 pb-6">
@@ -72,7 +72,7 @@ function NavButtons({ onBack, onNext, nextLabel = 'Continue', saving = false, ca
   );
 }
 
-// ── Step 1: Personal Details ──────────────────────────────────────────────────
+//  Step 1: Personal Details 
 function Step1({ data, onChange, onNext }) {
   const set = (k, v) => onChange({ ...data, [k]: v });
 
@@ -125,7 +125,7 @@ function Step1({ data, onChange, onNext }) {
   );
 }
 
-// ── Step 2: Lifestyle & Goals ─────────────────────────────────────────────────
+//  Step 2: Lifestyle & Goals 
 function Step2({ data, onChange, onNext, onBack }) {
   const set = (k, v) => onChange({ ...data, [k]: v });
 
@@ -142,7 +142,7 @@ function Step2({ data, onChange, onNext, onBack }) {
         <p className="text-sm text-grey-200">Help your trainer understand you better.</p>
       </div>
 
-      <Field label="Describe your lifestyle — occupation, working hours, hobbies, family commitments, time available to exercise"
+      <Field label="Describe your lifestyle  occupation, working hours, hobbies, family commitments, time available to exercise"
         value={data.lifestyle_description} onChange={v => set('lifestyle_description', v)} multiline rows={4}
         placeholder="e.g. Office job, 9-5 Mon-Fri, two young children, can train 3 mornings per week..." />
 
@@ -178,7 +178,7 @@ function Step2({ data, onChange, onNext, onBack }) {
 
       {/* FITT */}
       <div className="card-dark space-y-3">
-        <p className="text-xs font-bold text-grey-200 uppercase tracking-wide">Current Exercise — FITT Principle</p>
+        <p className="text-xs font-bold text-grey-200 uppercase tracking-wide">Current Exercise  FITT Principle</p>
         <Field label="Frequency (how often per week?)" value={data.fitt_frequency} onChange={v => set('fitt_frequency', v)} placeholder="e.g. 2 times per week" />
         <Field label="Intensity (how hard do you exercise?)" value={data.fitt_intensity} onChange={v => set('fitt_intensity', v)} placeholder="e.g. Moderate, I break a sweat but can talk" />
         <Field label="Type (what do you currently do?)" value={data.fitt_type} onChange={v => set('fitt_type', v)} placeholder="e.g. Walking, occasional gym, yoga" />
@@ -216,7 +216,7 @@ function Step2({ data, onChange, onNext, onBack }) {
   );
 }
 
-// ── Step 3: PAR-Q ─────────────────────────────────────────────────────────────
+//  Step 3: PAR-Q 
 const PARQ_QUESTIONS = [
   'Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?',
   'Do you feel pain in your chest when you do physical activity?',
@@ -289,7 +289,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
             <CheckCircle className="w-5 h-5 text-brazil-green flex-shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-bold text-brazil-green mb-1">You are ready to start!</p>
-              <p className="text-xs text-grey-200">Great — you answered NO to all questions. You are cleared to begin your fitness journey!</p>
+              <p className="text-xs text-grey-200">Great  you answered NO to all questions. You are cleared to begin your fitness journey!</p>
             </div>
           </div>
         )
@@ -303,7 +303,7 @@ function Step3({ data, onChange, onNext, onBack, clientName }) {
   );
 }
 
-// ── Step 4: Informed Consent ──────────────────────────────────────────────────
+//  Step 4: Informed Consent 
 const INFORMED_CONSENT_TEXT = `I voluntarily agree to engage in a programme of physical activity under the supervision of Andre Viana, Personal Trainer.
 
 NATURE OF THE PROGRAMME
@@ -376,7 +376,7 @@ function Step4({ data, onChange, onNext, onBack, clientName, existingSignature }
 
       <div className="card-dark max-h-64 overflow-y-auto">
         <p className="text-xs font-bold text-brazil-green mb-3 uppercase tracking-wide">
-          Informed Consent for Physical Fitness Programme — BrazilFit
+          Informed Consent for Physical Fitness Programme  BrazilFit
         </p>
         <p className="text-xs text-grey-200 whitespace-pre-line leading-relaxed">{INFORMED_CONSENT_TEXT}</p>
       </div>
@@ -419,7 +419,7 @@ function Step4({ data, onChange, onNext, onBack, clientName, existingSignature }
   );
 }
 
-// ── Step 5: Terms & Conditions ────────────────────────────────────────────────
+//  Step 5: Terms & Conditions 
 const TC_TERMS = [
   {
     num: 1, title: 'PAYMENT',
@@ -434,11 +434,11 @@ const TC_TERMS = [
     text: 'I understand that all pre-paid block sessions and packages have a completion date. Outstanding sessions will not be carried over past the completion date, unless prior agreement has been made with Andre Viana.',
   },
   {
-    num: 4, title: 'CANCELLATION POLICY — CLIENT',
+    num: 4, title: 'CANCELLATION POLICY  CLIENT',
     text: "I understand I must contact Andre Viana directly to cancel or change booked sessions. I understand that if I need to cancel a training session I must contact Andre Viana at least 24 hours before the session time. The session will be added to the end of the block/package of sessions. Cancellations made within less than 24 hours notice will incur full charge.",
   },
   {
-    num: 5, title: 'CANCELLATION POLICY — TRAINER',
+    num: 5, title: 'CANCELLATION POLICY  TRAINER',
     text: "I understand that if Andre Viana has to cancel the sessions with at least 24 hours notice, that session will be carried over to the end of the block/package of sessions. If Andre Viana cancels the session within less than 24 hours I may choose one of 3 following options:\n1. The sessions can be carried over to the end of the package/block sessions\n2. A video recorded training session\n3. Refund for that session only",
   },
   {
@@ -556,7 +556,7 @@ function Step5({ data, onChange, onNext, onBack, clientName, consentSignature })
   );
 }
 
-// ── Complete screen ───────────────────────────────────────────────────────────
+//  Complete screen 
 function CompletionScreen({ onGoHome }) {
   return (
     <div style={{minHeight:"100vh",backgroundColor:"#0f0f0f",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"1.5rem",textAlign:"center"}}>
@@ -602,7 +602,7 @@ function CompletionScreen({ onGoHome }) {
   );
 }
 
-// ── Shared form components ────────────────────────────────────────────────────
+//  Shared form components 
 function Field({ label, value, onChange, placeholder, type = 'text', multiline = false, rows = 3 }) {
   const cls = 'w-full bg-grey-100 border border-grey-100 rounded-[8px] px-3 py-2.5 text-sm focus:outline-none focus:border-brazil-green/50 placeholder:text-grey-200';
   return (
@@ -635,7 +635,7 @@ function ToggleRow({ label, value, onChange }) {
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+//  Main Component 
 export default function ClientOnboarding() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -739,3 +739,4 @@ export default function ClientOnboarding() {
     </div>
   );
 }
+

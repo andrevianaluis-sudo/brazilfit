@@ -303,7 +303,7 @@ export default function WorkoutBuilder({ template, onClose, onSuccess }) {
                           step="0.5"
                           value={ex.weight_kg || ''}
                           onChange={e => handleExerciseChange(idx, 'weight_kg', e.target.value)}
-                          placeholder="ÔÇö"
+                          placeholder=""
                           className="input text-sm w-full"
                         />
                       </div>
@@ -375,3 +375,4 @@ export default function WorkoutBuilder({ template, onClose, onSuccess }) {
     </div>
   );
 }
+

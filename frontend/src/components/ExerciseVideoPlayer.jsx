@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import CustomVideoPlayer from './CustomVideoPlayer';
 
 export default function ExerciseVideoPlayer({ exerciseId, youtubeVideoId, exerciseName }) {
@@ -62,9 +62,10 @@ export default function ExerciseVideoPlayer({ exerciseId, youtubeVideoId, exerci
   return (
     <div className="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
       <div className="text-center text-grey-200">
-        <div className="text-4xl mb-2">🎥</div>
+        <div className="text-4xl mb-2"></div>
         <p>Video demonstration coming soon</p>
       </div>
     </div>
   );
 }
+

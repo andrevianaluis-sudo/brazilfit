@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
@@ -178,9 +178,9 @@ export default function StretchDetailModal({ stretch, onClose }) {
                 <div>
                   <h4 className="font-bold text-black text-sm mb-2">Pro Tips</h4>
                   <ul className="space-y-1 text-sm text-grey-200">
-                    <li>• Move slowly and avoid bouncing</li>
-                    <li>• Only stretch to mild tension, never pain</li>
-                    <li>• Breathe deeply throughout the stretch</li>
+                    <li> Move slowly and avoid bouncing</li>
+                    <li> Only stretch to mild tension, never pain</li>
+                    <li> Breathe deeply throughout the stretch</li>
                   </ul>
                 </div>
               </div>
@@ -191,3 +191,4 @@ export default function StretchDetailModal({ stretch, onClose }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-// Skeleton Loaders with shimmer animation
+﻿// Skeleton Loaders with shimmer animation
 export function SkeletonHeroCard() {
   return (
     <div className="px-5 pt-6 pb-8 animate-pulse">
@@ -76,3 +76,4 @@ export function SkeletonCircle() {
     </div>
   );
 }
+

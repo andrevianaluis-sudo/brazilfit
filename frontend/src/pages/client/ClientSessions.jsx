@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, ArrowRight, Zap, Calendar, MessageSquare } from 'lucide-react';
@@ -29,7 +29,7 @@ function SessionNoteModal({session,onClose}){
         <div style={{padding:'1.5rem',borderBottom:`1px solid ${BORDER}`,display:'flex',alignItems:'center',justifyContent:'space-between',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)'}}>
           <div>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.55rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 4px'}}>Session Notes</p>
-            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:0}}>{fmtDateShort(session.scheduled_date)} · {session.scheduled_time}</p>
+            <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:700,color:TEXT,letterSpacing:'-0.02em',margin:0}}>{fmtDateShort(session.scheduled_date)}  {session.scheduled_time}</p>
           </div>
           <button onClick={onClose} style={{background:'rgba(255,255,255,0.08)',border:'none',cursor:'pointer',color:TEXT,padding:'8px',borderRadius:'50%',minHeight:'auto',minWidth:'auto',display:'flex',alignItems:'center'}}><X size={16}/></button>
         </div>
@@ -39,15 +39,15 @@ function SessionNoteModal({session,onClose}){
           ):!note?(
             <div style={{textAlign:'center',padding:'2.5rem 0'}}>
               <div style={{width:'56px',height:'56px',borderRadius:'16px',background:'rgba(255,107,43,0.1)',border:`1px solid rgba(255,107,43,0.2)`,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 1rem'}}><FileText size={24} color={ORANGE}/></div>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>No notes yet — your PT will add them after the session.</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>No notes yet  your PT will add them after the session.</p>
             </div>
           ):(
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               {[
-                {key:'what_we_worked_on',label:'What we worked on',color:ORANGE,icon:'🏋️'},
-                {key:'what_went_well',label:'What went well',color:GREEN,icon:'✅'},
-                {key:'what_to_improve',label:'Focus areas',color:YELLOW,icon:'🎯'},
-                {key:'focus_next_session',label:'Next session focus',color:'#60a5fa',icon:'⚡'},
+                {key:'what_we_worked_on',label:'What we worked on',color:ORANGE,icon:''},
+                {key:'what_went_well',label:'What went well',color:GREEN,icon:''},
+                {key:'what_to_improve',label:'Focus areas',color:YELLOW,icon:''},
+                {key:'focus_next_session',label:'Next session focus',color:'#60a5fa',icon:''},
               ].filter(f=>note[f.key]).map(f=>(
                 <div key={f.key} style={{background:`linear-gradient(135deg,${f.color}10,${SURFACE})`,borderLeft:`2px solid ${f.color}`,borderRadius:'10px',padding:'1rem'}}>
                   <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}}>
@@ -59,11 +59,11 @@ function SessionNoteModal({session,onClose}){
               ))}
               {note.injuries_concerns&&(
                 <div style={{background:'rgba(239,68,68,0.08)',borderLeft:'2px solid #ef4444',borderRadius:'10px',padding:'1rem'}}>
-                  <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.14em',color:'#ef4444',textTransform:'uppercase',margin:'0 0 6px'}}>⚠️ Injuries / Concerns</p>
+                  <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.14em',color:'#ef4444',textTransform:'uppercase',margin:'0 0 6px'}}> Injuries / Concerns</p>
                   <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:'#ef4444',margin:0,lineHeight:1.65}}>{note.injuries_concerns}</p>
                 </div>
               )}
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',color:GREEN,textAlign:'right',margin:'4px 0 0'}}>✍️ Written by your PT</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.65rem',color:GREEN,textAlign:'right',margin:'4px 0 0'}}> Written by your PT</p>
             </div>
           )}
         </div>
@@ -86,13 +86,13 @@ function CancelModal({session,onConfirm,onClose,loading}){
           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.8rem',color:MUTED,margin:'0 0 1.25rem'}}>{fmtDateTime(session.scheduled_date,session.scheduled_time)}</p>
           <div style={{background:canCancel?'rgba(76,175,80,0.08)':'rgba(239,68,68,0.08)',borderLeft:`2px solid ${canCancel?GREEN:'#ef4444'}`,borderRadius:'10px',padding:'1rem'}}>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:'#c0c0c0',margin:0,lineHeight:1.6}}>
-              {canCancel?<>This session will be <strong style={{color:TEXT}}>returned to your block</strong>. You have {Math.floor(hours)}h notice — within policy.</>:<>This session is in <strong style={{color:TEXT}}>{Math.max(0,hours).toFixed(1)} hours</strong>. Cancellations require at least 24 hours notice.</>}
+              {canCancel?<>This session will be <strong style={{color:TEXT}}>returned to your block</strong>. You have {Math.floor(hours)}h notice  within policy.</>:<>This session is in <strong style={{color:TEXT}}>{Math.max(0,hours).toFixed(1)} hours</strong>. Cancellations require at least 24 hours notice.</>}
             </p>
           </div>
         </div>
         <div style={{borderTop:`1px solid ${BORDER}`,display:'flex'}}>
           <button onClick={onClose} style={{flex:1,padding:'1rem',backgroundColor:'transparent',border:'none',borderRight:`1px solid ${BORDER}`,color:MUTED,fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:600,cursor:'pointer',minHeight:'auto'}}>{canCancel?'Keep Session':'Got It'}</button>
-          {canCancel&&<button onClick={onConfirm} disabled={loading} style={{flex:1,padding:'1rem',backgroundColor:'transparent',border:'none',color:'#ef4444',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.5:1,minHeight:'auto'}}>{loading?'Cancelling…':'Yes, Cancel'}</button>}
+          {canCancel&&<button onClick={onConfirm} disabled={loading} style={{flex:1,padding:'1rem',backgroundColor:'transparent',border:'none',color:'#ef4444',fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.5:1,minHeight:'auto'}}>{loading?'Cancelling':'Yes, Cancel'}</button>}
         </div>
       </div>
     </div>
@@ -110,8 +110,8 @@ export default function ClientSessions(){
 
   const handleCancelConfirm=async()=>{
     if(!cancelTarget)return;setCancelLoading(true);
-    try{await api.post(`/sessions/${cancelTarget.id}/cancel`);toast.success('Session cancelled — returned to your block.');setCancelTarget(null);loadData();}
-    catch(err){toast.error(err.response?.status===403?'Cancellation blocked — less than 24 hours notice.':err.response?.data?.message||'Failed to cancel');}
+    try{await api.post(`/sessions/${cancelTarget.id}/cancel`);toast.success('Session cancelled  returned to your block.');setCancelTarget(null);loadData();}
+    catch(err){toast.error(err.response?.status===403?'Cancellation blocked  less than 24 hours notice.':err.response?.data?.message||'Failed to cancel');}
     finally{setCancelLoading(false);}
   };
 
@@ -140,9 +140,9 @@ export default function ClientSessions(){
         {/* Stats */}
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.25rem'}}>
           {[
-            {value:attended, label:'Attended', color:GREEN,  bg:'rgba(76,175,80,0.1)',  border:'rgba(76,175,80,0.2)',  icon:'✅'},
-            {value:missed,   label:'Missed',   color:'#ef4444',bg:'rgba(239,68,68,0.1)',border:'rgba(239,68,68,0.2)', icon:'❌'},
-            {value:sessionsRemaining,label:'Remaining',color:YELLOW,bg:'rgba(255,214,0,0.1)',border:'rgba(255,214,0,0.2)',icon:'⚡'},
+            {value:attended, label:'Attended', color:GREEN,  bg:'rgba(76,175,80,0.1)',  border:'rgba(76,175,80,0.2)',  icon:''},
+            {value:missed,   label:'Missed',   color:'#ef4444',bg:'rgba(239,68,68,0.1)',border:'rgba(239,68,68,0.2)', icon:''},
+            {value:sessionsRemaining,label:'Remaining',color:YELLOW,bg:'rgba(255,214,0,0.1)',border:'rgba(255,214,0,0.2)',icon:''},
           ].map((s,i)=>(
             <div key={i} style={{borderRadius:'16px',padding:'1.1rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>
               <p style={{fontSize:'1.1rem',margin:'0 0 2px'}}>{s.icon}</p>
@@ -181,9 +181,9 @@ export default function ClientSessions(){
                     color:done||next?'#000':'rgba(255,255,255,0.2)',
                     boxShadow:done?`0 2px 8px rgba(76,175,80,0.5)`:next?`0 2px 12px rgba(255,107,43,0.6)`:'none',
                   }}>
-                    {done?'✓':i+1}
+                    {done?'':i+1}
                   </div>
-                  {isNine&&<span style={{fontSize:'0.45rem',lineHeight:1}}>🔔</span>}
+                  {isNine&&<span style={{fontSize:'0.45rem',lineHeight:1}}></span>}
                 </div>
               );
             })}
@@ -197,7 +197,7 @@ export default function ClientSessions(){
           {/* Renewal warning */}
           {sessionsRemaining===1&&(
             <div style={{background:`linear-gradient(135deg,rgba(255,214,0,0.12),rgba(255,107,43,0.08))`,border:`1px solid rgba(255,214,0,0.3)`,borderRadius:'12px',padding:'0.875rem 1rem',display:'flex',alignItems:'center',gap:'10px'}}>
-              <span style={{fontSize:'1.1rem'}}>🔔</span>
+              <span style={{fontSize:'1.1rem'}}></span>
               <div style={{flex:1}}>
                 <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',fontWeight:700,color:YELLOW,margin:'0 0 2px'}}>Last session remaining</p>
                 <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:MUTED,margin:0}}>Contact your PT to renew your block</p>
@@ -244,7 +244,7 @@ export default function ClientSessions(){
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.9rem',fontWeight:700,color:TEXT,margin:'0 0 3px',letterSpacing:'-0.01em'}}>{fmtDateTimeFull(s.scheduled_date,s.scheduled_time)}</p>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED,margin:0}}>
                           {sessionsLeftAfter} session{sessionsLeftAfter!==1?'s':''} left after this
-                          {locked&&<span style={{color:'#ef4444',marginLeft:'8px',fontWeight:600}}>· Within 24h</span>}
+                          {locked&&<span style={{color:'#ef4444',marginLeft:'8px',fontWeight:600}}> Within 24h</span>}
                         </p>
                       </div>
                     </div>
@@ -274,7 +274,7 @@ export default function ClientSessions(){
           </div>
           {limitedHistory.length===0?(
             <div style={{borderRadius:'16px',padding:'2.5rem',textAlign:'center',background:SURFACE,border:`1px solid ${BORDER}`}}>
-              <p style={{fontSize:'2rem',margin:'0 0 8px'}}>📅</p>
+              <p style={{fontSize:'2rem',margin:'0 0 8px'}}></p>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.85rem',color:MUTED,margin:0}}>No session history yet</p>
             </div>
           ):(
@@ -283,18 +283,18 @@ export default function ClientSessions(){
                 const isAttended=s.status==='attended';const isCancelled=s.status==='cancelled';
                 const statusColor=isAttended?GREEN:isCancelled?MUTED:'#ef4444';
                 const statusBg=isAttended?'rgba(76,175,80,0.1)':isCancelled?'rgba(255,255,255,0.04)':'rgba(239,68,68,0.08)';
-                const statusLabel=isAttended?'✓ Attended':isCancelled?'Cancelled':'Missed';
+                const statusLabel=isAttended?' Attended':isCancelled?'Cancelled':'Missed';
                 return(
                   <div key={s.id} style={{borderRadius:'14px',padding:'1rem 1.25rem',background:statusBg,border:`1px solid ${isAttended?'rgba(76,175,80,0.15)':isCancelled?BORDER:'rgba(239,68,68,0.15)'}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',opacity:isCancelled?0.6:1}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',flex:1}}>
                       <div style={{width:'34px',height:'34px',borderRadius:'10px',background:`${statusColor}18`,border:`1px solid ${statusColor}30`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'0.9rem'}}>
-                        {isAttended?'✅':isCancelled?'—':'❌'}
+                        {isAttended?'':isCancelled?'':''}
                       </div>
                       <div>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,color:isAttended?TEXT:'#808080',margin:'0 0 3px',letterSpacing:'-0.01em'}}>{fmtDateTime(s.scheduled_date,s.scheduled_time)}</p>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED,margin:0}}>
-                          {s.status==='missed'&&'Missed · session preserved'}
-                          {isCancelled&&s.session_carried_over===1&&`Cancelled · returned to block${s.cancellation_notice_hours!=null?` · ${Math.floor(s.cancellation_notice_hours)}h notice`:''}`}
+                          {s.status==='missed'&&'Missed  session preserved'}
+                          {isCancelled&&s.session_carried_over===1&&`Cancelled  returned to block${s.cancellation_notice_hours!=null?`  ${Math.floor(s.cancellation_notice_hours)}h notice`:''}`}
                         </p>
                       </div>
                     </div>
@@ -329,3 +329,4 @@ export default function ClientSessions(){
     </div>
   );
 }
+

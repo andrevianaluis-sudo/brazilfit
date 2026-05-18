@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Plus, X, ChevronDown, ChevronUp, Edit3, Check, ClipboardList, Loader2, Trash2 } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
@@ -99,9 +99,9 @@ function LogCard({ log, onDelete }) {
                   <div key={i} className="bg-white/4 rounded-lg px-3 py-2.5 text-xs">
                     <p className="font-semibold text-black mb-1.5">{ex.name || `Exercise ${i+1}`}</p>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-grey-200">
-                      {ex.sets && <span>Planned: {ex.sets} sets × {ex.reps_or_duration}</span>}
+                      {ex.sets && <span>Planned: {ex.sets} sets  {ex.reps_or_duration}</span>}
                       {ex.intensity_pct && <span>Intensity: {ex.intensity_pct}</span>}
-                      {ex.completed_sets && <span className="text-brazil-green">Done: {ex.completed_sets} sets × {ex.completed_reps}</span>}
+                      {ex.completed_sets && <span className="text-brazil-green">Done: {ex.completed_sets} sets  {ex.completed_reps}</span>}
                       {ex.completed_weight && <span className="text-brazil-green">Weight: {ex.completed_weight}</span>}
                     </div>
                   </div>
@@ -304,3 +304,4 @@ export default function ClientWorkoutLog() {
     </div>
   );
 }
+

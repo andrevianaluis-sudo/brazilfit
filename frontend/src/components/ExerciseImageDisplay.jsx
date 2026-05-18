@@ -1,4 +1,4 @@
-import MuscleDiagram from './MuscleDiagram';
+﻿import MuscleDiagram from './MuscleDiagram';
 import { getExerciseMuscles, determineBestView } from '../data/exerciseMuscleMap';
 
 export default function ExerciseImageDisplay({ exerciseName, size = 'large' }) {
@@ -16,3 +16,4 @@ export default function ExerciseImageDisplay({ exerciseName, size = 'large' }) {
     </div>
   );
 }
+

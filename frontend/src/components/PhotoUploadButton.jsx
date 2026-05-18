@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+﻿import { useState, useRef } from 'react';
 import { Camera, X } from 'lucide-react';
 import api from '../utils/api';
 
@@ -131,3 +131,4 @@ export default function PhotoUploadButton({ clientId, onUploadSuccess }) {
     </>
   );
 }
+

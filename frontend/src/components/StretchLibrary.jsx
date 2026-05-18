@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import api from '../utils/api';
 import StretchDetailModal from './StretchDetailModal';
@@ -148,3 +148,4 @@ export default function StretchLibrary() {
     </div>
   );
 }
+

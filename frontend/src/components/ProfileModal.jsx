@@ -203,7 +203,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             )}
           </div>
 
-          {/* Pro upgrade card â€” only for free */}
+          {/* Pro upgrade card  only for free */}
           {!isPro && (
             <div style={{ padding: '16px 20px 0' }}>
               <button
@@ -287,4 +287,5 @@ export default function ProfileModal({ isOpen, onClose }) {
     </>
   );
 }
+
 

@@ -25,7 +25,7 @@ function CardSection({ title, dataStr, columns }) {
               <tr key={i} className="border-b border-grey-100">
                 {columns.map(c => (
                   <td key={c} className="pr-4 py-1.5 text-grey-200 whitespace-nowrap">
-                    {row[c.toLowerCase().replace(/[\s\/]/g,'_')] || 'â€”'}
+                    {row[c.toLowerCase().replace(/[\s\/]/g,'_')] || ''}
                   </td>
                 ))}
               </tr>
@@ -56,15 +56,15 @@ function ProgrammeCard({ card }) {
 
       {expanded && (
         <div className="mt-4 pt-4 border-t border-white/8 space-y-5">
-          <CardSection title="Warm Up â€” Pulse Raiser" dataStr={card.warm_up_pulse}
+          <CardSection title="Warm Up  Pulse Raiser" dataStr={card.warm_up_pulse}
             columns={['Equipment','Duration','Level','Resistance','Speed','RPE','Heart Rate']} />
-          <CardSection title="Warm Up â€” Preparatory Stretches" dataStr={card.warm_up_stretches}
+          <CardSection title="Warm Up  Preparatory Stretches" dataStr={card.warm_up_stretches}
             columns={['Muscle Group','Position','Duration','Reps']} />
           <CardSection title="Cardiovascular Training" dataStr={card.cardio}
             columns={['Machine/Activity','Duration','System','Level','Resistance','Speed','RPE','HR']} />
           <CardSection title="Resistance Training" dataStr={card.resistance}
             columns={['Exercise','Equipment','Weight','System','Reps','Sets','Rest','Notes']} />
-          <CardSection title="Cool Down â€” Cardiovascular" dataStr={card.cool_down_cv}
+          <CardSection title="Cool Down  Cardiovascular" dataStr={card.cool_down_cv}
             columns={['Machine/Activity','Duration','System','Level','Speed','RPE','HR']} />
           <CardSection title="Post-Workout Stretches" dataStr={card.cool_down_stretches}
             columns={['Muscle Group','Position','Duration']} />
@@ -126,4 +126,5 @@ export default function ClientProgramme() {
     </div>
   );
 }
+
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Plus, X, Droplets, Smile, Frown, Meh } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
@@ -39,7 +39,7 @@ function WaterTracker({value,onChange}){
           </button>
         ))}
       </div>
-      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:MUTED}}>{value} × 250ml = {(value*0.25).toFixed(2)}L</p>
+      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:MUTED}}>{value}  250ml = {(value*0.25).toFixed(2)}L</p>
     </div>
   );
 }
@@ -154,7 +154,7 @@ export default function ClientFoodDiary(){
         </div>
         {entry.meals.length===0?(
           <div style={{background:SURFACE,borderRadius:'12px',border:`1px dashed ${BORDER}`,padding:'2rem',textAlign:'center'}}>
-            <p style={{fontSize:'1.5rem',margin:'0 0 6px'}}>🍽️</p>
+            <p style={{fontSize:'1.5rem',margin:'0 0 6px'}}></p>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>No meals logged yet</p>
           </div>
         ):(
@@ -194,3 +194,4 @@ export default function ClientFoodDiary(){
     </div>
   );
 }
+

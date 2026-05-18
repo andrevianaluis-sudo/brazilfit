@@ -1,4 +1,4 @@
-export function EmptySessionsState() {
+﻿export function EmptySessionsState() {
   return (
     <div className="flex flex-col items-center justify-center min-h-96 px-5 text-center">
       <svg className="w-24 h-24 mb-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,3 +93,4 @@ export function EmptyChallengesState() {
     </div>
   );
 }
+

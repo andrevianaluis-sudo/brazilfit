@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -50,7 +50,7 @@ export default function ProUpgradeModal({ isOpen, onClose }) {
           {/* Price Section */}
           <div className="text-center space-y-3">
             <p className="text-grey-200 text-sm">Start your free trial</p>
-            <div className="text-5xl font-black text-brazil-green">£9.99</div>
+            <div className="text-5xl font-black text-brazil-green">9.99</div>
             <p className="text-grey-200 text-sm">/month after 7-day trial</p>
             <p className="text-grey-100 text-xs">Cancel anytime, no commitment</p>
           </div>
@@ -72,7 +72,7 @@ export default function ProUpgradeModal({ isOpen, onClose }) {
           <div className="bg-grey-300 rounded-[12px] p-4 space-y-2">
             <p className="text-sm text-black font-bold">7-day free trial includes:</p>
             <p className="text-xs text-grey-200 leading-relaxed">
-              Try all Pro features with no credit card required. After 7 days, your subscription begins at £9.99/month. Cancel anytime.
+              Try all Pro features with no credit card required. After 7 days, your subscription begins at 9.99/month. Cancel anytime.
             </p>
           </div>
         </div>
@@ -98,3 +98,4 @@ export default function ProUpgradeModal({ isOpen, onClose }) {
     </div>
   );
 }
+

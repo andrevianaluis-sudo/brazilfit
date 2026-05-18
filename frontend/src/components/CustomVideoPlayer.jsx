@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize, Settings } from 'lucide-react';
 
 // Detect network connection type
@@ -80,9 +80,9 @@ export default function CustomVideoPlayer({
         className="w-full bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden"
       >
         <div className="aspect-video flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-gray-800 to-gray-900">
-          <div className="text-6xl">🎥</div>
+          <div className="text-6xl"></div>
           <p className="text-black text-xl font-semibold">{title}</p>
-          <p className="text-grey-200 text-center px-4">Video coming soon — check back soon</p>
+          <p className="text-grey-200 text-center px-4">Video coming soon  check back soon</p>
           <button
             disabled
             className="mt-4 bg-emerald-600 text-black px-8 py-3 rounded-lg font-semibold flex items-center gap-2 opacity-50 cursor-not-allowed"
@@ -151,7 +151,7 @@ export default function CustomVideoPlayer({
           <div className="p-4 flex items-center justify-between">
             <p className="text-black font-semibold">{title}</p>
             <div className="flex items-center gap-2 text-xs text-black">
-              {networkType === 'wifi' ? '📶 WiFi' : '📱 Mobile Data'}
+              {networkType === 'wifi' ? ' WiFi' : ' Mobile Data'}
             </div>
           </div>
 
@@ -241,8 +241,8 @@ export default function CustomVideoPlayer({
             {/* Network info */}
             {availableQualities.length > 0 && (
               <div className="text-xs text-grey-200">
-                {networkType === 'mobile' && selectedQuality === '720p' && '📱 Data-friendly quality selected'}
-                {networkType === 'wifi' && selectedQuality === '1080p' && '📶 High quality available'}
+                {networkType === 'mobile' && selectedQuality === '720p' && ' Data-friendly quality selected'}
+                {networkType === 'wifi' && selectedQuality === '1080p' && ' High quality available'}
               </div>
             )}
           </div>
@@ -263,3 +263,4 @@ export default function CustomVideoPlayer({
     </div>
   );
 }
+

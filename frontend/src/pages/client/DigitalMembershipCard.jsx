@@ -1,4 +1,4 @@
-import { useAuth } from '../../context/AuthContext';
+﻿import { useAuth } from '../../context/AuthContext';
 import { Zap, Crown } from 'lucide-react';
 
 export default function DigitalMembershipCard() {
@@ -53,3 +53,4 @@ export default function DigitalMembershipCard() {
     </div>
   );
 }
+

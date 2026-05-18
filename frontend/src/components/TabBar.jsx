@@ -1,4 +1,4 @@
-export default function TabBar({ tabs, activeTab, onChange }) {
+﻿export default function TabBar({ tabs, activeTab, onChange }) {
   return (
     <div className="flex items-center justify-center gap-8 px-5 py-4 border-b border-grey-100">
       {tabs.map((tab) => (
@@ -20,3 +20,4 @@ export default function TabBar({ tabs, activeTab, onChange }) {
     </div>
   );
 }
+

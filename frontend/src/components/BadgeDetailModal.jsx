@@ -1,4 +1,4 @@
-import { X, Share2 } from 'lucide-react';
+﻿import { X, Share2 } from 'lucide-react';
 
 export default function BadgeDetailModal({ badge, BadgeComponent, onClose }) {
   if (!badge) return null;
@@ -41,7 +41,7 @@ export default function BadgeDetailModal({ badge, BadgeComponent, onClose }) {
         {/* Progress or earned date */}
         {badge.earned ? (
           <div className="mb-8 text-center">
-            <p className="text-brazil-green text-sm font-bold">✓ EARNED</p>
+            <p className="text-brazil-green text-sm font-bold"> EARNED</p>
             <p className="text-grey-200 text-xs mt-2">
               {new Date(badge.earnedDate).toLocaleDateString('en-US', {
                 month: 'short',
@@ -83,3 +83,4 @@ export default function BadgeDetailModal({ badge, BadgeComponent, onClose }) {
     </div>
   );
 }
+

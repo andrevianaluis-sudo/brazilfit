@@ -147,7 +147,7 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ex.name}</p>
                     <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>
-                      {ex.sets} sets · {ex.reps} reps · {ex.rest_seconds}s rest{ex.weight_kg ? ` · ${ex.weight_kg}kg` : ''}
+                      {ex.sets} sets  {ex.reps} reps  {ex.rest_seconds}s rest{ex.weight_kg ? `  ${ex.weight_kg}kg` : ''}
                     </p>
                   </div>
 
@@ -272,3 +272,4 @@ export default function WorkoutDetailModal({ workout, onClose, onComplete }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { ChevronRight, Share2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { PROGRAMMES } from '../../data/programmes';
@@ -134,3 +134,4 @@ export default function ClientProgrammes() {
     </div>
   );
 }
+

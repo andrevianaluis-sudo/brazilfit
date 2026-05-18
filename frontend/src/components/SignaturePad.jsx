@@ -1,13 +1,13 @@
-import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+﻿import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { RotateCcw } from 'lucide-react';
 
 /**
- * SignaturePad — HTML5 canvas signature with touch and mouse support.
+ * SignaturePad  HTML5 canvas signature with touch and mouse support.
  * Usage:
  *   const sigRef = useRef();
  *   <SignaturePad ref={sigRef} onSign={() => {}} />
- *   sigRef.current.getDataURL()  → 'data:image/png;base64,...'
- *   sigRef.current.isEmpty()     → boolean
+ *   sigRef.current.getDataURL()   'data:image/png;base64,...'
+ *   sigRef.current.isEmpty()      boolean
  *   sigRef.current.clear()
  *   sigRef.current.loadFromDataURL(dataUrl)
  */
@@ -152,3 +152,4 @@ const SignaturePad = forwardRef(({ onSign, className = '' }, ref) => {
 
 SignaturePad.displayName = 'SignaturePad';
 export default SignaturePad;
+

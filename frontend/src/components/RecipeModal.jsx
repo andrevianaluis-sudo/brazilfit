@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, Check, ShoppingCart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../utils/api';
@@ -133,7 +133,7 @@ export function RecipeModal({ meal, isOpen, onClose, onAddToList }) {
           }}>
             {buttonState==='add'    && <><ShoppingCart size={16}/> Add Ingredients to Shopping List</>}
             {buttonState==='loading'&& 'Adding...'}
-            {buttonState==='added'  && <><Check size={16}/> Added to Shopping List ✓</>}
+            {buttonState==='added'  && <><Check size={16}/> Added to Shopping List </>}
           </button>
         </div>
 
@@ -151,3 +151,4 @@ function getDefaultPhotoForGoal(goal) {
   };
   return defaults[goal] || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=150&h=150&fit=crop';
 }
+

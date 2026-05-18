@@ -1,4 +1,4 @@
-import { ArrowLeft, ChevronRight } from 'lucide-react';
+﻿import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { PROGRAMMES } from '../../data/programmes';
 
 export default function BrowseProgrammesScreen({ onBack, onSelectProgramme }) {
@@ -44,7 +44,7 @@ export default function BrowseProgrammesScreen({ onBack, onSelectProgramme }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3 text-xs">
                   <span className="text-grey-400">{programme.duration} weeks</span>
-                  <span className="text-grey-500">•</span>
+                  <span className="text-grey-500"></span>
                   <span className="text-grey-400">{programme.equipment}</span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-grey-400" />
@@ -56,3 +56,4 @@ export default function BrowseProgrammesScreen({ onBack, onSelectProgramme }) {
     </div>
   );
 }
+

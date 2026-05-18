@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react';
+﻿import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function BackButton({ to = '/client/home', onClick, label = 'Back to Dashboard' }) {
@@ -37,3 +37,4 @@ export default function BackButton({ to = '/client/home', onClick, label = 'Back
     </button>
   );
 }
+

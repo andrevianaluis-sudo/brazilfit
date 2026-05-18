@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Dumbbell, Calendar, Clock, ArrowRight, Check, Zap, Trophy } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
@@ -8,10 +8,10 @@ import WorkoutDetailModal from '../../components/WorkoutDetailModal';
 const BG='#0f0f0f';const SURFACE='#1a1a1a';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#606060';const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';
 
 const STATUS={
-  assigned:    {label:'New',         color:GREEN,  bg:'rgba(76,175,80,0.12)',   border:'rgba(76,175,80,0.25)',   icon:'⚡'},
-  in_progress: {label:'In Progress', color:YELLOW, bg:'rgba(255,214,0,0.12)',   border:'rgba(255,214,0,0.25)',   icon:'🔥'},
-  completed:   {label:'Completed',   color:MUTED,  bg:'rgba(255,255,255,0.04)', border:'rgba(255,255,255,0.08)', icon:'✅'},
-  missed:      {label:'Missed',      color:'#ef4444',bg:'rgba(239,68,68,0.08)', border:'rgba(239,68,68,0.2)',    icon:'❌'},
+  assigned:    {label:'New',         color:GREEN,  bg:'rgba(76,175,80,0.12)',   border:'rgba(76,175,80,0.25)',   icon:''},
+  in_progress: {label:'In Progress', color:YELLOW, bg:'rgba(255,214,0,0.12)',   border:'rgba(255,214,0,0.25)',   icon:''},
+  completed:   {label:'Completed',   color:MUTED,  bg:'rgba(255,255,255,0.04)', border:'rgba(255,255,255,0.08)', icon:''},
+  missed:      {label:'Missed',      color:'#ef4444',bg:'rgba(239,68,68,0.08)', border:'rgba(239,68,68,0.2)',    icon:''},
 };
 
 const DIFF={
@@ -42,7 +42,7 @@ export default function ClientWorkouts(){
   }
 
   async function handleMarkComplete(workoutId){
-    try{await api.patch(`/assigned-workouts/${workoutId}/complete`);toast.success('Workout marked as complete! 💪');fetchWorkouts();setSelectedWorkout(null);}
+    try{await api.patch(`/assigned-workouts/${workoutId}/complete`);toast.success('Workout marked as complete! ');fetchWorkouts();setSelectedWorkout(null);}
     catch{toast.error('Failed to mark complete');}
   }
 
@@ -66,7 +66,7 @@ export default function ClientWorkouts(){
           </div>
         ):workouts.length===0?(
           <div style={{borderRadius:'20px',padding:'3.5rem',textAlign:'center',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)',border:'1px solid rgba(255,107,43,0.15)'}}>
-            <div style={{width:'64px',height:'64px',borderRadius:'20px',background:'rgba(255,107,43,0.1)',border:'1px solid rgba(255,107,43,0.2)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 1.25rem',fontSize:'1.8rem'}}>🏋️</div>
+            <div style={{width:'64px',height:'64px',borderRadius:'20px',background:'rgba(255,107,43,0.1)',border:'1px solid rgba(255,107,43,0.2)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 1.25rem',fontSize:'1.8rem'}}></div>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.3rem',fontWeight:800,color:TEXT,letterSpacing:'-0.03em',margin:'0 0 6px'}}>No workouts yet</p>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',color:MUTED,margin:0}}>Your PT will assign workouts to your programme soon.</p>
           </div>
@@ -75,9 +75,9 @@ export default function ClientWorkouts(){
             {/* Stats */}
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'1.5rem'}}>
               {[
-                {value:workouts.length,label:'Total',    color:TEXT,   bg:'rgba(255,255,255,0.05)',border:BORDER,            icon:'📋'},
-                {value:active.length,  label:'Active',   color:ORANGE, bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)',icon:'🔥'},
-                {value:completed.length,label:'Done',    color:GREEN,  bg:'rgba(76,175,80,0.1)',  border:'rgba(76,175,80,0.2)',icon:'✅'},
+                {value:workouts.length,label:'Total',    color:TEXT,   bg:'rgba(255,255,255,0.05)',border:BORDER,            icon:''},
+                {value:active.length,  label:'Active',   color:ORANGE, bg:'rgba(255,107,43,0.1)', border:'rgba(255,107,43,0.2)',icon:''},
+                {value:completed.length,label:'Done',    color:GREEN,  bg:'rgba(76,175,80,0.1)',  border:'rgba(76,175,80,0.2)',icon:''},
               ].map((s,i)=>(
                 <div key={i} style={{borderRadius:'16px',padding:'1rem 0.75rem',background:s.bg,border:`1px solid ${s.border}`,textAlign:'center'}}>
                   <p style={{fontSize:'1rem',margin:'0 0 3px'}}>{s.icon}</p>
@@ -123,11 +123,11 @@ export default function ClientWorkouts(){
                             <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED}}>
                               <Calendar size={11} color={MUTED}/>{new Date(workout.scheduled_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
                             </span>
-                            <span style={{color:'rgba(255,255,255,0.15)',fontSize:'0.7rem'}}>·</span>
+                            <span style={{color:'rgba(255,255,255,0.15)',fontSize:'0.7rem'}}></span>
                             <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED}}>
                               <Clock size={11} color={MUTED}/>{workout.estimated_duration_minutes} min
                             </span>
-                            <span style={{color:'rgba(255,255,255,0.15)',fontSize:'0.7rem'}}>·</span>
+                            <span style={{color:'rgba(255,255,255,0.15)',fontSize:'0.7rem'}}></span>
                             <span style={{display:'flex',alignItems:'center',gap:'4px',fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED}}>
                               <Dumbbell size={11} color={MUTED}/>{workout.exercises?.length||0} exercises
                             </span>
@@ -159,11 +159,11 @@ export default function ClientWorkouts(){
                       onMouseEnter={e=>e.currentTarget.style.opacity='1'}
                       onMouseLeave={e=>e.currentTarget.style.opacity='0.75'}>
                       <div style={{display:'flex',alignItems:'center',gap:'12px',flex:1,minWidth:0}}>
-                        <div style={{width:'34px',height:'34px',borderRadius:'10px',background:'rgba(76,175,80,0.15)',border:'1px solid rgba(76,175,80,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'1rem'}}>✅</div>
+                        <div style={{width:'34px',height:'34px',borderRadius:'10px',background:'rgba(76,175,80,0.15)',border:'1px solid rgba(76,175,80,0.25)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'1rem'}}></div>
                         <div style={{minWidth:0}}>
                           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.875rem',fontWeight:700,color:'#888',margin:'0 0 3px',textDecoration:'line-through',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{workout.name}</p>
                           <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED,margin:0}}>
-                            {new Date(workout.scheduled_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})} · {workout.estimated_duration_minutes} min
+                            {new Date(workout.scheduled_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}  {workout.estimated_duration_minutes} min
                           </p>
                         </div>
                       </div>
@@ -175,10 +175,10 @@ export default function ClientWorkouts(){
                 {/* Completion banner */}
                 {completed.length>=3&&(
                   <div style={{marginTop:'12px',borderRadius:'16px',padding:'1rem 1.25rem',background:'linear-gradient(135deg,rgba(255,214,0,0.08),rgba(255,107,43,0.06))',border:'1px solid rgba(255,214,0,0.2)',display:'flex',alignItems:'center',gap:'12px'}}>
-                    <span style={{fontSize:'1.3rem'}}>🏆</span>
+                    <span style={{fontSize:'1.3rem'}}></span>
                     <div>
                       <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.82rem',fontWeight:700,color:YELLOW,margin:'0 0 2px'}}>{completed.length} workouts crushed</p>
-                      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:MUTED,margin:0}}>Your PT can see your progress — keep going</p>
+                      <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:MUTED,margin:0}}>Your PT can see your progress  keep going</p>
                     </div>
                   </div>
                 )}
@@ -194,3 +194,4 @@ export default function ClientWorkouts(){
     </div>
   );
 }
+

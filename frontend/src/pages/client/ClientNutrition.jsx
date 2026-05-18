@@ -20,13 +20,13 @@ const YELLOW = '#FFD600';
 const GREEN = '#4CAF50';
 
 const CATEGORY_COLORS = {
-  'all':         { color: '#b0b0b0', emoji: '🔲' },
-  'pre-workout': { color: GREEN,     emoji: '⚡' },
-  'hydration':   { color: '#60a5fa', emoji: '💧' },
-  'recovery':    { color: '#a78bfa', emoji: '🌙' },
-  'weight-loss': { color: ORANGE,    emoji: '🔥' },
-  'muscle-gain': { color: '#22d3ee', emoji: '💪' },
-  'general':     { color: '#b0b0b0', emoji: '🍃' },
+  'all':         { color: '#b0b0b0', emoji: '' },
+  'pre-workout': { color: GREEN,     emoji: '' },
+  'hydration':   { color: '#60a5fa', emoji: '' },
+  'recovery':    { color: '#a78bfa', emoji: '' },
+  'weight-loss': { color: ORANGE,    emoji: '' },
+  'muscle-gain': { color: '#22d3ee', emoji: '' },
+  'general':     { color: '#b0b0b0', emoji: '' },
 };
 
 const GOAL_COLORS = {
@@ -54,7 +54,7 @@ const DEFAULT_PHOTOS = {
   'pre-workout': 'https://images.unsplash.com/photo-1571748982800-fa51082c2224?w=150&h=150&fit=crop&auto=format',
 };
 
-// ── Tip Card ─────────────────────────────────────────────────────────────────
+//  Tip Card 
 function TipCard({ tip, isExpanded, onToggleExpand, isSaved, onToggleSave }) {
   const cat = CATEGORY_COLORS[tip.category] || CATEGORY_COLORS['general'];
   return (
@@ -77,7 +77,7 @@ function TipCard({ tip, isExpanded, onToggleExpand, isSaved, onToggleSave }) {
         }}>{cat.emoji} {tip.category}</span>
         <button onClick={e => { e.stopPropagation(); onToggleSave(); }} style={{
           background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.1rem', padding: '2px', minHeight: 'auto', minWidth: 'auto',
-        }}>{isSaved ? '⭐' : '☆'}</button>
+        }}>{isSaved ? '' : ''}</button>
       </div>
       <h3 style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1rem', fontWeight: 700, color: TEXT, letterSpacing: '-0.02em', margin: '0 0 0.5rem' }}>{tip.title}</h3>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#b0b0b0', lineHeight: 1.65, margin: '0 0 0.5rem',
@@ -90,7 +90,7 @@ function TipCard({ tip, isExpanded, onToggleExpand, isSaved, onToggleSave }) {
   );
 }
 
-// ── Meal Card ─────────────────────────────────────────────────────────────────
+//  Meal Card 
 function MealCard({ meal, onFavorite, onRecipe, isPro }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const goalColor = GOAL_COLORS[meal.goal] || '#b0b0b0';
@@ -146,7 +146,7 @@ function MealCard({ meal, onFavorite, onRecipe, isPro }) {
   );
 }
 
-// ── Pro Gate ──────────────────────────────────────────────────────────────────
+//  Pro Gate 
 function ProGate({ count, type, onUpgrade }) {
   const perks = type === 'Meals'
     ? ['Full recipe library with photos', 'Macro breakdowns per meal', 'Add ingredients to shopping list', 'Filter by goal (muscle gain, weight loss)']
@@ -163,7 +163,7 @@ function ProGate({ count, type, onUpgrade }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '1.25rem', textAlign: 'left' }}>
         {perks.map((p, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#4CAF50', fontSize: '0.875rem', flexShrink: 0 }}>✓</span>
+            <span style={{ color: '#4CAF50', fontSize: '0.875rem', flexShrink: 0 }}></span>
             <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#c0c0c0' }}>{p}</span>
           </div>
         ))}
@@ -173,13 +173,13 @@ function ProGate({ count, type, onUpgrade }) {
         border: 'none', borderRadius: '12px', color: '#000',
         fontFamily: "'DM Sans', system-ui", fontSize: '0.95rem', fontWeight: 800,
         cursor: 'pointer', minHeight: 'auto', boxShadow: `0 4px 20px rgba(255,107,43,0.4)`,
-      }}>Get BrazilFit Pro ✦</button>
-      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, margin: '8px 0 0' }}>One-time payment · Yours forever</p>
+      }}>Get BrazilFit Pro </button>
+      <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: MUTED, margin: '8px 0 0' }}>One-time payment  Yours forever</p>
     </div>
   );
 }
 
-// ── Filter Pills ──────────────────────────────────────────────────────────────
+//  Filter Pills 
 function FilterPills({ options, active, onChange }) {
   return (
     <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', marginBottom: '1rem' }}>
@@ -205,7 +205,7 @@ function FilterPills({ options, active, onChange }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
+//  Main Page 
 export default function ClientNutrition() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -279,7 +279,7 @@ export default function ClientNutrition() {
           }}>
             <div style={{ position: 'absolute', top: '1rem', right: '1.25rem', fontSize: '3rem', color: `${YELLOW}20`, fontWeight: 900, lineHeight: 1 }}>"</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem' }}>
-              <span>⭐</span>
+              <span></span>
               <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', color: YELLOW, textTransform: 'uppercase', margin: 0 }}>Tip of the Week</p>
             </div>
             <span style={{ backgroundColor: `${CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE}20`, color: CATEGORY_COLORS[tipOfWeek.category]?.color || ORANGE, padding: '3px 10px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
@@ -300,10 +300,10 @@ export default function ClientNutrition() {
               border: tab === tabName ? '1px solid rgba(255,107,43,0.4)' : '1px solid rgba(255,255,255,0.08)',
               display: 'flex', alignItems: 'center', gap: '6px',
             }}>
-              {tabName === 'tips' && `🥗 Tips (${tips.length})`}
-              {tabName === 'meals' && <>{`🍽️ Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW}/>}</>}
-              {tabName === 'shopping' && '🛒 Shopping'}
-              {tabName === 'diary' && '📔 Diary'}
+              {tabName === 'tips' && ` Tips (${tips.length})`}
+              {tabName === 'meals' && <>{` Meals (${meals.length})`}{!user?.isPro && <Crown size={12} color={YELLOW}/>}</>}
+              {tabName === 'shopping' && ' Shopping'}
+              {tabName === 'diary' && ' Diary'}
             </button>
           ))}
         </div>
@@ -348,7 +348,7 @@ export default function ClientNutrition() {
                 <FilterPills
                   options={[
                     { key: 'all', label: `All (${meals.length})` },
-                    { key: 'favourites', label: `❤️ Saved (${meals.filter(m => m.isFavorite).length})` },
+                    { key: 'favourites', label: ` Saved (${meals.filter(m => m.isFavorite).length})` },
                     { key: 'muscle-gain', label: 'Muscle Gain' },
                     { key: 'weight-loss', label: 'Weight Loss' },
                     { key: 'recovery', label: 'Recovery' },
@@ -401,4 +401,5 @@ export default function ClientNutrition() {
     </div>
   );
 }
+
 

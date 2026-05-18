@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { ChevronRight, ArrowLeft, Check, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -123,7 +123,7 @@ export default function ClientSettings() {
               position: 'relative',
               cursor: 'pointer',
             }}>
-              👤
+              
               <div style={{
                 position: 'absolute',
                 bottom: '0',
@@ -138,7 +138,7 @@ export default function ClientSettings() {
                 color: 'white',
                 fontSize: '16px',
               }}>
-                📷
+                
               </div>
             </div>
             <p style={{ fontSize: '13px', color: '#606060', margin: 0 }}>Tap to upload photo</p>
@@ -313,8 +313,8 @@ export default function ClientSettings() {
         </div>
 
         <div>
-          <ToggleButton label="Session reminder — 1 hour before" value={settings.sessionReminder1h !== false} onChange={(v) => updateSetting('sessionReminder1h', v)} />
-          <ToggleButton label="Session reminder — 24 hours before" value={settings.sessionReminder24h !== false} onChange={(v) => updateSetting('sessionReminder24h', v)} />
+          <ToggleButton label="Session reminder  1 hour before" value={settings.sessionReminder1h !== false} onChange={(v) => updateSetting('sessionReminder1h', v)} />
+          <ToggleButton label="Session reminder  24 hours before" value={settings.sessionReminder24h !== false} onChange={(v) => updateSetting('sessionReminder24h', v)} />
           <ToggleButton label="Session completed confirmation" value={settings.sessionCompleted !== false} onChange={(v) => updateSetting('sessionCompleted', v)} />
           <ToggleButton label="Missed session notification" value={settings.missedSession !== false} onChange={(v) => updateSetting('missedSession', v)} />
           <ToggleButton label="Block renewal reminder when 2 sessions left" value={settings.blockReminder2 !== false} onChange={(v) => updateSetting('blockReminder2', v)} />
@@ -344,7 +344,7 @@ export default function ClientSettings() {
 
         <div style={{ paddingBottom: '20px', marginBottom: '20px', borderBottom: '2px solid #E8E8E8' }}>
           <p style={{ fontSize: '12px', fontWeight: '600', color: '#4CAF50', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px', margin: '0 0 16px 0' }}>DATA COLLECTION</p>
-          <ToggleButton label="Allow anonymous usage analytics" value={settings.analytics !== false} onChange={(v) => updateSetting('analytics', v)} context="Helps us improve the app — no personal data shared." />
+          <ToggleButton label="Allow anonymous usage analytics" value={settings.analytics !== false} onChange={(v) => updateSetting('analytics', v)} context="Helps us improve the app  no personal data shared." />
           <ToggleButton label="Marketing communications" value={settings.marketing === true} onChange={(v) => updateSetting('marketing', v)} style={{ borderBottom: 'none' }} />
         </div>
 
@@ -386,7 +386,7 @@ export default function ClientSettings() {
         </div>
 
         <div style={{ backgroundColor: '#FEE3E3', border: '1px solid #EF4444', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
-          <p style={{ fontSize: '14px', fontWeight: '600', color: '#EF4444', margin: 0 }}>⚠️ Warning</p>
+          <p style={{ fontSize: '14px', fontWeight: '600', color: '#EF4444', margin: 0 }}> Warning</p>
           <p style={{ fontSize: '13px', color: '#C53030', marginTop: '8px', margin: '8px 0 0 0' }}>This action cannot be undone. All your data will be permanently deleted.</p>
         </div>
 
@@ -464,7 +464,7 @@ export default function ClientSettings() {
       setPwSaving(true);
       try {
         await api.post('/auth/change-password', { currentPassword: currentPw, newPassword: newPw });
-        toast.success('Password changed successfully! 🎉');
+        toast.success('Password changed successfully! ');
         setCurrentPw(''); setNewPw(''); setConfirmPw('');
         setScreen('main');
       } catch(e) {
@@ -497,13 +497,13 @@ export default function ClientSettings() {
           ))}
 
           {newPw && confirmPw && newPw !== confirmPw && (
-            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}>⚠ Passwords don't match</p>
+            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}> Passwords don't match</p>
           )}
           {newPw && newPw.length < 8 && (
-            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}>⚠ Password must be at least 8 characters</p>
+            <p style={{ fontSize:'0.78rem', color:'#ef4444', margin:0 }}> Password must be at least 8 characters</p>
           )}
           {newPw && newPw === confirmPw && newPw.length >= 8 && (
-            <p style={{ fontSize:'0.78rem', color:'#4CAF50', margin:0 }}>✓ Passwords match</p>
+            <p style={{ fontSize:'0.78rem', color:'#4CAF50', margin:0 }}> Passwords match</p>
           )}
 
           <button onClick={handleChangePassword} disabled={pwSaving} style={{
@@ -692,3 +692,4 @@ function UnitToggle({ label, options, value, onChange, context }) {
     </div>
   );
 }
+

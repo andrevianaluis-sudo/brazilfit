@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { ChevronUp, Plus, Maximize2 } from 'lucide-react';
 
 export function ProgressPhotoSlider({ beforePhoto, afterPhoto, weeksElapsed = 8 }) {
@@ -109,7 +109,7 @@ export function ProgressPhotoSlider({ beforePhoto, afterPhoto, weeksElapsed = 8 
             onClick={() => setIsFullScreen(false)}
             className="absolute top-6 right-6 text-black hover:text-grey-200 z-10"
           >
-            ✕
+            
           </button>
           <div
             ref={containerRef}
@@ -155,3 +155,4 @@ export function ProgressPhotoSlider({ beforePhoto, afterPhoto, weeksElapsed = 8 
     </>
   );
 }
+

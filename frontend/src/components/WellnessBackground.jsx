@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useColors } from '../hooks/useColors';
 
 export default function WellnessBackground({ type = 'meditation' }) {
@@ -42,3 +42,4 @@ export default function WellnessBackground({ type = 'meditation' }) {
     />
   );
 }
+

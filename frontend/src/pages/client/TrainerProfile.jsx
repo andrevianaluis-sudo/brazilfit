@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import { MessageSquare, ChevronRight } from 'lucide-react';
 
 const BG='#0f0f0f';const SURFACE='#1a1a1a';const S2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#fff';const MUTED='#606060';const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';
@@ -10,14 +10,14 @@ const TRAINER = {
   yearsExp: 6,
   clients: 24,
   classesPerWeek: 8,
-  bio: 'Certified personal trainer specialising in functional fitness, mobility and mindfulness. I combine strength training with movement quality to help clients build bodies that perform and last. Every programme is built around YOU — your goals, your lifestyle, your pace.',
+  bio: 'Certified personal trainer specialising in functional fitness, mobility and mindfulness. I combine strength training with movement quality to help clients build bodies that perform and last. Every programme is built around YOU  your goals, your lifestyle, your pace.',
   specialities: [
-    { label: 'Strength Training', emoji: '💪', color: ORANGE },
-    { label: 'Mobility & Flexibility', emoji: '🧘', color: GREEN },
-    { label: 'Pilates', emoji: '⚡', color: '#60a5fa' },
-    { label: 'Dance Cardio', emoji: '💃', color: '#f472b6' },
-    { label: 'Meditation', emoji: '🌙', color: '#a78bfa' },
-    { label: 'Vision Support', emoji: '👁️', color: YELLOW },
+    { label: 'Strength Training', emoji: '', color: ORANGE },
+    { label: 'Mobility & Flexibility', emoji: '', color: GREEN },
+    { label: 'Pilates', emoji: '', color: '#60a5fa' },
+    { label: 'Dance Cardio', emoji: '', color: '#f472b6' },
+    { label: 'Meditation', emoji: '', color: '#a78bfa' },
+    { label: 'Vision Support', emoji: '', color: YELLOW },
   ],
   classes: [
     { name: 'Morning Strength', day: 'MON', time: '07:00', color: ORANGE },
@@ -53,7 +53,7 @@ export default function TrainerProfile() {
             <div style={{ flex:1, minWidth:0 }}>
               <h2 style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.4rem', fontWeight:800, color:TEXT, letterSpacing:'-0.03em', margin:'0 0 3px' }}>{TRAINER.name}</h2>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:ORANGE, fontWeight:700, margin:'0 0 2px' }}>{TRAINER.title}</p>
-              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', color:MUTED, margin:0 }}>📍 {TRAINER.location}</p>
+              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', color:MUTED, margin:0 }}> {TRAINER.location}</p>
             </div>
           </div>
 
@@ -127,3 +127,4 @@ export default function TrainerProfile() {
     </div>
   );
 }
+

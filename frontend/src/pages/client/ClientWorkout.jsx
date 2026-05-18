@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Play, Check, ChevronRight, Timer, X, Dumbbell, ChevronLeft } from 'lucide-react';
 import api from '../../utils/api';
@@ -91,7 +91,7 @@ export default function ClientWorkout() {
     <div className="px-4 py-8 text-center animate-fade-in">
       <Dumbbell className="w-12 h-12 text-grey-200 mx-auto mb-3" />
       <p className="text-grey-200 font-semibold">Rest day today</p>
-      <p className="text-xs text-grey-100 mt-1">No workout scheduled — enjoy your recovery!</p>
+      <p className="text-xs text-grey-100 mt-1">No workout scheduled  enjoy your recovery!</p>
     </div>
   );
 
@@ -107,7 +107,7 @@ export default function ClientWorkout() {
         </div>
         <div>
           <h2 className="text-2xl font-black">Workout Complete!</h2>
-          <p className="text-grey-200 text-sm mt-1">{day.day_name} — {exercises.length} exercises done</p>
+          <p className="text-grey-200 text-sm mt-1">{day.day_name}  {exercises.length} exercises done</p>
         </div>
         <div className="grid grid-cols-3 gap-3">
           {exercises.map(ex => {
@@ -154,7 +154,7 @@ export default function ClientWorkout() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm">{ex.exercise_name}</p>
-                  <p className="text-xs text-grey-100">{ex.sets} sets × {ex.reps} reps · {ex.rest_seconds}s rest</p>
+                  <p className="text-xs text-grey-100">{ex.sets} sets  {ex.reps} reps  {ex.rest_seconds}s rest</p>
                   {muscles.length > 0 && (
                     <div className="flex gap-1 flex-wrap mt-0.5">
                       {muscles.slice(0, 2).map(m => (
@@ -179,7 +179,7 @@ export default function ClientWorkout() {
     );
   }
 
-  // Active workout — exercise-by-exercise
+  // Active workout  exercise-by-exercise
   const currentEx = exercises[currentIndex];
   const completedSets = setsDone[currentEx?.id] || 0;
   const instructions = (() => { try { return JSON.parse(currentEx?.instructions || '[]'); } catch { return []; } })();
@@ -198,7 +198,7 @@ export default function ClientWorkout() {
         setRestSeconds(currentEx.rest_seconds || 60);
         setResting(true);
       } else {
-        // Workout complete — save log
+        // Workout complete  save log
         finishWorkout({ ...setsDone, [currentEx.id]: newSets });
       }
     }
@@ -234,7 +234,7 @@ export default function ClientWorkout() {
       setSetsDone(finalSetsDone || setsDone);
       setDone(true);
     } catch {
-      toast.error('Failed to save workout — your progress is still recorded here.');
+      toast.error('Failed to save workout  your progress is still recorded here.');
       setDone(true);
     } finally {
       setSaving(false);
@@ -265,11 +265,11 @@ export default function ClientWorkout() {
         <div className="card-dark space-y-4">
           <div>
             <h2 className="text-xl font-black">{currentEx.exercise_name}</h2>
-            <p className="text-sm text-grey-200">{currentEx.sets} sets × {currentEx.reps} reps · {currentEx.rest_seconds}s rest</p>
+            <p className="text-sm text-grey-200">{currentEx.sets} sets  {currentEx.reps} reps  {currentEx.rest_seconds}s rest</p>
             {currentEx.notes && <p className="text-xs text-brazil-yellow/70 mt-1 bg-brazil-yellow/10 rounded-lg px-3 py-1.5">{currentEx.notes}</p>}
           </div>
 
-          {/* Video — autoplay at highest quality with slow-mo */}
+          {/* Video  autoplay at highest quality with slow-mo */}
           {currentEx.youtube_video_id && (
             <YouTubePlayer videoId={currentEx.youtube_video_id} autoplay showSlowMo />
           )}
@@ -355,3 +355,4 @@ export default function ClientWorkout() {
     </div>
   );
 }
+

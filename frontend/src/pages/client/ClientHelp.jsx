@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Search, ChevronDown, MessageSquare, AlertCircle, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const FAQS = [
   { id:7,  cat:'Billing & Payments',   q:'Can I get a refund?',                a:'Session blocks are non-refundable once activated. Unused sessions may be transferred to a new block at your PT\'s discretion.' },
   { id:8,  cat:'Sessions & Tracking',  q:'Why did my session count change?',   a:'Sessions are auto-marked attended at 8pm on the day. Cancelled sessions are returned to your block. Contact your PT if you think there\'s an error.' },
   { id:9,  cat:'Sessions & Tracking',  q:'What happens if I miss a session?',  a:'Missed sessions are deducted from your block. Your PT may offer a make-up depending on your agreement. You\'ll be notified when approaching your last session.' },
-  { id:10, cat:'Sessions & Tracking',  q:'What is the weekly check-in?',       a:'A short 9-question form covering your week — workouts, mood, sleep, stress, wins and goals. Your PT reads every answer and uses it to personalise your programme.' },
+  { id:10, cat:'Sessions & Tracking',  q:'What is the weekly check-in?',       a:'A short 9-question form covering your week  workouts, mood, sleep, stress, wins and goals. Your PT reads every answer and uses it to personalise your programme.' },
   { id:11, cat:'Sessions & Tracking',  q:'What are habit streaks?',            a:'Your streak tracks consecutive weeks of completing your weekly check-in. The longer your streak, the more badges you unlock. Every check-in = +1 streak point.' },
   { id:12, cat:'Technical',            q:'The app is not loading',             a:'Try: 1) Force-close and reopen the browser tab, 2) Check your internet connection, 3) Clear browser cache, 4) Try a different browser.' },
   { id:13, cat:'Technical',            q:'I cannot log in',                    a:'Make sure you\'re using the correct username (not email). If you\'ve forgotten your password, contact your PT to reset it for you.' },
@@ -22,7 +22,7 @@ const FAQS = [
 ];
 
 const CATS = ['Getting Started','Billing & Payments','Sessions & Tracking','Technical'];
-const CAT_EMOJIS = { 'Getting Started':'🚀', 'Billing & Payments':'💳', 'Sessions & Tracking':'📊', 'Technical':'⚙️' };
+const CAT_EMOJIS = { 'Getting Started':'', 'Billing & Payments':'', 'Sessions & Tracking':'', 'Technical':'' };
 
 export default function ClientHelp() {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ export default function ClientHelp() {
           ))}
           {filtered.length===0&&(
             <div style={{ textAlign:'center', padding:'3rem', background:SURFACE, borderRadius:'16px', border:`1px solid ${BORDER}` }}>
-              <p style={{ fontSize:'1.5rem', margin:'0 0 8px' }}>🔍</p>
+              <p style={{ fontSize:'1.5rem', margin:'0 0 8px' }}></p>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.875rem', color:MUTED, margin:0 }}>No results for "{search}"</p>
             </div>
           )}
@@ -126,3 +126,4 @@ export default function ClientHelp() {
     </div>
   );
 }
+

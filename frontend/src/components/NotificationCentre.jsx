@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, Bell, Trophy, MessageCircle, Clock, AlertCircle } from 'lucide-react';
 
 const MOCK_NOTIFICATIONS = [
@@ -173,3 +173,4 @@ export default function NotificationCentre({ isOpen, onClose }) {
     </div>
   );
 }
+

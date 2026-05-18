@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -112,7 +112,7 @@ export default function AddExerciseModal({ onSave, onClose }) {
             </div>
 
             <div>
-              <label className="text-xs text-grey-200 mb-1 block font-semibold">Default Sets×Reps</label>
+              <label className="text-xs text-grey-200 mb-1 block font-semibold">Default SetsReps</label>
               <input
                 value={form.sets_reps}
                 onChange={e => set('sets_reps', e.target.value)}
@@ -186,10 +186,11 @@ export default function AddExerciseModal({ onSave, onClose }) {
             disabled={saving}
             className="flex-1 py-3.5 text-sm font-bold text-white bg-brazil-green hover:bg-brazil-green/90 border-l border-grey-100 disabled:opacity-50"
           >
-            {saving ? 'Saving…' : 'Add Exercise'}
+            {saving ? 'Saving' : 'Add Exercise'}
           </button>
         </div>
       </div>
     </div>
   );
 }
+

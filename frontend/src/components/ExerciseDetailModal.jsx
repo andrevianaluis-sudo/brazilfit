@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+﻿import { X } from 'lucide-react';
 
 export default function ExerciseDetailModal({ exercise, onClose }) {
   const instructions = exercise.instructions ? JSON.parse(exercise.instructions) : [];
@@ -84,7 +84,7 @@ export default function ExerciseDetailModal({ exercise, onClose }) {
               <ul className="space-y-2">
                 {commonMistakes.map((mistake, i) => (
                   <li key={i} className="text-sm text-black flex gap-3">
-                    <span className="text-red-500 font-bold">✗</span>
+                    <span className="text-red-500 font-bold"></span>
                     <span>{mistake}</span>
                   </li>
                 ))}
@@ -99,7 +99,7 @@ export default function ExerciseDetailModal({ exercise, onClose }) {
               <ul className="space-y-2">
                 {proTips.map((tip, i) => (
                   <li key={i} className="text-sm text-black flex gap-3">
-                    <span className="text-brazil-green font-bold">✓</span>
+                    <span className="text-brazil-green font-bold"></span>
                     <span>{tip}</span>
                   </li>
                 ))}
@@ -121,3 +121,4 @@ export default function ExerciseDetailModal({ exercise, onClose }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Clock } from 'lucide-react';
 
@@ -7,18 +7,18 @@ const POPULAR_SEARCHES = ['Pilates', 'Meditation', 'Strength', 'Flexibility', 'D
 
 const MOCK_DATA = {
   exercises: [
-    { id: 1, name: 'Push-ups', category: 'STRENGTH', icon: '💪' },
-    { id: 2, name: 'Yoga Flow', category: 'YOGA', icon: '🧘' },
-    { id: 3, name: 'HIIT Cardio', category: 'CARDIO', icon: '🏃' },
-    { id: 4, name: 'Pilates Core', category: 'PILATES', icon: '🤸' },
+    { id: 1, name: 'Push-ups', category: 'STRENGTH', icon: '' },
+    { id: 2, name: 'Yoga Flow', category: 'YOGA', icon: '' },
+    { id: 3, name: 'HIIT Cardio', category: 'CARDIO', icon: '' },
+    { id: 4, name: 'Pilates Core', category: 'PILATES', icon: '' },
   ],
   classes: [
-    { id: 1, name: 'Morning Pilates', category: 'CLASS', icon: '👥' },
-    { id: 2, name: 'Dance Cardio', category: 'CLASS', icon: '💃' },
+    { id: 1, name: 'Morning Pilates', category: 'CLASS', icon: '' },
+    { id: 2, name: 'Dance Cardio', category: 'CLASS', icon: '' },
   ],
   nutrition: [
-    { id: 1, name: 'High Protein Meal Prep', category: 'NUTRITION', icon: '🥗' },
-    { id: 2, name: 'Pre-Workout Nutrition', category: 'NUTRITION', icon: '🍌' },
+    { id: 1, name: 'High Protein Meal Prep', category: 'NUTRITION', icon: '' },
+    { id: 2, name: 'Pre-Workout Nutrition', category: 'NUTRITION', icon: '' },
   ],
 };
 
@@ -180,3 +180,4 @@ export default function ClientSearch() {
     </div>
   );
 }
+

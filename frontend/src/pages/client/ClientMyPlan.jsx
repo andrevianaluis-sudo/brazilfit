@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ChevronRight, Calendar, Droplets, Moon, Footprints, Salad, Heart, Coffee, TrendingUp, FileText, Plus } from 'lucide-react';
 import api from '../../utils/api';
@@ -121,7 +121,7 @@ export default function ClientMyPlan() {
                     <div key={session.id} className="bg-grey-300 rounded-[12px] p-4">
                       <p className="font-bold text-black">{session.scheduled_time}</p>
                       <p className="text-xs text-grey-200">{new Date(session.scheduled_date).toLocaleDateString()}</p>
-                      <p className="text-xs text-brazil-green mt-1">✓ Completed</p>
+                      <p className="text-xs text-brazil-green mt-1"> Completed</p>
                     </div>
                   ))}
                 </div>
@@ -152,7 +152,7 @@ export default function ClientMyPlan() {
                 <p className="text-3xl font-black text-black">{latestMeasurement?.weight || '-'}</p>
                 {weightChange !== 0 && (
                   <p className={`text-xs mt-2 ${weightChange < 0 ? 'text-green-500' : 'text-orange-500'}`}>
-                    {weightChange < 0 ? '↓' : '↑'} {Math.abs(weightChange).toFixed(1)} kg
+                    {weightChange < 0 ? '' : ''} {Math.abs(weightChange).toFixed(1)} kg
                   </p>
                 )}
               </div>
@@ -213,7 +213,7 @@ export default function ClientMyPlan() {
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
                       i < 5 ? 'bg-brazil-green text-white' : 'bg-grey-100 text-grey-200'
                     }`}>
-                      ✓
+                      
                     </div>
                     <p className="text-[10px] font-bold text-grey-200">{day}</p>
                   </div>
@@ -281,7 +281,7 @@ export default function ClientMyPlan() {
             <div className="bg-grey-300 rounded-[12px] p-4">
               <p className="text-sm font-bold text-black mb-3">How are you feeling today?</p>
               <div className="flex gap-2 justify-between">
-                {['😢', '😕', '😐', '🙂', '😄'].map((emoji, i) => (
+                {['', '', '', '', ''].map((emoji, i) => (
                   <button key={i} className="text-2xl hover:scale-110 transition-transform">
                     {emoji}
                   </button>
@@ -319,8 +319,8 @@ export default function ClientMyPlan() {
               </p>
               <div className="space-y-2">
                 {[
-                  { time: '08:00', meal: 'Breakfast', mood: '😊' },
-                  { time: '12:30', meal: 'Lunch', mood: '😋' },
+                  { time: '08:00', meal: 'Breakfast', mood: '' },
+                  { time: '12:30', meal: 'Lunch', mood: '' },
                 ].map((entry, i) => (
                   <div key={i} className="bg-grey-300 rounded-[12px] p-3 flex items-center justify-between">
                     <div>
@@ -342,7 +342,7 @@ export default function ClientMyPlan() {
             {/* Weekly History */}
             <div className="bg-grey-300 rounded-[12px] p-4">
               <p className="text-sm font-bold text-black mb-3">Weekly Average</p>
-              <p className="text-grey-200 text-sm">3.2 meals per day • 5.6 glasses water</p>
+              <p className="text-grey-200 text-sm">3.2 meals per day  5.6 glasses water</p>
             </div>
           </div>
         )}
@@ -357,7 +357,7 @@ export default function ClientMyPlan() {
               </p>
               <p className="text-grey-200 text-xs mb-4">5 min guided breathing meditation</p>
               <button className="w-full bg-brazil-green text-white font-bold py-3 rounded-[12px] flex items-center justify-center gap-2">
-                ▶ Start Session
+                 Start Session
               </button>
             </div>
 
@@ -406,9 +406,9 @@ export default function ClientMyPlan() {
                   <div key={i} className="bg-grey-300 rounded-[12px] p-3 flex items-center justify-between">
                     <div>
                       <p className="font-bold text-black text-sm">{meal.name}</p>
-                      <p className="text-xs text-grey-200">{meal.protein} • {meal.cal}</p>
+                      <p className="text-xs text-grey-200">{meal.protein}  {meal.cal}</p>
                     </div>
-                    <button className="text-grey-200 hover:text-black transition">♡</button>
+                    <button className="text-grey-200 hover:text-black transition"></button>
                   </div>
                 ))}
               </div>
@@ -431,3 +431,4 @@ export default function ClientMyPlan() {
     </div>
   );
 }
+

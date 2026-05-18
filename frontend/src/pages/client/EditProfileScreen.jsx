@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { Camera, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
@@ -127,3 +127,4 @@ export default function EditProfileScreen({ onClose }) {
     </div>
   );
 }
+

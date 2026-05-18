@@ -21,7 +21,7 @@ const CATEGORIES = [
 
 const STRETCH_CATS = ['Stretching','Neck','Shoulders','Back','Hips','Thighs','Calves','Forearms','Waist','Upper Arms'];
 
-// ─── Exercise Detail Preview ──────────────────────────────────────────────────
+//  Exercise Detail Preview 
 function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
   const [sets, setSets] = useState(3);
   const [reps, setReps] = useState('10');
@@ -54,7 +54,7 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
             <img src={'/exercise-gifs/' + exercise.gif_file} alt={exercise.name}
               style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           ) : (
-            <span style={{ fontSize: 64 }}>{stretch ? '🧘' : '💪'}</span>
+            <span style={{ fontSize: 64 }}>{stretch ? '' : ''}</span>
           )}
           )}
         </div>
@@ -109,7 +109,7 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
       <div style={{ padding: '12px 16px 20px', flexShrink: 0, borderTop: '1px solid #2a2a2a' }}>
         {added ? (
           <div style={{ background: '#1a2a1a', borderRadius: 12, padding: 16, textAlign: 'center', color: '#4CAF50', fontWeight: 700 }}>
-            ✓ Already in workout
+             Already in workout
           </div>
         ) : (
           <button
@@ -128,7 +128,7 @@ function ExerciseDetail({ exercise, onAdd, onBack, alreadyAdded }) {
   );
 }
 
-// ─── Main Modal ───────────────────────────────────────────────────────────────
+//  Main Modal 
 export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = [] }) {
   const [exercises, setExercises] = useState([]);
   const [search, setSearch] = useState('');
@@ -193,7 +193,7 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
           <button onClick={onClose} style={{
             background: '#2a2a2a', border: 'none', color: '#aaa',
             borderRadius: 8, width: 32, height: 32, cursor: 'pointer', fontSize: 16
-          }}>✕</button>
+          }}></button>
         </div>
 
         {/* Detail view or list view */}
@@ -275,7 +275,7 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
                               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                               onError={e => { e.target.style.display = 'none'; }} />
                           ) : (
-                            <span style={{ fontSize: 24 }}>{stretch ? '🧘' : '💪'}</span>
+                            <span style={{ fontSize: 24 }}>{stretch ? '' : ''}</span>
                           )}
                         </div>
 
@@ -290,10 +290,10 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
 
                         {/* Status */}
                         {added ? (
-                          <span style={{ color: '#4CAF50', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>✓</span>
+                          <span style={{ color: '#4CAF50', fontSize: 12, fontWeight: 700, flexShrink: 0 }}></span>
                         ) : (
                           <div style={{ width: 28, height: 28, borderRadius: 8, background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <span style={{ color: '#888', fontSize: 18 }}>›</span>
+                            <span style={{ color: '#888', fontSize: 18 }}></span>
                           </div>
                         )}
                       </button>
@@ -309,3 +309,4 @@ export default function ExercisePickerModal({ onSelect, onClose, alreadyAdded = 
     </div>
   );
 }
+

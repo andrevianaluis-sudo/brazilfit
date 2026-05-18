@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+﻿import { useState, useRef } from 'react';
 import { Phone, Video, MessageCircle, Share2, Clock, AlertCircle } from 'lucide-react';
 
 export default function ClientVirtualSession() {
@@ -31,7 +31,7 @@ export default function ClientVirtualSession() {
     return (
       <div className="w-full bg-white min-h-screen flex items-center justify-center pb-24 animate-fade-in">
         <div className="text-center px-5 space-y-6">
-          <div className="text-6xl mb-4">✓</div>
+          <div className="text-6xl mb-4"></div>
           <div>
             <h2 className="text-3xl font-black text-black uppercase mb-2">Session Complete</h2>
             <p className="text-grey-200 text-sm mb-6">Great work today! Andre was impressed with your form.</p>
@@ -62,7 +62,7 @@ export default function ClientVirtualSession() {
           <div className="w-full h-full flex items-center justify-center">
             <div className="text-center">
               <div className="w-32 h-32 rounded-full bg-gradient-to-br from-brazil-green to-brazil-green/50 mx-auto mb-4 flex items-center justify-center">
-                <span className="text-5xl">🏋️</span>
+                <span className="text-5xl"></span>
               </div>
               <p className="text-black font-bold text-xl">Andre Viana</p>
               <p className="text-grey-200 text-sm">Personal Trainer</p>
@@ -81,10 +81,10 @@ export default function ClientVirtualSession() {
         {/* Your Video (Small) */}
         <div className="absolute bottom-6 right-6 w-24 h-32 rounded-[12px] bg-grey-300 border border-grey-100 flex items-center justify-center overflow-hidden">
           {videoOn ? (
-            <div className="text-4xl">📱</div>
+            <div className="text-4xl"></div>
           ) : (
             <div className="text-center px-2">
-              <div className="text-2xl mb-1">🚫</div>
+              <div className="text-2xl mb-1"></div>
               <p className="text-xs text-grey-200">Camera Off</p>
             </div>
           )}
@@ -143,7 +143,7 @@ export default function ClientVirtualSession() {
 
         {/* Status Text */}
         <div className="text-center text-xs text-grey-200">
-          {audioOn && videoOn ? '📹 Video & Audio ON' : '🔇 Microphone OFF'}
+          {audioOn && videoOn ? ' Video & Audio ON' : ' Microphone OFF'}
         </div>
       </div>
 
@@ -151,11 +151,12 @@ export default function ClientVirtualSession() {
       <div className="bg-white border-t border-grey-100 px-5 py-4 max-h-32 overflow-y-auto">
         <p className="text-xs text-grey-200 font-bold uppercase tracking-widest mb-3">Session Notes</p>
         <div className="space-y-2 text-xs text-black">
-          <p>✓ Perfect form on the deadlifts</p>
-          <p>✓ Great pace - keep it up</p>
+          <p> Perfect form on the deadlifts</p>
+          <p> Great pace - keep it up</p>
           <p>Next: Increase weight by 5kg</p>
         </div>
       </div>
     </div>
   );
 }
+

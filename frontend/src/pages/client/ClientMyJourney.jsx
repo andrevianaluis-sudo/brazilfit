@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ChevronRight, Calendar, Droplets, Moon, Footprints, Salad, Heart, MessageSquare, CheckCircle, X, Phone, Check, Clock, Flame, Star } from 'lucide-react';
 import api from '../../utils/api';
@@ -77,7 +77,7 @@ export default function ClientMyJourney() {
                       : 'bg-grey-300 text-grey-200 hover:text-black'
                   } ${isProOnly && !user?.isPro ? 'opacity-60' : ''}`}
                 >
-                  {pill} {isProOnly && !user?.isPro ? '🔒' : ''}
+                  {pill} {isProOnly && !user?.isPro ? '' : ''}
                 </button>
               );
             })}
@@ -148,7 +148,7 @@ function SessionsContent({ sessions, sessionsRemaining, blockProgress }) {
             {sessions.upcoming.slice(0, 3).map((session, i) => (
               <div key={session.id} className={`px-5 py-3 text-sm ${i < sessions.upcoming.length - 1 ? 'border-b border-grey-100' : ''}`}>
                 <p className="font-bold text-black">{session.scheduled_time}</p>
-                <p className="text-grey-200 text-xs">{new Date(session.scheduled_date).toLocaleDateString()} • {session.type || 'Session'}</p>
+                <p className="text-grey-200 text-xs">{new Date(session.scheduled_date).toLocaleDateString()}  {session.type || 'Session'}</p>
               </div>
             ))}
           </div>
@@ -215,7 +215,7 @@ function ProgressContent({ measurements, weightChange, latestMeasurement }) {
         <div className="bg-grey-300 rounded-[12px] p-4">
           <p className="text-grey-200 text-xs font-bold uppercase mb-2">Change</p>
           <p className={`text-2xl font-black ${weightChange < 0 ? 'text-green-500' : 'text-orange-500'}`}>
-            {weightChange < 0 ? '↓' : '↑'} {Math.abs(weightChange).toFixed(1)}
+            {weightChange < 0 ? '' : ''} {Math.abs(weightChange).toFixed(1)}
           </p>
           <p className="text-xs text-grey-200 mt-1">kg</p>
         </div>
@@ -281,7 +281,7 @@ function HabitsContent({ habits }) {
   const [sleep, setSleep] = useState(7);
   const [steps, setSteps] = useState(8500);
   const [veg, setVeg] = useState(3);
-  const [mood, setMood] = useState('😊');
+  const [mood, setMood] = useState('');
 
   return (
     <div className="space-y-5">
@@ -289,7 +289,7 @@ function HabitsContent({ habits }) {
       <div className="bg-grey-300 rounded-[12px] p-5">
         <div className="flex items-baseline gap-2 mb-4">
           <p className="text-5xl font-black text-black">{streak}</p>
-          <p className="text-grey-200 text-sm font-medium">day streak 🔥</p>
+          <p className="text-grey-200 text-sm font-medium">day streak </p>
         </div>
         <div className="flex gap-1">
           {[...Array(7)].map((_, i) => (
@@ -391,7 +391,7 @@ function HabitsContent({ habits }) {
       <div className="bg-grey-300 rounded-[12px] p-4">
         <p className="text-sm font-black text-black mb-3">How are you feeling?</p>
         <div className="flex gap-2 justify-between">
-          {['😢', '😕', '😐', '🙂', '😄'].map((emoji, i) => (
+          {['', '', '', '', ''].map((emoji, i) => (
             <button
               key={i}
               onClick={() => setMood(emoji)}
@@ -426,16 +426,16 @@ function HabitsContent({ habits }) {
 function FoodDiaryContent() {
   const [waterIntake, setWaterIntake] = useState(5);
   const [foodEntries, setFoodEntries] = useState([
-    { time: '08:00', food: 'Breakfast', mood: '😊' },
+    { time: '08:00', food: 'Breakfast', mood: '' },
   ]);
 
   return (
     <div className="space-y-5">
       {/* Date Selector */}
       <div className="flex items-center justify-between px-4 py-3 bg-grey-300 rounded-[12px]">
-        <button className="p-2 hover:bg-grey-100 rounded-full transition">←</button>
+        <button className="p-2 hover:bg-grey-100 rounded-full transition"></button>
         <p className="font-bold text-black">Today</p>
-        <button className="p-2 hover:bg-grey-100 rounded-full transition">→</button>
+        <button className="p-2 hover:bg-grey-100 rounded-full transition"></button>
       </div>
 
       {/* Water Tracker */}
@@ -557,9 +557,9 @@ function NutritionContent() {
       <div>
         <p className="text-xs font-bold text-grey-200 uppercase tracking-widest mb-3">Meal Ideas</p>
         {[
-          { emoji: '🍗', name: 'Grilled Chicken & Rice', cal: '450cal', goal: 'Muscle Gain' },
-          { emoji: '🐟', name: 'Salmon with Veg', cal: '520cal', goal: 'Recovery' },
-          { emoji: '🥤', name: 'Protein Smoothie', cal: '380cal', goal: 'Recovery' },
+          { emoji: '', name: 'Grilled Chicken & Rice', cal: '450cal', goal: 'Muscle Gain' },
+          { emoji: '', name: 'Salmon with Veg', cal: '520cal', goal: 'Recovery' },
+          { emoji: '', name: 'Protein Smoothie', cal: '380cal', goal: 'Recovery' },
         ].map((meal, i) => (
           <div key={i} className="bg-grey-300 rounded-[12px] p-3 mb-2 flex items-center justify-between">
             <div>
@@ -569,7 +569,7 @@ function NutritionContent() {
             </div>
             <div className="flex items-center gap-2">
               <span className="bg-brazil-green text-white text-[10px] font-bold px-2 py-1 rounded-full">{meal.goal}</span>
-              <button className="text-grey-200 hover:text-black transition">♡</button>
+              <button className="text-grey-200 hover:text-black transition"></button>
             </div>
           </div>
         ))}
@@ -621,7 +621,7 @@ function MessagesContent() {
           className="flex-1 px-4 py-2 bg-grey-300 rounded-full border border-grey-100 text-black placeholder-grey-200 focus:outline-none"
         />
         <button className="bg-brazil-green text-white px-4 py-2 rounded-full hover:bg-green-700 transition-all active:scale-95">
-          →
+          
         </button>
       </div>
     </div>
@@ -643,7 +643,7 @@ function CheckInContent() {
         <div className="mb-5">
           <p className="text-sm font-bold text-black mb-3">How do you feel overall?</p>
           <div className="flex gap-2 justify-between">
-            {['😴', '😕', '😐', '🙂', '🚀'].map((emoji, i) => (
+            {['', '', '', '', ''].map((emoji, i) => (
               <button
                 key={i}
                 onClick={() => setOverallFeeling(emoji)}
@@ -740,7 +740,7 @@ function CheckInContent() {
           <p className="text-sm font-bold text-black mb-2">Rate your sessions</p>
           <div className="flex gap-1">
             {[...Array(5)].map((_, i) => (
-              <button key={i} className="text-2xl hover:scale-110 transition-transform">⭐</button>
+              <button key={i} className="text-2xl hover:scale-110 transition-transform"></button>
             ))}
           </div>
         </div>
@@ -784,7 +784,7 @@ function ProUpgradeModal({ onClose }) {
             ))}
           </div>
 
-          <p className="text-4xl font-black text-brazil-green mb-2">£9.99</p>
+          <p className="text-4xl font-black text-brazil-green mb-2">9.99</p>
           <p className="text-grey-200 text-xs mb-6">per month</p>
 
           <button className="w-full bg-brazil-green text-white font-bold py-3 rounded-full hover:bg-green-700 transition-all active:scale-95 mb-2">
@@ -797,3 +797,4 @@ function ProUpgradeModal({ onClose }) {
     </div>
   );
 }
+

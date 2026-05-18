@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Trash2, Share2, ShoppingCart, Check, Plus } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
@@ -16,12 +16,12 @@ const GREEN = '#4CAF50';
 const CATEGORIES = ['PRODUCE', 'PROTEIN', 'DAIRY', 'GRAINS', 'PANTRY', 'OTHER'];
 
 const CATEGORY_CONFIG = {
-  PRODUCE: { color: '#4CAF50', emoji: '🥦' },
-  PROTEIN: { color: '#FF6B2B', emoji: '🥩' },
-  DAIRY:   { color: '#60a5fa', emoji: '🥛' },
-  GRAINS:  { color: '#a78bfa', emoji: '🌾' },
-  PANTRY:  { color: '#FFD600', emoji: '🫙' },
-  OTHER:   { color: '#b0b0b0', emoji: '🛒' },
+  PRODUCE: { color: '#4CAF50', emoji: '' },
+  PROTEIN: { color: '#FF6B2B', emoji: '' },
+  DAIRY:   { color: '#60a5fa', emoji: '' },
+  GRAINS:  { color: '#a78bfa', emoji: '' },
+  PANTRY:  { color: '#FFD600', emoji: '' },
+  OTHER:   { color: '#b0b0b0', emoji: '' },
 };
 
 function ShoppingItemRow({ item, onToggle, onDelete }) {
@@ -124,7 +124,7 @@ export function ShoppingListTab() {
   };
 
   const shareList = () => {
-    const text = items.map(item => `${item.is_checked ? '✓' : '○'} ${item.name}${item.quantity ? ` - ${item.quantity}` : ''}`).join('\n');
+    const text = items.map(item => `${item.is_checked ? '' : ''} ${item.name}${item.quantity ? ` - ${item.quantity}` : ''}`).join('\n');
     const message = `My Shopping List:\n\n${text}`;
     if (navigator.share) {
       navigator.share({ title: 'My Shopping List', text: message }).catch(() => {});
@@ -172,7 +172,7 @@ export function ShoppingListTab() {
           {isComplete ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Check size={16} color={GREEN} />
-              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: GREEN, margin: 0 }}>Shopping complete! 🎉</p>
+              <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 700, color: GREEN, margin: 0 }}>Shopping complete! </p>
             </div>
           ) : (
             <>
@@ -304,3 +304,4 @@ export function ShoppingListTab() {
     </div>
   );
 }
+

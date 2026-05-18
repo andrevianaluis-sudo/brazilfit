@@ -1,4 +1,4 @@
-// SVG Badge Components - Clean geometric shapes matching Nike Training Club style
+﻿// SVG Badge Components - Clean geometric shapes matching Nike Training Club style
 
 export const DiamondBadge = ({ earned = false, number, size = 80 }) => {
   const color = earned ? '#1C1C1E' : '#CCCCCC';
@@ -349,3 +349,4 @@ export const CheckmarkBadge = ({ earned = false, size = 80 }) => {
     </svg>
   );
 };
+

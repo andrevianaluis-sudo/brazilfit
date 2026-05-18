@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useColors } from '../hooks/useColors';
 
 export default function EmptyState({ section = 'progress', message = 'No data yet', actionButton = null }) {
@@ -35,14 +35,14 @@ export default function EmptyState({ section = 'progress', message = 'No data ye
       };
 
   const icons = {
-    progress: '📊',
-    diary: '📓',
-    badges: '🏆',
-    checkIn: '📋',
-    messages: '💬',
-    wearables: '⌚',
-    classes: '💪',
-    success: '⭐'
+    progress: '',
+    diary: '',
+    badges: '',
+    checkIn: '',
+    messages: '',
+    wearables: '',
+    classes: '',
+    success: ''
   };
 
   return (
@@ -50,7 +50,7 @@ export default function EmptyState({ section = 'progress', message = 'No data ye
       className="rounded-lg p-12 text-center text-black"
       style={backgroundStyle}
     >
-      <div className="text-6xl mb-4">{icons[section] || '📝'}</div>
+      <div className="text-6xl mb-4">{icons[section] || ''}</div>
       <h3 className="text-2xl font-bold mb-2">{message}</h3>
       <p className="text-black mb-6 max-w-sm mx-auto">
         {section === 'progress' && "Start logging your measurements and progress photos to track your transformation"}
@@ -74,3 +74,4 @@ export default function EmptyState({ section = 'progress', message = 'No data ye
     </div>
   );
 }
+

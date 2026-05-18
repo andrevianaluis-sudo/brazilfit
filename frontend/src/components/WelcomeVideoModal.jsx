@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import CustomVideoPlayer from './CustomVideoPlayer';
 
@@ -89,3 +89,4 @@ export default function WelcomeVideoModal({ isOpen, onClose }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+﻿import { useRef } from 'react';
 import { Share2, CheckCircle, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 
@@ -96,7 +96,7 @@ export function SessionCompletionCard({ session, onClose }) {
 
           <div className="border-t-2 border-brazil-green pt-4 text-center">
             <p className="text-grey-200 text-xs">Completed {session.time}</p>
-            <p className="text-brazil-green text-xs font-bold mt-1">✓ Session Logged</p>
+            <p className="text-brazil-green text-xs font-bold mt-1"> Session Logged</p>
           </div>
         </div>
 
@@ -118,3 +118,4 @@ export function SessionCompletionCard({ session, onClose }) {
     </div>
   );
 }
+

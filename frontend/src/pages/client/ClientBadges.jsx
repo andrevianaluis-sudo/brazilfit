@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Zap, Star, Flame, Sun, Calendar, Trophy, CheckCircle, X } from 'lucide-react';
 import api from '../../utils/api';
@@ -109,7 +109,7 @@ export default function ClientBadges() {
           <div style={{ marginBottom:'1.5rem' }}>
             <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'12px' }}>
               <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${YELLOW},${YELLOW}88)` }}/>
-              <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:YELLOW, textTransform:'uppercase', margin:0 }}>🏆 Earned ({earned.length})</p>
+              <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.18em', color:YELLOW, textTransform:'uppercase', margin:0 }}> Earned ({earned.length})</p>
             </div>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'8px' }}>
               {earned.map(b => {
@@ -128,7 +128,7 @@ export default function ClientBadges() {
                       <Icon size={22} color="#000"/>
                     </div>
                     <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', fontWeight:700, color:TEXT, textAlign:'center', margin:0, lineHeight:1.3 }}>{b.name}</p>
-                    <span style={{ fontSize:'0.6rem', fontWeight:700, color:b.color, background:`${b.color}15`, border:`1px solid ${b.color}30`, borderRadius:'20px', padding:'2px 8px' }}>Earned ✓</span>
+                    <span style={{ fontSize:'0.6rem', fontWeight:700, color:b.color, background:`${b.color}15`, border:`1px solid ${b.color}30`, borderRadius:'20px', padding:'2px 8px' }}>Earned </span>
                   </button>
                 );
               })}
@@ -186,15 +186,15 @@ export default function ClientBadges() {
             <h3 style={{ fontFamily:"'DM Sans',system-ui", fontSize:'1.3rem', fontWeight:800, color:TEXT, letterSpacing:'-0.02em', margin:'0 0 6px' }}>{selected.name}</h3>
             <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:MUTED, margin:'0 0 1.25rem', lineHeight:1.6 }}>{selected.desc}</p>
             {selected.earned
-              ? <span style={{ fontSize:'0.75rem', fontWeight:700, color:selected.color, background:`${selected.color}15`, border:`1px solid ${selected.color}30`, borderRadius:'20px', padding:'4px 16px' }}>✓ Earned</span>
+              ? <span style={{ fontSize:'0.75rem', fontWeight:700, color:selected.color, background:`${selected.color}15`, border:`1px solid ${selected.color}30`, borderRadius:'20px', padding:'4px 16px' }}> Earned</span>
               : selected.total > 1
               ? <div>
                   <div style={{ width:'100%', height:'6px', background:S2, borderRadius:'3px', overflow:'hidden', marginBottom:'6px' }}>
                     <div style={{ height:'100%', width:`${selected.pct}%`, background:selected.color, borderRadius:'3px', transition:'width 0.5s' }}/>
                   </div>
-                  <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', color:MUTED, margin:0 }}>{selected.progress} of {selected.total} — {selected.pct}% there</p>
+                  <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', color:MUTED, margin:0 }}>{selected.progress} of {selected.total}  {selected.pct}% there</p>
                 </div>
-              : <span style={{ fontSize:'0.75rem', fontWeight:700, color:MUTED }}>🔒 Not yet earned</span>
+              : <span style={{ fontSize:'0.75rem', fontWeight:700, color:MUTED }}> Not yet earned</span>
             }
           </div>
         </div>
@@ -202,3 +202,4 @@ export default function ClientBadges() {
     </div>
   );
 }
+

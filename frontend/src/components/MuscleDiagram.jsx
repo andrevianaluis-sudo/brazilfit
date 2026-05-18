@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 export default function MuscleDiagram({ primaryMuscles = [], secondaryMuscles = [], view = 'front', size = 'large' }) {
   const sizeClass = size === 'large' ? 'w-full h-64' : 'w-full h-40';
@@ -211,3 +211,4 @@ function BackView({ primaryMuscles, secondaryMuscles, getMuscleColor, getPrimary
     </svg>
   );
 }
+

@@ -178,3 +178,4 @@ export default function BeforeAfterSlider({ clientId, angle = 'front' }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Trash2, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
@@ -227,7 +227,7 @@ export default function ClientProgressPhotos() {
 
       {photos.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem 1rem', backgroundColor: '#f8faf9', borderRadius: '0.75rem' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📸</div>
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}></div>
           <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1a1a1a', marginBottom: '0.5rem' }}>No photos yet</h3>
           <p style={{ color: '#6b7280' }}>Upload your first photo to start tracking progress</p>
         </div>
@@ -235,3 +235,4 @@ export default function ClientProgressPhotos() {
     </div>
   );
 }
+

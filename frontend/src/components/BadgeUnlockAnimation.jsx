@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Share2 } from 'lucide-react';
 
 function Confetti() {
@@ -107,3 +107,4 @@ export default function BadgeUnlockAnimation({ badge, BadgeComponent, onDone, on
     </div>
   );
 }
+

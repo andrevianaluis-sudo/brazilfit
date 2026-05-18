@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Filter, X, Star, Flame, Sun, Calendar, Trophy, Users, Cake, Moon, CheckCircle, Flower2 } from 'lucide-react';
 import api from '../../utils/api';
@@ -104,7 +104,7 @@ export default function ClientActivity() {
           <div className="py-8 text-center border-b border-grey-100">
             <p className="text-6xl font-black text-black">{stats?.totalSessions || 0}</p>
             <p className="text-grey-200 text-sm mt-2 uppercase font-bold">Total Sessions</p>
-            <p className="text-grey-200 text-xs mt-4">{stats?.thisMonth || 0} this month • {stats?.streak || 0} day streak</p>
+            <p className="text-grey-200 text-xs mt-4">{stats?.thisMonth || 0} this month  {stats?.streak || 0} day streak</p>
           </div>
 
           {/* Sessions by month */}
@@ -333,3 +333,4 @@ export default function ClientActivity() {
     </div>
   );
 }
+

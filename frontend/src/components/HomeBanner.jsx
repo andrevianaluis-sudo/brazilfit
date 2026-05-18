@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useColors } from '../hooks/useColors';
 
 export default function HomeBanner() {
@@ -55,11 +55,12 @@ export default function HomeBanner() {
       style={backgroundStyle}
     >
       <h1 className="text-3xl md:text-4xl font-black mb-2">
-        {timeOfDay === 'morning' && '🌅 Good Morning'}
-        {timeOfDay === 'afternoon' && '☀️ Good Afternoon'}
-        {timeOfDay === 'evening' && '🌙 Good Evening'}
+        {timeOfDay === 'morning' && ' Good Morning'}
+        {timeOfDay === 'afternoon' && ' Good Afternoon'}
+        {timeOfDay === 'evening' && ' Good Evening'}
       </h1>
       <p className="text-black text-lg">Let's train smarter today</p>
     </div>
   );
 }
+

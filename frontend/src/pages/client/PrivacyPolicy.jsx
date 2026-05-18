@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 
 const BG='#0f0f0f';const SURFACE='#1a1a1a';const BORDER='rgba(255,255,255,0.08)';const TEXT='#fff';const MUTED='#888';const ORANGE='#FF6B2B';const GREEN='#4CAF50';
@@ -17,50 +17,50 @@ Address: Newcastle, United Kingdom`
     content: `We collect the following personal data when you use BrazilFit:
 
 Personal Information
-• Full name, email address, username
-• Date of birth, gender, height, weight
+ Full name, email address, username
+ Date of birth, gender, height, weight
 
 Health & Fitness Data (Special Category)
-• Body measurements (waist, hips, chest)
-• Progress photos
-• Session attendance and workout logs
-• Weekly check-in responses (mood, sleep, stress, energy)
-• Habit tracking data (water, steps, nutrition)
-• Wearable device data (heart rate, HRV, sleep, steps)
+ Body measurements (waist, hips, chest)
+ Progress photos
+ Session attendance and workout logs
+ Weekly check-in responses (mood, sleep, stress, energy)
+ Habit tracking data (water, steps, nutrition)
+ Wearable device data (heart rate, HRV, sleep, steps)
 
 Usage Data
-• Login times and session activity
-• Messages with your PT
-• Nutrition diary entries`
+ Login times and session activity
+ Messages with your PT
+ Nutrition diary entries`
   },
   {
     title: '3. Why We Process Your Data',
     content: `We process your data for the following purposes:
 
 Providing the Service (Contractual Basis)
-• Scheduling and tracking PT sessions
-• Monitoring your progress and adapting your programme
-• Sending you relevant notifications
+ Scheduling and tracking PT sessions
+ Monitoring your progress and adapting your programme
+ Sending you relevant notifications
 
 Health Coaching (Explicit Consent)
-• Processing special category health data to personalise your training
-• Tracking physical and mental wellbeing over time
-• Analysing trends to improve your results
+ Processing special category health data to personalise your training
+ Tracking physical and mental wellbeing over time
+ Analysing trends to improve your results
 
 You provide explicit consent to process your health data when you create your account. You may withdraw this consent at any time by deleting your account.
 
 Legitimate Interests
-• Improving the BrazilFit service
-• Maintaining the security of the platform`
+ Improving the BrazilFit service
+ Maintaining the security of the platform`
   },
   {
     title: '4. How We Store Your Data',
     content: `Your data is stored securely on Railway infrastructure located in the United States, protected by industry-standard encryption.
 
-• Data in transit is encrypted using HTTPS/TLS
-• Passwords are hashed using bcrypt (never stored in plain text)
-• Progress photos are stored securely and only accessible by you and your PT
-• Wearable data is processed through Open Wearables, our self-hosted integration
+ Data in transit is encrypted using HTTPS/TLS
+ Passwords are hashed using bcrypt (never stored in plain text)
+ Progress photos are stored securely and only accessible by you and your PT
+ Wearable data is processed through Open Wearables, our self-hosted integration
 
 We retain your data for as long as you are an active client. If you delete your account, all personal data is permanently deleted within 30 days.`
   },
@@ -69,8 +69,8 @@ We retain your data for as long as you are an active client. If you delete your 
     content: `We do not sell your personal data to any third party.
 
 Your data is shared with:
-• Railway (infrastructure hosting) — under data processing agreement
-• Open Wearables (wearable data sync) — self-hosted, data stays within our infrastructure
+ Railway (infrastructure hosting)  under data processing agreement
+ Open Wearables (wearable data sync)  self-hosted, data stays within our infrastructure
 
 Your PT (Andre Viana) has access to all your health, fitness, and check-in data for the purpose of coaching you. This is essential to the service.
 
@@ -80,21 +80,21 @@ We do not share your data with advertisers, marketing companies, or any other th
     title: '6. Your Rights Under GDPR',
     content: `As a UK resident, you have the following rights:
 
-Right to Access — Request a copy of all data we hold about you
-Right to Rectification — Correct inaccurate data
-Right to Erasure — Request deletion of your data ("right to be forgotten")
-Right to Restriction — Limit how we process your data
-Right to Portability — Receive your data in a machine-readable format
-Right to Object — Object to processing based on legitimate interests
-Right to Withdraw Consent — For health data processing at any time
+Right to Access  Request a copy of all data we hold about you
+Right to Rectification  Correct inaccurate data
+Right to Erasure  Request deletion of your data ("right to be forgotten")
+Right to Restriction  Limit how we process your data
+Right to Portability  Receive your data in a machine-readable format
+Right to Object  Object to processing based on legitimate interests
+Right to Withdraw Consent  For health data processing at any time
 
 To exercise any of these rights, contact us at andre@brazilfit.co.uk. We will respond within 30 days. You also have the right to lodge a complaint with the Information Commissioner's Office (ICO) at ico.org.uk.`
   },
   {
     title: '7. Data Export & Deletion',
-    content: `You can export all your personal data at any time from Settings → Privacy → Export My Data. This includes all your health metrics, check-ins, progress photos, messages, and session history in JSON format.
+    content: `You can export all your personal data at any time from Settings  Privacy  Export My Data. This includes all your health metrics, check-ins, progress photos, messages, and session history in JSON format.
 
-You can delete your account at any time from Settings → Privacy → Delete Account. All your data will be permanently erased within 30 days of deletion.`
+You can delete your account at any time from Settings  Privacy  Delete Account. All your data will be permanently erased within 30 days of deletion.`
   },
   {
     title: '8. Cookies',
@@ -131,7 +131,7 @@ export default function PrivacyPolicy() {
           <h1 style={{ fontSize:'2.5rem', fontWeight:800, color:TEXT, letterSpacing:'-0.05em', margin:'0 0 4px', lineHeight:1 }}>Privacy Policy</h1>
           <p style={{ fontSize:'0.82rem', color:MUTED, margin:'0 0 1rem' }}>Last updated: May 2026</p>
           <div style={{ background:'rgba(76,175,80,0.08)', border:'1px solid rgba(76,175,80,0.2)', borderRadius:'12px', padding:'1rem', display:'flex', gap:'10px' }}>
-            <span style={{ fontSize:'1.2rem', flexShrink:0 }}>🔒</span>
+            <span style={{ fontSize:'1.2rem', flexShrink:0 }}></span>
             <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', color:'#c0c0c0', margin:0, lineHeight:1.6 }}>
               BrazilFit is fully GDPR compliant. We never sell your data. Your health information is used only to deliver your coaching programme.
             </p>
@@ -164,3 +164,4 @@ export default function PrivacyPolicy() {
     </div>
   );
 }
+

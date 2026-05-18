@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { X, Share2, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -301,3 +301,4 @@ export default function ClientWorkoutPlayer() {
     </div>
   );
 }
+

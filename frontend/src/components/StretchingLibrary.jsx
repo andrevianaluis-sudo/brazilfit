@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { parseGifFilename, getUniqueMuscleGroups } from '../utils/gifParser';
 import StretchDetailModal from './StretchDetailModal';
@@ -131,3 +131,4 @@ export default function StretchingLibrary() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { ArrowLeft, Share2, ChevronRight } from 'lucide-react';
 
 export default function ProgrammeDetailScreen({ programme, onBack, onBrowseOthers }) {
@@ -134,3 +134,4 @@ export default function ProgrammeDetailScreen({ programme, onBack, onBrowseOther
     </div>
   );
 }
+

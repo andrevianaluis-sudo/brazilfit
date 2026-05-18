@@ -134,7 +134,7 @@ export default function ClientProgress() {
           </button>
         </div>
         <div style={{ display:'flex', gap:8, marginBottom:'1.5rem' }}>
-          {[{key:'progress',label:'📊 Stats'},{key:'photos',label:'📸 Photos'}].map(t => (
+          {[{key:'progress',label:' Stats'},{key:'photos',label:' Photos'}].map(t => (
             <button key={t.key} onClick={() => setActiveTab(t.key)} style={{
               padding:'8px 20px', borderRadius:'8px', border:'none', cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto',
               background: activeTab===t.key ? `rgba(255,107,43,0.18)` : 'rgba(255,255,255,0.04)',
@@ -147,7 +147,7 @@ export default function ClientProgress() {
           <div>
             {loading ? <div style={{ textAlign:'center', padding:'3rem 0', color:MUTED }}>Loading...</div> : entries.length === 0 ? (
               <div style={{ background:SURFACE, borderRadius:16, padding:'2.5rem 1.5rem', border:`1px solid ${BORDER}`, textAlign:'center' }}>
-                <div style={{ fontSize:48, marginBottom:16 }}>💪</div>
+                <div style={{ fontSize:48, marginBottom:16 }}></div>
                 <h3 style={{ color:TEXT, fontWeight:400, fontSize:'1.1rem', margin:'0 0 8px' }}>Start tracking your progress</h3>
                 <p style={{ color:MUTED, fontSize:14, margin:'0 0 20px', lineHeight:1.6 }}>Add your first measurements to see how your body changes over time.</p>
                 <button onClick={() => setShowAddModal(true)} style={{ background:ORANGE, border:'none', borderRadius:12, color:'#fff', padding:'14px 28px', fontSize:15, fontWeight:400, cursor:'pointer' }}>+ Add First Measurement</button>
@@ -163,7 +163,7 @@ export default function ClientProgress() {
                 {entries.length > 1 && (
                   <div style={{ background:`linear-gradient(135deg, ${ORANGE}15, #FFD60010)`, border:`1px solid ${ORANGE}33`, borderRadius:14, padding:'1rem 1.25rem', marginBottom:'1rem' }}>
                     <p style={{ color:TEXT, fontSize:14, margin:0, lineHeight:1.6 }}>
-                      {weightChange !== null && weightChange < 0 ? `🔥 You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? `💪 You have gained ${weightChange}kg — muscle building in progress!` : `📊 Tracking ${entries.length} check-ins over time.`}
+                      {weightChange !== null && weightChange < 0 ? ` You have lost ${Math.abs(weightChange)}kg since you started. Keep going!` : weightChange !== null && weightChange > 0 ? ` You have gained ${weightChange}kg  muscle building in progress!` : ` Tracking ${entries.length} check-ins over time.`}
                     </p>
                   </div>
                 )}
@@ -174,10 +174,10 @@ export default function ClientProgress() {
                       <div key={i} style={{ background:'linear-gradient(135deg,#1a2a1a,#1a1a1a)', borderRadius:14, padding:'14px 16px', border:'1px solid rgba(76,175,80,0.2)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                         <div>
                           <p style={{ color:TEXT, fontWeight:700, fontSize:14, margin:'0 0 3px' }}>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</p>
-                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join(' · ')}</p>
+                          <p style={{ color:MUTED, fontSize:12, margin:0 }}>{[entry.waist_cm && `Waist ${entry.waist_cm}cm`, entry.hips_cm && `Hips ${entry.hips_cm}cm`, entry.chest_cm && `Chest ${entry.chest_cm}cm`].filter(Boolean).join('  ')}</p>
                         </div>
                         <div style={{ textAlign:'right' }}>
-                          <p style={{ fontSize:'1.6rem', fontWeight:800, color:GREEN, letterSpacing:'-0.04em', margin:0 }}>{entry.weight_kg || '—'}</p>
+                          <p style={{ fontSize:'1.6rem', fontWeight:800, color:GREEN, letterSpacing:'-0.04em', margin:0 }}>{entry.weight_kg || ''}</p>
                           <p style={{ color:MUTED, fontSize:11, margin:0 }}>kg</p>
                         </div>
                       </div>
@@ -205,3 +205,4 @@ export default function ClientProgress() {
     </div>
   );
 }
+

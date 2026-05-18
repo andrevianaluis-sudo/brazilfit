@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+﻿import { useEffect, useRef, useState, useCallback } from 'react';
 import { Expand, Gauge, Loader } from 'lucide-react';
 
-// Singleton YT API loader — handles multiple players on the same page
+// Singleton YT API loader  handles multiple players on the same page
 let ytApiPromise = null;
 function loadYouTubeAPI() {
   if (ytApiPromise) return ytApiPromise;
@@ -22,14 +22,14 @@ function loadYouTubeAPI() {
 }
 
 /**
- * YouTubePlayer — high quality embedded player using the IFrame API.
+ * YouTubePlayer  high quality embedded player using the IFrame API.
  *
  * Props:
- *   videoId      — YouTube video ID
- *   autoplay     — boolean, defaults false
- *   showSlowMo   — boolean, show 0.5x slow-motion toggle
- *   className    — optional wrapper className
- *   onReady      — optional callback(player)
+ *   videoId       YouTube video ID
+ *   autoplay      boolean, defaults false
+ *   showSlowMo    boolean, show 0.5x slow-motion toggle
+ *   className     optional wrapper className
+ *   onReady       optional callback(player)
  */
 export default function YouTubePlayer({ videoId, autoplay = false, showSlowMo = true, className = '', onReady }) {
   const containerRef = useRef(null);
@@ -132,7 +132,7 @@ export default function YouTubePlayer({ videoId, autoplay = false, showSlowMo = 
         style={{ position: 'absolute', inset: 0 }}
       />
 
-      {/* Controls overlay — bottom right */}
+      {/* Controls overlay  bottom right */}
       {!loading && (
         <div className="absolute bottom-2 right-2 flex gap-1.5 z-20 pointer-events-none">
           {showSlowMo && (
@@ -143,10 +143,10 @@ export default function YouTubePlayer({ videoId, autoplay = false, showSlowMo = 
                   ? 'bg-brazil-yellow text-black'
                   : 'bg-white/60 text-black hover:bg-grey-1000'
               }`}
-              title={slowMo ? 'Normal speed' : 'Slow motion (0.5×)'}
+              title={slowMo ? 'Normal speed' : 'Slow motion (0.5)'}
             >
               <Gauge className="w-3 h-3" />
-              {slowMo ? '0.5×' : '1×'}
+              {slowMo ? '0.5' : '1'}
             </button>
           )}
           <button
@@ -163,7 +163,7 @@ export default function YouTubePlayer({ videoId, autoplay = false, showSlowMo = 
 }
 
 /**
- * YouTubeThumbnail — lazy-loaded thumbnail that expands to the full player on click.
+ * YouTubeThumbnail  lazy-loaded thumbnail that expands to the full player on click.
  * Uses high-res (maxresdefault) thumbnail.
  */
 export function YouTubeThumbnail({ videoId, name, autoplayOnOpen = false, showSlowMo = true, className = '' }) {
@@ -172,7 +172,7 @@ export function YouTubeThumbnail({ videoId, name, autoplayOnOpen = false, showSl
 
   if (!videoId) return null;
 
-  // YouTube thumbnail quality cascade: maxresdefault (1280×720) → hqdefault (480×360)
+  // YouTube thumbnail quality cascade: maxresdefault (1280720)  hqdefault (480360)
   const thumbSrc = imgError
     ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
     : `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -218,3 +218,4 @@ export function YouTubeThumbnail({ videoId, name, autoplayOnOpen = false, showSl
     </button>
   );
 }
+

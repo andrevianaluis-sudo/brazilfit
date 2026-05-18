@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { X, Play } from 'lucide-react';
 import CustomVideoPlayer from './CustomVideoPlayer';
 
@@ -76,7 +76,7 @@ export default function ClassPreviewModal({ classId, className, isOpen, onClose 
 
           <div className="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
             <div className="text-center text-black">
-              <div className="text-6xl mb-4">🎥</div>
+              <div className="text-6xl mb-4"></div>
               <p className="text-lg font-semibold mb-2">{className}</p>
               <p className="text-grey-200">Preview coming soon</p>
             </div>
@@ -101,3 +101,4 @@ export default function ClassPreviewModal({ classId, className, isOpen, onClose 
     </div>
   );
 }
+

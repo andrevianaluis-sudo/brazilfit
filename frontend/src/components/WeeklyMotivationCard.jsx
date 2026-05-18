@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Play, Heart } from 'lucide-react';
 import CustomVideoPlayer from './CustomVideoPlayer';
 
@@ -73,7 +73,7 @@ export default function WeeklyMotivationCard() {
           onClick={() => setShowPlayer(false)}
           className="text-emerald-600 hover:text-emerald-700 font-semibold transition"
         >
-          ← Back
+           Back
         </button>
         <CustomVideoPlayer
           videoUrl={videoMedia.id ? `/api/media/serve/${videoMedia.id}` : null}
@@ -117,3 +117,4 @@ export default function WeeklyMotivationCard() {
     </div>
   );
 }
+

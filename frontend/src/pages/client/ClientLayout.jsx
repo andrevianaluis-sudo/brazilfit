@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
@@ -76,13 +76,13 @@ export default function ClientLayout() {
   };
 
   const getNotifIcon = (type) => {
-    if (type === 'cancellation') return '❌';
-    if (type === 'reinstate') return '✅';
-    if (type === 'session') return '📅';
-    if (type === 'message') return '💬';
-    if (type === 'badge') return '🏆';
-    if (type === 'checkin') return '📋';
-    return '🔔';
+    if (type === 'cancellation') return '';
+    if (type === 'reinstate') return '';
+    if (type === 'session') return '';
+    if (type === 'message') return '';
+    if (type === 'badge') return '';
+    if (type === 'checkin') return '';
+    return '';
   };
 
   const timeAgo = (dateStr) => {
@@ -202,12 +202,12 @@ export default function ClientLayout() {
                 <div style={{ position: 'fixed', top: '68px', right: '12px', width: 'min(340px, calc(100vw - 24px))', backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', boxShadow: '0 20px 60px rgba(0,0,0,0.8)', zIndex: 999, overflow: 'hidden' }}>
                   <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>Notifications</span>
-                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: '#707070' }}>All caught up ✓</span>
+                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: '#707070' }}>All caught up </span>
                   </div>
                   <div style={{ maxHeight: '380px', overflowY: 'auto' }}>
                     {notifications.length === 0 ? (
                       <div style={{ padding: '2rem', textAlign: 'center' }}>
-                        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.5rem', marginBottom: '8px' }}>🔔</p>
+                        <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.5rem', marginBottom: '8px' }}></p>
                         <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.82rem', color: '#707070', margin: 0 }}>No notifications yet</p>
                       </div>
                     ) : notifications.map(n => (
@@ -268,3 +268,4 @@ export default function ClientLayout() {
     </div>
   );
 }
+
