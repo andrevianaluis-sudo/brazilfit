@@ -241,6 +241,14 @@ router.get('/pt/summary', authenticateToken, (req, res) => {
   });
 });
 
+router.get('/last-date', authenticateToken, (req, res) => {
+  const db = getDb();
+  const clientId = req.user.clientId;
+  if (!clientId) return res.json({ lastCheckinDate: null });
+  const row = db.prepare('SELECT checkin_date FROM weekly_checkins WHERE client_id = ? ORDER BY checkin_date DESC LIMIT 1').get(clientId);
+  res.json({ lastCheckinDate: row?.checkin_date || null });
+});
+
 // GET /api/checkins/streak — consecutive weekly check-in streak for the logged-in client
 router.get('/streak', authenticateToken, (req, res) => {
   const db = getDb();
@@ -289,3 +297,4 @@ router.get('/streak', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
