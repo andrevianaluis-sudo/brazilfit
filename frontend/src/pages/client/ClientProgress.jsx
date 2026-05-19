@@ -21,9 +21,7 @@ const RED = '#ef4444';
 
 function SectionLabel({ children, color = ORANGE }) {
   return (
-    <>
-      <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements here - weight, waist, hips and more. Add progress photos to see your visual transformation over time." />
-    <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'0.875rem' }}>
+    <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements - weight, waist, hips and more. Add progress photos to see your visual transformation." />`n    <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'0.875rem' }}>
       <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
       <p style={{ fontSize:'0.6rem', fontWeight:700, letterSpacing:'0.2em', color, textTransform:'uppercase', margin:0 }}>{children}</p>
     </div>
@@ -35,9 +33,7 @@ function StatCard({ label, value, unit, change, accent }) {
   const changeColor = change === null ? MUTED : isGood ? GREEN : RED;
   const accentColor = accent || ORANGE;
   return (
-    <>
-      <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements here - weight, waist, hips and more. Add progress photos to see your visual transformation over time." />
-    <div style={{ background:`linear-gradient(145deg, #1e1e1e, #252525)`, borderRadius:16, padding:'1.1rem', border:`1px solid rgba(255,255,255,0.07)`, position:'relative', overflow:'hidden' }}>
+    <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements - weight, waist, hips and more. Add progress photos to see your visual transformation." />`n    <div style={{ background:`linear-gradient(145deg, #1e1e1e, #252525)`, borderRadius:16, padding:'1.1rem', border:`1px solid rgba(255,255,255,0.07)`, position:'relative', overflow:'hidden' }}>
       <div style={{ position:'absolute', top:0, left:0, right:0, height:2, background:value ? `linear-gradient(90deg, ${accentColor}, ${accentColor}88)` : 'transparent', borderRadius:'16px 16px 0 0' }}/>
       <SectionLabel color={value ? accentColor : MUTED}>{label}</SectionLabel>
       <div style={{ display:'flex', alignItems:'baseline', gap:4 }}>
@@ -68,9 +64,7 @@ function AddMeasurementModal({ onClose, onSaved }) {
   };
   const fields = [['weight_kg','Weight','kg','75.5'],['waist_cm','Waist','cm','80'],['hips_cm','Hips','cm','95'],['chest_cm','Chest','cm','100'],['body_fat_pct','Body Fat','%','20']];
   return (
-    <>
-      <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements here - weight, waist, hips and more. Add progress photos to see your visual transformation over time." />
-    <div style={{ position:'fixed', inset:0, zIndex:100, background:'rgba(0,0,0,0.85)', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
+    <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements - weight, waist, hips and more. Add progress photos to see your visual transformation." />`n    <div style={{ position:'fixed', inset:0, zIndex:100, background:'rgba(0,0,0,0.85)', display:'flex', alignItems:'flex-end', justifyContent:'center' }}>
       <div style={{ width:'100%', maxWidth:480, background:SURFACE, borderRadius:'20px 20px 0 0', border:`1px solid ${BORDER}`, borderBottom:'none', maxHeight:'90vh', overflowY:'auto', paddingBottom:32 }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 20px 16px', borderBottom:`1px solid ${BORDER}` }}>
           <div><h3 style={{ color:TEXT, fontWeight:400, fontSize:18, margin:0 }}>Add Measurements</h3><p style={{ color:MUTED, fontSize:13, margin:'4px 0 0' }}>Track your body changes over time</p></div>
@@ -128,9 +122,7 @@ export default function ClientProgress() {
   const shown = expanded ? entries : [...entries].reverse().slice(0, 3);
 
   return (
-    <>
-      <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements here - weight, waist, hips and more. Add progress photos to see your visual transformation over time." />
-    <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem' }}>
+    <PageIntroModal pageKey="progress" title="Track Your Progress" color="#4CAF50" description="Log your measurements - weight, waist, hips and more. Add progress photos to see your visual transformation." />`n    <div style={{ backgroundColor:BG, minHeight:'100vh', paddingBottom:'6rem' }}>
       <div style={{ maxWidth:'800px', margin:'0 auto', padding:'2rem 1.25rem' }}>
         <BackButton to="/client" />
         <div style={{ margin:'1.25rem 0 1rem', display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
@@ -214,5 +206,8 @@ export default function ClientProgress() {
     </div>
   );
 }
+
+
+
 
 
