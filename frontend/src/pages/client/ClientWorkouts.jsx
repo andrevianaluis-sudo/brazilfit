@@ -2,7 +2,6 @@
 import { Dumbbell, Calendar, Clock, ArrowRight, Check, Zap, Trophy } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
-import PageIntroModal from '../../components/PageIntroModal';
 import toast from 'react-hot-toast';
 import WorkoutDetailModal from '../../components/WorkoutDetailModal';
 
@@ -22,9 +21,7 @@ const DIFF={
 };
 
 function SectionLabel({children,color=ORANGE}){
-  return (
-    <>
-      <PageIntroModal pageKey="workouts" title="My Workouts" color="#FF6B2B" description="Your PT assigns workout plans here for you to follow between sessions. Mark each one complete when done." />
+  return(
     <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'0.875rem'}}>
       <div style={{width:'3px',height:'14px',borderRadius:'2px',background:`linear-gradient(180deg,${color},${color}88)`}}/>
       <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color,textTransform:'uppercase',margin:0}}>{children}</p>
@@ -52,9 +49,7 @@ export default function ClientWorkouts(){
   const active=workouts.filter(w=>w.status!=='completed');
   const completed=workouts.filter(w=>w.status==='completed');
 
-  return (
-    <>
-      <PageIntroModal pageKey="workouts" title="My Workouts" color="#FF6B2B" description="Your PT assigns workout plans here for you to follow between sessions. Mark each one complete when done." />
+  return(
     <div style={{backgroundColor:BG,minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui"}}>
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
 
@@ -100,9 +95,7 @@ export default function ClientWorkouts(){
                   {active.map(workout=>{
                     const st=STATUS[workout.status]||STATUS.assigned;
                     const df=DIFF[workout.difficulty]||DIFF.beginner;
-                    return (
-                      <>
-                        <PageIntroModal pageKey="workouts" title="My Workouts" color="#FF6B2B" description="Your PT assigns workout plans here for you to follow between sessions. Mark each one complete when done." />
+                    return(
                       <div key={workout.id} onClick={()=>setSelectedWorkout(workout)} style={{
                         borderRadius:'16px',overflow:'hidden',cursor:'pointer',
                         background:`linear-gradient(135deg,${SURFACE},${st.bg.replace('0.12','0.2')})`,
@@ -201,5 +194,4 @@ export default function ClientWorkouts(){
     </div>
   );
 }
-
 
