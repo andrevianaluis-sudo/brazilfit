@@ -121,6 +121,7 @@ function List({items,setItems,placeholder,emoji,maxItems,addLabel}){
 export default function ClientCheckin(){
   const {user}=useAuth();
   const navigate=useNavigate();
+  if(user && !user.isPro){return(<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'70vh',padding:'2rem',textAlign:'center'}}><h2 style={{fontSize:'1.5rem',fontWeight:800,color:'#fff',margin:'0 0 8px'}}>Weekly Check-in is a Pro feature</h2><p style={{color:'#606060',fontSize:'0.875rem',margin:'0 0 1.5rem'}}>Upgrade to Pro to share your weekly progress with your PT.</p><button onClick={()=>navigate('/client/upgrade')} style={{padding:'0.875rem 2rem',background:'linear-gradient(135deg,#FF6B2B,#FFD600)',border:'none',borderRadius:'12px',color:'#000',fontSize:'0.875rem',fontWeight:800,cursor:'pointer'}}>Upgrade to Pro</button></div>);}
   const [loading,setLoading]=useState(true);
   const [submitting,setSubmitting]=useState(false);
   const [submitted,setSubmitted]=useState(false);
@@ -358,6 +359,7 @@ export default function ClientCheckin(){
     </div>
   );
 }
+
 
 
 
