@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Dumbbell, TrendingUp, Heart, MessageSquare, ClipboardList, Activity, Zap, ChevronRight } from 'lucide-react';
 import api from '../../utils/api';
+import PageIntroModal from '../../components/PageIntroModal';
 
 const ORANGE='#FF6B2B';const YELLOW='#FFD600';const GREEN='#4CAF50';const TEXT='#ffffff';const MUTED='#606060';const BG='#0f0f0f';
 
@@ -68,6 +69,8 @@ export default function ClientHome(){
   ];
 
   return(
+    <>
+      <PageIntroModal pageKey="dashboard" title="Welcome to BrazilFit!" color="#FF6B2B" description="This is your personal training hub. Track your sessions, check your block progress, message your PT and access all your fitness tools from here." />
     <div style={{background:BG,minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui"}}>
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
 
@@ -200,6 +203,7 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
 
 

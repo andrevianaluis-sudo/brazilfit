@@ -2,6 +2,7 @@
 import { Send, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
+import PageIntroModal from '../../components/PageIntroModal';
 import toast from 'react-hot-toast';
 
 const BG='#0f0f0f';const SURFACE='#1a1a1a';const SURFACE2='#222';const BORDER='rgba(255,255,255,0.08)';const TEXT='#ffffff';const MUTED='#606060';const ORANGE='#FF6B2B';const GREEN='#4CAF50';
@@ -47,12 +48,16 @@ export default function ClientMessages() {
   };
 
   if (loading) return (
+    <>
+      <PageIntroModal pageKey="messages" title="Messages" color="#a78bfa" description="Your direct line to your PT. Ask questions, share updates or just check in. Your PT will respond as soon as possible." />
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: BG }}>
       <div style={{ width: '20px', height: '20px', border: `2px solid ${ORANGE}`, borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
     </div>
   );
 
   if (!pt) return (
+    <>
+      <PageIntroModal pageKey="messages" title="Messages" color="#a78bfa" description="Your direct line to your PT. Ask questions, share updates or just check in. Your PT will respond as soon as possible." />
     <div style={{ backgroundColor: BG, minHeight: '100vh', padding: '2rem 1.5rem' }}>
       <button onClick={() => navigate('/client')} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: MUTED, cursor: 'pointer', fontFamily: "'DM Sans', system-ui", fontSize: '0.875rem', fontWeight: 500, marginBottom: '3rem', padding: 0, minHeight: 'auto' }}>
         <ArrowLeft size={16} /> Back
@@ -68,6 +73,8 @@ export default function ClientMessages() {
   const ptInitials = pt.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'PT';
 
   return (
+    <>
+      <PageIntroModal pageKey="messages" title="Messages" color="#a78bfa" description="Your direct line to your PT. Ask questions, share updates or just check in. Your PT will respond as soon as possible." />
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: BG }}>
 
       {/* Header */}
@@ -110,6 +117,8 @@ export default function ClientMessages() {
             {messages.map((msg) => {
               const isClient = msg.sender_type === 'client';
               return (
+                <>
+                  <PageIntroModal pageKey="messages" title="Messages" color="#a78bfa" description="Your direct line to your PT. Ask questions, share updates or just check in. Your PT will respond as soon as possible." />
                 <div key={msg.id} style={{ display:'flex', justifyContent:isClient?'flex-end':'flex-start', alignItems:'flex-end', gap:'8px' }}>
                   {!isClient && (
                     <div style={{ width:'30px', height:'30px', borderRadius:'50%', background:`linear-gradient(135deg,${ORANGE},#FFD600)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.62rem', fontWeight:800, color:'#000', flexShrink:0 }}>
@@ -162,4 +171,5 @@ export default function ClientMessages() {
     </div>
   );
 }
+
 

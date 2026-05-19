@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Clock, Crown, AlertTriangle, X, Ban, FileText, ArrowRight, Zap, Calendar, MessageSquare } from 'lucide-react';
 import api from '../../utils/api';
+import PageIntroModal from '../../components/PageIntroModal';
 import toast from 'react-hot-toast';
 import BackButton from '../../components/BackButton';
 import { fmtDate, fmtDateTimeFull, fmtDateTime, fmtDateShort, sortOldestFirst, sortNewestFirst } from '../../utils/dateUtils';
@@ -12,7 +13,9 @@ const BG='#0f0f0f';const SURFACE='#1a1a1a';const SURFACE2='#222';const BORDER='r
 function hoursUntil(date,time){return(new Date(`${date}T${time}:00`)-new Date())/3600000;}
 
 function SectionLabel({children,color=ORANGE}){
-  return(
+  return (
+    <>
+      <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
     <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'0.875rem'}}>
       <div style={{width:'3px',height:'14px',borderRadius:'2px',background:`linear-gradient(180deg,${color},${color}88)`}}/>
       <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.2em',color,textTransform:'uppercase',margin:0}}>{children}</p>
@@ -23,7 +26,9 @@ function SectionLabel({children,color=ORANGE}){
 function SessionNoteModal({session,onClose}){
   const[note,setNote]=useState(null);const[loading,setLoading]=useState(true);
   useEffect(()=>{api.get(`/sessions/${session.id}/note`).then(r=>{setNote(r.data);setLoading(false);}).catch(()=>setLoading(false));},[session.id]);
-  return(
+  return (
+    <>
+      <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
     <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:50,display:'flex',alignItems:'flex-end',justifyContent:'center',backgroundColor:'rgba(0,0,0,0.92)',padding:'1rem',backdropFilter:'blur(4px)'}}>
       <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:'480px',backgroundColor:'#111',borderRadius:'20px',border:`1px solid ${BORDER}`,overflow:'hidden',marginBottom:'1rem'}}>
         <div style={{padding:'1.5rem',borderBottom:`1px solid ${BORDER}`,display:'flex',alignItems:'center',justifyContent:'space-between',background:'linear-gradient(135deg,#1a1a1a,#1e1a0a)'}}>
@@ -77,7 +82,9 @@ function SessionNoteModal({session,onClose}){
 
 function CancelModal({session,onConfirm,onClose,loading}){
   const hours=hoursUntil(session.scheduled_date,session.scheduled_time);const canCancel=hours>=24;
-  return(
+  return (
+    <>
+      <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
     <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',backgroundColor:'rgba(0,0,0,0.92)',padding:'1rem',backdropFilter:'blur(4px)'}}>
       <div onClick={e=>e.stopPropagation()} style={{width:'100%',maxWidth:'380px',backgroundColor:'#111',borderRadius:'20px',border:`1px solid ${canCancel?'rgba(255,107,43,0.3)':'rgba(239,68,68,0.3)'}`,overflow:'hidden'}}>
         <div style={{padding:'1.5rem',background:canCancel?'linear-gradient(135deg,#1e1a0a,#1a1a1a)':'linear-gradient(135deg,#1e0a0a,#1a1a1a)'}}>
@@ -125,7 +132,9 @@ export default function ClientSessions(){
   const missed=history.filter(s=>s.status==='missed').length;
   const limitedHistory=user?.isPro?history:history.slice(0,5);
 
-  return(
+  return (
+    <>
+      <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
     <div style={{backgroundColor:BG,minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui"}}>
       <div style={{maxWidth:'800px',margin:'0 auto',padding:'2rem 1.25rem'}}>
         <BackButton to="/client"/>
@@ -171,7 +180,9 @@ export default function ClientSessions(){
           <div style={{display:'grid',gridTemplateColumns:'repeat(10,1fr)',gap:'6px',marginBottom:'14px'}}>
             {Array.from({length:totalSessions||10}).map((_,i)=>{
               const done=i<sessionsUsed;const next=i===sessionsUsed;const isNine=i===8;
-              return(
+              return (
+                <>
+                  <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
                 <div key={i} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'3px'}}>
                   <div style={{
                     width:'100%',aspectRatio:'1',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',
@@ -234,7 +245,9 @@ export default function ClientSessions(){
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
               {upcoming.map((s,i)=>{
                 const hrs=hoursUntil(s.scheduled_date,s.scheduled_time);const locked=hrs>=0&&hrs<24;const sessionsLeftAfter=Math.max(0,sessionsRemaining-i-1);
-                return(
+                return (
+                  <>
+                    <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
                   <div key={s.id} style={{borderRadius:'14px',padding:'1rem 1.25rem',background:locked?'rgba(239,68,68,0.06)':'linear-gradient(135deg,rgba(76,175,80,0.06),rgba(26,26,26,1))',border:`1px solid ${locked?'rgba(239,68,68,0.2)':'rgba(76,175,80,0.2)'}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px'}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',flex:1}}>
                       <div style={{width:'38px',height:'38px',borderRadius:'10px',background:locked?'rgba(239,68,68,0.15)':'rgba(76,175,80,0.15)',border:`1px solid ${locked?'rgba(239,68,68,0.3)':'rgba(76,175,80,0.3)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -284,7 +297,9 @@ export default function ClientSessions(){
                 const statusColor=isAttended?GREEN:isCancelled?MUTED:'#ef4444';
                 const statusBg=isAttended?'rgba(76,175,80,0.1)':isCancelled?'rgba(255,255,255,0.04)':'rgba(239,68,68,0.08)';
                 const statusLabel=isAttended?' Attended':isCancelled?'Cancelled':'Missed';
-                return(
+                return (
+                  <>
+                    <PageIntroModal pageKey="sessions" title="My Sessions" color="#FF6B2B" description="View your upcoming and past sessions. You can cancel up to 24 hours before. Each block has 10 sessions." />
                   <div key={s.id} style={{borderRadius:'14px',padding:'1rem 1.25rem',background:statusBg,border:`1px solid ${isAttended?'rgba(76,175,80,0.15)':isCancelled?BORDER:'rgba(239,68,68,0.15)'}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',opacity:isCancelled?0.6:1}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',flex:1}}>
                       <div style={{width:'34px',height:'34px',borderRadius:'10px',background:`${statusColor}18`,border:`1px solid ${statusColor}30`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'0.9rem'}}>
@@ -329,4 +344,5 @@ export default function ClientSessions(){
     </div>
   );
 }
+
 

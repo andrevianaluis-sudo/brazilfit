@@ -5,6 +5,7 @@ import { Check } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import BackButton from '../../components/BackButton';
 import api from '../../utils/api';
+import PageIntroModal from '../../components/PageIntroModal';
 import toast from 'react-hot-toast';
 
 const BG='#0f0f0f';
@@ -37,6 +38,8 @@ function Card({ children, style = {} }) {
 
 function SliderField({ icon, label, hint, value, onChange, min, max, step, unit, color, emoji }) {
   return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <span style={{ fontSize: '1.1rem' }}>{icon}</span>
@@ -56,6 +59,8 @@ function SliderField({ icon, label, hint, value, onChange, min, max, step, unit,
 
 function NumberField({ icon, label, hint, value, onChange, min, max, unit, color }) {
   return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
         <span style={{ fontSize: '1.1rem' }}>{icon}</span>
@@ -77,6 +82,8 @@ function NumberField({ icon, label, hint, value, onChange, min, max, unit, color
 
 function MetricCard({ icon, label, value, unit, color }) {
   return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div style={{ borderRadius: '16px', padding: '1rem', border: `1px solid ${color}30`, textAlign: 'center', background:`linear-gradient(135deg,${color}10,#1a1a1a)` }}>
       <div style={{ fontSize: '1.5rem', marginBottom: '6px' }}>{icon}</div>
       <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '1.4rem', fontWeight: 800, color, margin: '0 0 2px', letterSpacing: '-0.03em' }}>{value} <span style={{ fontSize: '0.75rem', opacity:0.7 }}>{unit}</span></p>
@@ -87,6 +94,8 @@ function MetricCard({ icon, label, value, unit, color }) {
 
 function ChartCard({ title, color, children }) {
   return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div style={{ background:'#1a1a1a', borderRadius: '16px', padding: '1.25rem', border: `1px solid rgba(255,255,255,0.08)` }}>
       <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1rem' }}>
         <div style={{ width:'3px', height:'14px', borderRadius:'2px', background:`linear-gradient(180deg,${color},${color}88)` }}/>
@@ -157,6 +166,8 @@ export default function ClientHabits() {
   };
 
   if (loading) return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', backgroundColor: BG }}>
       <div style={{ width: '20px', height: '20px', border: `2px solid ${ORANGE}`, borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
     </div>
@@ -195,6 +206,8 @@ export default function ClientHabits() {
   }
 
   return (
+    <>
+      <PageIntroModal pageKey="habits" title="Health and Habits" color="#4CAF50" description="Track your daily habits - sleep, water, steps and energy. Your PT uses this data to tailor your training." />
     <div style={{ backgroundColor: BG, minHeight: '100vh', paddingBottom: '6rem' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1.25rem', overflowX: 'hidden' }}>
         <BackButton to="/client" />
@@ -441,6 +454,7 @@ export default function ClientHabits() {
     </div>
   );
 }
+
 
 
 
