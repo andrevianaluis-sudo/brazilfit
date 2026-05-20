@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
@@ -179,4 +179,19 @@ router.get('/leaderboard/streaks', (req, res) => {
   res.json(clients);
 });
 
+router.get('/streak', authenticateToken, (req, res) => {
+  const db = getDb();
+  const clientId = req.user.clientId;
+  if (!clientId) return res.json({ streak: 0 });
+  const logs = db.prepare('SELECT log_date FROM habit_logs WHERE client_id = ? ORDER BY log_date DESC').all(clientId);
+  let streak = 0;
+  const checkDate = new Date();
+  for (const log of logs) {
+    const d = checkDate.toISOString().split('T')[0];
+    if (log.log_date === d) { streak++; checkDate.setDate(checkDate.getDate()-1); } else break;
+  }
+  res.json({ streak });
+});
+
 module.exports = router;
+
