@@ -117,7 +117,8 @@ export default function ClientSessions(){
 
   if(loading)return(<div style={{display:'flex',justifyContent:'center',alignItems:'center',minHeight:'60vh',backgroundColor:BG}}><div style={{width:'24px',height:'24px',border:`2px solid ${ORANGE}`,borderTop:'2px solid transparent',borderRadius:'50%',animation:'spin 1s linear infinite'}}/></div>);
 
-  const upcoming=sortOldestFirst(data?.upcoming||[],'scheduled_date','scheduled_time');
+  const todayStr = new Date().toISOString().split('T')[0];
+  const upcoming=sortOldestFirst((data?.upcoming||[]).filter(s=>s.scheduled_date>=todayStr),'scheduled_date','scheduled_time');
   const history=sortNewestFirst(data?.history||[],'scheduled_date','scheduled_time');
   const sessionsUsed=data?.sessionsUsed||0;const sessionsRemaining=data?.sessionsRemaining||0;
   const totalSessions=sessionsUsed+sessionsRemaining;const pct=totalSessions>0?(sessionsUsed/totalSessions)*100:0;
@@ -329,4 +330,6 @@ export default function ClientSessions(){
     </div>
   );
 }
+
+
 

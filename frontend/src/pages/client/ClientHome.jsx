@@ -54,7 +54,9 @@ export default function ClientHome(){
   const g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
   const name=user?.name?.split(' ')[0]||'Athlete';
   const today=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  const nextSession=sessions?.upcoming?.[0];
+  const today = new Date().toISOString().split('T')[0];
+  const futureUpcoming = sessions?.upcoming?.filter(s => s.scheduled_date >= today) || [];
+  const nextSession = futureUpcoming[0];
 
   const LINKS=[
     {label:'My Sessions', sub:'Track your block',    to:'/client/sessions',  ic:Calendar,      color:ORANGE,          bg:'rgba(255,107,43,0.1)',  border:'rgba(255,107,43,0.2)'},
@@ -200,6 +202,8 @@ export default function ClientHome(){
     </div>
   );
 }
+
+
 
 
 
