@@ -54,8 +54,8 @@ export default function ClientHome(){
   const g=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
   const name=user?.name?.split(' ')[0]||'Athlete';
   const today=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  const today = new Date().toISOString().split('T')[0];
-  const futureUpcoming = sessions?.upcoming?.filter(s => s.scheduled_date >= today) || [];
+  const todayStr = new Date().toISOString().split('T')[0];
+  const futureUpcoming = sessions?.upcoming?.filter(s => s.scheduled_date >= todayStr) || [];
   const nextSession = futureUpcoming[0];
 
   const LINKS=[
@@ -202,6 +202,7 @@ export default function ClientHome(){
     </div>
   );
 }
+
 
 
 
