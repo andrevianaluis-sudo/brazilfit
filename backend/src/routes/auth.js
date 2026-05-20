@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -161,7 +161,7 @@ router.post('/reset-password', async (req, res) => {
   res.json({ message: 'Password reset successfully' });
 });
 
-// POST /api/auth/pt-reset-password — PT resets a client's password
+// POST /api/auth/pt-reset-password â€” PT resets a client's password
 router.post('/pt-reset-password', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const { username, newPassword } = req.body;
@@ -224,7 +224,7 @@ router.delete('/users/:userId', authenticateToken, (req, res) => {
   }
 });
 
-// GET /api/auth/export-data — export all client data (GDPR right to portability)
+// GET /api/auth/export-data â€” export all client data (GDPR right to portability)
 router.get('/export-data', authenticateToken, (req, res) => {
   const db = getDb();
   const userId = req.user.id;
@@ -257,7 +257,7 @@ router.get('/export-data', authenticateToken, (req, res) => {
   res.json(exportData);
 });
 
-// POST /api/auth/reset-client-data — PT only, wipes all data for a client (temp admin tool)
+// POST /api/auth/reset-client-data â€” PT only, wipes all data for a client (temp admin tool)
 router.post('/reset-client-data', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const { username } = req.body;
@@ -273,10 +273,10 @@ router.post('/reset-client-data', authenticateToken, async (req, res) => {
     try { db.prepare(`DELETE FROM ${table} WHERE client_id = ?`).run(clientId); } catch(e) {}
   }
   try { db.prepare(`UPDATE clients SET sessions_used=0, sessions_remaining=0, current_block_number=0, last_payment_date=NULL, block_start_date=NULL WHERE id=?`).run(clientId); } catch(e) {}
-  res.json({ message: `All data reset for ${username} — account intact` });
+  res.json({ message: `All data reset for ${username} â€” account intact` });
 });
 
-// POST /api/auth/update-client-name — PT only
+// POST /api/auth/update-client-name â€” PT only
 router.post('/update-client-name', authenticateToken, (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const { username, name } = req.body;
@@ -288,9 +288,35 @@ router.post('/update-client-name', authenticateToken, (req, res) => {
   res.json({ message: `Name updated to ${name}` });
 });
 
+router.put('/profile', authenticateToken, (req, res) => {
+  const db = getDb();
+  const { name, email, username } = req.body;
+  const userId = req.user.id;
+  try {
+    if (username) { const ex = db.prepare('SELECT id FROM users WHERE username = ? AND id != ?').get(username, userId); if (ex) return res.status(400).json({ error: 'Username already taken' }); }
+    if (email) { const ex = db.prepare('SELECT id FROM users WHERE email = ? AND id != ?').get(email, userId); if (ex) return res.status(400).json({ error: 'Email already in use' }); }
+    db.prepare('UPDATE users SET name = COALESCE(?,name), email = COALESCE(?,email), username = COALESCE(?,username) WHERE id = ?').run(name||null, email||null, username||null, userId);
+    res.json({ message: 'Profile updated' });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+router.put('/change-password', authenticateToken, async (req, res) => {
+  const db = getDb();
+  const bcrypt = require('bcryptjs');
+  const { currentPassword, newPassword } = req.body;
+  try {
+    const user = db.prepare('SELECT password_hash FROM users WHERE id = ?').get(req.user.id);
+    const valid = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!valid) return res.status(400).json({ error: 'Current password is incorrect' });
+    const hash = await bcrypt.hash(newPassword, 10);
+    db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, req.user.id);
+    res.json({ message: 'Password changed' });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
 module.exports = router;
 
-// POST /api/auth/seed-clients — PT only, one-time client seeding
+// POST /api/auth/seed-clients â€” PT only, one-time client seeding
 router.post('/seed-clients', authenticateToken, async (req, res) => {
   if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
   const db = getDb();
@@ -338,7 +364,7 @@ router.post('/seed-clients', authenticateToken, async (req, res) => {
         // Check if client profile exists
         const existingClient = db.prepare("SELECT id FROM clients WHERE user_id = ?").get(userId);
         if (existingClient) { skipped++; continue; }
-        // User exists but no client profile — create it
+        // User exists but no client profile â€” create it
       } else {
         const userResult = db.prepare(`INSERT INTO users (email, username, password_hash, role, name) VALUES (?, ?, ?, 'client', ?)`).run(client.email, client.username, defaultPassword, client.name);
         userId = userResult.lastInsertRowid;
@@ -350,3 +376,4 @@ router.post('/seed-clients', authenticateToken, async (req, res) => {
 
   res.json({ created, skipped, errors });
 });
+
