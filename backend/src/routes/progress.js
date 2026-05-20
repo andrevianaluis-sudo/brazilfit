@@ -284,4 +284,16 @@ router.delete('/photos/:photoId', (req, res) => {
 });
 
 
+router.delete('/:id', authenticateToken, (req, res) => {
+  const db = getDb();
+  const entryId = parseInt(req.params.id);
+  try {
+    const entry = db.prepare('SELECT client_id FROM progress_entries WHERE id = ?').get(entryId);
+    if (!entry) return res.status(404).json({ error: 'Not found' });
+    if (req.user.role === 'client' && req.user.clientId !== entry.client_id) return res.status(403).json({ error: 'Access denied' });
+    db.prepare('DELETE FROM progress_entries WHERE id = ?').run(entryId);
+    res.json({ message: 'Deleted' });
+  } catch { res.status(500).json({ error: 'Failed to delete' }); }
+});
+
 module.exports = router;
