@@ -259,13 +259,15 @@ router.post('/sync', authenticateToken, async (req, res) => {
       const client = matchClientFromTitle(title, clients);
 
       if (client) {
-        // It's a PT session â€” create as session
-        const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
-          .get(client.id, date, time);
-        if (existing) { skipped++; continue; }
-        db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
-          .run(client.id, date || null, time || null, event.id || null, null);
-        sessionsCreated++;
+        const clientList = Array.isArray(client) ? client : [client];
+        for (const c of clientList) {
+          const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
+            .get(c.id, date, time);
+          if (existing) { skipped++; continue; }
+          db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
+            .run(c.id, date || null, time || null, event.id || null, null);
+          sessionsCreated++;
+        }
       } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
         // Has PT in name but no client match â€” skip it, don't create as class
         skipped++;
