@@ -174,12 +174,12 @@ router.get('/events', authenticateToken, (req, res) => {
   try {
     if (date) {
       const sessions = db.prepare("SELECT s.*, c.id as client_id, u.name as client_name, c.client_type FROM sessions s JOIN clients c ON c.id = s.client_id JOIN users u ON u.id = c.user_id WHERE s.scheduled_date = ? AND s.status != 'cancelled' ORDER BY s.scheduled_time ASC").all(date);
-      return res.json(sessions.map(s => ({ id:s.id, title:s.client_name, date:s.scheduled_date, time:s.scheduled_time, type:'session', clientId:s.client_id, clientType:s.client_type, status:s.status })));
+      return res.json(sessions.map(s => ({ id:s.id, title:s.client_name, date:s.scheduled_date, time:s.scheduled_time, start_time:s.scheduled_time, event_type:'pt', type:'session', clientId:s.client_id, clientType:s.client_type, status:s.status })));
     }
     if (weekStart) {
       const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate()+6);
       const sessions = db.prepare("SELECT s.*, c.id as client_id, u.name as client_name, c.client_type FROM sessions s JOIN clients c ON c.id = s.client_id JOIN users u ON u.id = c.user_id WHERE s.scheduled_date >= ? AND s.scheduled_date <= ? AND s.status != 'cancelled' ORDER BY s.scheduled_date ASC, s.scheduled_time ASC").all(weekStart, weekEnd.toISOString().split('T')[0]);
-      return res.json(sessions.map(s => ({ id:s.id, title:s.client_name, date:s.scheduled_date, time:s.scheduled_time, type:'session', clientId:s.client_id, clientType:s.client_type, status:s.status })));
+      return res.json(sessions.map(s => ({ id:s.id, title:s.client_name, date:s.scheduled_date, time:s.scheduled_time, start_time:s.scheduled_time, event_type:'pt', type:'session', clientId:s.client_id, clientType:s.client_type, status:s.status })));
     }
     res.json([]);
   } catch(e) { res.status(500).json({ error: e.message }); }
@@ -452,6 +452,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
