@@ -69,7 +69,6 @@ const NAME_ALIASES = {
   'filo': 'filomena',
   'lyin': 'lynne',
   'chrissie': 'christine',
-  'christine': 'chrissie',
   'jaquetta': 'jaquetta',
   'hilary': 'hilary',
   'vivien': 'vivien',
@@ -472,6 +471,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
