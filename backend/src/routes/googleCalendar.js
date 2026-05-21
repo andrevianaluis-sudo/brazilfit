@@ -233,6 +233,8 @@ router.post('/sync', authenticateToken, async (req, res) => {
       }
       const dayOfWeek = new Date(date + 'T12:00:00').getDay();
 
+      if (!date || !time) { skipped++; continue; }
+
       // Skip ignored events
       if (IGNORE_EVENTS.some(k => titleLower.includes(k))) { skipped++; continue; }
 
@@ -245,7 +247,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
           .get(client.id, date, time);
         if (existing) { skipped++; continue; }
         db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
-          .run(client.id, date, time, event.id || null, null);
+          .run(client.id, date || null, time || null, event.id || null, null);
         sessionsCreated++;
       } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
         // Has PT in name but no client match â€” skip it, don't create as class
@@ -452,6 +454,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
