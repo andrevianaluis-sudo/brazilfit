@@ -245,7 +245,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
           .get(client.id, date, time);
         if (existing) { skipped++; continue; }
         db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
-          .run(client.id, date, time, event.id || null, client.display_name ? `pair:${client.display_name}` : null);
+          .run(client.id, date, time, event.id || null, null);
         sessionsCreated++;
       } else if (titleLower.includes('pt') || titleLower.includes('1:1') || titleLower.includes('1-1')) {
         // Has PT in name but no client match â€” skip it, don't create as class
@@ -394,7 +394,7 @@ router.post('/webhook', async (req, res) => {
       if (client) {
         try {
           db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
-            .run(client.id, date, time, event.id || null, client.display_name ? `pair:${client.display_name}` : null);
+            .run(client.id, date, time, event.id || null, null);
         } catch(e) {}
       } else if (!titleLower.includes('pt') && !titleLower.includes('1:1') && !titleLower.includes('1-1')) {
         let className = title.trim();
@@ -452,6 +452,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
