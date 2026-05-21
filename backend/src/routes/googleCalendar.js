@@ -411,10 +411,13 @@ router.post('/webhook', async (req, res) => {
       const client = matchClientFromTitle(title, clients);
 
       if (client) {
-        try {
-          db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
-            .run(client.id, date, time, event.id || null, null);
-        } catch(e) {}
+        const clientList = Array.isArray(client) ? client : [client];
+        for (const c of clientList) {
+          try {
+            db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
+              .run(c.id, date, time, event.id || null, null);
+          } catch(e) {}
+        }
       } else if (!titleLower.includes('pt') && !titleLower.includes('1:1') && !titleLower.includes('1-1')) {
         let className = title.trim();
         if (className.toLowerCase().includes('newcastle vision support')) className = 'Vision Support';
@@ -471,6 +474,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
