@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken, requirePT } = require('../middleware/auth');
@@ -62,4 +62,13 @@ router.post('/', requirePT, (req, res) => {
   res.json({ id: result.lastInsertRowid, message: 'Class added' });
 });
 
+router.delete('/:id', requirePT, (req, res) => {
+  const db = getDb();
+  try {
+    db.prepare('DELETE FROM classes WHERE id = ?').run(req.params.id);
+    res.json({ message: 'Class deleted' });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
 module.exports = router;
+
