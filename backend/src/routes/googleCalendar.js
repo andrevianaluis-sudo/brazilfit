@@ -68,7 +68,7 @@ async function fetchCalendarEvents(accessToken) {
 const NAME_ALIASES = {
   'filo': 'filomena',
   'lyin': 'lynne',
-  'chrissie': 'chrissie',
+  'chrissie': 'christine',
   'christine': 'chrissie',
   'jaquetta': 'jaquetta',
   'hilary': 'hilary',
@@ -78,23 +78,41 @@ const NAME_ALIASES = {
   'michelle p': 'michelle pegg',
   'lucy c': 'lucy clarke',
   'lucy pt': 'lucy',
-  'chris s': 'chris siddle',
+  
   'andy d': 'andy devlin',
   'sue c': 'sue crawley',
   'clare m': 'clare moody',
+  'andy pt': 'andy devlin',
+  'sue pt': 'sue crawley',
+  'neil pt': 'neil crawley',
+  'margaret pt': 'margaret piggot',
+  'clare pt': 'clare moody',
+  'tim r': 'tim ruebensaal',
+  'tim pt': 'tim ruebensaal',
+  'louisa': 'louisa george',
+  'louise': 'louisa george',
+  'noah': 'noah crosse',
+  'puja': 'puja aggarwall',
+  'james pt': 'james graham',
+  'craig pt': 'craig burton',
+  'laura pt': 'laura graham',
 };
 
 // Events to completely ignore
 const IGNORE_EVENTS = [
   'martial arts', 'sofia martial', 'hong le', 'appointment', 'school holiday',
   'spring', 'corpo', 'sofia&papai', 'papai', 'freeman', 'first aid', 'foot clinic',
-  'saturday foot', 'sofia pick', 'pick up school', 'breakfast club',
+  'saturday foot', 'sofia pick', 'pick up school', 'breakfast club', 'chris siddle', 'chris s',
 ];
 
 // Special pair sessions â€” calendar title â†’ combined display name
 const PAIR_SESSIONS = {
-  'laura/james': 'Laura & James',
-  'james/laura': 'Laura & James',
+  'laura/james': ['laura', 'james'],
+  'james/laura': ['laura', 'james'],
+  'gail/julie': ['gail', 'julie'],
+  'julie/gail': ['gail', 'julie'],
+  'gail / julie': ['gail', 'julie'],
+  'laura / james': ['laura', 'james'],
 };
 
 function matchClientFromTitle(title, clients) {
@@ -207,7 +225,7 @@ router.post('/sync', authenticateToken, async (req, res) => {
     const allEvents = events.items || [];
     const clients = db.prepare("SELECT c.id, u.name FROM clients c JOIN users u ON u.id = c.user_id").all();
 
-    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group', 'breakfast club', 'fusion', 'newcastle vision'];
+    const CLASS_KEYWORDS = ['pilates', 'dance', 'meditation', 'yoga', 'vision support', 'hot pilates', 'cardio', 'hiit', 'zumba', 'spinning', 'bootcamp', 'class', 'group', 'breakfast club', 'chris siddle', 'chris s', 'fusion', 'newcastle vision'];
 
     let sessionsCreated = 0, classesCreated = 0, skipped = 0;
 
@@ -454,6 +472,7 @@ router.post('/register-webhook', authenticateToken, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
 
 
 
