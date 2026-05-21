@@ -118,11 +118,11 @@ function matchClientFromTitle(title, clients) {
   if (!title) return null;
   const titleLower = title.toLowerCase().trim();
 
-  // Check for pair sessions first â€” match to Laura's account
-  for (const [pair, display] of Object.entries(PAIR_SESSIONS)) {
+  // Check for pair sessions first - returns array of clients
+  for (const [pair, names] of Object.entries(PAIR_SESSIONS)) {
     if (titleLower.includes(pair)) {
-      const client = clients.find(c => c.name.toLowerCase().includes('laura'));
-      if (client) return { ...client, display_name: display };
+      const matched = names.map(name => clients.find(c => c.name.toLowerCase().includes(name))).filter(Boolean);
+      if (matched.length > 0) return matched;
     }
   }
 
