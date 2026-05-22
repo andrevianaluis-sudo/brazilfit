@@ -38,7 +38,7 @@ export default function PTLayout() {
 
   useEffect(() => {
     fetchNotifications();
-    pollRef.current = setInterval(fetchNotifications, 30000);
+    pollRef.current = setInterval(fetchNotifications, 5000);
     return () => clearInterval(pollRef.current);
   }, []);
 
@@ -65,16 +65,16 @@ export default function PTLayout() {
   };
 
   const getNotifIcon = (type) => {
-    if (type === 'cancellation') return '❌';
-    if (type === 'reinstate') return '✅';
-    if (type === 'override') return '⚡';
-    if (type === 'checkin') return '📋';
-    if (type === 'message') return '💬';
-    return '🔔';
+    if (type === 'cancellation') return 'X';
+    if (type === 'reinstate') return '+';
+    if (type === 'override') return '!';
+    if (type === 'checkin') return 'C';
+    if (type === 'message') return 'M';
+    return '*';
   };
 
   const timeAgo = (dateStr) => {
-    if (!dateStr) return '';
+    if (!dateStr) return '*';
     const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
     if (diff < 60) return 'just now';
     if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
@@ -206,7 +206,7 @@ export default function PTLayout() {
                   {/* Header */}
                   <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.85rem', fontWeight: 700, color: '#fff' }}>Notifications</span>
-                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: '#707070' }}>All caught up ✓</span>
+                    <span style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.7rem', color: '#707070' }}>All caught up✓</span>
                   </div>
 
                   {/* List */}
@@ -219,12 +219,12 @@ export default function PTLayout() {
                     ) : notifications.map(n => (
                       <div
                         key={n.id}
-                        onClick={() => { if (n.client_id) { navigate(`/pt/clients/${n.client_id}`); setShowNotifs(false); } }}
+                        onClick={() => { setShowNotifs(false); if (n.type === 'message' && n.client_id) { navigate(`/pt/clients/${n.client_id}?tab=messages`); } else if (n.client_id) { navigate(`/pt/clients/${n.client_id}`); } }}
                         style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '12px', alignItems: 'flex-start', cursor: n.client_id ? 'pointer' : 'default', backgroundColor: n.is_read ? 'transparent' : 'rgba(255,107,43,0.05)', transition: 'background 0.15s' }}
                         onMouseEnter={e => { if (n.client_id) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.04)'; }}
                         onMouseLeave={e => { e.currentTarget.style.backgroundColor = n.is_read ? 'transparent' : 'rgba(255,107,43,0.05)'; }}
                       >
-                        <span style={{ fontSize: '1.1rem', flexShrink: 0, marginTop: '1px' }}>{getNotifIcon(n.type)}</span>
+                        <span style={{ fontSize: '0.9rem', flexShrink: 0, marginTop: '1px', fontWeight: 800, color: n.type==='message'?'#a78bfa':n.type==='cancellation'?'#ef4444':n.type==='checkin'?'#FFD600':'#FF6B2B' }}>{getNotifIcon(n.type)}</span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.8rem', fontWeight: 600, color: '#fff', margin: '0 0 2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{n.title}</p>
                           <p style={{ fontFamily: "'DM Sans', system-ui", fontSize: '0.72rem', color: '#707070', margin: '0 0 4px', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{n.message}</p>
@@ -269,3 +269,5 @@ export default function PTLayout() {
     </div>
   );
 }
+
+
