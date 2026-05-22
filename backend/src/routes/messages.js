@@ -67,7 +67,7 @@ router.post('/', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(client.id, client.pt_id, 'client', message_text);
 
-    try { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } catch(e) { console.error('Notif error:', e.message); }
+    try { const cu = db.prepare('SELECT u.name FROM users u JOIN clients c ON c.user_id = u.id WHERE c.id = ?').get(client.id); db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message', 'New message from ' + (cu ? cu.name : 'Client'), message_text.length>60?message_text.substring(0,60)+'...':message_text, client.id); } catch(e) { console.error('Notif insert error:', e.message); }
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
@@ -201,7 +201,7 @@ router.post('/pt/client/:clientId', authenticateToken, (req, res) => {
       VALUES (?, ?, ?, ?)
     `).run(clientId, req.user.id, 'pt', message_text);
 
-    try { db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message','New message from your PT', message_text.length>60?message_text.substring(0,60)+'...':message_text, clientId); } catch(e) { console.error('Notif error:', e.message); }
+    try { const cu = db.prepare('SELECT u.name FROM users u JOIN clients c ON c.user_id = u.id WHERE c.id = ?').get(client.id); db.prepare('INSERT INTO notifications (type, title, message, client_id) VALUES (?,?,?,?)').run('message', 'New message from ' + (cu ? cu.name : 'Client'), message_text.length>60?message_text.substring(0,60)+'...':message_text, client.id); } catch(e) { console.error('Notif insert error:', e.message); }
     res.json({ id: result.lastInsertRowid, message: 'Message sent' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to send message' });
@@ -261,5 +261,8 @@ router.delete('/pt/client/:clientId/all', authenticateToken, (req, res) => {
 });
 
 module.exports = router;
+
+
+
 
 
