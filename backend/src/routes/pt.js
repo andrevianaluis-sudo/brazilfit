@@ -117,7 +117,10 @@ router.get('/clients/:id', (req, res) => {
   if (!client) return res.status(404).json({ error: 'Client not found' });
 
   const schedule = db.prepare(`SELECT day_of_week, session_time FROM client_schedules WHERE client_id = ? ORDER BY day_of_week, session_time`).all(req.params.id);
-  const sessions = db.prepare(`SELECT * FROM sessions WHERE client_id = ? ORDER BY scheduled_date DESC, scheduled_time DESC LIMIT 50`).all(req.params.id);
+  const allSessions = db.prepare(`SELECT * FROM sessions WHERE client_id = ? ORDER BY scheduled_date DESC, scheduled_time DESC LIMIT 50`).all(req.params.id);
+  const upcoming = allSessions.filter(s => s.status === 'upcoming').sort((a,b) => a.scheduled_date.localeCompare(b.scheduled_date) || a.scheduled_time.localeCompare(b.scheduled_time));
+  const history = allSessions.filter(s => s.status !== 'upcoming').sort((a,b) => b.scheduled_date.localeCompare(a.scheduled_date) || b.scheduled_time.localeCompare(a.scheduled_time));
+  const sessions = [...upcoming, ...history];
   const blocks = db.prepare(`SELECT * FROM blocks WHERE client_id = ? ORDER BY block_number DESC`).all(req.params.id);
   const notes = db.prepare(`SELECT * FROM client_notes WHERE client_id = ? ORDER BY created_at DESC`).all(req.params.id);
   const progress = db.prepare(`SELECT * FROM progress_entries WHERE client_id = ? ORDER BY entry_date DESC`).all(req.params.id);
@@ -903,4 +906,5 @@ router.put('/client-notifications/read-all', (req, res) => {
 });
 
 module.exports = router;
+
 
