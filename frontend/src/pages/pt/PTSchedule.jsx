@@ -71,7 +71,7 @@ function PTNotesModal({ session, onClose }) {
             <FileText size={15} color={ORANGE} />
             <div>
               <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>Session Notes</p>
-              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} Â· {session.scheduled_date} {session.scheduled_time}</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} Â- {session.scheduled_date} {session.scheduled_time}</p>
             </div>
           </div>
           <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:MUTED, padding:'4px', minHeight:'auto', minWidth:'auto' }}><X size={16} /></button>
@@ -122,7 +122,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#a78bfa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} Â· Group Class</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} Â- Group Class</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#a78bfa', background:'rgba(167,139,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Class</span>
     </div>
@@ -132,7 +132,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(96,165,250,0.1)', border:'1px solid rgba(96,165,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#60a5fa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} Â· From Google Calendar</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} Â- From Google Calendar</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#60a5fa', background:'rgba(96,165,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>PT</span>
     </div>
@@ -152,7 +152,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(244,114,182,0.1)', border:'1px solid rgba(244,114,182,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#f9a8d4', margin:'0 0 2px' }}>{entry.name}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(249,168,212,0.6)', margin:0 }}>{entry.scheduled_time} Â· {entry.payment_type === 'per_person' ? `Â£${entry.per_person_fee}/person` : `Â£${entry.flat_fee}`}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(249,168,212,0.6)', margin:0 }}>{entry.scheduled_time} Â- {entry.payment_type === 'per_person' ? `Â£${entry.per_person_fee}/person` : `Â£${entry.flat_fee}`}</p>
       </div>
       <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:'#f9a8d4', backgroundColor:'rgba(244,114,182,0.15)', padding:'2px 8px', borderRadius:'4px' }}>Class</span>
     </div>
@@ -177,7 +177,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
         </button>
       </div>
       <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:'3px 0 0 21px' }}>
-        {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` Â· ${Math.floor(entry.cancellation_notice_hours)}h notice Â· session carried over` : ''}
+        {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` Â- ${Math.floor(entry.cancellation_notice_hours)}h notice Â- session carried over` : ''}
       </p>
     </div>
   );
@@ -191,7 +191,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} Â· Session {entry.sessions_used} of 10 Â· {entry.sessions_remaining} remaining</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} Â- Session {entry.sessions_used} of 10 Â- {entry.sessions_remaining} remaining</p>
         </div>
         <div style={{ display:'flex', gap:'4px', flexShrink:0 }}>
           {entry.status === 'attended' && (
@@ -352,7 +352,7 @@ export default function PTSchedule() {
   const markSession = async (sessionId, status) => {
     try {
       await api.put(`/sessions/${sessionId}/status`, { status });
-      toast.success(status === 'attended' ? 'âœ“ Marked attended' : 'âœ— Marked missed');
+      toast.success(status === 'attended' ? 'âœ“ Marked attended' : 'âœ- Marked missed');
       loadDaySchedule();
     } catch { toast.error('Failed to update session'); }
   };
@@ -416,7 +416,7 @@ export default function PTSchedule() {
         <div>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
           <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.75rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.25rem' }}>Schedule</h1>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{FULL_DAYS[dateObj.getDay()]} Â· {format(dateObj, 'd MMM yyyy')}</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{FULL_DAYS[dateObj.getDay()]} Â- {format(dateObj, 'd MMM yyyy')}</p>
         </div>
         <div style={{ display:'flex', gap:'6px', backgroundColor:SURFACE, borderRadius:'10px', padding:'3px' }}>
           {[['day','Day'],['week','Week']].map(([k,l]) => (
@@ -445,7 +445,7 @@ export default function PTSchedule() {
             <span style={{ fontSize:'1.2rem' }}>ðŸ“…</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions Â· {syncResult.classesCreated} classes Â· {syncResult.skipped} skipped{webhookActive ? ' Â· ðŸ”„ Auto-sync ON' : ''}</p>}
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions Â- {syncResult.classesCreated} classes Â- {syncResult.skipped} skipped{webhookActive ? ' Â- ðŸ”„ Auto-sync ON' : ''}</p>}
             </div>
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
@@ -460,7 +460,7 @@ export default function PTSchedule() {
                 await handleGcalSync();
               } catch{ toast.error('Wipe failed'); }
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              ðŸ—‘ Wipe & Re-sync
+              ðŸ-‘ Wipe & Re-sync
             </button>
             <button onClick={async()=>{
               try{
@@ -657,5 +657,6 @@ export default function PTSchedule() {
     </div>
   );
 }
+
 
 
