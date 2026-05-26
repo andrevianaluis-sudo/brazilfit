@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { ChevronLeft, ChevronRight, AlertTriangle, AlertCircle, CheckCircle, Clock, Ban, FileText, X } from 'lucide-react';
 import api from '../../utils/api';
@@ -37,7 +37,7 @@ function getStatusBorder(status) {
   return GREEN; // upcoming = green
 }
 
-// ── Notes Modal ───────────────────────────────────────────────────────────────
+// â”€â”€ Notes Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function PTNotesModal({ session, onClose }) {
   const [note, setNote] = useState({ what_we_worked_on:'', what_went_well:'', what_to_improve:'', focus_next_session:'', injuries_concerns:'' });
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ function PTNotesModal({ session, onClose }) {
             <FileText size={15} color={ORANGE} />
             <div>
               <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>Session Notes</p>
-              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} · {session.scheduled_date} {session.scheduled_time}</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} Â· {session.scheduled_date} {session.scheduled_time}</p>
             </div>
           </div>
           <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:MUTED, padding:'4px', minHeight:'auto', minWidth:'auto' }}><X size={16} /></button>
@@ -99,7 +99,7 @@ function PTNotesModal({ session, onClose }) {
         <div style={{ display:'flex', borderTop:`1px solid ${BORDER}`, flexShrink:0 }}>
           <button onClick={onClose} style={{ flex:1, padding:'0.9rem', background:'none', border:'none', color:MUTED, fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', cursor:'pointer', minHeight:'auto' }}>Cancel</button>
           <button onClick={handleSave} disabled={saving} style={{ flex:1, padding:'0.9rem', background:`linear-gradient(135deg, ${ORANGE}, ${YELLOW})`, border:'none', borderLeft:`1px solid ${BORDER}`, color:'#000', fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:300, cursor:saving?'not-allowed':'pointer', opacity:saving?0.7:1, minHeight:'auto' }}>
-            {saving ? 'Saving…' : 'Save Notes'}
+            {saving ? 'Savingâ€¦' : 'Save Notes'}
           </button>
         </div>
       </div>
@@ -107,7 +107,7 @@ function PTNotesModal({ session, onClose }) {
   );
 }
 
-// ── Session Slot ──────────────────────────────────────────────────────────────
+// â”€â”€ Session Slot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate, onReschedule }) {
   const isClass = entry.entryType === 'class';
   const isGcalClass = entry.entryType === 'gcal-class';
@@ -122,7 +122,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#a78bfa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} · Group Class</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} Â· Group Class</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#a78bfa', background:'rgba(167,139,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Class</span>
     </div>
@@ -132,7 +132,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(96,165,250,0.1)', border:'1px solid rgba(96,165,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#60a5fa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} · From Google Calendar</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} Â· From Google Calendar</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#60a5fa', background:'rgba(96,165,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>PT</span>
     </div>
@@ -152,7 +152,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(244,114,182,0.1)', border:'1px solid rgba(244,114,182,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#f9a8d4', margin:'0 0 2px' }}>{entry.name}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(249,168,212,0.6)', margin:0 }}>{entry.scheduled_time} · {entry.payment_type === 'per_person' ? `£${entry.per_person_fee}/person` : `£${entry.flat_fee}`}</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(249,168,212,0.6)', margin:0 }}>{entry.scheduled_time} Â· {entry.payment_type === 'per_person' ? `Â£${entry.per_person_fee}/person` : `Â£${entry.flat_fee}`}</p>
       </div>
       <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', textTransform:'uppercase', color:'#f9a8d4', backgroundColor:'rgba(244,114,182,0.15)', padding:'2px 8px', borderRadius:'4px' }}>Class</span>
     </div>
@@ -173,11 +173,11 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
           onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(76,175,80,0.25)'}
           onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(76,175,80,0.12)'}
         >
-          ↩ Reinstate
+          â†© Reinstate
         </button>
       </div>
       <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:'3px 0 0 21px' }}>
-        {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` · ${Math.floor(entry.cancellation_notice_hours)}h notice · session carried over` : ''}
+        {entry.scheduled_time}{entry.cancellation_notice_hours != null ? ` Â· ${Math.floor(entry.cancellation_notice_hours)}h notice Â· session carried over` : ''}
       </p>
     </div>
   );
@@ -191,7 +191,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} · Session {entry.sessions_used} of 10 · {entry.sessions_remaining} remaining</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} Â· Session {entry.sessions_used} of 10 Â· {entry.sessions_remaining} remaining</p>
         </div>
         <div style={{ display:'flex', gap:'4px', flexShrink:0 }}>
           {entry.status === 'attended' && (
@@ -214,11 +214,11 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             </button>
           )}
           {entry.status !== 'missed' && entry.status !== 'attended' && (
-            <button onClick={onMarkMissed} style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto', color:'#ef4444', fontWeight:400, fontSize:'0.85rem' }}>✕</button>
+            <button onClick={onMarkMissed} style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(239,68,68,0.12)', border:'1px solid rgba(239,68,68,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto', color:'#ef4444', fontWeight:400, fontSize:'0.85rem' }}>âœ•</button>
           )}
           {entry.status !== 'attended' && (
             <button onClick={() => onReschedule && onReschedule(entry)} title="Reschedule" style={{ width:'30px', height:'30px', borderRadius:'6px', backgroundColor:'rgba(96,165,250,0.12)', border:'1px solid rgba(96,165,250,0.3)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', minHeight:'auto', minWidth:'auto' }}>
-              <span style={{ fontSize:'0.75rem' }}>📅</span>
+              <span style={{ fontSize:'0.75rem' }}>ðŸ“…</span>
             </button>
           )}
         </div>
@@ -227,7 +227,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
   );
 }
 
-// ── Week View ─────────────────────────────────────────────────────────────────
+// â”€â”€ Week View â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function WeekView({ data }) {
   if (!data) return null;
   const { weekDates, sessions, classes } = data;
@@ -272,7 +272,7 @@ function WeekView({ data }) {
   );
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function PTSchedule() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [scheduleData, setScheduleData] = useState(null);
@@ -295,7 +295,7 @@ export default function PTSchedule() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('calendar') === 'connected') {
       setGcalConnected(true);
-      toast.success('Google Calendar connected! 🎉');
+      toast.success('Google Calendar connected! ðŸŽ‰');
       window.history.replaceState({}, '', '/pt');
     } else if (params.get('calendar') === 'error') {
       toast.error('Failed to connect Google Calendar');
@@ -352,7 +352,7 @@ export default function PTSchedule() {
   const markSession = async (sessionId, status) => {
     try {
       await api.put(`/sessions/${sessionId}/status`, { status });
-      toast.success(status === 'attended' ? '✓ Marked attended' : '✗ Marked missed');
+      toast.success(status === 'attended' ? 'âœ“ Marked attended' : 'âœ— Marked missed');
       loadDaySchedule();
     } catch { toast.error('Failed to update session'); }
   };
@@ -361,7 +361,7 @@ export default function PTSchedule() {
     if (!window.confirm('Reinstate this cancelled session? It will become upcoming again.')) return;
     try {
       await api.post(`/sessions/${sessionId}/reinstate`);
-      toast.success('Session reinstated ✅');
+      toast.success('Session reinstated âœ…');
       loadDaySchedule();
     } catch { toast.error('Failed to reinstate session'); }
   };
@@ -416,7 +416,7 @@ export default function PTSchedule() {
         <div>
           <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.65rem', fontWeight:400, letterSpacing:'0.18em', color:ORANGE, textTransform:'uppercase', margin:'0 0 0.3rem' }}>PT Dashboard</p>
           <h1 style={{ fontFamily:"'DM Sans', system-ui", fontSize:'1.75rem', fontWeight:400, color:TEXT, letterSpacing:'-0.04em', margin:'0 0 0.25rem' }}>Schedule</h1>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{FULL_DAYS[dateObj.getDay()]} · {format(dateObj, 'd MMM yyyy')}</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.8rem', color:MUTED, margin:0 }}>{FULL_DAYS[dateObj.getDay()]} Â· {format(dateObj, 'd MMM yyyy')}</p>
         </div>
         <div style={{ display:'flex', gap:'6px', backgroundColor:SURFACE, borderRadius:'10px', padding:'3px' }}>
           {[['day','Day'],['week','Week']].map(([k,l]) => (
@@ -429,7 +429,7 @@ export default function PTSchedule() {
       {!gcalConnected ? (
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(66,133,244,0.08)', border:'1px solid rgba(66,133,244,0.25)', borderRadius:'12px', marginBottom:'1rem' }}>
           <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            <span style={{ fontSize:'1.2rem' }}>📅</span>
+            <span style={{ fontSize:'1.2rem' }}>ðŸ“…</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#fff', margin:'0 0 2px' }}>Connect Google Calendar</p>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>Import your PT sessions automatically</p>
@@ -442,34 +442,34 @@ export default function PTSchedule() {
       ) : (
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(76,175,80,0.08)', border:'1px solid rgba(76,175,80,0.2)', borderRadius:'12px', marginBottom:'1rem' }}>
           <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            <span style={{ fontSize:'1.2rem' }}>📅</span>
+            <span style={{ fontSize:'1.2rem' }}>ðŸ“…</span>
             <div>
               <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions · {syncResult.classesCreated} classes · {syncResult.skipped} skipped{webhookActive ? ' · 🔄 Auto-sync ON' : ''}</p>}
+              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions Â· {syncResult.classesCreated} classes Â· {syncResult.skipped} skipped{webhookActive ? ' Â· ðŸ”„ Auto-sync ON' : ''}</p>}
             </div>
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
             <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              {syncing ? 'Syncing...' : '🔄 Sync Now'}
+              {syncing ? 'Syncing...' : 'ðŸ”„ Sync Now'}
             </button>
             <button onClick={async()=>{
               try{
                 if(!window.confirm('Wipe ALL imported sessions and re-sync from scratch?')) return;
                 await api.delete('/google-calendar/wipe');
-                toast.success('Wiped — syncing fresh...');
+                toast.success('Wiped â€” syncing fresh...');
                 await handleGcalSync();
               } catch{ toast.error('Wipe failed'); }
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              🗑 Wipe & Re-sync
+              ðŸ—‘ Wipe & Re-sync
             </button>
             <button onClick={async()=>{
               try{
                 await api.post('/google-calendar/register-webhook');
                 setWebhookActive(true);
-                toast.success('Auto-sync enabled! 🎉');
+                toast.success('Auto-sync enabled! ðŸŽ‰');
               } catch{ toast.error('Failed to enable auto-sync'); }
             }} style={{ padding:'8px 12px', borderRadius:'8px', border:`1px solid ${webhookActive?'rgba(76,175,80,0.3)':'rgba(255,255,255,0.1)'}`, background:webhookActive?'rgba(76,175,80,0.1)':'transparent', color:webhookActive?GREEN:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              {webhookActive ? '✅ Auto' : '⚡ Auto-sync'}
+              {webhookActive ? 'âœ… Auto' : 'âš¡ Auto-sync'}
             </button>
             <button onClick={async()=>{
               try{
@@ -514,7 +514,7 @@ export default function PTSchedule() {
             <div key={s.id} style={{ display:'flex', alignItems:'center', gap:'10px', padding:'0.7rem 0.875rem', borderRadius:'8px', backgroundColor: s.sessions_remaining<=0 ? 'rgba(239,68,68,0.1)' : `${ORANGE}12`, border:`1px solid ${s.sessions_remaining<=0 ? 'rgba(239,68,68,0.3)' : `${ORANGE}33`}` }}>
               {s.sessions_remaining<=0 ? <AlertCircle size={14} color="#ef4444" /> : <AlertTriangle size={14} color={ORANGE} />}
               <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.82rem', fontWeight:600, color: s.sessions_remaining<=0 ? '#ef4444' : ORANGE, margin:0 }}>
-                {s.client_name} — {s.sessions_remaining<=0 ? 'Block complete — renew now!' : `${s.sessions_remaining} session${s.sessions_remaining!==1?'s':''} remaining`}
+                {s.client_name} â€” {s.sessions_remaining<=0 ? 'Block complete â€” renew now!' : `${s.sessions_remaining} session${s.sessions_remaining!==1?'s':''} remaining`}
               </p>
             </div>
           ))}
@@ -584,7 +584,7 @@ export default function PTSchedule() {
               d.setDate(d.getDate() - 7);
               setSelectedDate(d.toISOString().split('T')[0]);
             }} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid ${BORDER}`, background:SURFACE, color:TEXT, cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto' }}>
-              ← Prev Week
+              â† Prev Week
             </button>
             <button onClick={() => setSelectedDate(new Date().toISOString().split('T')[0])} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid rgba(255,107,43,0.3)`, background:'rgba(255,107,43,0.08)', color:ORANGE, cursor:'pointer', fontSize:'0.82rem', fontWeight:700, minHeight:'auto' }}>
               This Week
@@ -594,7 +594,7 @@ export default function PTSchedule() {
               d.setDate(d.getDate() + 7);
               setSelectedDate(d.toISOString().split('T')[0]);
             }} style={{ padding:'8px 16px', borderRadius:'8px', border:`1px solid ${BORDER}`, background:SURFACE, color:TEXT, cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto' }}>
-              Next Week →
+              Next Week â†’
             </button>
           </div>
           <WeekView data={weekData} />
@@ -604,8 +604,8 @@ export default function PTSchedule() {
       {/* Unmatched events after sync */}
       {syncResult?.unmatched?.length > 0 && (
         <div style={{ marginTop:'1rem', background:'rgba(255,214,0,0.08)', border:'1px solid rgba(255,214,0,0.2)', borderRadius:'12px', padding:'1rem' }}>
-          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, color:YELLOW, textTransform:'uppercase', letterSpacing:'0.1em', margin:'0 0 8px' }}>⚠ {syncResult.unmatched.length} Unmatched Events</p>
-          <p style={{ fontSize:'0.72rem', color:MUTED, margin:'0 0 8px' }}>These calendar events couldn't be matched to a client — add these clients to BrazilFit or they're classes:</p>
+          <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, color:YELLOW, textTransform:'uppercase', letterSpacing:'0.1em', margin:'0 0 8px' }}>âš  {syncResult.unmatched.length} Unmatched Events</p>
+          <p style={{ fontSize:'0.72rem', color:MUTED, margin:'0 0 8px' }}>These calendar events couldn't be matched to a client â€” add these clients to BrazilFit or they're classes:</p>
           <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
             {syncResult.unmatched.map((name, i) => (
               <p key={i} style={{ fontSize:'0.78rem', color:'#c0c0c0', margin:0, padding:'4px 8px', background:'rgba(255,255,255,0.04)', borderRadius:'6px' }}>{name}</p>
@@ -657,3 +657,4 @@ export default function PTSchedule() {
     </div>
   );
 }
+
