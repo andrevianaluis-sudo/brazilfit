@@ -290,14 +290,21 @@ router.post('/blocks/:clientId/renew', (req, res) => {
 
 function generateFutureSessions(startDate, schedule, count) {
   const results = [];
-  let current = new Date(startDate + 'T12:00:00');
   const seen = new Set();
 
-  for (let week = 0; week < 20 && results.length < count; week++) {
-    for (const item of schedule) {
+  for (const item of schedule) {
+    const start = new Date(startDate + 'T12:00:00');
+    const startDay = start.getDay();
+    const targetDay = item.day_of_week;
+    const daysUntil = (targetDay - startDay + 7) % 7;
+
+    for (let week = 0; week <= 20; week++) {
       const d = new Date(startDate + 'T12:00:00');
-      d.setDate(d.getDate() + (week * 7) + ((item.day_of_week - d.getDay() + 7) % 7));
-      const dateStr = d.toISOString().split('T')[0];
+      d.setDate(d.getDate() + daysUntil + (week * 7));
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${day}`;
       const key = `${dateStr}-${item.session_time}`;
       if (dateStr >= startDate && !seen.has(key)) {
         seen.add(key);
