@@ -71,7 +71,7 @@ function PTNotesModal({ session, onClose }) {
             <FileText size={15} color={ORANGE} />
             <div>
               <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.875rem', fontWeight:400, color:TEXT, margin:0 }}>Session Notes</p>
-              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} -- {session.scheduled_date} {session.scheduled_time}</p>
+              <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:MUTED, margin:0 }}>{session.client_name} · {session.scheduled_date} {session.scheduled_time}</p>
             </div>
           </div>
           <button onClick={onClose} style={{ background:'none', border:'none', cursor:'pointer', color:MUTED, padding:'4px', minHeight:'auto', minWidth:'auto' }}><X size={16} /></button>
@@ -122,7 +122,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#a78bfa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} -- Group Class</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(167,139,250,0.6)', margin:0 }}>{entry.start_time} · Group Class</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#a78bfa', background:'rgba(167,139,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>Class</span>
     </div>
@@ -132,7 +132,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
     <div style={{ borderRadius:'8px', padding:'0.6rem 0.875rem', backgroundColor:'rgba(96,165,250,0.1)', border:'1px solid rgba(96,165,250,0.25)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
       <div>
         <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.85rem', fontWeight:600, color:'#60a5fa', margin:'0 0 2px' }}>{entry.title}</p>
-        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} -- From Google Calendar</p>
+        <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.7rem', color:'rgba(96,165,250,0.6)', margin:0 }}>{entry.start_time} · From Google Calendar</p>
       </div>
       <span style={{ fontSize:'0.6rem', fontWeight:700, color:'#60a5fa', background:'rgba(96,165,250,0.15)', padding:'2px 8px', borderRadius:'4px', textTransform:'uppercase', letterSpacing:'0.08em' }}>PT</span>
     </div>
@@ -191,7 +191,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} -- Session {entry.sessions_used} of 10 -- {entry.sessions_remaining} remaining</p>
+          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} · Session {entry.sessions_used} of 10 · {entry.sessions_remaining} remaining</p>
         </div>
         <div style={{ display:'flex', gap:'4px', flexShrink:0 }}>
           {entry.status === 'attended' && (
