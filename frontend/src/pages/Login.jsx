@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -53,7 +53,6 @@ export default function Login() {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Background subtle glow */}
       <div style={{
         position: 'absolute', top: '-200px', left: '-200px',
         width: '600px', height: '600px',
@@ -67,33 +66,6 @@ export default function Login() {
         pointerEvents: 'none',
       }} />
 
-      {/* Left panel — branding */}
-      <div style={{
-        display: 'none',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '3rem',
-        borderRight: '1px solid #141414',
-      }} className="md-flex">
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '8px', borderRadius: '8px', display: 'flex' }}>
-            <Zap style={{ width: '18px', height: '18px', color: '#000', fill: '#000' }} />
-          </div>
-          <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.3rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
-        </div>
-
-        <div>
-          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.18em', color: '#4CAF50', textTransform: 'uppercase', margin: '0 0 1rem' }}>Premium Training</p>
-          <h2 style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, margin: '0 0 1.5rem' }}>Train smarter.<br />Live better.</h2>
-          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.85rem', color: '#3a3a3a', margin: 0, lineHeight: 1.7, maxWidth: '320px' }}>Your personal training hub. Track sessions, monitor progress and stay connected with your PT.</p>
-        </div>
-
-        <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.72rem', color: '#2a2a2a', margin: 0, letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
-      </div>
-
-      {/* Right panel — form */}
       <div style={{
         width: '100%',
         maxWidth: '480px',
@@ -104,7 +76,6 @@ export default function Login() {
         padding: '2rem 2rem',
       }}>
 
-        {/* Mobile logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3rem' }}>
           <div style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', padding: '7px', borderRadius: '7px', display: 'flex' }}>
             <Zap style={{ width: '16px', height: '16px', color: '#000', fill: '#000' }} />
@@ -112,16 +83,12 @@ export default function Login() {
           <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.2rem', fontWeight: 800, color: '#4CAF50', letterSpacing: '-0.03em' }}>BrazilFit</span>
         </div>
 
-        {/* Heading */}
         <div style={{ marginBottom: '2.5rem' }}>
           <h1 style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '1.9rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.4rem', lineHeight: 1.1 }}>Welcome back</h1>
           <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.82rem', color: '#3a3a3a', margin: 0, fontWeight: 500 }}>Sign in to your account to continue</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-
-          {/* Username */}
           <div>
             <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Username</p>
             <input
@@ -137,7 +104,6 @@ export default function Login() {
             />
           </div>
 
-          {/* Password */}
           <div>
             <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#3a3a3a', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>Password</p>
             <div style={{ position: 'relative' }}>
@@ -163,7 +129,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
@@ -200,11 +165,6 @@ export default function Login() {
             )}
           </button>
         </form>
-
-        
-            <ArrowRight size={13} color="#2a2a2a" />
-          </button>
-        </div>
 
         <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.65rem', color: '#2a2a2a', margin: '2rem 0 0', textAlign: 'center', letterSpacing: '0.05em' }}>© 2026 BrazilFit · All rights reserved</p>
       </div>
