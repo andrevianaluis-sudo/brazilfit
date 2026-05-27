@@ -201,62 +201,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Divider */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '2rem 0' }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
-          <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.16em', color: '#2a2a2a', textTransform: 'uppercase', margin: 0 }}>Quick access</p>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#141414' }} />
-        </div>
-
-        {/* Demo credentials */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <button
-            onClick={() => { setUsername('pt'); setPassword('PTadmin2026!'); }}
-            style={{
-              width: '100%',
-              padding: '0.85rem 1rem',
-              backgroundColor: '#0e0e0e',
-              border: '1px solid #1a1a1a',
-              borderRadius: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-              minHeight: 'auto',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#4CAF50'; e.currentTarget.style.backgroundColor = '#111'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.backgroundColor = '#0e0e0e'; }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ backgroundColor: '#4CAF50', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>PT</span>
-              <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Personal Trainer login</span>
-            </div>
-            <ArrowRight size={13} color="#2a2a2a" />
-          </button>
-
-          <button
-            onClick={() => { setUsername('vivien'); setPassword('BrazilFit2026!'); }}
-            style={{
-              width: '100%',
-              padding: '0.85rem 1rem',
-              backgroundColor: '#0e0e0e',
-              border: '1px solid #1a1a1a',
-              borderRadius: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease',
-              minHeight: 'auto',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = '#FF6B2B'; e.currentTarget.style.backgroundColor = '#111'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.backgroundColor = '#0e0e0e'; }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ backgroundColor: '#FF6B2B', color: '#000', padding: '2px 8px', borderRadius: '3px', fontSize: '0.6rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Client</span>
-              <span style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: '0.8rem', color: '#606060', fontWeight: 500 }}>Client login</span>
-            </div>
+        
             <ArrowRight size={13} color="#2a2a2a" />
           </button>
         </div>
