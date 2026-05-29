@@ -261,6 +261,12 @@ router.post('/sync', authenticateToken, async (req, res) => {
       if (client) {
         const clientList = Array.isArray(client) ? client : [client];
         for (const c of clientList) {
+          // Skip PT sessions more than 14 days ahead
+          const _td = new Date(); _td.setHours(0,0,0,0);
+          const _sd = new Date(date + 'T12:00:00');
+          if ((_sd - _td) / (1000*60*60*24) > 14) { skipped++; continue; }
+          const _uc = db.prepare("SELECT COUNT(*) as cnt FROM sessions WHERE client_id = ? AND status = 'upcoming'").get(c.id);
+          if (_uc.cnt >= 10) { skipped++; continue; }
           const existing = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?")
             .get(c.id, date, time);
           if (existing) { skipped++; continue; }
@@ -386,7 +392,7 @@ router.post('/webhook', async (req, res) => {
     // Only wipe FUTURE upcoming sessions — preserve history
     const today = new Date().toISOString().split('T')[0];
     db.exec('PRAGMA foreign_keys = OFF');
-    db.prepare("DELETE FROM sessions WHERE scheduled_date >= ? AND status = 'upcoming'").run(today);
+    db.prepare("DELETE FROM sessions WHERE scheduled_date >= ? AND status = 'upcoming' AND google_event_id IS NOT NULL").run(today);
     db.exec('PRAGMA foreign_keys = ON');
 
     const allEvents = events.items || [];
@@ -416,6 +422,13 @@ router.post('/webhook', async (req, res) => {
         const clientList = Array.isArray(client) ? client : [client];
         for (const c of clientList) {
           try {
+            const _tdW = new Date(); _tdW.setHours(0,0,0,0);
+            const _sdW = new Date(date + 'T12:00:00');
+            if ((_sdW - _tdW) / (1000*60*60*24) > 14) continue;
+            const _exW = db.prepare("SELECT id FROM sessions WHERE client_id = ? AND scheduled_date = ? AND scheduled_time = ?").get(c.id, date, time);
+            if (_exW) continue;
+            const _cntW = db.prepare("SELECT COUNT(*) as cnt FROM sessions WHERE client_id = ? AND status = 'upcoming'").get(c.id);
+            if (_cntW.cnt >= 10) continue;
             db.prepare(`INSERT INTO sessions (client_id, scheduled_date, scheduled_time, status, google_event_id, notes) VALUES (?, ?, ?, 'upcoming', ?, ?)`)
               .run(c.id, date, time, event.id || null, null);
           } catch(e) {}
