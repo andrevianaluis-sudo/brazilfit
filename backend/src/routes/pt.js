@@ -896,7 +896,9 @@ router.post('/clients/:id/insert-sessions', authenticateToken, (req, res) => {
   const { sessions, deleteFromDate } = req.body;
   if (!sessions || !Array.isArray(sessions)) return res.status(400).json({ error: 'sessions array required' });
   if (deleteFromDate) {
+    db.exec('PRAGMA foreign_keys = OFF');
     db.prepare("DELETE FROM sessions WHERE client_id = ? AND scheduled_date >= ?").run(clientId, deleteFromDate);
+    db.exec('PRAGMA foreign_keys = ON');
   }
   const block = db.prepare("SELECT id FROM blocks WHERE client_id = ? AND is_current = 1").get(clientId);
   if (!block) return res.status(404).json({ error: 'No current block found' });
