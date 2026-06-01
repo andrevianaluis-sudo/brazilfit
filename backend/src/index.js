@@ -133,15 +133,15 @@ app.use(express.static(path.join(__dirname, '../frontend-dist')));
 cron.schedule('*/5 * * * *', async () => {
   const db = getDb();
   const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  const sessions = db.prepare(`
-    SELECT * FROM sessions
-    WHERE status = 'upcoming' AND scheduled_date = ? AND session_type = 'PT'
+  // Use UK time (BST = UTC+1 in summer, UTC+0 in winter)
+  const ukOffset = 60; // BST offset in minutes - update to 0 in winter
+  const ukNow = new Date(now.getTime() + ukOffset * 60 * 1000);
+  const today = ukNow.toISOString().split('T')[0];
   `).all(today);
   const toMark = sessions.filter(s => {
     const [sh, sm] = s.scheduled_time.split(':').map(Number);
     const sessionMins = sh * 60 + sm + 15;
-    const nowMins = now.getHours() * 60 + now.getMinutes();
+    const nowMins = ukNow.getHours() * 60 + ukNow.getMinutes();
     return nowMins >= sessionMins;
   });
   if (toMark.length === 0) return;
