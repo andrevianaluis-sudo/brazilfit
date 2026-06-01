@@ -130,84 +130,35 @@ app.use(express.static(path.join(__dirname, '../frontend-dist')));
 
 // Auto-mark sessions at 20:00 Mon-Fri
 // Auto-mark sessions 15 minutes after scheduled time (runs every 5 minutes)
+// Auto-mark sessions 15 minutes after scheduled time (runs every 5 minutes)
 cron.schedule('*/5 * * * *', async () => {
   const db = getDb();
   const now = new Date();
-  // Use UK time (BST = UTC+1 in summer, UTC+0 in winter)
-  const ukOffset = 60; // BST offset in minutes - update to 0 in winter
+  // Use UK BST time (UTC+1)
+  const ukOffset = 60;
   const ukNow = new Date(now.getTime() + ukOffset * 60 * 1000);
   const today = ukNow.toISOString().split('T')[0];
-  `).all(today);
+
+  const sessions = db.prepare(
+    "SELECT * FROM sessions WHERE status = 'upcoming' AND scheduled_date = ? AND session_type = 'PT'"
+  ).all(today);
+
   const toMark = sessions.filter(s => {
-    const [sh, sm] = s.scheduled_time.split(':').map(Number);
-    const sessionMins = sh * 60 + sm + 15;
+    const parts = s.scheduled_time.split(':');
+    const sessionMins = parseInt(parts[0]) * 60 + parseInt(parts[1]) + 15;
     const nowMins = ukNow.getHours() * 60 + ukNow.getMinutes();
     return nowMins >= sessionMins;
   });
+
   if (toMark.length === 0) return;
-  const ids = toMark.map(s => s.id);
-  const placeholders = ids.map(() => '?').join(',');
-  const result = db.prepare(`UPDATE sessions SET status = 'attended', auto_marked = 1 WHERE id IN (${placeholders})`).run(...ids);
 
-  if (result.changes > 0) {
-    // Update client session counts
-    const affected = db.prepare(`
-      SELECT DISTINCT client_id FROM sessions WHERE status = 'attended' AND auto_marked = 1 AND scheduled_date = ?
-    `).all(today);
-
-    for (const { client_id } of affected) {
-      const count = db.prepare(`SELECT COUNT(*) as c FROM sessions WHERE client_id = ? AND status = 'attended'`).get(client_id);
-      db.prepare('UPDATE clients SET sessions_used = ? WHERE id = ?').run(Math.min(10, count.c), client_id);
-    }
-    // Send low session alerts
-    for (const { client_id } of affected) {
-      const client = db.prepare('SELECT sessions_used FROM clients WHERE id = ?').get(client_id);
-      const remaining = 10 - (client?.sessions_used || 0);
-      if (remaining === 1) {
-        try {
-          db.prepare(`
-            INSERT INTO messages (sender_id, receiver_id, content, created_at)
-            SELECT u_pt.id, u_client.id,
-              'You have 1 session remaining in your current block. Please contact me to renew.',
-              datetime('now')
-            FROM clients c
-            JOIN users u_client ON c.user_id = u_client.id
-            JOIN users u_pt ON u_pt.role = 'pt'
-            WHERE c.id = ?
-            LIMIT 1
-          `).run(client_id);
-
-          // Also push a bell notification
-          const clientUser = db.prepare(`SELECT u.name FROM clients c JOIN users u ON c.user_id = u.id WHERE c.id = ?`).get(client_id);
-          db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
-            .run(
-              'renewal',
-              '1 session remaining ðŸ””',
-              `You're on your 9th session â€” just 1 left in your block. Your PT will be in touch to arrange renewal. Keep going ${clientUser?.name || ''}!`,
-              client_id
-            );
-          console.log('[CRON] Low session alert sent to client ' + client_id);
-        } catch(e) { console.error('[CRON] Alert error:', e.message); }
-      }
-
-      if (remaining === 0) {
-        try {
-          const clientUser = db.prepare(`SELECT u.name FROM clients c JOIN users u ON c.user_id = u.id WHERE c.id = ?`).get(client_id);
-          db.prepare(`INSERT INTO notifications (type, title, message, client_id) VALUES (?, ?, ?, ?)`)
-            .run(
-              'renewal',
-              'Block complete! ðŸ†',
-              `Amazing â€” you've completed all 10 sessions! Contact your PT to start your next block and keep your momentum.`,
-              client_id
-            );
-        } catch(e) { console.error('[CRON] Block complete notification error:', e.message); }
-      }
-    }
-    console.log('[CRON] Auto-marked ' + result.changes + ' sessions');
+  for (const s of toMark) {
+    db.prepare("UPDATE sessions SET status = 'attended', auto_marked = 1 WHERE id = ?").run(s.id);
+    db.prepare("UPDATE clients SET sessions_used = sessions_used + 1 WHERE id = ?").run(s.client_id);
+    console.log('[CRON] Auto-marked session', s.id, 'for client', s.client_id);
   }
 });
 
-// Auto-renew Google Calendar webhook daily at 06:00
 cron.schedule('0 6 * * *', async () => {
   console.log('[CRON] Checking Google Calendar webhook renewal...');
   try {
