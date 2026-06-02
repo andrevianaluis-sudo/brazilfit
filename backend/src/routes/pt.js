@@ -201,7 +201,7 @@ router.post('/clients/:id/notes', (req, res) => {
 // Update client info
 router.put('/clients/:id', (req, res) => {
   const db = getDb();
-  const { phone, email, sessions_used, current_block_number, block_start_date, block_price, client_type } = req.body;
+  const { phone, email, sessions_used, current_block_number, block_start_date, block_price, client_type, is_pro, pro_expires_at } = req.body;
   const client = db.prepare('SELECT id, user_id FROM clients WHERE id = ?').get(req.params.id);
   if (!client) return res.status(404).json({ error: 'Client not found' });
   if (email) db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, client.user_id);
@@ -212,6 +212,8 @@ router.put('/clients/:id', (req, res) => {
   if (block_start_date !== undefined)     { fields.push('block_start_date = ?');     values.push(block_start_date); }
   if (block_price !== undefined)          { fields.push('block_price = ?');          values.push(parseInt(block_price) || 0); }
   if (client_type !== undefined)          { fields.push('client_type = ?');          values.push(client_type); }
+  if (is_pro !== undefined)               { fields.push('is_pro = ?');               values.push(is_pro ? 1 : 0); }
+  if (pro_expires_at !== undefined)       { fields.push('pro_expires_at = ?');       values.push(pro_expires_at); }
   if (fields.length > 0) { values.push(req.params.id); db.prepare('UPDATE clients SET ' + fields.join(', ') + ' WHERE id = ?').run(...values); }
   res.json({ message: 'Client updated' });
 });
