@@ -108,7 +108,7 @@ function PTNotesModal({ session, onClose }) {
 }
 
 // --Session Slot ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate, onReschedule }) {
+function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNotes, onReinstate, onReschedule, editingTimeId, setEditingTimeId, editingTimeValue, setEditingTimeValue, onTimeUpdate }) {
   const isClass = entry.entryType === 'class';
   const isGcalClass = entry.entryType === 'gcal-class';
   const isGcalPt = entry.entryType === 'gcal-pt';
@@ -576,7 +576,7 @@ export default function PTSchedule() {
                           onMarkUpcoming={() => markSession(entry.id, 'upcoming')}
                           onNotes={setNotesSession}
                           onReinstate={() => reinstateSession(entry.id)}
-                          onReschedule={(s) => { setRescheduleSession(s); setRescheduleDate(s.scheduled_date); setRescheduleTime(s.scheduled_time); }} />
+                          onReschedule={(s) => { setRescheduleSession(s); setRescheduleDate(s.scheduled_date); setRescheduleTime(s.scheduled_time); } editingTimeId={editingTimeId} setEditingTimeId={setEditingTimeId} editingTimeValue={editingTimeValue} setEditingTimeValue={setEditingTimeValue} onTimeUpdate={fetchSchedule} />
                       ))}
                     </div>
                   )}
