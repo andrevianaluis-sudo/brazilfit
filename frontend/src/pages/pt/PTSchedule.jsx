@@ -200,7 +200,7 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
                     try{
                       await api.put(`/sessions/${entry.id}/reschedule`,{new_date:entry.scheduled_date,new_time:editingTimeValue});
                       toast.success('Time updated');
-                      fetchSchedule();
+                      if(onTimeUpdate) onTimeUpdate();
                     }catch{toast.error('Failed to update time');}
                   }
                   setEditingTimeId(null);
