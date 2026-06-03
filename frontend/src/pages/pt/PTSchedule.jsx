@@ -191,7 +191,31 @@ function SessionSlot({ entry, onMarkAttended, onMarkMissed, onMarkUpcoming, onNo
             {renewalStatus && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.1em', color:renewalStatus.color, backgroundColor:`${renewalStatus.color}18`, padding:'2px 6px', borderRadius:'4px' }}>{renewalStatus.label}</span>}
             {entry.client_type === 'Online' && <span style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.6rem', fontWeight:400, color:'#60a5fa', backgroundColor:'rgba(96,165,250,0.12)', padding:'2px 6px', borderRadius:'4px' }}>Online</span>}
           </div>
-          <p style={{ fontFamily:"'DM Sans', system-ui", fontSize:'0.72rem', color:MUTED, margin:0 }}>{entry.scheduled_time} · Session {entry.sessions_used} of 10 · {entry.sessions_remaining} remaining</p>
+          <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
+            {editingTimeId === entry.id ? (
+              <input type="time" value={editingTimeValue} onChange={e=>setEditingTimeValue(e.target.value)}
+                autoFocus
+                onBlur={async()=>{
+                  if(editingTimeValue && editingTimeValue !== entry.scheduled_time){
+                    try{
+                      await api.put(`/sessions/${entry.id}/reschedule`,{new_date:entry.scheduled_date,new_time:editingTimeValue});
+                      toast.success('Time updated');
+                      fetchSchedule();
+                    }catch{toast.error('Failed to update time');}
+                  }
+                  setEditingTimeId(null);
+                }}
+                onKeyDown={e=>{if(e.key==='Escape')setEditingTimeId(null);}}
+                style={{fontSize:'0.72rem',color:'#4CAF50',background:'transparent',border:'none',borderBottom:'1px solid #4CAF50',outline:'none',width:'80px',fontFamily:"'DM Sans',system-ui",padding:'0'}}
+              />
+            ) : (
+              <span onClick={()=>{setEditingTimeId(entry.id);setEditingTimeValue(entry.scheduled_time);}}
+                style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:'#666',cursor:'pointer'}}
+                title="Tap to edit time"
+              >{entry.scheduled_time}</span>
+            )}
+            <span style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.72rem',color:'#666'}}>· Session {entry.sessions_used} of 10 · {entry.sessions_remaining} remaining</span>
+          </div>
         </div>
         <div style={{ display:'flex', gap:'4px', flexShrink:0 }}>
           {entry.status === 'attended' && (
@@ -284,6 +308,8 @@ export default function PTSchedule() {
   const [rescheduleDate, setRescheduleDate] = useState('');
   const [rescheduleTime, setRescheduleTime] = useState('');
   const [rescheduling, setRescheduling] = useState(false);
+  const [editingTimeId, setEditingTimeId] = useState(null);
+  const [editingTimeValue, setEditingTimeValue] = useState('');
   const [gcalConnected, setGcalConnected] = useState(false);
   const [webhookActive, setWebhookActive] = useState(false);
   const [syncing, setSyncing] = useState(false);
