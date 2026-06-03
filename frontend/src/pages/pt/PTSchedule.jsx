@@ -576,7 +576,7 @@ export default function PTSchedule() {
                           onMarkUpcoming={() => markSession(entry.id, 'upcoming')}
                           onNotes={setNotesSession}
                           onReinstate={() => reinstateSession(entry.id)}
-                          onReschedule={(s) => { setRescheduleSession(s); setRescheduleDate(s.scheduled_date); setRescheduleTime(s.scheduled_time); }} editingTimeId={editingTimeId} setEditingTimeId={setEditingTimeId} editingTimeValue={editingTimeValue} setEditingTimeValue={setEditingTimeValue} onTimeUpdate={fetchSchedule} />
+                          onReschedule={(s) => { setRescheduleSession(s); setRescheduleDate(s.scheduled_date); setRescheduleTime(s.scheduled_time); }} editingTimeId={editingTimeId} setEditingTimeId={setEditingTimeId} editingTimeValue={editingTimeValue} setEditingTimeValue={setEditingTimeValue} onTimeUpdate={() => window.location.reload()} />
                       ))}
                     </div>
                   )}
