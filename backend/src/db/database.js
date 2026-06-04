@@ -1890,5 +1890,8 @@ function seedNutritionData() {
   } catch(e) { console.log('Nutrition seed error:', e.message); }
 }
 
+// Add last_login column if not exists
+try { db.exec("ALTER TABLE users ADD COLUMN last_login TEXT"); } catch(e) {}
+
 module.exports = { getDb };
 
