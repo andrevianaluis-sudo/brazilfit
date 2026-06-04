@@ -418,6 +418,7 @@ export default function PTClientProfile() {
   const cancelledSessions = client.sessions?.filter(s => s.status === 'cancelled') || [];
 
   const tabs = ['overview', 'sessions', 'cancellations', 'progress', 'photos', 'notes', 'messages', 'blocks', 'checkins', 'onboarding', 'assessment', 'programme', 'workouts'];
+  const tabLabels = { overview:'Overview', sessions:'Sessions', cancellations:'Cancels', progress:'Progress', photos:'Photos', notes:'Notes', messages:'Messages', blocks:'Blocks', checkins:'Check-ins', onboarding:'Onboard', assessment:'Assessment', programme:'Programme', workouts:'Workouts' };
 
   return (
     <div style={{animation:"fadeIn 0.3s ease"}}>
@@ -495,7 +496,7 @@ export default function PTClientProfile() {
             onClick={() => setActiveTab(tab)}
             style={{flexShrink:0,padding:"10px 12px",fontSize:"0.72rem",fontWeight:500,textTransform:"capitalize",whiteSpace:"nowrap",borderBottom:activeTab===tab?"2px solid #4CAF50":"2px solid transparent",color:activeTab===tab?"#4CAF50":"#888",background:"none",border:"none",borderBottom:activeTab===tab?"2px solid #4CAF50":"2px solid transparent",cursor:"pointer"}}
           >
-            {tab}
+            {tabLabels[tab] || tab}
             {tab === 'cancellations' && cancelledSessions.length > 0 && (
               <span className="ml-1.5 text-[10px] bg-white/15 text-grey-200 px-1.5 py-0.5 rounded-full">
                 {cancelledSessions.length}
