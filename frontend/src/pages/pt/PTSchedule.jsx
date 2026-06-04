@@ -381,7 +381,6 @@ export default function PTSchedule() {
     const calEvents = scheduleData?.calendarEvents || [];
     const timeMap = {};
     sessions.forEach(s => { const k = s.scheduled_time.substring(0,5); if (!timeMap[k]) timeMap[k]=[]; timeMap[k].push({...s, entryType:'pt'}); });
-    classes.forEach(c => { const k = c.scheduled_time.substring(0,5); if (!timeMap[k]) timeMap[k]=[]; timeMap[k].push({...c, entryType:'class'}); });
     // Add calendar events that aren't already in sessions/classes
     calEvents.forEach(e => {
       const k = e.start_time.substring(0,5);
@@ -390,7 +389,7 @@ export default function PTSchedule() {
                            classes.some(c => c.scheduled_time?.substring(0,5) === k);
       if (!alreadyShown) {
         if (!timeMap[k]) timeMap[k] = [];
-        timeMap[k].push({ ...e, entryType: e.event_type === 'class' ? 'gcal-class' : e.event_type === 'pt' ? 'gcal-pt' : 'gcal-other', scheduled_time: e.start_time, client_name: e.title });
+        if (e.event_type === 'pt') { timeMap[k].push({ ...e, entryType: 'gcal-pt', scheduled_time: e.start_time, client_name: e.title }); }
       }
     });
     const dow = dateObj.getDay();

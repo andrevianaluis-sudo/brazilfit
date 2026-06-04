@@ -12,7 +12,6 @@ const navigationItems = [
   { icon: Users,       label: 'Clients',    to: '/pt/clients'                 },
   { icon: Dumbbell,    label: 'Workouts',   to: '/pt/workouts'                },
   { icon: Package,     label: 'Blocks',     to: '/pt/blocks'                  },
-  { icon: PlayCircle,  label: 'Classes',    to: '/pt/classes'                 },
 ];
 
 export default function PTLayout() {
