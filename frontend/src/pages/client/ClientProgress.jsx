@@ -136,7 +136,7 @@ export default function ClientProgress() {
         <div style={{ display:'flex', gap:8, marginBottom:'1.5rem' }}>
           {[{key:'progress',label:' Stats'},{key:'photos',label:' Photos'}].map(t => (
             <button key={t.key} onClick={() => setActiveTab(t.key)} style={{
-              padding:'8px 20px', borderRadius:'8px', border:'none', cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto',
+              padding:'8px 20px', borderRadius:'8px', cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto',
               background: activeTab===t.key ? `rgba(255,107,43,0.18)` : 'rgba(255,255,255,0.04)',
               color: activeTab===t.key ? ORANGE : '#aaa',
               border: activeTab===t.key ? `1px solid rgba(255,107,43,0.4)` : '1px solid rgba(255,255,255,0.08)',
