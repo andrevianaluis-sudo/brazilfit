@@ -13,8 +13,6 @@ const navigationItems = [
   { icon: Dumbbell,    label: 'Workouts',   to: '/pt/workouts'                },
   { icon: Package,     label: 'Blocks',     to: '/pt/blocks'                  },
   { icon: PlayCircle,  label: 'Classes',    to: '/pt/classes'                 },
-  { icon: DollarSign,  label: 'Income',     to: '/pt/income'                  },
-  { icon: BarChart3,   label: 'Analytics',  to: '/pt/analytics'               },
 ];
 
 export default function PTLayout() {
