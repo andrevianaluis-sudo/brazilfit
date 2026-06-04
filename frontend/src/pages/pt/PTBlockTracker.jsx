@@ -146,12 +146,14 @@ export default function PTBlockTracker() {
                     <span style={{ fontSize:'0.65rem', color:MUTED }}>{used} / 10 sessions used</span>
                     {c.payment_date && <span style={{ fontSize:'0.65rem', color:MUTED }}>Since {new Date(c.payment_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>}
                   </div>
-                  <button onClick={(e) => renewBlock(e, c.id)}
-                    disabled={renewingId === c.id}
-                    style={{ marginTop:'10px', width:'100%', padding:'7px', borderRadius:'8px', border:`1px solid ${GREEN}40`, background:`${GREEN}12`, color:GREEN, fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:renewingId===c.id?'not-allowed':'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', opacity:renewingId===c.id?0.6:1 }}>
-                    <RefreshCw size={12} style={{ animation: renewingId===c.id ? 'spin 1s linear infinite' : 'none' }}/>
-                    {renewingId === c.id ? 'Renewing...' : 'Renew Block'}
-                  </button>
+                  {(c.sessions_remaining <= 0 || c.status === 'renew') && (
+                    <button onClick={(e) => renewBlock(e, c.id)}
+                      disabled={renewingId === c.id}
+                      style={{ marginTop:'10px', width:'100%', padding:'7px', borderRadius:'8px', border:`1px solid ${GREEN}40`, background:`${GREEN}12`, color:GREEN, fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:renewingId===c.id?'not-allowed':'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', opacity:renewingId===c.id?0.6:1 }}>
+                      <RefreshCw size={12} style={{ animation: renewingId===c.id ? 'spin 1s linear infinite' : 'none' }}/>
+                      {renewingId === c.id ? 'Renewing...' : 'Renew Block'}
+                    </button>
+                  )}
                 </div>
               </div>
             );

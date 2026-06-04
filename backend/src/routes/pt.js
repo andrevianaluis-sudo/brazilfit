@@ -273,6 +273,11 @@ router.post('/blocks/:clientId/renew', (req, res) => {
   db.prepare('UPDATE clients SET sessions_used = 0, block_start_date = ?, current_block_number = ? WHERE id = ?')
     .run(renewalDate, newBlockNumber, clientId);
 
+  // Wipe ALL existing upcoming sessions before generating new ones
+  db.exec('PRAGMA foreign_keys = OFF');
+  db.prepare("DELETE FROM sessions WHERE client_id = ? AND status = 'upcoming'").run(clientId);
+  db.exec('PRAGMA foreign_keys = ON');
+
   // Generate new sessions from schedule
   const schedule = db.prepare('SELECT day_of_week, session_time FROM client_schedules WHERE client_id = ?').all(clientId);
   const newBlock = db.prepare('SELECT id FROM blocks WHERE client_id = ? AND is_current = 1').get(clientId);
