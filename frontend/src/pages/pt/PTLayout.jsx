@@ -25,17 +25,23 @@ export default function PTLayout() {
   const notifRef = useRef(null);
   const pollRef = useRef(null);
 
+  const [unreadMessages, setUnreadMessages] = useState(0);
+
   const fetchNotifications = async () => {
     try {
       const res = await api.get('/pt/notifications');
       setUnreadCount(res.data.unreadCount || 0);
       setNotifications(res.data.notifications || []);
     } catch {}
+    try {
+      const res2 = await api.get('/pt/messages');
+      setUnreadMessages(res2.data?.length || 0);
+    } catch {}
   };
 
   useEffect(() => {
     fetchNotifications();
-    pollRef.current = setInterval(fetchNotifications, 5000);
+    pollRef.current = setInterval(fetchNotifications, 30000);
     return () => clearInterval(pollRef.current);
   }, []);
 
