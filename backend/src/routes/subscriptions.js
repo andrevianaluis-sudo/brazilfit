@@ -3,7 +3,11 @@ const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
 
-router.use(authenticateToken);
+// Apply auth to all routes EXCEPT the Stripe webhook
+router.use((req, res, next) => {
+  if (req.path === '/webhook') return next();
+  return authenticateToken(req, res, next);
+});
 
 // Get subscription status for a client
 router.get('/status', (req, res) => {
