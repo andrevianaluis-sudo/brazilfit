@@ -84,7 +84,7 @@ router.get('/clients', (req, res) => {
   const clients = db.prepare(`
     SELECT c.id, u.name, u.email, u.username, c.phone, c.client_type,
            c.block_price, c.current_block_number, c.block_start_date,
-           c.sessions_used, c.is_pro, c.pro_expires_at, u.last_login,
+           c.sessions_used, c.is_pro, c.pro_expires_at,
            (10 - c.sessions_used) as sessions_remaining,
            CASE
              WHEN c.sessions_used >= 10 THEN 'renew'
