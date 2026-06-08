@@ -109,21 +109,25 @@ router.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =>
   const db = getDb();
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    const clientId = session.metadata?.clientId;
-    const plan = session.metadata?.plan;
+    let clientId = session.metadata?.clientId;
+    const plan = session.metadata?.plan || 'annual';
+    const email = session.customer_details?.email;
+
+    // If no clientId in metadata, try to find client by email
+    if (!clientId && email) {
+      const user = db.prepare("SELECT u.id, c.id as client_id FROM users u JOIN clients c ON c.user_id = u.id WHERE LOWER(u.email) = LOWER(?)").get(email);
+      if (user) clientId = user.client_id;
+    }
 
     if (clientId) {
       const expiresAt = new Date();
       if (plan === 'annual') expiresAt.setFullYear(expiresAt.getFullYear() + 1);
       else expiresAt.setMonth(expiresAt.getMonth() + 1);
-
       db.prepare('UPDATE clients SET is_pro = 1, pro_expires_at = ? WHERE id = ?')
         .run(expiresAt.toISOString().split('T')[0], clientId);
-
-      db.prepare(`
-        INSERT INTO subscriptions (client_id, plan, status, stripe_subscription_id, amount, current_period_start, current_period_end)
-        VALUES (?, ?, 'active', ?, ?, date('now'), ?)
-      `).run(clientId, plan, session.subscription, plan === 'annual' ? 7999 : 999, expiresAt.toISOString().split('T')[0]);
+      console.log('[webhook] Upgraded client', clientId, 'to Pro until', expiresAt.toISOString().split('T')[0]);
+    } else {
+      console.log('[webhook] Could not find client for email:', email);
     }
   }
 
