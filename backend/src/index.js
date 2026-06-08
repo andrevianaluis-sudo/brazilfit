@@ -145,7 +145,7 @@ cron.schedule('*/5 * * * *', async () => {
 
   const toMark = sessions.filter(s => {
     const parts = s.scheduled_time.split(':');
-    const sessionMins = parseInt(parts[0]) * 60 + parseInt(parts[1]) + 15;
+    const sessionMins = parseInt(parts[0]) * 60 + parseInt(parts[1]) + 75; // 1 hour session + 15 min buffer
     const nowMins = ukNow.getHours() * 60 + ukNow.getMinutes();
     return nowMins >= sessionMins;
   });
