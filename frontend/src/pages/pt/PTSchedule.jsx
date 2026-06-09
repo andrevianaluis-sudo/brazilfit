@@ -426,66 +426,6 @@ export default function PTSchedule() {
         </div>
       </div>
 
-      {/* Google Calendar sync banner */}
-      {!gcalConnected ? (
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(66,133,244,0.08)', border:'1px solid rgba(66,133,244,0.25)', borderRadius:'12px', marginBottom:'1rem' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            <span style={{ fontSize:'0.9rem', fontWeight:800, color:'#4CAF50' }}>GCal</span>
-            <div>
-              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#fff', margin:'0 0 2px' }}>Connect Google Calendar</p>
-              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>Import your PT sessions automatically</p>
-            </div>
-          </div>
-          <button onClick={handleGcalConnect} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:'#4285F4', color:'#fff', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-            Connect
-          </button>
-        </div>
-      ) : (
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', padding:'0.875rem 1rem', background:'rgba(76,175,80,0.08)', border:'1px solid rgba(76,175,80,0.2)', borderRadius:'12px', marginBottom:'1rem' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            <span style={{ fontSize:'0.9rem', fontWeight:800, color:'#4CAF50' }}>GCal</span>
-            <div>
-              <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.82rem', fontWeight:700, color:'#4CAF50', margin:'0 0 2px' }}>Google Calendar Connected</p>
-              {syncResult && <p style={{ fontFamily:"'DM Sans',system-ui", fontSize:'0.72rem', color:'#888', margin:0 }}>{syncResult.sessionsCreated} sessions -- {syncResult.classesCreated} classes -- {syncResult.skipped} skipped{webhookActive ? ' -- -Auto-sync ON' : ''}</p>}
-            </div>
-          </div>
-          <div style={{ display:'flex', gap:'8px' }}>
-            <button onClick={handleGcalSync} disabled={syncing} style={{ padding:'8px 16px', borderRadius:'8px', border:'none', background:syncing?'#333':`linear-gradient(135deg,#FF6B2B,#FFD600)`, color:syncing?'#888':'#000', fontFamily:"'DM Sans',system-ui", fontSize:'0.78rem', fontWeight:700, cursor:syncing?'not-allowed':'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              {syncing ? 'Syncing...' : 'Sync Now'}
-            </button>
-            <button onClick={async()=>{
-              try{
-                if(!window.confirm('Wipe ALL imported sessions and re-sync from scratch?')) return;
-                await api.delete('/google-calendar/wipe');
-                toast.success('Wiped syncing fresh...');
-                await handleGcalSync();
-              } catch{ toast.error('Wipe failed'); }
-            }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(239,68,68,0.3)', background:'rgba(239,68,68,0.08)', color:'#ef4444', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              Wipe & Re-sync
-            </button>
-            <button onClick={async()=>{
-              try{
-                await api.post('/google-calendar/register-webhook');
-                setWebhookActive(true);
-                toast.success('Auto-sync enabled!');
-              } catch{ toast.error('Failed to enable auto-sync'); }
-            }} style={{ padding:'8px 12px', borderRadius:'8px', border:`1px solid ${webhookActive?'rgba(76,175,80,0.3)':'rgba(255,255,255,0.1)'}`, background:webhookActive?'rgba(76,175,80,0.1)':'transparent', color:webhookActive?GREEN:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:700, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              {webhookActive ? 'Auto' : 'Auto-sync'}
-            </button>
-            <button onClick={async()=>{
-              try{
-                await api.delete('/google-calendar/disconnect');
-                setGcalConnected(false);
-                setSyncResult(null);
-                toast.success('Disconnected');
-              } catch{ toast.error('Failed to disconnect'); }
-            }} style={{ padding:'8px 12px', borderRadius:'8px', border:'1px solid rgba(255,255,255,0.1)', background:'transparent', color:'#606060', fontFamily:"'DM Sans',system-ui", fontSize:'0.75rem', fontWeight:600, cursor:'pointer', minHeight:'auto', whiteSpace:'nowrap', flexShrink:0 }}>
-              Disconnect
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Date nav */}
       {view === 'day' && (
         <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'1rem' }}>
