@@ -77,7 +77,7 @@ export default function ClientMyJourney() {
                       : 'bg-grey-300 text-grey-200 hover:text-black'
                   } ${isProOnly && !user?.isPro ? 'opacity-60' : ''}`}
                 >
-                  {pill} {isProOnly && !user?.isPro ? '' : ''}
+                  {pill} {isProOnly && !user?.isPro ? '🔒' : ''}
                 </button>
               );
             })}
