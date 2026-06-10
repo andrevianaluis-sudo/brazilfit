@@ -12,6 +12,14 @@ function authenticateToken(req, res, next) {
 
   try {
     const user = jwt.verify(token, JWT_SECRET);
+    // Refresh Pro status from DB so upgrades apply without re-login
+    if (user.clientId) {
+      try {
+        const { getDb } = require('../db/database');
+        const row = getDb().prepare('SELECT is_pro FROM clients WHERE id = ?').get(user.clientId);
+        if (row) user.isPro = row.is_pro === 1;
+      } catch (e) {}
+    }
     req.user = user;
     next();
   } catch (err) {
