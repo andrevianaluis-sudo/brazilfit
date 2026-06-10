@@ -163,7 +163,7 @@ export default function ClientHome(){
           {LINKS.map((lk,i)=>{
             const Icon=lk.ic;
             return(
-              <div key={i} onClick={()=>navigate(lk.to)} style={{
+              <div key={i} onClick={()=>navigate(lk.pro && !user?.isPro ? '/client/upgrade' : lk.to)} style={{
                 borderRadius:'16px',padding:'1rem 1.1rem',cursor:'pointer',
                 background:lk.bg,border:`1px solid ${lk.border}`,
                 display:'flex',flexDirection:'column',gap:'0.6rem',
