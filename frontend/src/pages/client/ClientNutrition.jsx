@@ -222,13 +222,16 @@ export default function ClientNutrition() {
   const [savedTips, setSavedTips] = useState(new Set());
 
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       api.get('/wellness/tips'),
       api.get('/wellness/meals'),
       api.get('/wellness/tip-of-week'),
     ]).then(([tipsRes, mealsRes, tipRes]) => {
-      setTips(tipsRes.data); setMeals(mealsRes.data); setTipOfWeek(tipRes.data); setLoading(false);
-    }).catch(() => setLoading(false));
+      if (tipsRes.status === 'fulfilled') setTips(tipsRes.value.data || []);
+      if (mealsRes.status === 'fulfilled') setMeals(mealsRes.value.data || []);
+      if (tipRes.status === 'fulfilled') setTipOfWeek(tipRes.value.data);
+      setLoading(false);
+    });
   }, []);
 
   const toggleFavorite = async (mealId) => {
