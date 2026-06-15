@@ -131,7 +131,7 @@ export default function PTBlockTracker() {
                       </div>
                       <div style={{ minWidth:0 }}>
                         <p style={{ fontSize:'0.95rem', fontWeight:700, color:TEXT, margin:'0 0 2px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{c.name}</p>
-                        <p style={{ fontSize:'0.7rem', color:MUTED, margin:0 }}>Block {c.current_block_number} · £{c.block_price}</p>
+                        <p style={{ fontSize:'0.7rem', color:MUTED, margin:0 }}>£{c.block_price}</p>
                       </div>
                     </div>
                     <div style={{ display:'flex', alignItems:'center', gap:'8px', flexShrink:0 }}>

@@ -459,7 +459,7 @@ export default function PTClientProfile() {
         <div className="mt-4 card-dark p-3">
           <div className="flex justify-between items-center mb-2">
             <div>
-              <p style={{fontSize:"0.75rem",color:"#606060"}}>Block {client.current_block_number} · Started {fmtDate(client.block_start_date)}</p>
+              <p style={{fontSize:"0.75rem",color:"#606060"}}>Started {fmtDate(client.block_start_date)}</p>
               <p style={{fontWeight:700}}>
                 <span style={{color:"#4CAF50"}}>{client.sessions_used}</span>
                 <span style={{color:"#888"}}> / 10 sessions</span>

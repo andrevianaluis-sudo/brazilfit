@@ -158,7 +158,7 @@ export default function ClientSessions(){
           <div style={{position:'absolute',top:'-30px',right:'-30px',width:'120px',height:'120px',borderRadius:'50%',background:GREEN,opacity:0.04,pointerEvents:'none'}}/>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'1.25rem'}}>
             <div>
-              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 5px'}}>Block {user?.blockNumber||1}</p>
+              <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.58rem',fontWeight:700,letterSpacing:'0.2em',color:ORANGE,textTransform:'uppercase',margin:'0 0 5px'}}>Block</p>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'1.1rem',fontWeight:800,color:TEXT,letterSpacing:'-0.02em',margin:0}}>{sessionsUsed} of {totalSessions||10} sessions</p>
               <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',color:MUTED,margin:'2px 0 0'}}>{sessionsRemaining} remaining in this block</p>
             </div>
