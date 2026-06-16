@@ -201,10 +201,11 @@ router.post('/clients/:id/notes', (req, res) => {
 // Update client info
 router.put('/clients/:id', (req, res) => {
   const db = getDb();
-  const { phone, email, sessions_used, current_block_number, block_start_date, block_price, client_type, is_pro, pro_expires_at } = req.body;
+  const { phone, email, sessions_used, current_block_number, block_start_date, block_price, client_type, is_pro, pro_expires_at, is_active } = req.body;
   const client = db.prepare('SELECT id, user_id FROM clients WHERE id = ?').get(req.params.id);
   if (!client) return res.status(404).json({ error: 'Client not found' });
   if (email) db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, client.user_id);
+  if (is_active !== undefined) db.prepare('UPDATE users SET is_active = ? WHERE id = ?').run(is_active ? 1 : 0, client.user_id);
   const fields = []; const values = [];
   if (phone !== undefined)                { fields.push('phone = ?');                values.push(phone); }
   if (sessions_used !== undefined)        { fields.push('sessions_used = ?');        values.push(parseInt(sessions_used) || 0); }
