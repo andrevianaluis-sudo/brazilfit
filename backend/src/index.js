@@ -245,6 +245,12 @@ app.get('/api/fix-jacquetta-all', (req, res) => { try { const { getDb } = requir
 app.get('/api/check-jacquetta', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare('SELECT id, name, username, email FROM users WHERE username LIKE ?').get('%jacquetta%'); const user2 = db.prepare('SELECT id, name, username, email FROM users WHERE username LIKE ?').get('%jaquetta%'); res.json({ jacquetta: user, jaquetta: user2 }); } catch(e) { res.status(500).json({ error: e.message }); } });
 app.get('/api/check-jacquetta', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare('SELECT id, name, username, email FROM users WHERE username LIKE ?').get('%jacquetta%'); const user2 = db.prepare('SELECT id, name, username, email FROM users WHERE username LIKE ?').get('%jaquetta%'); res.json({ jacquetta: user, jaquetta: user2 }); } catch(e) { res.status(500).json({ error: e.message }); } });
 app.get('/api/fix-neil-11', (req, res) => { try { const { getDb } = require('./db/database'); const db = getDb(); const user = db.prepare('SELECT id FROM users WHERE username=?').get('neil_crawley'); const client = db.prepare('SELECT id FROM clients WHERE user_id=?').get(user.id); const r = db.prepare("DELETE FROM sessions WHERE client_id=? AND scheduled_time IN ('11:00','11:00:00') AND status='upcoming'").run(client.id); res.json({deleted:r.changes}); } catch(e){res.status(500).json({error:e.message});} });
+// Manual backup trigger — GET /api/backup-now
+app.get('/api/backup-now', async (req, res) => {
+  await runBackup();
+  res.json({ message: 'Backup triggered, check logs' });
+});
+
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(frontendDist, 'index.html'));
@@ -259,11 +265,6 @@ cron.schedule('0 2 * * *', async () => {
   await runBackup();
 });
 
-// Manual backup trigger (PT only) — GET /api/backup-now?token=...
-app.get('/api/backup-now', async (req, res) => {
-  await runBackup();
-  res.json({ message: 'Backup triggered, check logs' });
-});
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log('BrazilFit API running on port ' + PORT);
