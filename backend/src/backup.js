@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const zlib = require('zlib');
 
 const DB_PATH = process.env.DB_PATH || './brazilfit.db';
 const dbPath = path.resolve(__dirname, '../', DB_PATH);
@@ -48,10 +49,13 @@ async function runBackup() {
       console.log('[backup] DB file not found at', dbPath);
       return;
     }
-    const content = fs.readFileSync(dbPath).toString('base64');
+    const raw = fs.readFileSync(dbPath);
+    const gzipped = zlib.gzipSync(raw);
+    const content = gzipped.toString('base64');
     const now = new Date();
     const stamp = now.toISOString().split('T')[0]; // YYYY-MM-DD
-    const filePath = `backups/brazilfit-${stamp}.db`;
+    const filePath = `backups/brazilfit-${stamp}.db.gz`;
+    console.log('[backup] DB size:', (raw.length/1024).toFixed(0)+'KB', '-> gzipped:', (gzipped.length/1024).toFixed(0)+'KB');
 
     // Check if today's backup already exists (to get its SHA for update)
     let sha = undefined;
