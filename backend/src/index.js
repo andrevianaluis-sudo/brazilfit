@@ -7,6 +7,7 @@ const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const { getDb } = require('./db/database');
+const { runBackup } = require('./backup');
 const authRoutes = require('./routes/auth');
 const ptRoutes = require('./routes/pt');
 const sessionsRoutes = require('./routes/sessions');
@@ -250,6 +251,18 @@ app.get('*', (req, res) => {
   } else {
     res.status(404).json({ error: 'API endpoint not found' });
   }
+});
+
+// Daily DB backup to GitHub at 3am UK time (2am UTC)
+cron.schedule('0 2 * * *', async () => {
+  console.log('[backup] Running scheduled backup...');
+  await runBackup();
+});
+
+// Manual backup trigger (PT only) — GET /api/backup-now?token=...
+app.get('/api/backup-now', async (req, res) => {
+  await runBackup();
+  res.json({ message: 'Backup triggered, check logs' });
 });
 
 app.listen(PORT, '0.0.0.0', () => {
