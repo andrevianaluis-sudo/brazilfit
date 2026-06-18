@@ -494,7 +494,7 @@ export default function PTClientProfile() {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            style={{flexShrink:0,padding:"10px 12px",fontSize:"0.72rem",fontWeight:500,textTransform:"capitalize",whiteSpace:"nowrap",borderBottom:activeTab===tab?"2px solid #4CAF50":"2px solid transparent",color:activeTab===tab?"#4CAF50":"#888",background:"none",border:"none",borderBottom:activeTab===tab?"2px solid #4CAF50":"2px solid transparent",cursor:"pointer"}}
+            style={{flexShrink:0,padding:"10px 12px",fontSize:"0.72rem",fontWeight:500,textTransform:"capitalize",whiteSpace:"nowrap",color:activeTab===tab?"#4CAF50":"#888",background:"none",border:"none",borderBottom:activeTab===tab?"2px solid #4CAF50":"2px solid transparent",cursor:"pointer"}}
           >
             {tabLabels[tab] || tab}
             {tab === 'cancellations' && cancelledSessions.length > 0 && (
