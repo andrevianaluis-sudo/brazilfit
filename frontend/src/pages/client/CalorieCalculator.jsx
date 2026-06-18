@@ -4,7 +4,6 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
 const SURFACE = '#1a1a1a';
-const SURFACE2 = '#222';
 const BORDER = 'rgba(255,255,255,0.08)';
 const TEXT = '#ffffff';
 const MUTED = '#707070';
@@ -21,7 +20,7 @@ const ACTIVITY = [
 
 export default function CalorieCalculator() {
   const { user } = useAuth();
-  const [profile, setProfile] = useState({ height_cm: '', age: '', sex: '', activity_level: '', deficit_preference: 500, weight_kg: null });
+  const [profile, setProfile] = useState({ height_cm: '', age: '', sex: '', activity_level: '', deficit_preference: 500, calorie_goal: 'lose', weight_kg: null });
   const [calories, setCalories] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -37,6 +36,7 @@ export default function CalorieCalculator() {
           sex: p.sex || '',
           activity_level: p.activity_level || '',
           deficit_preference: p.deficit_preference || 500,
+          calorie_goal: p.calorie_goal || 'lose',
           weight_kg: p.weight_kg || null,
         });
         setCalories(r.data.calories);
@@ -66,6 +66,12 @@ export default function CalorieCalculator() {
   const inputStyle = { width: '100%', padding: '0.65rem', background: '#0f0f0f', border: `1px solid ${BORDER}`, borderRadius: 8, color: TEXT, fontSize: '0.9rem', boxSizing: 'border-box' };
   const labelStyle = { fontSize: 11, color: MUTED, display: 'block', marginBottom: 5, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' };
 
+  const isGain = profile.calorie_goal === 'gain';
+  // Pace options depend on goal: lose -300/-500, gain +250/+500
+  const paceOptions = isGain
+    ? [{ v: 250, l: 'Gentle', d: '~0.25kg/week gain' }, { v: 500, l: 'Moderate', d: '~0.5kg/week gain' }]
+    : [{ v: 300, l: 'Gentle', d: '~0.3kg/week loss' }, { v: 500, l: 'Moderate', d: '~0.5kg/week loss' }];
+
   if (loading) return <div style={{ textAlign: 'center', padding: '3rem 0', color: MUTED }}>Loading...</div>;
 
   return (
@@ -89,7 +95,9 @@ export default function CalorieCalculator() {
             </div>
           </div>
           <p style={{ fontSize: '0.75rem', color: '#aaa', margin: '14px 0 0' }}>
-            Based on a {calories.deficit} kcal daily deficit for steady, sustainable fat loss.
+            {calories.goal === 'gain'
+              ? `Based on a ${calories.deficit} kcal daily surplus for steady, lean muscle gain.`
+              : `Based on a ${calories.deficit} kcal daily deficit for steady, sustainable fat loss.`}
           </p>
         </div>
       )}
@@ -144,9 +152,22 @@ export default function CalorieCalculator() {
           ))}
         </div>
 
-        <label style={labelStyle}>Goal pace</label>
+        {/* Goal: lose or gain */}
+        <label style={labelStyle}>Your goal</label>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          {[{ k: 'lose', l: 'Lose weight' }, { k: 'gain', l: 'Gain weight' }].map(g => (
+            <button key={g.k} onClick={() => setProfile({ ...profile, calorie_goal: g.k, deficit_preference: g.k === 'gain' ? 250 : 300 })} style={{
+              flex: 1, padding: '0.7rem', borderRadius: 8, cursor: 'pointer', fontSize: '0.85rem', fontWeight: 700,
+              background: profile.calorie_goal === g.k ? 'rgba(76,175,80,0.18)' : 'rgba(255,255,255,0.04)',
+              color: profile.calorie_goal === g.k ? GREEN : '#aaa',
+              border: profile.calorie_goal === g.k ? '1px solid rgba(76,175,80,0.4)' : `1px solid ${BORDER}`,
+            }}>{g.l}</button>
+          ))}
+        </div>
+
+        <label style={labelStyle}>{isGain ? 'Gain pace' : 'Loss pace'}</label>
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-          {[{ v: 300, l: 'Gentle', d: '~0.3kg/week' }, { v: 500, l: 'Moderate', d: '~0.5kg/week' }].map(o => (
+          {paceOptions.map(o => (
             <button key={o.v} onClick={() => setProfile({ ...profile, deficit_preference: o.v })} style={{
               flex: 1, padding: '0.7rem', borderRadius: 8, cursor: 'pointer',
               background: profile.deficit_preference === o.v ? 'rgba(76,175,80,0.18)' : 'rgba(255,255,255,0.04)',

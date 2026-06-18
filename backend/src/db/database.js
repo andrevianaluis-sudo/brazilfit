@@ -388,11 +388,13 @@ try { db.exec("ALTER TABLE clients ADD COLUMN age INTEGER"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN sex TEXT"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN activity_level TEXT"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN deficit_preference INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN calorie_goal TEXT"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN height_cm REAL"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN age INTEGER"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN sex TEXT"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN activity_level TEXT"); } catch(e) {}
 try { db.exec("ALTER TABLE clients ADD COLUMN deficit_preference INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN calorie_goal TEXT"); } catch(e) {}
   try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE messages ADD COLUMN pt_id INTEGER'); } catch(e) {}
   try { db.exec('ALTER TABLE subscriptions ADD COLUMN active INTEGER DEFAULT 1'); } catch(e) {}
@@ -1904,6 +1906,7 @@ function seedNutritionData() {
 try { db.exec("ALTER TABLE users ADD COLUMN last_login TEXT"); } catch(e) {}
 
 module.exports = { getDb };
+
 
 
 
