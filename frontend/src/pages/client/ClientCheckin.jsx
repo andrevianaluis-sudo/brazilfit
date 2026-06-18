@@ -305,7 +305,7 @@ export default function ClientCheckin(){
             <div style={{display:'flex',flexDirection:'column',gap:'1.5rem',marginBottom:'1.25rem'}}>
               <Slide label="Sleep per night" value={fd.sleep_hours} min={0} max={12} step={0.5} unit="h" fmt={v=>v} color={ORANGE} onChange={v=>upd('sleep_hours',v)}/>
               <Slide label="Water glasses" value={fd.water_glasses} min={0} max={15} step={1} unit=" glasses" fmt={v=>v} color="#60a5fa" onChange={v=>upd('water_glasses',v)}/>
-              <Slide label="Daily steps" value={fd.daily_steps} min={0} max={20000} step={500} unit="k" fmt={v=>(v/1000).toFixed(0)} color={GREEN} onChange={v=>upd('daily_steps',v)}/>
+              <Slide label="Daily steps" value={fd.daily_steps} min={0} max={40000} step={1000} unit="k" fmt={v=>(v/1000).toFixed(0)} color={GREEN} onChange={v=>upd('daily_steps',v)}/>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
               {[{k:'alcohol_free',l:'Alcohol-free most days',e:''},{k:'ate_breakfast',l:'Ate breakfast daily',e:''},{k:'limited_processed',l:'Limited processed food',e:''}].map(item=>(
