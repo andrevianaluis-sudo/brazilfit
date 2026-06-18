@@ -3,6 +3,7 @@ import BackButton from '../../components/BackButton';
 import PhotoUploadButton from '../../components/PhotoUploadButton';
 import BeforeAfterSlider from '../../components/BeforeAfterSlider';
 import PhotoGallery from '../../components/PhotoGallery';
+import CalorieCalculator from './CalorieCalculator';
 import { useAuth } from '../../context/AuthContext';
 import { TrendingDown, TrendingUp, Plus, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '../../utils/api';
@@ -134,7 +135,7 @@ export default function ClientProgress() {
           </button>
         </div>
         <div style={{ display:'flex', gap:8, marginBottom:'1.5rem' }}>
-          {[{key:'progress',label:' Stats'},{key:'photos',label:' Photos'}].map(t => (
+          {[{key:'progress',label:' Stats'},{key:'photos',label:' Photos'},{key:'calories',label:' Calories'}].map(t => (
             <button key={t.key} onClick={() => setActiveTab(t.key)} style={{
               padding:'8px 20px', borderRadius:'8px', cursor:'pointer', fontSize:'0.82rem', fontWeight:600, minHeight:'auto',
               background: activeTab===t.key ? `rgba(255,107,43,0.18)` : 'rgba(255,255,255,0.04)',
@@ -199,6 +200,9 @@ export default function ClientProgress() {
             <BeforeAfterSlider key={refreshKey} clientId={user.clientId}/>
             <div style={{ marginTop:'1.5rem' }}><PhotoGallery key={refreshKey} clientId={user.clientId}/></div>
           </div>
+        )}
+        {activeTab === 'calories' && (
+          <CalorieCalculator />
         )}
       </div>
       {showAddModal && <AddMeasurementModal onClose={() => setShowAddModal(false)} onSaved={() => setRefreshKey(k => k+1)}/>}
