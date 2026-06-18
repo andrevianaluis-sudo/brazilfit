@@ -1,4 +1,4 @@
-﻿import { ClipboardCheck, Outlet, useNavigate, useLocation } from 'react-router-dom';
+﻿import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
