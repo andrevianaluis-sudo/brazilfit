@@ -2,7 +2,7 @@
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
-  BookOpen, Dumbbell, ChevronRight, Package, PlayCircle
+  BookOpen, Dumbbell, ChevronRight, Package, PlayCircle, ClipboardCheck
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import api from '../../utils/api';
