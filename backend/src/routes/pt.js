@@ -650,7 +650,7 @@ router.get('/notifications', (req, res) => {
     ORDER BY n.created_at DESC
     LIMIT 50
   `).all();
-  const unreadCount = db.prepare(`SELECT COUNT(*) as count FROM notifications WHERE type IN ('message', 'cancellation', 'reinstate', 'checkin', 'session', 'badge') AND title NOT IN ('New message from your PT', 'Message from your PT') AND is_read = 0`).get().count;
+  const unreadCount = db.prepare(`SELECT COUNT(*) as count FROM notifications WHERE type IN ('message', 'cancellation', 'reinstate', 'checkin', 'session', 'badge', 'renewal') AND title NOT IN ('New message from your PT', 'Message from your PT') AND is_read = 0`).get().count;
   res.json({ notifications, unreadCount });
 });
 
