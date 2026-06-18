@@ -1,4 +1,4 @@
-﻿import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+﻿import { ClipboardCheck, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
@@ -12,6 +12,7 @@ const navigationItems = [
   { icon: Users,       label: 'Clients',    to: '/pt/clients'                 },
   { icon: Dumbbell,    label: 'Workouts',   to: '/pt/workouts'                },
   { icon: Package,     label: 'Blocks',     to: '/pt/blocks'                  },
+  { icon: ClipboardCheck, label: 'Check-ins', to: '/pt/checkins'              },
 ];
 
 export default function PTLayout() {
