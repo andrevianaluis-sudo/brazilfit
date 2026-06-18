@@ -1,4 +1,4 @@
-﻿const { DatabaseSync } = require('node:sqlite');
+const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
@@ -383,6 +383,16 @@ try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN insight TEXT"); } catch(e)
 try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN sleep_hours REAL"); } catch(e) {}
 try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN water_glasses INTEGER"); } catch(e) {}
 try { db.exec("ALTER TABLE weekly_checkins ADD COLUMN daily_steps INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN height_cm REAL"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN age INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN sex TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN activity_level TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN deficit_preference INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN height_cm REAL"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN age INTEGER"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN sex TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN activity_level TEXT"); } catch(e) {}
+try { db.exec("ALTER TABLE clients ADD COLUMN deficit_preference INTEGER"); } catch(e) {}
   try { db.exec('ALTER TABLE exercises ADD COLUMN gif_url TEXT'); } catch(e) {}
   try { db.exec('ALTER TABLE messages ADD COLUMN pt_id INTEGER'); } catch(e) {}
   try { db.exec('ALTER TABLE subscriptions ADD COLUMN active INTEGER DEFAULT 1'); } catch(e) {}
@@ -1876,7 +1886,7 @@ function seedStretchingGifs() {
     for (const entry of mapping) {
       insert.run(entry.exerciseName, entry.muscleGroup || 'Full Body', '/exercise-gifs/exercise-gifs/' + entry.filename);
     }
-    console.log('✅ Stretching GIFs seeded');
+    console.log('? Stretching GIFs seeded');
   } catch(e) {
     console.log('Stretching seed skipped:', e.message);
   }
@@ -1894,4 +1904,6 @@ function seedNutritionData() {
 try { db.exec("ALTER TABLE users ADD COLUMN last_login TEXT"); } catch(e) {}
 
 module.exports = { getDb };
+
+
 
