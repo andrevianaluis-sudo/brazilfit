@@ -855,7 +855,9 @@ export default function PTClientProfile() {
                   {p.waist_cm && <span>Waist: {p.waist_cm}cm</span>}
                   {p.hips_cm && <span>Hips: {p.hips_cm}cm</span>}
                   {p.chest_cm && <span>Chest: {p.chest_cm}cm</span>}
+                  {p.body_fat_pct && <span>Body Fat: {p.body_fat_pct}%</span>}
                 </div>
+                {p.notes && <p style={{fontSize:"0.75rem",color:"#aaa",marginTop:"6px",fontStyle:"italic"}}>"{p.notes}"</p>}
               </div>
             ))}
           </div>

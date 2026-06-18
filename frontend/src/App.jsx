@@ -9,6 +9,7 @@ import PTClients from './pages/pt/PTClients';
 import PTClientProfile from './pages/pt/PTClientProfile';
 import PTBlockTracker from './pages/pt/PTBlockTracker';
 import PTCheckins from './pages/pt/PTCheckins';
+import PTProgressOverview from './pages/pt/PTProgressOverview';
 import PTIncome from './pages/pt/PTIncome';
 import PTWellness from './pages/pt/PTWellness';
 import PTProgress from './pages/pt/PTProgress';
@@ -95,6 +96,7 @@ function AppRoutes() {
         <Route path="messages/:clientId" element={<PTMessages />} />
         <Route path="blocks" element={<PTBlockTracker />} />
         <Route path="checkins" element={<PTCheckins />} />
+        <Route path="progress-overview" element={<PTProgressOverview />} />
         <Route path="income" element={<PTIncome />} />
         <Route path="wellness" element={<PTWellness />} />
         <Route path="progress" element={<PTProgress />} />

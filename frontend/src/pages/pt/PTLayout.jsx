@@ -2,7 +2,7 @@
 import { useAuth } from '../../context/AuthContext';
 import {
   Zap, Menu, X, Calendar, Users, BarChart3, DollarSign, Settings, LogOut, Bell,
-  BookOpen, Dumbbell, ChevronRight, Package, PlayCircle, ClipboardCheck
+  BookOpen, Dumbbell, ChevronRight, Package, PlayCircle, ClipboardCheck, TrendingUp
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import api from '../../utils/api';
@@ -13,6 +13,7 @@ const navigationItems = [
   { icon: Dumbbell,    label: 'Workouts',   to: '/pt/workouts'                },
   { icon: Package,     label: 'Blocks',     to: '/pt/blocks'                  },
   { icon: ClipboardCheck, label: 'Check-ins', to: '/pt/checkins'              },
+  { icon: TrendingUp,  label: 'Progress',   to: '/pt/progress-overview'        },
 ];
 
 export default function PTLayout() {
