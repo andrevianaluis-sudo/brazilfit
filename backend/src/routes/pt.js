@@ -83,11 +83,23 @@ router.get('/schedule/week', (req, res) => {
 router.get('/progress-summary', authenticateToken, (req, res) => {
   const db = getDb();
   const clients = db.prepare(`
-    SELECT c.id as clientId, u.name as clientName
+    SELECT c.id as clientId, u.name as clientName,
+           c.height_cm, c.age, c.sex, c.activity_level, c.deficit_preference, c.calorie_goal
     FROM clients c JOIN users u ON c.user_id = u.id
     WHERE u.is_active = 1
     ORDER BY u.name
   `).all();
+
+  const calcCals = (weight, cl) => {
+    if (!weight || !cl.height_cm || !cl.age || !cl.sex) return null;
+    let bmr = 10 * weight + 6.25 * cl.height_cm - 5 * cl.age + (cl.sex === 'male' ? 5 : -161);
+    const factors = { sedentary: 1.2, light: 1.375, moderate: 1.55, active: 1.725, very_active: 1.9 };
+    const tdee = bmr * (factors[cl.activity_level] || 1.2);
+    const amount = cl.deficit_preference || 500;
+    const goal = cl.calorie_goal || 'lose';
+    const target = goal === 'gain' ? tdee + amount : tdee - amount;
+    return { bmr: Math.round(bmr), tdee: Math.round(tdee), target: Math.round(target), deficit: amount, goal };
+  };
 
   const summary = clients.map(cl => {
     const entries = db.prepare(
@@ -101,12 +113,14 @@ router.get('/progress-summary', authenticateToken, (req, res) => {
         weightChange = parseFloat((latest.weight_kg - first.weight_kg).toFixed(1));
       }
     }
+    const latestWeight = entries.find(e => e.weight_kg != null);
     return {
       clientId: cl.clientId,
       clientName: cl.clientName,
       entryCount: entries.length,
       latest: entries[0] || null,
       weightChange,
+      calories: calcCals(latestWeight ? latestWeight.weight_kg : null, cl),
       entries
     };
   });
