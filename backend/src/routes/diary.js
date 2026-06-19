@@ -2,6 +2,10 @@ const sharp = require('sharp');
 const multer = require('multer');
 const express = require('express');
 const router = express.Router();
+
+const { getDb } = require('../db/database');
+const { authenticateToken } = require('../middleware/auth');
+
 const _mealUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 // POST /diary/photos/:date — upload a meal photo (max 4 per day)
@@ -53,8 +57,6 @@ router.delete('/photo/:id', authenticateToken, (req, res) => {
   res.json({ message: 'Deleted' });
 });
 
-const { getDb } = require('../db/database');
-const { authenticateToken } = require('../middleware/auth');
 
 // Require Pro for all routes
 function requirePro(req, res, next) {
