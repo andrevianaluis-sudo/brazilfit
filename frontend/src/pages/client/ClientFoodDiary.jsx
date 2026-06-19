@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Plus, X, Droplets, Smile, Frown, Meh } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, X, Droplets, Smile, Frown, Meh, Camera } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
@@ -86,18 +86,39 @@ export default function ClientFoodDiary(){
   const[date,setDate]=useState(new Date());
   const[entry,setEntry]=useState({meals:[],water:0,mood_before:3,mood_after:3,notes:''});
   const[saving,setSaving]=useState(false);
+  const[mealPhotos,setMealPhotos]=useState([]);
+  const[photoUploading,setPhotoUploading]=useState(false);
 
   useEffect(()=>{
     api.get(`/diary/${ds(date)}`).then(r=>{
       if(r.data){setEntry({meals:JSON.parse(r.data.meals||'[]'),water:r.data.water_glasses||0,mood_before:r.data.mood_before||3,mood_after:r.data.mood_after||3,notes:r.data.notes||''});}
       else{setEntry({meals:[],water:0,mood_before:3,mood_after:3,notes:''});}
     }).catch(()=>setEntry({meals:[],water:0,mood_before:3,mood_after:3,notes:''}));
+    api.get(`/diary/photos/${ds(date)}`).then(r=>setMealPhotos(r.data.photos||[])).catch(()=>setMealPhotos([]));
   },[date]);
 
   const addMeal=()=>{
     const used=entry.meals.map(m=>m.time);
     const next=TIMES.find(t=>!used.includes(t))||TIMES[0];
     setEntry(e=>({...e,meals:[...e.meals,{time:next,food:'',calories:'',protein:'',carbs:'',fat:'',notes:''}]}));
+  };
+
+  const handlePhotoUpload=async(e)=>{
+    const file=e.target.files[0]; if(!file) return;
+    if(mealPhotos.length>=4){toast.error('Max 4 photos per day');return;}
+    const fd=new FormData(); fd.append('photo',file);
+    try{
+      setPhotoUploading(true);
+      await api.post(`/diary/photos/${ds(date)}`,fd,{headers:{'Content-Type':'multipart/form-data'}});
+      const r=await api.get(`/diary/photos/${ds(date)}`);
+      setMealPhotos(r.data.photos||[]);
+      toast.success('Photo added');
+    }catch(err){toast.error(err.response?.data?.error||'Upload failed');}
+    finally{setPhotoUploading(false);}
+  };
+  const deletePhoto=async(pid)=>{
+    try{await api.delete(`/diary/photo/${pid}`);setMealPhotos(p=>p.filter(x=>x!==pid));}
+    catch{toast.error('Failed to delete');}
   };
 
   const save=async()=>{
@@ -148,10 +169,28 @@ export default function ClientFoodDiary(){
             <div style={{width:'3px',height:'14px',borderRadius:'2px',background:`linear-gradient(180deg,${GREEN},${GREEN}88)`}}/>
             <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.6rem',fontWeight:700,letterSpacing:'0.18em',color:GREEN,textTransform:'uppercase',margin:0}}>Meals ({entry.meals.length})</p>
           </div>
-          <button type="button" onClick={addMeal} style={{display:'flex',alignItems:'center',gap:'4px',background:`${ORANGE}15`,border:`1px solid ${ORANGE}30`,borderRadius:'8px',padding:'5px 12px',cursor:'pointer',color:ORANGE,fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',fontWeight:700,minHeight:'auto'}}>
-            <Plus size={13}/> Add Meal
-          </button>
+          <div style={{display:'flex',gap:'6px'}}>
+            <button type="button" onClick={addMeal} style={{display:'flex',alignItems:'center',gap:'4px',background:`${ORANGE}15`,border:`1px solid ${ORANGE}30`,borderRadius:'8px',padding:'5px 12px',cursor:'pointer',color:ORANGE,fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',fontWeight:700,minHeight:'auto'}}>
+              <Plus size={13}/> Add Meal
+            </button>
+            <label style={{display:'flex',alignItems:'center',gap:'4px',background:`${GREEN}15`,border:`1px solid ${GREEN}30`,borderRadius:'8px',padding:'5px 12px',cursor:'pointer',color:GREEN,fontFamily:"'DM Sans',system-ui",fontSize:'0.75rem',fontWeight:700}}>
+              <Camera size={13}/> {photoUploading?'…':'Add Photo'}
+              <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{display:'none'}}/>
+            </label>
+          </div>
         </div>
+        {mealPhotos.length>0&&(
+          <div style={{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'12px'}}>
+            {mealPhotos.map(pid=>(
+              <div key={pid} style={{position:'relative'}}>
+                <img src={`${api.defaults.baseURL}/diary/photo/${pid}?token=${localStorage.getItem('brazilfit_token')}`} alt="meal" style={{width:'72px',height:'72px',objectFit:'cover',borderRadius:'10px',border:`1px solid ${BORDER}`}}/>
+                <button onClick={()=>deletePhoto(pid)} style={{position:'absolute',top:'-6px',right:'-6px',background:'#000',border:`1px solid ${BORDER}`,borderRadius:'50%',width:'20px',height:'20px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',padding:0}}>
+                  <X size={12} color="#fff"/>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         {entry.meals.length===0?(
           <div style={{background:SURFACE,borderRadius:'12px',border:`1px dashed ${BORDER}`,padding:'2rem',textAlign:'center'}}>
             <p style={{fontSize:'1.5rem',margin:'0 0 6px'}}></p>
