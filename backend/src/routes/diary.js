@@ -6,6 +6,27 @@ const router = express.Router();
 const { getDb } = require('../db/database');
 const { authenticateToken } = require('../middleware/auth');
 
+// GET /diary/pt/:clientId — PT views a client's recent diary entries + photos
+router.get('/pt/:clientId', authenticateToken, (req, res) => {
+  if (req.user.role !== 'pt') return res.status(403).json({ error: 'PT only' });
+  const { getDb } = require('../db/database');
+  const db = getDb();
+  const clientId = parseInt(req.params.clientId);
+  const entries = db.prepare(
+    "SELECT entry_date, meals, water_glasses, mood_before, mood_after, notes FROM food_mood_entries WHERE client_id = ? ORDER BY entry_date DESC LIMIT 30"
+  ).all(clientId);
+  const photos = db.prepare(
+    "SELECT id, entry_date FROM meal_photos WHERE client_id = ? ORDER BY entry_date DESC, id DESC"
+  ).all(clientId);
+  // group photos by date
+  const photosByDate = {};
+  for (const p of photos) {
+    if (!photosByDate[p.entry_date]) photosByDate[p.entry_date] = [];
+    photosByDate[p.entry_date].push(p.id);
+  }
+  res.json({ entries, photosByDate });
+});
+
 const _mealUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 // POST /diary/photos/:date — upload a meal photo (max 4 per day)
