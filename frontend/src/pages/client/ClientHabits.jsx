@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
@@ -347,7 +347,7 @@ export default function ClientHabits() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <SliderField icon="" label="Water" hint="Staying hydrated boosts energy and recovery" value={form.water_glasses} onChange={v => setForm(f => ({...f, water_glasses: v}))} min={0} max={12} step={1} unit="glasses" color="#60a5fa" />
             <SliderField icon="" label="Sleep" hint="Quality sleep is when your body repairs" value={form.sleep_hours} onChange={v => setForm(f => ({...f, sleep_hours: v}))} min={0} max={12} step={0.5} unit="hours" color="#a78bfa" />
-            <SliderField icon="" label="Steps" hint="Daily movement accelerates results" value={form.steps} onChange={v => setForm(f => ({...f, steps: v}))} min={0} max={20000} step={500} unit="" color={YELLOW} />
+            <SliderField icon="" label="Steps" hint="Daily movement accelerates results" value={form.steps} onChange={v => setForm(f => ({...f, steps: v}))} min={0} max={50000} step={1000} unit="" color={YELLOW} />
             <SliderField icon="" label="Vegetables" hint="Micronutrients from veg fuel your body" value={form.veg_portions} onChange={v => setForm(f => ({...f, veg_portions: v}))} min={0} max={10} step={1} unit="portions" color={GREEN} />
 
             <div style={{ height: '1px', backgroundColor: BORDER }} />
@@ -441,6 +441,7 @@ export default function ClientHabits() {
     </div>
   );
 }
+
 
 
 
