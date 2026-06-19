@@ -13,7 +13,7 @@ router.get('/pt/:clientId', authenticateToken, (req, res) => {
   const db = getDb();
   const clientId = parseInt(req.params.clientId);
   const entries = db.prepare(
-    "SELECT entry_date, meals, water_glasses, mood_before, mood_after, notes FROM food_mood_entries WHERE client_id = ? ORDER BY entry_date DESC LIMIT 30"
+    "SELECT entry_date, food_description as meals, water_glasses, mood_before_eating as mood_before, mood_after_eating as mood_after, reflection_notes as notes FROM food_mood_entries WHERE client_id = ? ORDER BY entry_date DESC LIMIT 30"
   ).all(clientId);
   const photos = db.prepare(
     "SELECT id, entry_date FROM meal_photos WHERE client_id = ? ORDER BY entry_date DESC, id DESC"
@@ -349,8 +349,15 @@ router.get('/:date', authenticateToken, (req, res) => {
   const db = getDb();
   const clientId = req.user.clientId;
   if (!clientId) return res.status(403).json({ error: 'Clients only' });
-  const entry = db.prepare(`SELECT * FROM food_mood_entries WHERE client_id = ? AND entry_date = ? ORDER BY created_at DESC LIMIT 1`).get(clientId, req.params.date);
-  res.json(entry || null);
+  const row = db.prepare(`SELECT * FROM food_mood_entries WHERE client_id = ? AND entry_date = ? ORDER BY created_at DESC LIMIT 1`).get(clientId, req.params.date);
+  if (!row) return res.json(null);
+  res.json({
+    meals: row.food_description,
+    water_glasses: row.water_glasses,
+    mood_before: row.mood_before_eating,
+    mood_after: row.mood_after_eating,
+    notes: row.reflection_notes
+  });
 });
 
 // POST /api/diary — save or update a full day diary entry
@@ -363,7 +370,7 @@ router.post('/', authenticateToken, (req, res) => {
   try {
     const existing = db.prepare(`SELECT id FROM food_mood_entries WHERE client_id = ? AND entry_date = ?`).get(clientId, date);
     if (existing) {
-      db.prepare(`UPDATE food_mood_entries SET food_description = ?, water_glasses = ?, mood_before_eating = ?, mood_after_eating = ?, reflection_notes = ?, updated_at = datetime('now') WHERE id = ?`)
+      db.prepare(`UPDATE food_mood_entries SET food_description = ?, water_glasses = ?, mood_before_eating = ?, mood_after_eating = ?, reflection_notes = ? WHERE id = ?`)
         .run(meals || null, water_glasses || 0, mood_before || null, mood_after || null, notes || null, existing.id);
       res.json({ id: existing.id, message: 'Updated' });
     } else {
