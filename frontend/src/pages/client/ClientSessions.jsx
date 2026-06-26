@@ -124,7 +124,7 @@ export default function ClientSessions(){
   const totalSessions=sessionsUsed+sessionsRemaining;const pct=totalSessions>0?(sessionsUsed/totalSessions)*100:0;
   const attended=history.filter(s=>s.status==='attended').length;
   const missed=history.filter(s=>s.status==='missed').length;
-  const limitedHistory=user?.isPro?history:history.slice(0,5);
+  const limitedHistory=history;
 
   return(
     <div style={{backgroundColor:BG,minHeight:'100vh',paddingBottom:'6rem',fontFamily:"'DM Sans',system-ui"}}>
