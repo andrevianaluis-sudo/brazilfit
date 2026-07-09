@@ -234,9 +234,9 @@ export default function ClientSessions(){
             <SectionLabel color={GREEN}>Upcoming Sessions</SectionLabel>
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
               {upcoming.map((s,i)=>{
-                const hrs=hoursUntil(s.scheduled_date,s.scheduled_time);const locked=hrs>=0&&hrs<24;const sessionsLeftAfter=Math.max(0,sessionsRemaining-i-1);
+                const hrs=hoursUntil(s.scheduled_date,s.scheduled_time);const locked=hrs>=0&&hrs<24;const sessionsLeftAfter=Math.max(0,sessionsRemaining-i-1);const beyondBlock=i>=sessionsRemaining;
                 return(
-                  <div key={s.id} style={{borderRadius:'14px',padding:'1rem 1.25rem',background:locked?'rgba(239,68,68,0.06)':'linear-gradient(135deg,rgba(76,175,80,0.06),rgba(26,26,26,1))',border:`1px solid ${locked?'rgba(239,68,68,0.2)':'rgba(76,175,80,0.2)'}`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px'}}>
+                  <div key={s.id} style={{borderRadius:'14px',padding:'1rem 1.25rem',background:locked?'rgba(239,68,68,0.06)':beyondBlock?'rgba(26,26,26,1)':'linear-gradient(135deg,rgba(76,175,80,0.06),rgba(26,26,26,1))',border:`1px solid ${locked?'rgba(239,68,68,0.2)':beyondBlock?'rgba(255,255,255,0.07)':'rgba(76,175,80,0.2)'}`,opacity:beyondBlock?0.6:1,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px'}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',flex:1}}>
                       <div style={{width:'38px',height:'38px',borderRadius:'10px',background:locked?'rgba(239,68,68,0.15)':'rgba(76,175,80,0.15)',border:`1px solid ${locked?'rgba(239,68,68,0.3)':'rgba(76,175,80,0.3)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
                         <Calendar size={16} color={locked?'#ef4444':GREEN}/>
@@ -244,7 +244,7 @@ export default function ClientSessions(){
                       <div>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.9rem',fontWeight:700,color:TEXT,margin:'0 0 3px',letterSpacing:'-0.01em'}}>{fmtDateTimeFull(s.scheduled_date,s.scheduled_time)}</p>
                         <p style={{fontFamily:"'DM Sans',system-ui",fontSize:'0.7rem',color:MUTED,margin:0}}>
-                          {sessionsLeftAfter} session{sessionsLeftAfter!==1?'s':''} left after this
+                          {beyondBlock?'Scheduled \u00b7 not in current block':`${sessionsLeftAfter} session${sessionsLeftAfter!==1?'s':''} left after this`}
                           {locked&&<span style={{color:'#ef4444',marginLeft:'8px',fontWeight:600}}> Within 24h</span>}
                         </p>
                       </div>
